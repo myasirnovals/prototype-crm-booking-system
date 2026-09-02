@@ -26,15 +26,24 @@
             <span class="logo-mark">✦</span>
             Cliniva
           </a>
-          <a href="index.html" class="back-link">← Back to Home</a>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="lang-switcher-wrap">
+              <select class="lang-select" aria-label="Select Language">
+                <option value="en">🇬🇧 English</option>
+                <option value="ms">🇲🇾 Melayu</option>
+                <option value="zh">🇨🇳 中文</option>
+              </select>
+            </div>
+            <a href="index.html" class="back-link" data-i18n="nav.backHome">← Back to Home</a>
+          </div>
         </div>
 
         <div class="onboarding-header">
           <div class="pill">👑 Clinic Owner &amp; Super Admin Provisioning</div>
           <h1 class="onboarding-title">
-            Register your clinic with <span>Cliniva.</span>
+            <span data-i18n="onboarding.title">Register your clinic with</span> <span>Cliniva.</span>
           </h1>
-          <p class="onboarding-subtitle">
+          <p class="onboarding-subtitle" data-i18n="onboarding.subtitle">
             Buat akun <strong>Super Admin</strong> perdana untuk klinik Anda. Sistem akan mengonfigurasi <em>Tenant ID</em> mandiri, jadwal praktisi, dan portal reservasi pasien dalam hitungan menit.
           </p>
         </div>

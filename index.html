@@ -28,15 +28,22 @@
       </a>
 
       <div class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#app">Product</a>
-        <a href="#markets">Market</a>
-        <a href="#demo">Demo</a>
+        <a href="#features" data-i18n="nav.features">Features</a>
+        <a href="#app" data-i18n="nav.product">Product</a>
+        <a href="#markets" data-i18n="nav.market">Market</a>
+        <a href="demo.html" data-i18n="nav.demo">Demo</a>
       </div>
 
       <div class="nav-actions">
-        <a href="sign-in.html" class="btn btn-soft">Sign In</a>
-        <a href="onboarding.html" class="btn btn-primary">Get Started</a>
+        <div class="lang-switcher-wrap">
+          <select class="lang-select" aria-label="Select Language">
+            <option value="en">🇬🇧 English</option>
+            <option value="ms">🇲🇾 Melayu</option>
+            <option value="zh">🇨🇳 中文</option>
+          </select>
+        </div>
+        <a href="sign-in.html" class="btn btn-soft" data-i18n="nav.signIn">Sign In</a>
+        <a href="onboarding.html" class="btn btn-primary" data-i18n="nav.getStarted">Get Started</a>
       </div>
 
       <button class="mobile-toggle" id="mobileToggle" aria-label="Open navigation drawer">☰</button>
@@ -47,24 +54,24 @@
   <header class="hero">
     <div class="container hero-grid">
       <div>
-        <div class="pill">🇸🇬 🇲🇾 Built for modern clinics in Singapore & Malaysia</div>
+        <div class="pill" data-i18n="hero.pill">🇸🇬 🇲🇾 Built for modern clinics in Singapore & Malaysia</div>
 
         <h1>
-          Clinic booking,
-          <span>CRM & operations</span>
-          in one elegant platform.
+          <span data-i18n="hero.title">Clinic booking,</span>
+          <span data-i18n="hero.titleHighlight">CRM & operations</span>
+          <span data-i18n="hero.titleSuffix">in one elegant platform.</span>
         </h1>
 
-        <p class="hero-text">
+        <p class="hero-text" data-i18n="hero.subtitle">
           Cliniva helps clinics, therapy centers, wellness brands, and multi-branch practices manage appointment
           booking,
           WhatsApp reminders, patient intake, payments, referrals, and daily operations from one beautiful web app.
         </p>
 
         <div class="hero-actions">
-          <a href="demo.html" class="btn btn-primary">Start Interactive Demo →</a>
-          <a href="#features" class="btn btn-soft">View Key Features</a>
-          <a href="ticket.html" class="btn btn-soft">🎟️ View E-Ticket</a>
+          <a href="demo.html" class="btn btn-primary" data-i18n="hero.startDemo">Start Interactive Demo →</a>
+          <a href="#features" class="btn btn-soft" data-i18n="hero.viewFeatures">View Key Features</a>
+          <a href="ticket.html" class="btn btn-soft" data-i18n="hero.viewTicket">🎟️ View E-Ticket</a>
         </div>
 
         <div class="trust-row">
@@ -208,9 +215,9 @@
   <section class="features" id="features">
     <div class="container">
       <div class="section-title">
-        <div class="pill" style="margin-bottom:16px;">Core Platform Capabilities</div>
-        <h2>Everything a clinic needs to reduce no-shows and operate smoothly.</h2>
-        <p>
+        <div class="pill" style="margin-bottom:16px;" data-i18n="features.pill">Core Platform Capabilities</div>
+        <h2 data-i18n="features.title">Everything a clinic needs to reduce no-shows and operate smoothly.</h2>
+        <p data-i18n="features.subtitle">
           From patient self-booking to operational dashboards, Cliniva is designed to streamline appointment-heavy
           clinics without becoming a full EMR.
         </p>
@@ -218,26 +225,26 @@
 
       <div class="feature-grid">
         <article class="feature-card">
-          <div class="feature-icon">📅</div>
-          <h3>Self-Booking Portal</h3>
-          <p>
-            Patients can book, reschedule, cancel, and complete intake forms 24/7 from any mobile browser.
-          </p>
-        </article>
-
-        <article class="feature-card">
           <div class="feature-icon">🧠</div>
-          <h3>Triple-Constraint Scheduling</h3>
-          <p>
-            Validate practitioner, room or bed, and medical equipment availability before confirming a slot.
+          <h3 data-i18n="features.f1.title">Triple-Constraint Scheduling</h3>
+          <p data-i18n="features.f1.desc">
+            Prevent collisions with smart matching: practitioner + treatment room + specialized equipment validation in real time.
           </p>
         </article>
 
         <article class="feature-card">
           <div class="feature-icon">💬</div>
-          <h3>WhatsApp Reminder Engine</h3>
-          <p>
-            Send instant confirmations and layered reminders through WhatsApp, with email fallback support.
+          <h3 data-i18n="features.f2.title">Two-Way WhatsApp Engine</h3>
+          <p data-i18n="features.f2.desc">
+            Deliver booking confirmations, H-24 reminder alerts, and interactive 1-click confirmation or reschedule buttons directly on WhatsApp.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3 data-i18n="features.f3.title">Dynamic Intake & Pain Map</h3>
+          <p data-i18n="features.f3.desc">
+            Capture patient symptoms, history, consent, and visual body pain mapping tailored to Physio, TCM, and Spa workflows.
           </p>
         </article>
 

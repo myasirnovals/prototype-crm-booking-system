@@ -40,8 +40,13 @@ Desain/
     ├── config/
     │   ├── clinic-data.js          # Master data: Cabang SG/MY, praktisi, layanan, slot default
     │   └── regional-config.js      # Konfigurasi regional: Mata uang, template WA, consent PDPA
+    ├── locales/
+    │   ├── en.js                   # Kamus Bahasa Inggris (Default SG / Global)
+    │   ├── ms.js                   # Kamus Bahasa Melayu / Indonesia (MY / ID)
+    │   └── zh.js                   # Kamus Bahasa Mandarin (Simplified Chinese)
     ├── services/
     │   ├── storage.service.js      # StorageService: LocalStorage abstraction + in-memory fallback
+    │   ├── i18n.service.js         # I18nService: Engine terjemahan multilingual (EN/MS/ZH)
     │   ├── booking.service.js      # BookingService: Triple-Constraint engine & 10-min slot hold timer
     │   ├── auth.service.js         # AuthService: Login staf RBAC, generator & verifikasi OTP
     │   ├── notification.service.js # NotificationService: Multi-stage WhatsApp & .ics generator

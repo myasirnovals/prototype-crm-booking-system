@@ -6,8 +6,12 @@
 import { UIController } from "../controllers/ui.controller.js";
 import { BookingController } from "../controllers/booking.controller.js";
 import { DashboardController } from "../controllers/dashboard.controller.js";
+import { i18nService } from "../services/i18n.service.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Initialize multilingual translation engine
+  i18nService.init();
+
   const ui = new UIController();
   ui.init();
 
@@ -17,5 +21,5 @@ document.addEventListener("DOMContentLoaded", () => {
   const dashboard = new DashboardController(ui);
   dashboard.init();
 
-  console.log("Cliniva Booking & CRM System initialized successfully with SOLID architecture.");
+  console.log("Cliniva Booking & CRM System initialized successfully with SOLID architecture and i18n multilingual support.");
 });

@@ -26,23 +26,32 @@
             Cliniva
           </a>
 
-          <a href="index.html" class="back-link">← Back to home</a>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="lang-switcher-wrap">
+              <select class="lang-select" aria-label="Select Language">
+                <option value="en">🇬🇧 English</option>
+                <option value="ms">🇲🇾 Melayu</option>
+                <option value="zh">🇨🇳 中文</option>
+              </select>
+            </div>
+            <a href="index.html" class="back-link" data-i18n="nav.backHome">← Back to home</a>
+          </div>
         </div>
 
         <div class="auth-wrap">
           <div class="pill">🔐 Secure access for clinic teams & patients</div>
 
           <h1 class="auth-title">
-            Welcome back to <span>Cliniva.</span>
+            <span data-i18n="auth.welcomeTitle">Welcome back to</span> <span>Cliniva.</span>
           </h1>
 
-          <p class="auth-subtitle">
+          <p class="auth-subtitle" data-i18n="auth.welcomeSubtitle">
             Sign in to manage appointments, patient intake, WhatsApp reminders, deposits, referrals, and daily clinic operations.
           </p>
 
           <div class="mode-switch" aria-label="Sign in mode switch">
-            <button class="mode-btn active" data-mode="staff">Staff / Admin</button>
-            <button class="mode-btn" data-mode="patient">Patient OTP</button>
+            <button class="mode-btn active" data-mode="staff" data-i18n="auth.staffTab">Staff / Admin</button>
+            <button class="mode-btn" data-mode="patient" data-i18n="auth.patientTab">Patient OTP</button>
           </div>
 
           <div class="form-card">

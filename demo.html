@@ -30,29 +30,36 @@
 
       <!-- Perspective / Role Switcher across ALL Roles in Sign-In -->
       <div class="demo-role-switcher" role="tablist">
-        <button class="demo-role-btn active" data-pane="panePatientBooking" role="tab">
+        <button class="demo-role-btn active" data-pane="panePatientBooking" data-i18n="demo.role.patient" role="tab">
           🩺 Patient Booking
         </button>
-        <button class="demo-role-btn" data-pane="paneReceptionist" role="tab">
+        <button class="demo-role-btn" data-pane="paneReceptionist" data-i18n="demo.role.receptionist" role="tab">
           👩‍💼 Receptionist &amp; Front-Desk
         </button>
-        <button class="demo-role-btn" data-pane="paneDoctor" role="tab">
+        <button class="demo-role-btn" data-pane="paneDoctor" data-i18n="demo.role.doctor" role="tab">
           👨‍⚕️ Doctor &amp; Practitioner
         </button>
-        <button class="demo-role-btn" data-pane="paneBranchAdmin" role="tab">
+        <button class="demo-role-btn" data-pane="paneBranchAdmin" data-i18n="demo.role.branchAdmin" role="tab">
           🏢 Branch Admin
         </button>
-        <button class="demo-role-btn" data-pane="paneSuperAdmin" role="tab">
+        <button class="demo-role-btn" data-pane="paneSuperAdmin" data-i18n="demo.role.superAdmin" role="tab">
           👑 Super Admin / Owner
         </button>
-        <button class="demo-role-btn" data-pane="paneWhatsAppSimulator" role="tab">
+        <button class="demo-role-btn" data-pane="paneWhatsAppSimulator" data-i18n="demo.role.whatsapp" role="tab">
           💬 WhatsApp Engine
         </button>
       </div>
 
-      <div style="display:flex; gap:10px;">
-        <a href="index.html" class="btn btn-sm btn-soft">← Back to Home</a>
-        <a href="sign-in.html" class="btn btn-sm btn-primary">Sign In Portal</a>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="lang-switcher-wrap">
+          <select class="lang-select" aria-label="Select Language">
+            <option value="en">🇬🇧 English</option>
+            <option value="ms">🇲🇾 Melayu</option>
+            <option value="zh">🇨🇳 中文</option>
+          </select>
+        </div>
+        <a href="index.html" class="btn btn-sm btn-soft" data-i18n="nav.backHome">← Back to Home</a>
+        <a href="sign-in.html" class="btn btn-sm btn-primary" data-i18n="nav.signIn">Sign In Portal</a>
       </div>
     </div>
   </header>

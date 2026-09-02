@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — Cliniva Clinic Booking & CRM</title>
+  <meta name="description" content="Secure sign-in for clinic staff and patients via role-based access or WhatsApp / Email OTP." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Modular Design System Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <main class="page">
+    <!-- AUTH PANEL -->
+    <section class="auth-panel">
+      <div>
+        <div class="topbar">
+          <a href="index.html" class="logo">
+            <span class="logo-mark">✦</span>
+            Cliniva
+          </a>
+
+          <a href="index.html" class="back-link">← Back to home</a>
+        </div>
+
+        <div class="auth-wrap">
+          <div class="pill">🔐 Secure access for clinic teams & patients</div>
+
+          <h1 class="auth-title">
+            Welcome back to <span>Cliniva.</span>
+          </h1>
+
+          <p class="auth-subtitle">
+            Sign in to manage appointments, patient intake, WhatsApp reminders, deposits, referrals, and daily clinic operations.
+          </p>
+
+          <div class="mode-switch" aria-label="Sign in mode switch">
+            <button class="mode-btn active" data-mode="staff">Staff / Admin</button>
+            <button class="mode-btn" data-mode="patient">Patient OTP</button>
+          </div>
+
+          <div class="form-card">
+            <!-- STAFF FORM -->
+            <form class="form active" id="staffForm">
+              <div class="region-row">
+                <div class="region-card active" data-region="sg">
+                  <div class="region-flag">🇸🇬</div>
+                  <div>
+                    <strong>Singapore</strong>
+                    <small>SGD · PDPA</small>
+                  </div>
+                </div>
+
+                <div class="region-card" data-region="my">
+                  <div class="region-flag">🇲🇾</div>
+                  <div>
+                    <strong>Malaysia</strong>
+                    <small>MYR · PDPA</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="staffEmail">Work email</label>
+                <input
+                  id="staffEmail"
+                  type="email"
+                  placeholder="admin@orchardclinic.sg"
+                  value="admin@orchardclinic.sg"
+                  autocomplete="email"
+                >
+              </div>
+
+              <div class="field">
+                <label for="staffPassword">
+                  Password
+                  <a href="#">Forgot password?</a>
+                </label>
+
+                <div class="input-wrap">
+                  <input
+                    id="staffPassword"
+                    type="password"
+                    placeholder="Enter your password"
+                    value="cliniva2026"
+                    autocomplete="current-password"
+                  >
+                  <button type="button" class="password-toggle" id="togglePassword">SHOW</button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="staffRole">Continue as</label>
+                <select id="staffRole">
+                  <option>Super Admin / Owner</option>
+                  <option>Branch Admin</option>
+                  <option>Receptionist / Front Desk</option>
+                  <option>Practitioner / Doctor / Therapist</option>
+                </select>
+              </div>
+
+              <label class="checkbox-line">
+                <input type="checkbox" id="rememberMe" checked>
+                <span>Keep me signed in on this device for faster access to the operations dashboard.</span>
+              </label>
+
+              <button type="submit" class="btn btn-primary full">
+                Sign In to Dashboard →
+              </button>
+
+              <div class="divider">OR CONTINUE WITH</div>
+
+              <div class="quick-actions">
+                <button type="button" class="btn btn-soft">💬 WhatsApp OTP</button>
+                <button type="button" class="btn btn-soft">✉️ Email Magic Link</button>
+              </div>
+
+              <div class="status-box" id="staffStatus"></div>
+            </form>
+
+            <!-- PATIENT OTP FORM -->
+            <form class="form" id="patientForm">
+              <div class="field">
+                <label for="patientChannel">Preferred sign-in channel</label>
+                <select id="patientChannel">
+                  <option value="whatsapp">WhatsApp OTP</option>
+                  <option value="email">Email OTP</option>
+                </select>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="countryCode">Country</label>
+                  <select id="countryCode">
+                    <option value="+65">🇸🇬 +65</option>
+                    <option value="+60">🇲🇾 +60</option>
+                    <option value="+62">🇮🇩 +62</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="patientContact">Phone or email</label>
+                  <input
+                    id="patientContact"
+                    type="text"
+                    placeholder="8123 4567 or name@email.com"
+                    value="8123 4567"
+                    autocomplete="username"
+                  >
+                </div>
+              </div>
+
+              <button type="button" class="btn btn-primary full" id="sendOtpBtn">
+                Send Secure OTP
+              </button>
+
+              <div id="otpArea" style="display:none; margin-top:18px;">
+                <label>Enter 6-digit OTP (Demo: 123456)</label>
+
+                <div class="otp-grid">
+                  <input class="otp-input" maxlength="1" inputmode="numeric">
+                  <input class="otp-input" maxlength="1" inputmode="numeric">
+                  <input class="otp-input" maxlength="1" inputmode="numeric">
+                  <input class="otp-input" maxlength="1" inputmode="numeric">
+                  <input class="otp-input" maxlength="1" inputmode="numeric">
+                  <input class="otp-input" maxlength="1" inputmode="numeric">
+                </div>
+
+                <label class="checkbox-line">
+                  <input type="checkbox" id="consentCheck" checked>
+                  <span>
+                    I agree to receive appointment confirmations, reminders, and service updates based on PDPA communication consent.
+                  </span>
+                </label>
+
+                <button type="submit" class="btn btn-primary full">
+                  Verify & Continue →
+                </button>
+              </div>
+
+              <div class="status-box" id="patientStatus"></div>
+            </form>
+          </div>
+
+          <p class="helper-text">
+            New clinic account?
+            <a href="#">Request onboarding</a>
+            · Patient booking?
+            <a href="index.html#app">Open booking portal</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="auth-footer">
+        Protected by encrypted sessions, role-based access control, and regional privacy consent.
+        <br>
+        <a href="#">Privacy Policy</a> · <a href="#">Security</a> · <a href="#">PDPA Notice</a>
+      </div>
+    </section>
+
+    <!-- VISUAL PANEL -->
+    <section class="visual-panel">
+      <div class="floating-chip">🛡️ RBAC + secure session</div>
+
+      <div class="visual-top">
+        <div class="secure-badge">🔒 TLS 1.3 · HMAC-ready · Audit trail</div>
+
+        <div class="region-mini">
+          <div class="mini-flag">🇸🇬</div>
+          <div class="mini-flag">🇲🇾</div>
+        </div>
+      </div>
+
+      <div class="visual-main">
+        <div class="visual-kicker">Clinic operating system preview</div>
+
+        <h2>
+          One secure login for every clinic workflow.
+        </h2>
+
+        <p>
+          Receptionists manage walk-ins, practitioners view daily appointments, branch admins configure schedules, and owners monitor multi-branch performance — all through role-aware access.
+        </p>
+
+        <div class="mockup-area">
+          <div class="dashboard-mock">
+            <div class="mock-head">
+              <h3>Today’s Branch Overview</h3>
+              <span class="live-dot">LIVE</span>
+            </div>
+
+            <div class="mock-stats">
+              <div class="mock-stat">
+                <strong>128</strong>
+                <span>Bookings</span>
+              </div>
+
+              <div class="mock-stat">
+                <strong>4.2%</strong>
+                <span>No-show</span>
+              </div>
+
+              <div class="mock-stat">
+                <strong>0</strong>
+                <span>Collisions</span>
+              </div>
+            </div>
+
+            <div class="mock-calendar">
+              <div class="mock-row">
+                <time>09:00</time>
+                <div>
+                  <strong>Amanda Tan</strong>
+                  <span>Physiotherapy · Room A2</span>
+                </div>
+                <div class="status-pill confirmed">CONFIRMED</div>
+              </div>
+
+              <div class="mock-row">
+                <time>10:30</time>
+                <div>
+                  <strong>Nur Aisyah</strong>
+                  <span>TCM Consultation · Dr. Wong</span>
+                </div>
+                <div class="status-pill pending">PENDING</div>
+              </div>
+
+              <div class="mock-row">
+                <time>12:15</time>
+                <div>
+                  <strong>Jason Lee</strong>
+                  <span>Sports Therapy · Bed 03</span>
+                </div>
+                <div class="status-pill confirmed">CHECKED-IN</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="phone-mock">
+            <div class="phone-screen">
+              <div class="phone-head">
+                <small>Patient Portal</small>
+                <h3>Book Appointment</h3>
+              </div>
+
+              <div class="phone-body">
+                <div class="phone-card">
+                  <h4>Orchard Wellness Clinic</h4>
+                  <p>Singapore · 1.8 km away · Available today</p>
+
+                  <div class="phone-slots">
+                    <div class="phone-slot">09:00</div>
+                    <div class="phone-slot active">10:30</div>
+                    <div class="phone-slot">11:45</div>
+                    <div class="phone-slot">14:00</div>
+                    <div class="phone-slot">15:30</div>
+                    <div class="phone-slot">17:00</div>
+                  </div>
+                </div>
+
+                <div class="phone-card">
+                  <h4>Slot hold active</h4>
+                  <p>Complete intake and deposit payment within 08:42 minutes.</p>
+                </div>
+
+                <a href="index.html#app" class="btn btn-primary full" style="font-size:12px;padding:8px 12px;display:block;text-align:center;">Continue Booking</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="visual-bottom">
+        <div class="proof-card">
+          <strong>99.9%</strong>
+          <span>Target uptime for clinic operations.</span>
+        </div>
+
+        <div class="proof-card">
+          <strong>H-24</strong>
+          <span>Automated reminders to reduce no-shows.</span>
+        </div>
+
+        <div class="proof-card">
+          <strong>3 roles+</strong>
+          <span>Admin, receptionist, practitioner, patient access.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modular Auth Script Bootstrap -->
+  <script type="module" src="js/pages/auth.js"></script>
+</body>
+</html>

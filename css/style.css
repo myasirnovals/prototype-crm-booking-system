@@ -1,0 +1,20 @@
+/* ==========================================================================
+   Cliniva Design System — Master Stylesheet
+   SOLID Architecture: Single Entry Point aggregating modular component styles
+   ========================================================================== */
+
+/* 1. Tokens & Base Foundation */
+@import "variables.css";
+@import "base.css";
+@import "layout.css";
+
+/* 2. Modular UI Components */
+@import "components/hero.css";
+@import "components/features.css";
+@import "components/showcase.css";
+@import "components/booking.css";
+@import "components/notifications.css";
+@import "components/markets.css";
+@import "components/auth.css";
+@import "components/admin.css";
+@import "components/ticket.css";

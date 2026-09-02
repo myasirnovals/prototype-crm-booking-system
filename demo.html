@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Interactive Product Demo — Cliniva Clinic Booking & CRM</title>
-  <meta name="description" content="Explore the full end-to-end capabilities of Cliniva: Patient Self-Booking Wizard, Triple-Constraint Engine, Live Operations Dashboard, WhatsApp Reminder Simulator, and ROI Calculator." />
+  <meta name="description" content="Explore the full end-to-end capabilities of Cliniva across all user roles: Patient Self-Booking, Front-Desk Receptionist, Doctor & Practitioner, Branch Admin, Super Admin Owner, and WhatsApp Engine." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,19 +28,25 @@
         <span class="badge-live" style="font-size:11px;">LIVE INTERACTIVE</span>
       </div>
 
-      <!-- Perspective / Role Switcher -->
+      <!-- Perspective / Role Switcher across ALL Roles in Sign-In -->
       <div class="demo-role-switcher" role="tablist">
         <button class="demo-role-btn active" data-pane="panePatientBooking" role="tab">
-          🩺 Patient Self-Booking
+          🩺 Patient Booking
         </button>
-        <button class="demo-role-btn" data-pane="paneStaffOperations" role="tab">
-          🏥 Clinic Staff Dashboard
+        <button class="demo-role-btn" data-pane="paneReceptionist" role="tab">
+          👩‍💼 Receptionist &amp; Front-Desk
+        </button>
+        <button class="demo-role-btn" data-pane="paneDoctor" role="tab">
+          👨‍⚕️ Doctor &amp; Practitioner
+        </button>
+        <button class="demo-role-btn" data-pane="paneBranchAdmin" role="tab">
+          🏢 Branch Admin
+        </button>
+        <button class="demo-role-btn" data-pane="paneSuperAdmin" role="tab">
+          👑 Super Admin / Owner
         </button>
         <button class="demo-role-btn" data-pane="paneWhatsAppSimulator" role="tab">
           💬 WhatsApp Engine
-        </button>
-        <button class="demo-role-btn" data-pane="paneROICalculator" role="tab">
-          📈 ROI &amp; Anti No-Show
         </button>
       </div>
 
@@ -52,14 +58,14 @@
   </header>
 
   <!-- MAIN DEMO CONTENT -->
-  <main class="container" style="flex:1; padding:36px 20px;">
+  <main class="container" style="flex:1; padding:32px 20px;">
 
     <!-- =========================================================================
-         PANE 1: PATIENT SELF-BOOKING (5-STEP WIZARD)
+         ROLE 1: PATIENT SELF-BOOKING (5-STEP WIZARD)
          ========================================================================= -->
     <section class="demo-pane active" id="panePatientBooking">
       <div style="text-align:center; max-width:680px; margin:0 auto 28px;">
-        <div class="pill" style="margin-bottom:12px;">Step-by-Step Experience</div>
+        <div class="pill" style="margin-bottom:12px;">Step-by-Step Patient Journey</div>
         <h1 style="font-size:32px; letter-spacing:-1.2px;">Patient Self-Booking Simulator</h1>
         <p style="color:var(--muted); font-size:15px; margin-top:6px;">
           Experience how patients effortlessly schedule therapies 24/7 without phone calls or double-booking collisions.
@@ -261,7 +267,6 @@
 
               <div class="pain-map-container">
                 <div class="body-silhouette">
-                  <!-- Anatomical Silhouette Icon -->
                   <svg width="120" height="200" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="50" cy="20" r="14" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/>
                     <rect x="42" y="34" width="16" height="12" fill="#cbd5e1"/>
@@ -417,29 +422,114 @@
     </section>
 
     <!-- =========================================================================
-         PANE 2: CLINIC STAFF OPERATIONS DASHBOARD
+         ROLE 2: RECEPTIONIST & FRONT-DESK (DETAILED CLINIC STAFF WORKFLOW)
          ========================================================================= -->
-    <section class="demo-pane" id="paneStaffOperations">
-      <div class="panel-top">
-        <div>
-          <h2>🏥 Panel Operasional Staf &amp; Resepsionis Klinik</h2>
-          <p>Kelola kedatangan pasien, panggil antrean bersuara, dan pantau status utilisasi bed secara visual.</p>
+    <section class="demo-pane" id="paneReceptionist">
+      <div class="role-header-banner">
+        <div class="role-header-meta">
+          <div class="role-avatar">👩‍💼</div>
+          <div>
+            <div class="pill" style="font-size:11px; padding:3px 10px; margin-bottom:4px;">ROLE: FRONT-DESK / RECEPTIONIST</div>
+            <h2 style="font-size:22px; margin:0;">Meja Resepsionis &amp; Operasional Harian</h2>
+            <small style="color:var(--muted); font-size:12px;">Logged in at: 🇸🇬 Paragon Medical Orchard Branch · Shift Pagi</small>
+          </div>
         </div>
-        <button class="btn btn-primary" onclick="alert('Membuka form Walk-In cepat (Dispatch &lt; 30 detik)...')">+ Quick Walk-in Pasien</button>
+
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-primary" id="btnOpenWalkInModal">⚡ + Quick Walk-in Pasien (&lt;30 Detik)</button>
+        </div>
       </div>
 
-      <!-- Live Queue Monitor with Sound -->
-      <h3 style="font-size:18px; margin:24px 0 12px;">Papan Panggilan Antrean Digital (Live Queue)</h3>
+      <!-- Receptionist Live Metrics -->
+      <div class="metric-grid-4">
+        <div class="metric-card-box">
+          <span>Pasien Terjadwal</span>
+          <strong>32</strong>
+          <small style="color:var(--muted); font-size:11px;">100% Slot Terisi</small>
+        </div>
+        <div class="metric-card-box">
+          <span>Tiba &amp; Check-In</span>
+          <strong style="color:var(--primary-dark);">18</strong>
+          <small style="color:var(--success); font-size:11px;">✓ On-Time</small>
+        </div>
+        <div class="metric-card-box">
+          <span>Sedang Dalam Terapi</span>
+          <strong style="color:var(--warning-dark);">6</strong>
+          <small style="color:var(--muted); font-size:11px;">Di Ruang A1, A2, Bed 1-4</small>
+        </div>
+        <div class="metric-card-box">
+          <span>Pelunasan Kasir POS</span>
+          <strong style="color:var(--success-dark);">SGD 1,980</strong>
+          <small style="color:var(--muted); font-size:11px;">12 Transaksi Lunas</small>
+        </div>
+      </div>
+
+      <!-- Master Schedule Timeline Matrix (Sterilization Buffer Visual) -->
+      <div class="timeline-matrix">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <div>
+            <h3 style="font-size:17px; margin:0;">📅 Master Calendar Operasional &amp; Utilisasi Ruangan</h3>
+            <small style="color:var(--muted);">Visualisasi alokasi dokter, bed terapi, dan jeda sterilisasi 15 menit otomatis.</small>
+          </div>
+          <span class="badge-live">LIVE SYNC</span>
+        </div>
+
+        <table class="timeline-table">
+          <thead>
+            <tr>
+              <th style="width:90px;">JAM</th>
+              <th>RUANG A1 (Dr. Lim - Physio)</th>
+              <th>RUANG A2 (Dr. Wong - TCM)</th>
+              <th>BED 01 (Sinse Huang - Akupunktur)</th>
+              <th>BED 02 (Sarah Tan - Wellness)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="time-badge">09:00 - 10:00</td>
+              <td><div class="schedule-chip chip-confirmed"><span>Amanda Tan</span><small>Checked-In</small></div></td>
+              <td><div class="schedule-chip chip-confirmed"><span>K. Seng</span><small>Checked-In</small></div></td>
+              <td><div class="schedule-chip chip-confirmed"><span>Jason L.</span><small>Checked-In</small></div></td>
+              <td><div class="schedule-chip chip-progress"><span>S. Miller</span><small>In-Therapy</small></div></td>
+            </tr>
+            <tr>
+              <td class="time-badge">10:00 - 10:15</td>
+              <td colspan="4" style="background:#fffbeb; text-align:center; padding:6px;">
+                <span class="schedule-chip chip-buffer" style="justify-content:center; display:inline-flex;">
+                  🧹 15-Minute Sterilization &amp; Linen Change Buffer (Pencegahan Double-Booking)
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td class="time-badge">10:15 - 11:15</td>
+              <td><div class="schedule-chip chip-confirmed"><span>Nur Aisyah</span><small>Confirmed</small></div></td>
+              <td><div class="schedule-chip chip-confirmed"><span>D. Lim</span><small>Confirmed</small></div></td>
+              <td><div class="schedule-chip chip-progress"><span>B. Wong</span><small>In-Therapy</small></div></td>
+              <td><div class="schedule-chip chip-confirmed"><span>R. David</span><small>Confirmed</small></div></td>
+            </tr>
+            <tr>
+              <td class="time-badge">11:15 - 12:15</td>
+              <td><div class="schedule-chip chip-confirmed"><span>Farhan A.</span><small>Deposit OK</small></div></td>
+              <td><div class="schedule-chip chip-confirmed"><span>Grace Tan</span><small>Deposit OK</small></div></td>
+              <td><div class="schedule-chip chip-confirmed"><span>L. Chen</span><small>Deposit OK</small></div></td>
+              <td><div class="schedule-chip chip-confirmed"><span>H. Patel</span><small>Deposit OK</small></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Live Queue Sound Caller Board -->
+      <h3 style="font-size:18px; margin:24px 0 12px;">🔊 Papan Panggilan Antrean Pasien Bersuara</h3>
       <div class="queue-card-grid">
         <div class="queue-card">
           <div style="display:flex; justify-content:space-between; align-items:flex-start;">
             <span class="queue-number">A-01</span>
-            <span class="badge-live">READY</span>
+            <span class="badge-live">READY CALL</span>
           </div>
           <h4 style="margin:8px 0 4px;">Amanda Tan</h4>
-          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Physiotherapy &amp; Spine · Dr. Lim</p>
-          <button class="btn btn-sm btn-primary full btn-demo-call-queue" data-queue="A-01" data-patient="Amanda Tan">
-            🔊 Panggil Pasien (Audio Chime)
+          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Physiotherapy · Ruang A1 (Dr. Lim)</p>
+          <button class="btn btn-sm btn-primary full btn-demo-call-queue" data-queue="A-01" data-patient="Amanda Tan" data-room="Ruang Fisioterapi A1">
+            🔊 Panggil Antrean A-01 (Audio Chime)
           </button>
         </div>
 
@@ -449,9 +539,9 @@
             <span class="badge-live" style="background:#fef3c7; color:#b45309;">MENUNGGU</span>
           </div>
           <h4 style="margin:8px 0 4px;">Nur Aisyah</h4>
-          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">TCM Acupuncture · Sinse Huang</p>
-          <button class="btn btn-sm btn-primary full btn-demo-call-queue" data-queue="B-02" data-patient="Nur Aisyah">
-            🔊 Panggil Pasien (Audio Chime)
+          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">TCM Acupuncture · Bed 01 (Sinse Huang)</p>
+          <button class="btn btn-sm btn-primary full btn-demo-call-queue" data-queue="B-02" data-patient="Nur Aisyah" data-room="Bed Akupunktur 01">
+            🔊 Panggil Antrean B-02 (Audio Chime)
           </button>
         </div>
 
@@ -461,35 +551,367 @@
             <span class="badge-live" style="background:#e0f2fe; color:#0369a1;">CHECK-IN</span>
           </div>
           <h4 style="margin:8px 0 4px;">Jason Lee</h4>
-          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Deep Tissue Wellness · Therapist Sarah</p>
-          <button class="btn btn-sm btn-primary full btn-demo-call-queue" data-queue="C-03" data-patient="Jason Lee">
-            🔊 Panggil Pasien (Audio Chime)
+          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Deep Tissue Wellness · Bed 02 (Sarah Tan)</p>
+          <button class="btn btn-sm btn-primary full btn-demo-call-queue" data-queue="C-03" data-patient="Jason Lee" data-room="Bed Wellness 02">
+            🔊 Panggil Antrean C-03 (Audio Chime)
           </button>
         </div>
       </div>
 
-      <!-- SIMRS & POS Cashier Simulation -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:28px;">
-        <div style="background:#fff; border:1px solid var(--line); border-radius:24px; padding:22px;">
-          <h4 style="font-size:16px; margin-bottom:12px;">🔁 SIMRS Referral Bridge (Ephemeral Proxy)</h4>
-          <p style="font-size:13px; color:var(--muted); line-height:1.5; margin-bottom:16px;">
-            Sistem booking Cliniva meneruskan dokumen rujukan ke SIMRS tanpa menyimpan rekam medis permanen (otomatis terhapus dalam 72 jam).
-          </p>
-          <button class="btn btn-soft full" onclick="openDemoSIMRSInspection()">Inspeksi Payload Webhook SIMRS (JSON)</button>
+      <!-- Kasir POS & SIMRS Ephemeral Proxy Row -->
+      <div style="display:grid; grid-template-columns:1.2fr 0.8fr; gap:24px; margin-top:28px;">
+        <div style="background:#fff; border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:var(--shadow-soft);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <h4 style="font-size:16px; margin:0;">💳 Kasir POS &amp; Pelunasan Tagihan (Settlement)</h4>
+            <span class="pill" style="font-size:10px;">AUTO DEDUCT DEPOSIT</span>
+          </div>
+
+          <table class="timeline-table" style="min-width:auto;">
+            <thead>
+              <tr>
+                <th>Pasien</th>
+                <th>Layanan</th>
+                <th>Total</th>
+                <th>Deposit</th>
+                <th>Sisa Tagihan</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Amanda Tan</strong> (A-01)</td>
+                <td>Physiotherapy</td>
+                <td>SGD 120.00</td>
+                <td><span style="color:var(--success-dark); font-weight:800;">SGD 30.00</span></td>
+                <td><strong style="color:var(--primary-dark);">SGD 90.00</strong></td>
+                <td><button class="btn btn-sm btn-primary" onclick="openDemoPOSModal('A-01', 'Amanda Tan', '90.00')">Pelunasan Kasir</button></td>
+              </tr>
+              <tr>
+                <td><strong>Nur Aisyah</strong> (B-02)</td>
+                <td>TCM Acupuncture</td>
+                <td>SGD 90.00</td>
+                <td><span style="color:var(--success-dark); font-weight:800;">SGD 30.00</span></td>
+                <td><strong style="color:var(--primary-dark);">SGD 60.00</strong></td>
+                <td><button class="btn btn-sm btn-primary" onclick="openDemoPOSModal('B-02', 'Nur Aisyah', '60.00')">Pelunasan Kasir</button></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div style="background:#fff; border:1px solid var(--line); border-radius:24px; padding:22px;">
-          <h4 style="font-size:16px; margin-bottom:12px;">💳 Kasir POS &amp; Pelunasan Tagihan</h4>
+        <div style="background:#fff; border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:var(--shadow-soft);">
+          <h4 style="font-size:16px; margin-bottom:10px;">🔁 SIMRS Referral Ephemeral Bridge</h4>
           <p style="font-size:13px; color:var(--muted); line-height:1.5; margin-bottom:16px;">
-            Pelunasan sisa tagihan pasien setelah dikurangi uang muka deposit online.
+            Meneruskan file rujukan BPJS/Asuransi ke webhook SIMRS rumah sakit mitra tanpa menyimpan rekam medis permanen (auto-purge 72 jam).
           </p>
-          <button class="btn btn-primary full" onclick="openDemoPOSModal('A-01')">Bayar Pelunasan Kasir (A-01)</button>
+          <button class="btn btn-soft full" onclick="openDemoSIMRSInspection()">Inspeksi Payload Webhook SIMRS (JSON)</button>
         </div>
       </div>
     </section>
 
     <!-- =========================================================================
-         PANE 3: WHATSAPP 2-WAY SIMULATOR
+         ROLE 3: DOCTOR / PRACTITIONER / THERAPIST
+         ========================================================================= -->
+    <section class="demo-pane" id="paneDoctor">
+      <div class="role-header-banner">
+        <div class="role-header-meta">
+          <div class="role-avatar">👨‍⚕️</div>
+          <div>
+            <div class="pill" style="font-size:11px; padding:3px 10px; margin-bottom:4px;">ROLE: PRACTITIONER / DOCTOR / THERAPIST</div>
+            <h2 style="font-size:22px; margin:0;">Dashboard Klinis Praktisi &amp; Rekam Terapi</h2>
+            <small style="color:var(--muted); font-size:12px;">Logged in: Dr. Lim Wei Han (Senior Physiotherapist) · Ruang A1</small>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <span class="badge-live" style="background:#ecfdf5; color:#047857;">STATUS: AKTIF MELAYANI</span>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:0.9fr 1.1fr; gap:24px;">
+        <!-- Left: Doctor's Queue for Today -->
+        <div>
+          <h3 style="font-size:17px; margin-bottom:14px;">Daftar Pasien Hari Ini (3 Pasien)</h3>
+
+          <div class="doctor-patient-card active" data-patient="amanda">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong>Amanda Tan (28 Thn)</strong>
+              <span class="badge-live" style="font-size:10px;">SEDANG BERLANGSUNG</span>
+            </div>
+            <small style="color:var(--primary); font-weight:800; display:block; margin:4px 0;">09:00 - 10:00 • Physiotherapy &amp; Spine</small>
+            <p style="font-size:12px; color:var(--muted); margin:0;">Keluhan: Nyeri pinggang bawah (L4-L5) menjalar ke paha kanan.</p>
+          </div>
+
+          <div class="doctor-patient-card" data-patient="farhan">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong>Farhan Alatas (34 Thn)</strong>
+              <span class="status-pill pending" style="font-size:10px;">ANTRE BERIKUTNYA</span>
+            </div>
+            <small style="color:var(--muted); font-weight:800; display:block; margin:4px 0;">11:15 - 12:15 • Post-Injury Rehab</small>
+            <p style="font-size:12px; color:var(--muted); margin:0;">Keluhan: Pemulihan cedera ACL lutut kanan pasca operasi.</p>
+          </div>
+
+          <div class="doctor-patient-card" data-patient="cynthia">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong>Cynthia Low (42 Thn)</strong>
+              <span class="status-pill confirmed" style="font-size:10px;">SIANG (14:00)</span>
+            </div>
+            <small style="color:var(--muted); font-weight:800; display:block; margin:4px 0;">14:00 - 15:00 • Cervical &amp; Shoulder</small>
+            <p style="font-size:12px; color:var(--muted); margin:0;">Keluhan: Kaku leher dan migrain akibat postur kerja.</p>
+          </div>
+        </div>
+
+        <!-- Right: Active Patient Clinical Sheet & Pain Map Viewer -->
+        <div style="background:#fff; border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:var(--shadow-soft);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid var(--line); padding-bottom:12px;">
+            <div>
+              <h3 style="font-size:18px; margin:0;">Rekam Asesmen: Amanda Tan</h3>
+              <small style="color:var(--muted);">Paket Terapi: <strong>Sesi ke-3 dari 8 Sesi Skoliosis</strong></small>
+            </div>
+            <span class="pill" style="font-size:11px;">KODE: BK-20260901-0812</span>
+          </div>
+
+          <!-- Highlighted Pain Map Inspector -->
+          <div style="background:#f8fafc; border:1px solid var(--line); border-radius:18px; padding:16px; margin-bottom:18px;">
+            <div style="font-size:12px; font-weight:900; color:#334155; margin-bottom:8px;">
+              📍 Titik Nyeri Visual Pasien (Input dari Portal Pasien):
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="pain-spot-tag active" style="font-size:12px;">⚡ Pinggang / Lumbar (L4-L5)</span>
+              <span class="pain-spot-tag active" style="font-size:12px;">🦵 Paha Kanan (Sciatica)</span>
+            </div>
+            <p style="font-size:12px; color:var(--text-secondary); margin-top:8px; line-height:1.4;">
+              <strong>Riwayat Pasien:</strong> Pasien bekerja duduk &gt;8 jam/hari. Nyeri bertambah saat membungkuk. Tidak ada riwayat patah tulang.
+            </p>
+          </div>
+
+          <!-- Clinical Progress & Pain Scale Slider -->
+          <div style="margin-bottom:18px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+              <label style="font-size:13px; font-weight:800;">Skala Nyeri Setelah Terapi (VAS Scale 0-10):</label>
+              <strong id="docPainScaleVal" style="color:var(--success-dark); font-size:15px;">3 / 10 (Nyeri Ringan)</strong>
+            </div>
+            <input type="range" id="docPainScaleSlider" min="0" max="10" value="3" style="width:100%; accent-color:var(--primary); cursor:pointer;">
+            <small style="color:var(--muted); font-size:11px; display:flex; justify-content:space-between; margin-top:4px;">
+              <span>0 (Bebas Nyeri)</span>
+              <span>Skala Awal: 8/10</span>
+              <span>10 (Nyeri Hebat)</span>
+            </small>
+          </div>
+
+          <!-- Action Checklist & Package Auto-Deduct -->
+          <div class="field" style="margin-bottom:16px;">
+            <label>Tindakan Klinis yang Diberikan Hari Ini:</label>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:12px; margin-top:6px;">
+              <label><input type="checkbox" checked> Decompression Spine</label>
+              <label><input type="checkbox" checked> Shockwave 2000 Pulses</label>
+              <label><input type="checkbox" checked> Core Stability Exercise</label>
+              <label><input type="checkbox"> Homecare Exercise Guide</label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary full" id="btnDoctorCompleteSession" style="font-size:14px; padding:12px;">
+            ✓ Selesaikan Sesi &amp; Kurangi Kuota Paket (Sisa 5 Sesi) →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         ROLE 4: BRANCH ADMIN (CABANG KLINIK)
+         ========================================================================= -->
+    <section class="demo-pane" id="paneBranchAdmin">
+      <div class="role-header-banner">
+        <div class="role-header-meta">
+          <div class="role-avatar">🏢</div>
+          <div>
+            <div class="pill" style="font-size:11px; padding:3px 10px; margin-bottom:4px;">ROLE: BRANCH ADMIN / CLINIC MANAGER</div>
+            <h2 style="font-size:22px; margin:0;">Manajemen Jadwal &amp; Kapasitas Cabang</h2>
+            <small style="color:var(--muted); font-size:12px;">Cabang Terpilih: 🇸🇬 Paragon Medical Orchard Singapore (6 Ruangan, 4 Praktisi)</small>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-primary" onclick="alert('Jadwal dokter & kuota cabang berhasil disinkronkan!')">💾 Simpan Roster Cabang</button>
+        </div>
+      </div>
+
+      <!-- Branch Metrics -->
+      <div class="metric-grid-4">
+        <div class="metric-card-box">
+          <span>Tingkat Okupansi Cabang</span>
+          <strong style="color:var(--primary-dark);">91.4%</strong>
+          <small style="color:var(--success); font-size:11px;">+8.2% vs bulan lalu</small>
+        </div>
+        <div class="metric-card-box">
+          <span>Kesiapan Alat Medis</span>
+          <strong style="color:var(--success-dark);">100%</strong>
+          <small style="color:var(--muted); font-size:11px;">4 Unit Terkalibrasi</small>
+        </div>
+        <div class="metric-card-box">
+          <span>Jeda Sterilisasi Kamar</span>
+          <strong>15 Menit</strong>
+          <small style="color:var(--muted); font-size:11px;">Buffer Anti-Bentrok</small>
+        </div>
+        <div class="metric-card-box">
+          <span>Pendapatan Cabang (Hari Ini)</span>
+          <strong style="color:var(--primary-dark);">SGD 3,420</strong>
+          <small style="color:var(--muted); font-size:11px;">Deposit: SGD 980</small>
+        </div>
+      </div>
+
+      <!-- Practitioner Roster & Availability Manager -->
+      <div class="data-table-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h3 style="font-size:17px; margin:0;">Pengaturan Shift &amp; Jadwal Dokter Cabang</h3>
+          <small style="color:var(--muted);">Aktifkan atau nonaktifkan jadwal dokter secara instan.</small>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Praktisi</th>
+              <th>Spesialisasi</th>
+              <th>Ruangan Default</th>
+              <th>Jam Praktik</th>
+              <th>Status Hari Ini</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Dr. Lim Wei Han</strong></td>
+              <td>Senior Physiotherapist</td>
+              <td>Ruang A1 (Physio)</td>
+              <td>09:00 - 18:00</td>
+              <td><span class="status-pill confirmed">BERTUGAS (ON DUTY)</span></td>
+              <td><button class="btn btn-sm btn-soft" onclick="alert('Jadwal Dr. Lim diperbarui.')">Edit Jam</button></td>
+            </tr>
+            <tr>
+              <td><strong>Dr. Wong Mei Ling</strong></td>
+              <td>TCM Acupuncturist</td>
+              <td>Ruang A2 (TCM)</td>
+              <td>09:00 - 17:00</td>
+              <td><span class="status-pill confirmed">BERTUGAS (ON DUTY)</span></td>
+              <td><button class="btn btn-sm btn-soft" onclick="alert('Jadwal Dr. Wong diperbarui.')">Edit Jam</button></td>
+            </tr>
+            <tr>
+              <td><strong>Therapist Sarah Tan</strong></td>
+              <td>Deep Tissue Lead</td>
+              <td>Bed 02 (Wellness)</td>
+              <td>10:00 - 19:00</td>
+              <td><span class="status-pill confirmed">BERTUGAS (ON DUTY)</span></td>
+              <td><button class="btn btn-sm btn-soft" onclick="alert('Jadwal Sarah diperbarui.')">Edit Jam</button></td>
+            </tr>
+            <tr>
+              <td><strong>Sinse Huang Wei</strong></td>
+              <td>TCM Senior</td>
+              <td>Bed 01 (Akupunktur)</td>
+              <td>09:00 - 15:00</td>
+              <td><span class="status-pill confirmed">BERTUGAS (ON DUTY)</span></td>
+              <td><button class="btn btn-sm btn-soft" onclick="alert('Jadwal Sinse Huang diperbarui.')">Edit Jam</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         ROLE 5: SUPER ADMIN / OWNER (MULTI-BRANCH HQ EXECUTIVE)
+         ========================================================================= -->
+    <section class="demo-pane" id="paneSuperAdmin">
+      <div class="role-header-banner">
+        <div class="role-header-meta">
+          <div class="role-avatar">👑</div>
+          <div>
+            <div class="pill" style="font-size:11px; padding:3px 10px; margin-bottom:4px;">ROLE: SUPER ADMIN / CLINIC OWNER (HQ)</div>
+            <h2 style="font-size:22px; margin:0;">Konsol Eksekutif Multi-Cabang &amp; Finansial</h2>
+            <small style="color:var(--muted); font-size:12px;">Pusat Kontrol Terpadu: 3 Cabang Aktif (🇸🇬 Singapura, 🇲🇾 Kuala Lumpur, 🇲🇾 Penang)</small>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-primary" onclick="alert('Laporan konsolidasi seluruh cabang berhasil diunduh (PDF/Excel)!')">📥 Download Laporan Finansial</button>
+        </div>
+      </div>
+
+      <!-- Super Admin Global Network Metrics -->
+      <div class="metric-grid-4">
+        <div class="metric-card-box">
+          <span>Total Omset Jaringan (Bulan Ini)</span>
+          <strong style="color:var(--primary-dark);">SGD 54,280</strong>
+          <small style="color:var(--success); font-size:11px;">+14.5% Pertumbuhan MoM</small>
+        </div>
+        <div class="metric-card-box">
+          <span>Rasio No-Show Jaringan</span>
+          <strong style="color:var(--success-dark);">3.1%</strong>
+          <small style="color:var(--muted); font-size:11px;">Turun dari 24.8% (Anti No-Show)</small>
+        </div>
+        <div class="metric-card-box">
+          <span>Total Pasien Terlayani</span>
+          <strong>1,420 Pasien</strong>
+          <small style="color:var(--muted); font-size:11px;">3 Cabang Regional</small>
+        </div>
+        <div class="metric-card-box">
+          <span>Komisi Terapis Dibayarkan</span>
+          <strong style="color:var(--warning-dark);">SGD 16,240</strong>
+          <small style="color:var(--muted); font-size:11px;">Auto-calculated per Sesi</small>
+        </div>
+      </div>
+
+      <!-- Multi-Branch Consolidated Comparison Table -->
+      <div class="data-table-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h3 style="font-size:17px; margin:0;">Performa Finansial &amp; Operasional per Cabang</h3>
+          <span class="pill" style="font-size:10px;">MULTI-CURRENCY (SGD / MYR)</span>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Cabang Klinik</th>
+              <th>Negara / Mata Uang</th>
+              <th>Total Booking</th>
+              <th>Okupansi</th>
+              <th>No-Show Rate</th>
+              <th>Omset Bulan Ini</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Orchard Wellness Clinic</strong></td>
+              <td>🇸🇬 Singapore (SGD)</td>
+              <td>640 Pasien</td>
+              <td>91.4%</td>
+              <td><span style="color:var(--success); font-weight:800;">2.8%</span></td>
+              <td><strong>SGD 28,450</strong></td>
+              <td><span class="status-pill confirmed">OPTIMAL</span></td>
+            </tr>
+            <tr>
+              <td><strong>Kuala Lumpur Integrated Care</strong></td>
+              <td>🇲🇾 Malaysia (MYR)</td>
+              <td>490 Pasien</td>
+              <td>86.2%</td>
+              <td><span style="color:var(--success); font-weight:800;">3.4%</span></td>
+              <td><strong>MYR 52,100</strong></td>
+              <td><span class="status-pill confirmed">OPTIMAL</span></td>
+            </tr>
+            <tr>
+              <td><strong>Penang TCM &amp; Physio Center</strong></td>
+              <td>🇲🇾 Malaysia (MYR)</td>
+              <td>290 Pasien</td>
+              <td>82.0%</td>
+              <td><span style="color:var(--success); font-weight:800;">3.2%</span></td>
+              <td><strong>MYR 31,400</strong></td>
+              <td><span class="status-pill confirmed">OPTIMAL</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         ROLE 6: WHATSAPP 2-WAY SIMULATOR
          ========================================================================= -->
     <section class="demo-pane" id="paneWhatsAppSimulator">
       <div style="text-align:center; max-width:680px; margin:0 auto 28px;">
@@ -529,58 +951,42 @@
       </div>
     </section>
 
-    <!-- =========================================================================
-         PANE 4: ROI & ANTI NO-SHOW CALCULATOR
-         ========================================================================= -->
-    <section class="demo-pane" id="paneROICalculator">
-      <div style="text-align:center; max-width:680px; margin:0 auto 28px;">
-        <div class="pill" style="margin-bottom:12px;">Financial Impact Analysis</div>
-        <h2 style="font-size:30px; letter-spacing:-1px;">Kalkulator Pengurangan No-Show &amp; Estimasi ROI</h2>
-        <p style="color:var(--muted); font-size:15px; margin-top:6px;">
-          Berdasarkan data riset komparasi (Calendly, Acuity, Setmore), kombinasi pengingat WhatsApp multi-tahap dan deposit memangkas pembatalan fiktif secara signifikan.
-        </p>
-      </div>
-
-      <div class="roi-calculator">
-        <div class="roi-grid">
-          <div>
-            <h3 style="font-size:20px; margin-bottom:16px;">Simulasikan Volume Pasien Bulanan Klinik Anda</h3>
-
-            <div class="field">
-              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                <label style="margin:0;">Jumlah Reservasi / Bulan:</label>
-                <strong id="roiApptCountVal" style="color:var(--primary); font-size:16px;">500 pasien / bulan</strong>
-              </div>
-              <input type="range" id="roiApptSlider" min="100" max="3000" step="50" value="500" style="width:100%; accent-color:var(--primary); cursor:pointer;">
-            </div>
-
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px;">
-              <div style="background:#fee2e2; border:1px solid #fca5a5; padding:16px; border-radius:18px;">
-                <span style="font-size:11px; color:#991b1b; font-weight:800;">SEBELUM KLINIK TERPADU (EMAIL ONLY)</span>
-                <strong style="font-size:24px; color:#dc2626; display:block; margin:6px 0;">24.8%</strong>
-                <span style="font-size:12px; color:#b91c1c;" id="roiNoShowBeforeVal">124 no-shows / bln</span>
-              </div>
-
-              <div style="background:#ecfdf5; border:1px solid #a7f3d0; padding:16px; border-radius:18px;">
-                <span style="font-size:11px; color:#065f46; font-weight:800;">DENGAN CLINIVA WHATSAPP ENGINE</span>
-                <strong style="font-size:24px; color:#16a34a; display:block; margin:6px 0;">3.2%</strong>
-                <span style="font-size:12px; color:#15803d;" id="roiNoShowAfterVal">16 no-shows / bln</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="roi-stat-highlight">
-            <span style="font-size:13px; opacity:0.9;">ESTIMASI PENGHEMATAN POTENSI KERUGIAN</span>
-            <strong id="roiSavedLossVal">SGD 10,260</strong>
-            <p style="font-size:13px; opacity:0.9; line-height:1.5;">
-              Berhasil menyelamatkan rata-rata <strong>108 sesi terapi</strong> per bulan dari pembatalan mendadak dan jadwal kosong.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </main>
+
+  <!-- QUICK WALK-IN MODAL FOR RECEPTIONIST -->
+  <div class="demo-modal-backdrop" id="modalWalkIn">
+    <div class="demo-modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+        <h3 style="margin:0; font-size:18px;">⚡ Quick Walk-in Dispatch (&lt;30 Detik)</h3>
+        <button type="button" id="btnCloseWalkInModal" style="border:0; background:transparent; font-size:20px; cursor:pointer;">✕</button>
+      </div>
+
+      <form id="formQuickWalkIn">
+        <div class="field">
+          <label>Nama Lengkap Pasien Walk-in</label>
+          <input type="text" id="walkInName" placeholder="Contoh: Robert Tan" required>
+        </div>
+
+        <div class="field">
+          <label>Nomor WhatsApp Pasien (Untuk E-Ticket)</label>
+          <input type="tel" id="walkInPhone" placeholder="+65 9123 4567" required>
+        </div>
+
+        <div class="field">
+          <label>Pilih Layanan Cepat</label>
+          <select id="walkInService">
+            <option value="Physiotherapy">Physiotherapy &amp; Spine Rehab (Dr. Lim)</option>
+            <option value="Acupuncture">TCM Acupuncture (Dr. Wong)</option>
+            <option value="Wellness">Deep Tissue Massage (Sarah Tan)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary full" style="margin-top:14px;">
+          Terbitkan Nomor Antrean Walk-in →
+        </button>
+      </form>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer>

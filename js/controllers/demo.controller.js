@@ -1,6 +1,6 @@
 /**
  * Cliniva — Product Demo Controller
- * SOLID: Single Responsibility for Complete Product Demo Sandbox Interactions
+ * SOLID: Single Responsibility for Complete Product Demo Sandbox Interactions across ALL User Roles
  */
 
 import { CLINIC_BRANCHES, CLINIC_SERVICES, PRACTITIONERS, DEFAULT_SLOTS } from "../config/clinic-data.js";
@@ -34,9 +34,9 @@ export class DemoController {
     this.setupPainMap();
     this.setupTripleConstraintLive();
     this.setupCheckoutDemo();
-    this.setupStaffOperations();
+    this.setupReceptionist();
+    this.setupDoctor();
     this.setupWhatsAppSimulator();
-    this.setupROICalculator();
     this.updateWizardSummary();
   }
 
@@ -61,6 +61,7 @@ export class DemoController {
             pane.classList.add("active");
           }
         });
+        window.scrollTo({ top: 80, behavior: "smooth" });
       });
     });
   }
@@ -159,7 +160,6 @@ export class DemoController {
         this.selectedService = CLINIC_SERVICES.find((s) => s.id === serviceId) || CLINIC_SERVICES[0];
         soundService.playClickTone();
 
-        // Adjust dynamic intake form fields based on service profile
         this.adjustIntakeFormProfile(serviceId);
         this.updateTripleConstraintInspector();
         this.updateWizardSummary();
@@ -404,7 +404,6 @@ export class DemoController {
         : "General Wellness";
     }
 
-    // Dynamic Payment Summary based on selectedPayType
     if (this.selectedPayType === "deposit") {
       if (summaryPayLabel) summaryPayLabel.textContent = "Biaya Deposit (Online):";
       if (summaryDeposit) {
@@ -433,16 +432,50 @@ export class DemoController {
   }
 
   /* -------------------------------------------------------------
-   * 9. STAFF OPERATIONS DEMO
+   * 9. RECEPTIONIST & FRONT-DESK WORKFLOW
    * ------------------------------------------------------------- */
-  setupStaffOperations() {
+  setupReceptionist() {
+    // Quick Walk-In Modal
+    const openModalBtn = document.getElementById("btnOpenWalkInModal");
+    const closeModalBtn = document.getElementById("btnCloseWalkInModal");
+    const modal = document.getElementById("modalWalkIn");
+    const form = document.getElementById("formQuickWalkIn");
+
+    if (openModalBtn && modal) {
+      openModalBtn.addEventListener("click", () => {
+        soundService.playClickTone();
+        modal.classList.add("active");
+      });
+    }
+
+    if (closeModalBtn && modal) {
+      closeModalBtn.addEventListener("click", () => {
+        modal.classList.remove("active");
+      });
+    }
+
+    if (form && modal) {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        soundService.playQueueChime();
+        const name = document.getElementById("walkInName").value || "Walk-In Patient";
+        const service = document.getElementById("walkInService").value || "Physiotherapy";
+        modal.classList.remove("active");
+        form.reset();
+
+        alert(`🎟️ TIKET WALK-IN BERHASIL DITERBITKAN!\n\nNomor Antrean: D-04\nPasien: ${name}\nLayanan: ${service}\nStatus: Siap dipanggil di resepsionis.`);
+      });
+    }
+
+    // Queue Call Buttons
     const callQueueBtns = document.querySelectorAll(".btn-demo-call-queue");
     callQueueBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
         const queueNo = btn.dataset.queue || "A-01";
         const patient = btn.dataset.patient || "Patient";
+        const room = btn.dataset.room || "Ruangan Terapi";
         soundService.playQueueChime();
-        alert(`🔊 [Simulasi Audio Chime Aktif]\nMemanggil Antrean ${queueNo} atas nama ${patient} menuju Ruangan Fisioterapi 1.`);
+        alert(`🔊 [Simulasi Audio Chime Aktif]\n"Nomor Antrean ${queueNo}, atas nama ${patient}, dipersilakan menuju ${room}."`);
       });
     });
 
@@ -451,18 +484,46 @@ export class DemoController {
       alert(`[SIMRS Ephemeral Proxy Webhook Payload]\n\n{\n  "event": "referral.forwarded",\n  "booking_code": "BK-20260901-0812",\n  "ephemeral_ttl": "72_hours",\n  "simrs_endpoint": "https://simrs.hospital-partner.com/v1/bridge",\n  "hmac_signature": "sha256=9f83...a1b2",\n  "status": "FORWARDED_SUCCESS"\n}`);
     };
 
-    window.openDemoPOSModal = (queue) => {
+    window.openDemoPOSModal = (queue, patient, balance) => {
       soundService.playClickTone();
-      const amount = prompt(`Pelunasan Kasir POS Antrean ${queue}. Masukkan nominal pelunasan (SGD/MYR):`, "65.00");
-      if (amount) {
+      const confirmed = confirm(`Pelunasan Kasir POS Antrean ${queue} (${patient}).\n\nSisa Tagihan: SGD/MYR ${balance}\nMetode: Kartu Debit/Kredit EDC atau QRIS/PayNow.\n\nLanjutkan pelunasan transaksi?`);
+      if (confirmed) {
         soundService.playQueueChime();
-        alert(`Pelunasan tagihan ${queue} sebesar ${amount} berhasil dicatat di kasir! E-Receipt dikirimkan.`);
+        alert(`✓ Pelunasan antrean ${queue} (${patient}) sebesar ${balance} LUNAS! E-Receipt dikirimkan ke WhatsApp pasien.`);
       }
     };
   }
 
   /* -------------------------------------------------------------
-   * 10. WHATSAPP 2-WAY SIMULATOR
+   * 10. DOCTOR / PRACTITIONER WORKFLOW
+   * ------------------------------------------------------------- */
+  setupDoctor() {
+    const docSlider = document.getElementById("docPainScaleSlider");
+    const docPainVal = document.getElementById("docPainScaleVal");
+
+    if (docSlider && docPainVal) {
+      docSlider.addEventListener("input", (e) => {
+        const v = parseInt(e.target.value, 10);
+        let desc = "Bebas Nyeri";
+        if (v > 7) desc = "Nyeri Hebat";
+        else if (v > 4) desc = "Nyeri Sedang";
+        else if (v > 0) desc = "Nyeri Ringan";
+
+        docPainVal.textContent = `${v} / 10 (${desc})`;
+      });
+    }
+
+    const completeBtn = document.getElementById("btnDoctorCompleteSession");
+    if (completeBtn) {
+      completeBtn.addEventListener("click", () => {
+        soundService.playQueueChime();
+        alert(`✓ SESI TERAPI SELESAI DICATAT!\n\nPasien: Amanda Tan\nEvaluasi Nyeri: Penurunan dari 8/10 menjadi ${docSlider ? docSlider.value : 3}/10.\nSisa Paket: 5 dari 8 sesi.\n\nSistem otomatis mengirimkan WhatsApp Ringkasan Terapi & Petunjuk Latihan Rumah ke pasien.`);
+      });
+    }
+  }
+
+  /* -------------------------------------------------------------
+   * 11. WHATSAPP 2-WAY SIMULATOR
    * ------------------------------------------------------------- */
   setupWhatsAppSimulator() {
     const confirmAttendanceBtn = document.getElementById("waBtnConfirmAttendance");
@@ -500,37 +561,6 @@ export class DemoController {
       mapsBtn.addEventListener("click", () => {
         soundService.playClickTone();
         alert("Membuka rute Google Maps / Waze menuju Paragon Medical Orchard Singapore.");
-      });
-    }
-  }
-
-  /* -------------------------------------------------------------
-   * 11. ROI & COMPARATIVE CALCULATOR
-   * ------------------------------------------------------------- */
-  setupROICalculator() {
-    const slider = document.getElementById("roiApptSlider");
-    const apptCountVal = document.getElementById("roiApptCountVal");
-    const savedLossVal = document.getElementById("roiSavedLossVal");
-    const noShowBeforeVal = document.getElementById("roiNoShowBeforeVal");
-    const noShowAfterVal = document.getElementById("roiNoShowAfterVal");
-
-    if (slider) {
-      slider.addEventListener("input", (e) => {
-        const appts = parseInt(e.target.value, 10);
-        if (apptCountVal) apptCountVal.textContent = `${appts} pasien / bulan`;
-
-        // Baseline: 24.8% no show rate with email only
-        const noShowBefore = Math.round(appts * 0.248);
-        // With WhatsApp multi-stage reminders: 3.2%
-        const noShowAfter = Math.round(appts * 0.032);
-        const preventedNoShows = noShowBefore - noShowAfter;
-
-        // Average consultation / therapy fee: SGD 95
-        const savedAmount = preventedNoShows * 95;
-
-        if (noShowBeforeVal) noShowBeforeVal.textContent = `${noShowBefore} no-shows`;
-        if (noShowAfterVal) noShowAfterVal.textContent = `${noShowAfter} no-shows`;
-        if (savedLossVal) savedLossVal.textContent = `SGD ${savedAmount.toLocaleString("en-US")}`;
       });
     }
   }

@@ -11,6 +11,7 @@ Aplikasi telah dipisahkan dari bentuk monolitik 1 file menjadi struktur modular 
 ```
 Desain/
 ├── index.html                      # Portal Pasien & Product Showcase
+├── onboarding.html                 # Registrasi Klinik Baru & Akun Super Admin Owner
 ├── demo.html                       # Sandbox Demo Program Interaktif (Guest Demo)
 ├── sign-in.html                    # Halaman Autentikasi Staf & Pasien OTP
 ├── admin.html                      # Panel Operasional Staf & Live Queue
@@ -24,6 +25,7 @@ Desain/
 │   ├── layout.css                  # Navbar glassmorphism, drawer mobile, header & footer
 │   └── components/
 │       ├── hero.css                # Visual hero, phone mockup, live operations card
+│       ├── onboarding.css          # Form registrasi tenant, spesialisasi, animasi provisioning
 │       ├── demo.css                # Sandbox wizard stepper, visual body pain map, WhatsApp chat
 │       ├── features.css            # Grid fitur, diagram alur rujukan ephemeral
 │       ├── showcase.css            # Tab shell, workspace operasional, master calendar, feed
@@ -46,6 +48,7 @@ Desain/
     │   └── sound.service.js        # SoundService: Web Audio API chime synthesizer antrean
     ├── controllers/
     │   ├── ui.controller.js        # UIController: Navbar scroll, mobile drawer, toast feedback
+    │   ├── onboarding.controller.js# OnboardingController: Pendaftaran tenant & simulasi provisioning
     │   ├── demo.controller.js      # DemoController: Wizard 5-langkah, Pain Map, WhatsApp 2-way, ROI
     │   ├── booking.controller.js   # BookingController: Sinkronisasi form booking & checkout
     │   ├── dashboard.controller.js # DashboardController: Filter cabang & live calendar
@@ -53,6 +56,7 @@ Desain/
     │   └── admin.controller.js     # AdminController: Pemanggil antrean bersuara & kasir POS
     ├── pages/
     │   ├── main.js                 # Entry point untuk index.html
+    │   ├── onboarding.js           # Entry point untuk onboarding.html
     │   ├── demo.js                 # Entry point untuk demo.html (Interactive Sandbox)
     │   ├── auth.js                 # Entry point untuk sign-in.html
     │   ├── admin.js                # Entry point untuk admin.html

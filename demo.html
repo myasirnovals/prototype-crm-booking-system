@@ -19,47 +19,52 @@
 
   <!-- DEMO HEADER -->
   <header class="demo-header">
-    <div class="container demo-header-inner">
-      <div style="display:flex; align-items:center; gap:16px;">
-        <a href="index.html" class="logo">
-          <span class="logo-mark">✦</span>
-          Cliniva Demo Sandbox
-        </a>
-        <span class="badge-live" style="font-size:11px;">LIVE INTERACTIVE</span>
-      </div>
-
-      <!-- Perspective / Role Switcher across ALL Roles in Sign-In -->
-      <div class="demo-role-switcher" role="tablist">
-        <button class="demo-role-btn active" data-pane="panePatientBooking" data-i18n="demo.role.patient" role="tab">
-          🩺 Patient Booking
-        </button>
-        <button class="demo-role-btn" data-pane="paneReceptionist" data-i18n="demo.role.receptionist" role="tab">
-          👩‍💼 Receptionist &amp; Front-Desk
-        </button>
-        <button class="demo-role-btn" data-pane="paneDoctor" data-i18n="demo.role.doctor" role="tab">
-          👨‍⚕️ Doctor &amp; Practitioner
-        </button>
-        <button class="demo-role-btn" data-pane="paneBranchAdmin" data-i18n="demo.role.branchAdmin" role="tab">
-          🏢 Branch Admin
-        </button>
-        <button class="demo-role-btn" data-pane="paneSuperAdmin" data-i18n="demo.role.superAdmin" role="tab">
-          👑 Super Admin / Owner
-        </button>
-        <button class="demo-role-btn" data-pane="paneWhatsAppSimulator" data-i18n="demo.role.whatsapp" role="tab">
-          💬 WhatsApp Engine
-        </button>
-      </div>
-
-      <div style="display:flex; align-items:center; gap:10px;">
-        <div class="lang-switcher-wrap">
-          <select class="lang-select" aria-label="Select Language">
-            <option value="en">🇬🇧 English</option>
-            <option value="ms">🇲🇾 Melayu</option>
-            <option value="zh">🇨🇳 中文</option>
-          </select>
+    <div class="container">
+      <!-- TOP ROW: LOGO + LANGUAGE + ACTIONS (ONE ROW) -->
+      <div class="demo-topbar">
+        <div style="display:flex; align-items:center; gap:16px;">
+          <a href="index.html" class="logo">
+            <span class="logo-mark">✦</span>
+            Cliniva Demo Sandbox
+          </a>
+          <span class="badge-live" style="font-size:11px;">LIVE INTERACTIVE</span>
         </div>
-        <a href="index.html" class="btn btn-sm btn-soft" data-i18n="nav.backHome">← Back to Home</a>
-        <a href="sign-in.html" class="btn btn-sm btn-primary" data-i18n="nav.signIn">Sign In Portal</a>
+
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="lang-switcher-wrap">
+            <select class="lang-select" aria-label="Select Language">
+              <option value="en">🇬🇧 English</option>
+              <option value="ms">🇲🇾 Melayu</option>
+              <option value="zh">🇨🇳 中文</option>
+            </select>
+          </div>
+          <a href="index.html" class="btn btn-sm btn-soft" data-i18n="nav.backHome">← Back to Home</a>
+          <a href="sign-in.html" class="btn btn-sm btn-primary" data-i18n="nav.signIn">Sign In Portal</a>
+        </div>
+      </div>
+
+      <!-- BOTTOM ROW: ROLE SWITCHER ACROSS ALL ROLES -->
+      <div class="demo-role-bar">
+        <div class="demo-role-switcher" role="tablist">
+          <button class="demo-role-btn active" data-pane="panePatientBooking" data-i18n="demo.role.patient" role="tab">
+            🩺 Patient Booking
+          </button>
+          <button class="demo-role-btn" data-pane="paneReceptionist" data-i18n="demo.role.receptionist" role="tab">
+            👩‍💼 Receptionist &amp; Front-Desk
+          </button>
+          <button class="demo-role-btn" data-pane="paneDoctor" data-i18n="demo.role.doctor" role="tab">
+            👨‍⚕️ Doctor &amp; Practitioner
+          </button>
+          <button class="demo-role-btn" data-pane="paneBranchAdmin" data-i18n="demo.role.branchAdmin" role="tab">
+            🏢 Branch Admin
+          </button>
+          <button class="demo-role-btn" data-pane="paneSuperAdmin" data-i18n="demo.role.superAdmin" role="tab">
+            👑 Super Admin / Owner
+          </button>
+          <button class="demo-role-btn" data-pane="paneWhatsAppSimulator" data-i18n="demo.role.whatsapp" role="tab">
+            💬 WhatsApp Engine
+          </button>
+        </div>
       </div>
     </div>
   </header>

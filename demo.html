@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Product Demo — Cliniva Clinic Booking & CRM</title>
+  <meta name="description" content="Explore the full end-to-end capabilities of Cliniva: Patient Self-Booking Wizard, Triple-Constraint Engine, Live Operations Dashboard, WhatsApp Reminder Simulator, and ROI Calculator." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Modular Design System Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body style="background:var(--bg); min-height:100vh; display:flex; flex-direction:column;">
+
+  <!-- DEMO HEADER -->
+  <header class="demo-header">
+    <div class="container demo-header-inner">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <a href="index.html" class="logo">
+          <span class="logo-mark">✦</span>
+          Cliniva Demo Sandbox
+        </a>
+        <span class="badge-live" style="font-size:11px;">LIVE INTERACTIVE</span>
+      </div>
+
+      <!-- Perspective / Role Switcher -->
+      <div class="demo-role-switcher" role="tablist">
+        <button class="demo-role-btn active" data-pane="panePatientBooking" role="tab">
+          🩺 Patient Self-Booking
+        </button>
+        <button class="demo-role-btn" data-pane="paneStaffOperations" role="tab">
+          🏥 Clinic Staff Dashboard
+        </button>
+        <button class="demo-role-btn" data-pane="paneWhatsAppSimulator" role="tab">
+          💬 WhatsApp Engine
+        </button>
+        <button class="demo-role-btn" data-pane="paneROICalculator" role="tab">
+          📈 ROI &amp; Anti No-Show
+        </button>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <a href="index.html" class="btn btn-sm btn-soft">← Back to Home</a>
+        <a href="sign-in.html" class="btn btn-sm btn-primary">Sign In Portal</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN DEMO CONTENT -->
+  <main class="container" style="flex:1; padding:36px 20px;">
+
+    <!-- =========================================================================
+         PANE 1: PATIENT SELF-BOOKING (5-STEP WIZARD)
+         ========================================================================= -->
+    <section class="demo-pane active" id="panePatientBooking">
+      <div style="text-align:center; max-width:680px; margin:0 auto 28px;">
+        <div class="pill" style="margin-bottom:12px;">Step-by-Step Experience</div>
+        <h1 style="font-size:32px; letter-spacing:-1.2px;">Patient Self-Booking Simulator</h1>
+        <p style="color:var(--muted); font-size:15px; margin-top:6px;">
+          Experience how patients effortlessly schedule therapies 24/7 without phone calls or double-booking collisions.
+        </p>
+      </div>
+
+      <!-- Wizard Stepper Indicator -->
+      <div class="wizard-stepper">
+        <div class="wizard-step-item active" data-step="1">
+          <div class="wizard-step-circle">1</div>
+          <span class="wizard-step-label">Branch &amp; Service</span>
+        </div>
+        <div class="wizard-step-item" data-step="2">
+          <div class="wizard-step-circle">2</div>
+          <span class="wizard-step-label">Practitioner &amp; TC Engine</span>
+        </div>
+        <div class="wizard-step-item" data-step="3">
+          <div class="wizard-step-circle">3</div>
+          <span class="wizard-step-label">Slot &amp; Hold Timer</span>
+        </div>
+        <div class="wizard-step-item" data-step="4">
+          <div class="wizard-step-circle">4</div>
+          <span class="wizard-step-label">Intake &amp; Pain Map</span>
+        </div>
+        <div class="wizard-step-item" data-step="5">
+          <div class="wizard-step-circle">5</div>
+          <span class="wizard-step-label">Checkout &amp; Ticket</span>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1.3fr 0.7fr; gap:24px; align-items:start;">
+        <!-- Left: Step Panels -->
+        <div class="wizard-card">
+
+          <!-- STEP 1: Branch & Service Selection -->
+          <div class="wizard-step-panel active" id="wizardStep1">
+            <h3 style="font-size:20px; margin-bottom:14px;">1. Choose Clinic Location &amp; Treatment</h3>
+
+            <!-- Mode Selector: In-Clinic vs Homecare -->
+            <div class="service-mode-tabs">
+              <button class="service-mode-tab active" data-mode="in-clinic">
+                🏥 In-Clinic Treatment (Visit Branch)
+              </button>
+              <button class="service-mode-tab" data-mode="homecare">
+                🚗 Homecare / Home Visit (+ Travel Matrix)
+              </button>
+            </div>
+
+            <div id="homecareTravelBox" style="display:none; background:#ecfdf5; border:1px solid #a7f3d0; padding:12px 16px; border-radius:14px; margin-bottom:16px; font-size:13px; color:#065f46;">
+              <strong>📍 GPS Travel Logistics Buffer Active:</strong> Otomatis menghitung radius 15 km, waktu perjalanan terapis 35 menit, dan travel fee SGD 25.00.
+            </div>
+
+            <div class="field">
+              <label>Select Branch Location</label>
+              <select id="demoBranchSelect">
+                <option value="sg-orchard">🇸🇬 Orchard Wellness Clinic — Paragon Medical #14-02, Singapore</option>
+                <option value="my-kl">🇲🇾 Kuala Lumpur Integrated Care — Pavilion Embassy, Malaysia</option>
+                <option value="my-penang">🇲🇾 Penang TCM &amp; Physio Center — Gurney Walk, Penang</option>
+              </select>
+            </div>
+
+            <label style="margin-top:16px; display:block; font-size:13px; font-weight:900; color:#334155;">
+              Select Therapy / Service Profile
+            </label>
+            <div class="service-cards" style="grid-template-columns:repeat(2,1fr);">
+              <div class="service-card demo-service-card active" data-service="physio">
+                <span class="service-profile-badge profile-physio">PHYSIOTHERAPY</span>
+                <h4>Physiotherapy &amp; Spine Rehab</h4>
+                <small>60 min · SGD 120 / MYR 280</small>
+                <p style="font-size:11px; color:var(--muted); margin-top:6px;">Postural assessment, manual decompression therapy.</p>
+              </div>
+
+              <div class="service-card demo-service-card" data-service="tcm">
+                <span class="service-profile-badge profile-tcm">TCM ACUPUNCTURE</span>
+                <h4>Acupuncture &amp; Nerve Stimulator</h4>
+                <small>45 min · SGD 90 / MYR 210</small>
+                <p style="font-size:11px; color:var(--muted); margin-top:6px;">Pulse diagnosis, electro-acupuncture needle therapy.</p>
+              </div>
+
+              <div class="service-card demo-service-card" data-service="wellness">
+                <span class="service-profile-badge profile-spa">SPA &amp; WELLNESS</span>
+                <h4>Deep Tissue &amp; Herbal Aroma</h4>
+                <small>75 min · SGD 150 / MYR 350</small>
+                <p style="font-size:11px; color:var(--muted); margin-top:6px;">Myofascial release with essential herbal oil infusion.</p>
+              </div>
+
+              <div class="service-card demo-service-card" data-service="referral">
+                <span class="service-profile-badge profile-medical">MEDICAL REFERRAL</span>
+                <h4>Faskes / Insurance Bridging</h4>
+                <small>30 min · Ephemeral Proxy</small>
+                <p style="font-size:11px; color:var(--muted); margin-top:6px;">Forward BPJS/Insurance referral document to SIMRS.</p>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; margin-top:24px;">
+              <button class="btn btn-primary btn-wizard-next">Next: Practitioner &amp; Engine →</button>
+            </div>
+          </div>
+
+          <!-- STEP 2: Practitioner & Triple-Constraint Engine -->
+          <div class="wizard-step-panel" id="wizardStep2">
+            <h3 style="font-size:20px; margin-bottom:10px;">2. Practitioner &amp; Multi-Resource Allocation</h3>
+            <p style="color:var(--muted); font-size:13px; margin-bottom:18px;">
+              Mesin <strong>Triple-Constraint</strong> Cliniva memvalidasi ketersediaan simultan Praktisi + Ruangan/Bed + Alat Medis secara real-time.
+            </p>
+
+            <div class="field">
+              <label>Select Preferred Doctor / Practitioner</label>
+              <select id="demoPracSelect">
+                <option value="dr-lim">Dr. Lim Wei Han (Senior Physiotherapist - Spine &amp; Sports)</option>
+                <option value="dr-wong">Dr. Wong Mei Ling (Registered TCM Physician)</option>
+                <option value="therapist-sarah">Therapist Sarah Tan (Lead Clinical Therapist)</option>
+                <option value="sinse-huang">Sinse Huang Wei, B.Med (TCM Acupuncturist)</option>
+              </select>
+            </div>
+
+            <!-- Triple Constraint Live Inspector -->
+            <div class="tc-inspector">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong>⚡ Triple-Constraint Engine Status</strong>
+                <span class="badge-live" style="background:#042f2e; color:#2dd4bf; border:1px solid #14b8a6;">ZERO COLLISION GUARANTEE</span>
+              </div>
+
+              <div class="tc-grid">
+                <div class="tc-card">
+                  <span style="color:#94a3b8; font-size:10px;">1. PRACTITIONER</span>
+                  <strong id="tcPractitionerVal">Dr. Lim Wei Han (Ready)</strong>
+                  <span>✓ 100% Available</span>
+                </div>
+                <div class="tc-card">
+                  <span style="color:#94a3b8; font-size:10px;">2. ROOM / BED</span>
+                  <strong id="tcRoomVal">Room A2 - Bed 01</strong>
+                  <span>✓ Sterilized (15m Buffer)</span>
+                </div>
+                <div class="tc-card">
+                  <span style="color:#94a3b8; font-size:10px;">3. SPECIALIZED EQUIPMENT</span>
+                  <strong id="tcEquipVal">Shockwave Therapy Unit</strong>
+                  <span>✓ Calibrated &amp; Ready</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin-top:24px;">
+              <button class="btn btn-soft btn-wizard-prev">← Back</button>
+              <button class="btn btn-primary btn-wizard-next">Next: Date &amp; Slot Hold →</button>
+            </div>
+          </div>
+
+          <!-- STEP 3: Slot Picker & Hold Countdown Timer -->
+          <div class="wizard-step-panel" id="wizardStep3">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+              <h3 style="font-size:20px;">3. Choose Date &amp; Available Time Slot</h3>
+              <div class="hold-timer-badge">
+                <span>⏳ Temporary Hold:</span>
+                <strong id="demoHoldTimerDisplay">10:00 left</strong>
+              </div>
+            </div>
+
+            <p style="color:var(--muted); font-size:13px; margin-bottom:18px;">
+              Slot yang dipilih akan dikunci secara eksklusif selama 10 menit agar pasien lain tidak dapat mengambil slot yang sama saat Anda mengisi formulir.
+            </p>
+
+            <div class="field">
+              <label>Select Date</label>
+              <input type="date" value="2026-09-02" style="max-width:240px;">
+            </div>
+
+            <label style="font-size:13px; font-weight:900; margin-bottom:8px; display:block;">Available Slots Today</label>
+            <div class="slot-grid" style="grid-template-columns:repeat(4,1fr); gap:10px;">
+              <div class="slot demo-slot">09:00</div>
+              <div class="slot demo-slot active">10:30</div>
+              <div class="slot demo-slot">11:45</div>
+              <div class="slot demo-slot">14:00</div>
+              <div class="slot demo-slot">15:30</div>
+              <div class="slot demo-slot">16:15</div>
+              <div class="slot demo-slot">17:00</div>
+              <div class="slot demo-slot">18:30</div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin-top:24px;">
+              <button class="btn btn-soft btn-wizard-prev">← Back</button>
+              <button class="btn btn-primary btn-wizard-next">Next: Intake &amp; Pain Map →</button>
+            </div>
+          </div>
+
+          <!-- STEP 4: Dynamic Intake Form & Visual Body Pain Map -->
+          <div class="wizard-step-panel" id="wizardStep4">
+            <h3 style="font-size:20px; margin-bottom:10px;">4. Dynamic Intake &amp; Visual Pain Map</h3>
+            <p style="color:var(--muted); font-size:13px; margin-bottom:18px;">
+              Formulir intake ini beradaptasi otomatis dengan profil layanan klinis yang dipilih.
+            </p>
+
+            <!-- TCM / Physio Profile: Visual Body Pain Map -->
+            <div id="intakeGroupTCM">
+              <label style="font-size:13px; font-weight:900; color:#334155;">
+                Visual Body Pain Map (Klik titik lokasi keluhan nyeri Anda)
+              </label>
+
+              <div class="pain-map-container">
+                <div class="body-silhouette">
+                  <!-- Anatomical Silhouette Icon -->
+                  <svg width="120" height="200" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="20" r="14" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/>
+                    <rect x="42" y="34" width="16" height="12" fill="#cbd5e1"/>
+                    <path d="M25 46 C25 46, 40 44, 50 44 C60 44, 75 46, 75 46 L82 90 L70 92 L62 58 L62 105 L66 165 L52 165 L50 115 L48 165 L34 165 L38 105 L38 58 L30 92 L18 90 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/>
+                  </svg>
+                </div>
+
+                <div class="pain-spots-grid">
+                  <span class="pain-spot-tag" data-spot="Kepala / Migrain">💆 Kepala &amp; Migrain</span>
+                  <span class="pain-spot-tag" data-spot="Leher & Bahu Kaku">🧣 Leher &amp; Bahu Kaku</span>
+                  <span class="pain-spot-tag" data-spot="Punggung Atas">🦾 Punggung Atas (Thoracic)</span>
+                  <span class="pain-spot-tag active" data-spot="Pinggang / Lumbar">⚡ Pinggang / Lumbar (L4-L5)</span>
+                  <span class="pain-spot-tag" data-spot="Sendi Lutut">🦵 Sendi Lutut (Knee Pain)</span>
+                  <span class="pain-spot-tag" data-spot="Telapak Kaki / Ankle">🦶 Telapak Kaki (Plantar)</span>
+                  <span class="pain-spot-tag" data-spot="Syaraf Kejepit (HNP)">💥 Syaraf Kejepit (HNP / Sciatica)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Spa Profile: Pressure & Aromatherapy -->
+            <div id="intakeGroupSpa" style="display:none; margin-top:16px;">
+              <div class="field">
+                <label>Massage Pressure Preference</label>
+                <select>
+                  <option>Medium Relaxing (Tekanan Sedang)</option>
+                  <option>Soft Gentle (Tekanan Lembut)</option>
+                  <option>Deep Tissue Strong (Tekanan Kuat)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Infused Essential Aroma</label>
+                <select>
+                  <option>🌿 Lavender &amp; Chamomile (Calming)</option>
+                  <option>🌱 Peppermint &amp; Eucalyptus (Refreshing)</option>
+                  <option>🪵 Lemongrass &amp; Ginger (Herbal Detox)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Medical Referral Profile: Upload Document -->
+            <div id="intakeGroupMedical" style="display:none; margin-top:16px;">
+              <div class="field">
+                <label>Nomor Rujukan BPJS / Asuransi</label>
+                <input type="text" placeholder="Contoh: 0115R0010926P0001">
+              </div>
+              <div class="field">
+                <label>Unggah Surat Rujukan (Ephemeral Transit 72 Jam)</label>
+                <input type="file" style="background:#fff;">
+              </div>
+            </div>
+
+            <div class="field" style="margin-top:16px;">
+              <label>Catatan Tambahan Pasien (Keluhan Khusus / Alergi)</label>
+              <textarea rows="3" placeholder="Sebutkan riwayat alergi obat, minyak, atau preferensi khusus..."></textarea>
+            </div>
+
+            <label class="checkbox-line">
+              <input type="checkbox" checked>
+              <span>Saya menyetujui pemrosesan data intake dan komunikasi WhatsApp berdasarkan kepatuhan UU PDP &amp; Singapore PDPA.</span>
+            </label>
+
+            <div style="display:flex; justify-content:space-between; margin-top:24px;">
+              <button class="btn btn-soft btn-wizard-prev">← Back</button>
+              <button class="btn btn-primary btn-wizard-next">Next: Review &amp; Checkout →</button>
+            </div>
+          </div>
+
+          <!-- STEP 5: Checkout & Final Confirmation -->
+          <div class="wizard-step-panel" id="wizardStep5">
+            <h3 style="font-size:20px; margin-bottom:14px;">5. Review &amp; Secure Deposit Checkout</h3>
+
+            <div style="background:#f8fafc; border:1px solid var(--line); border-radius:18px; padding:18px; margin-bottom:18px;">
+              <h4 style="font-size:15px; margin-bottom:12px;">Pilihan Pembayaran Deposit:</h4>
+              <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px;">
+                <label style="border:1px solid var(--primary); background:#ecfdf5; padding:12px; border-radius:12px; cursor:pointer; font-size:13px; font-weight:800; color:var(--primary-dark);">
+                  <input type="radio" name="payType" checked style="accent-color:var(--primary);"> Uang Muka (Deposit)
+                </label>
+                <label style="border:1px solid var(--line); background:#fff; padding:12px; border-radius:12px; cursor:pointer; font-size:13px; font-weight:800;">
+                  <input type="radio" name="payType" style="accent-color:var(--primary);"> Bayar Penuh
+                </label>
+                <label style="border:1px solid var(--line); background:#fff; padding:12px; border-radius:12px; cursor:pointer; font-size:13px; font-weight:800;">
+                  <input type="radio" name="payType" style="accent-color:var(--primary);"> Bayar di Klinik
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Pilih Metode Pembayaran Instan Regional</label>
+              <select>
+                <option>🇸🇬 PayNow QR (Singapore Instant Rails)</option>
+                <option>🇲🇾 DuitNow QR &amp; FPX Online Banking (Malaysia)</option>
+                <option>🇮🇩 QRIS All Payment (BCA/Mandiri/GoPay/OVO)</option>
+                <option>💳 Credit / Debit Card (Stripe Encrypted)</option>
+              </select>
+            </div>
+
+            <button class="btn btn-primary full" id="btnConfirmDemoBooking" style="font-size:16px; padding:16px;">
+              ⚡ Simulasikan Pembayaran &amp; Terbitkan Tiket WhatsApp →
+            </button>
+
+            <div style="display:flex; justify-content:flex-start; margin-top:16px;">
+              <button class="btn btn-soft btn-wizard-prev">← Kembali ke Form Intake</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Real-Time Order & Engine Summary Card -->
+        <div style="background:#fff; border:1px solid var(--line); border-radius:24px; padding:22px; box-shadow:var(--shadow-soft);">
+          <div class="preview-card" style="margin-bottom:16px; padding:18px;">
+            <div style="font-size:11px; font-weight:800; opacity:0.85;">LIVE ORDER SUMMARY</div>
+            <h4 style="font-size:18px; margin:4px 0;">Cliniva Intake Engine</h4>
+            <p style="font-size:12px; opacity:0.9;">Kombinasi jadwal dan alokasi resource otomatis.</p>
+          </div>
+
+          <div class="summary-list">
+            <div class="summary-item">
+              <span>Lokasi Cabang:</span>
+              <strong id="summaryBranch">Orchard Wellness Clinic</strong>
+            </div>
+            <div class="summary-item">
+              <span>Layanan Terpilih:</span>
+              <strong id="summaryService">Physiotherapy (SGD 120)</strong>
+            </div>
+            <div class="summary-item">
+              <span>Praktisi:</span>
+              <strong id="summaryPractitioner">Dr. Lim Wei Han</strong>
+            </div>
+            <div class="summary-item">
+              <span>Jadwal Slot:</span>
+              <strong id="summarySchedule" style="color:var(--primary);">Wednesday, 10:30 AM</strong>
+            </div>
+            <div class="summary-item">
+              <span>Titik Keluhan:</span>
+              <strong id="summaryPain">Pinggang / Lumbar</strong>
+            </div>
+            <div class="summary-item">
+              <span>Biaya Deposit:</span>
+              <strong id="summaryDeposit" style="color:var(--success-dark);">SGD 30.00 (Deposit)</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         PANE 2: CLINIC STAFF OPERATIONS DASHBOARD
+         ========================================================================= -->
+    <section class="demo-pane" id="paneStaffOperations">
+      <div class="panel-top">
+        <div>
+          <h2>🏥 Panel Operasional Staf &amp; Resepsionis Klinik</h2>
+          <p>Kelola kedatangan pasien, panggil antrean bersuara, dan pantau status utilisasi bed secara visual.</p>
+        </div>
+        <button class="btn btn-primary" onclick="alert('Membuka form Walk-In cepat (Dispatch &lt; 30 detik)...')">+ Quick Walk-in Pasien</button>
+      </div>
+
+      <!-- Live Queue Monitor with Sound -->
+      <h3 style="font-size:18px; margin:24px 0 12px;">Papan Panggilan Antrean Digital (Live Queue)</h3>
+      <div class="queue-card-grid">
+        <div class="queue-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <span class="queue-number">A-01</span>
+            <span class="badge-live">READY</span>
+          </div>
+          <h4 style="margin:8px 0 4px;">Amanda Tan</h4>
+          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Physiotherapy &amp; Spine · Dr. Lim</p>
+          <button class="btn btn-sm btn-primary full btn-demo-call-queue" data-queue="A-01" data-patient="Amanda Tan">
+            🔊 Panggil Pasien (Audio Chime)
+          </button>
+        </div>
+
+        <div class="queue-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <span class="queue-number">B-02</span>
+            <span class="badge-live" style="background:#fef3c7; color:#b45309;">MENUNGGU</span>
+          </div>
+          <h4 style="margin:8px 0 4px;">Nur Aisyah</h4>
+          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">TCM Acupuncture · Sinse Huang</p>
+          <button class="btn btn-sm btn-primary full btn-demo-call-queue" data-queue="B-02" data-patient="Nur Aisyah">
+            🔊 Panggil Pasien (Audio Chime)
+          </button>
+        </div>
+
+        <div class="queue-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <span class="queue-number">C-03</span>
+            <span class="badge-live" style="background:#e0f2fe; color:#0369a1;">CHECK-IN</span>
+          </div>
+          <h4 style="margin:8px 0 4px;">Jason Lee</h4>
+          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Deep Tissue Wellness · Therapist Sarah</p>
+          <button class="btn btn-sm btn-primary full btn-demo-call-queue" data-queue="C-03" data-patient="Jason Lee">
+            🔊 Panggil Pasien (Audio Chime)
+          </button>
+        </div>
+      </div>
+
+      <!-- SIMRS & POS Cashier Simulation -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:28px;">
+        <div style="background:#fff; border:1px solid var(--line); border-radius:24px; padding:22px;">
+          <h4 style="font-size:16px; margin-bottom:12px;">🔁 SIMRS Referral Bridge (Ephemeral Proxy)</h4>
+          <p style="font-size:13px; color:var(--muted); line-height:1.5; margin-bottom:16px;">
+            Sistem booking Cliniva meneruskan dokumen rujukan ke SIMRS tanpa menyimpan rekam medis permanen (otomatis terhapus dalam 72 jam).
+          </p>
+          <button class="btn btn-soft full" onclick="openDemoSIMRSInspection()">Inspeksi Payload Webhook SIMRS (JSON)</button>
+        </div>
+
+        <div style="background:#fff; border:1px solid var(--line); border-radius:24px; padding:22px;">
+          <h4 style="font-size:16px; margin-bottom:12px;">💳 Kasir POS &amp; Pelunasan Tagihan</h4>
+          <p style="font-size:13px; color:var(--muted); line-height:1.5; margin-bottom:16px;">
+            Pelunasan sisa tagihan pasien setelah dikurangi uang muka deposit online.
+          </p>
+          <button class="btn btn-primary full" onclick="openDemoPOSModal('A-01')">Bayar Pelunasan Kasir (A-01)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         PANE 3: WHATSAPP 2-WAY SIMULATOR
+         ========================================================================= -->
+    <section class="demo-pane" id="paneWhatsAppSimulator">
+      <div style="text-align:center; max-width:680px; margin:0 auto 28px;">
+        <div class="pill" style="margin-bottom:12px;">Anti-No Show Communication</div>
+        <h2 style="font-size:30px; letter-spacing:-1px;">Two-Way WhatsApp Reminder Engine</h2>
+        <p style="color:var(--muted); font-size:15px; margin-top:6px;">
+          WhatsApp memiliki tingkat keterbacaan (*open-rate*) &gt;95% dibandingkan email (&lt;20%). Pasien dapat mengonfirmasi atau reschedule langsung via tombol interaktif.
+        </p>
+      </div>
+
+      <div class="wa-demo-container">
+        <div class="wa-demo-header">
+          <div style="width:36px; height:36px; border-radius:50%; background:#25d366; display:grid; place-items:center; color:#fff; font-size:18px;">🏥</div>
+          <div>
+            <strong style="display:block; font-size:14px;">Cliniva Healthcare Official</strong>
+            <small style="color:#dcfce7; font-size:11px;">Verified Clinic Gateway · Online</small>
+          </div>
+        </div>
+
+        <div class="wa-demo-body">
+          <div class="wa-msg wa-incoming">
+            <strong>Klinik Terpadu Sehat Sentosa</strong><br>
+            Halo <strong>Amanda Tan</strong>, reservasi Anda telah berhasil dikonfirmasi! 🎉<br><br>
+            📅 <strong>Jadwal:</strong> Rabu, 02 Sep 2026 • 10:30 WIB/SGT<br>
+            👨‍⚕️ <strong>Dokter:</strong> Dr. Lim Wei Han<br>
+            🏥 <strong>Lokasi:</strong> Orchard Paragon Medical #14-02<br>
+            🎟️ <strong>Kode Tiket:</strong> <code>BK-20260901-0812</code><br>
+            💰 <strong>Deposit:</strong> SGD 30.00 (Lunas)
+
+            <div class="wa-actions-box">
+              <button class="wa-action-btn" id="waBtnConfirmAttendance">✅ Konfirmasi Kehadiran</button>
+              <button class="wa-action-btn" id="waBtnReschedule">🔄 Ubah Jadwal (Reschedule)</button>
+              <button class="wa-action-btn" id="waBtnMaps">📍 Buka Rute Google Maps</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         PANE 4: ROI & ANTI NO-SHOW CALCULATOR
+         ========================================================================= -->
+    <section class="demo-pane" id="paneROICalculator">
+      <div style="text-align:center; max-width:680px; margin:0 auto 28px;">
+        <div class="pill" style="margin-bottom:12px;">Financial Impact Analysis</div>
+        <h2 style="font-size:30px; letter-spacing:-1px;">Kalkulator Pengurangan No-Show &amp; Estimasi ROI</h2>
+        <p style="color:var(--muted); font-size:15px; margin-top:6px;">
+          Berdasarkan data riset komparasi (Calendly, Acuity, Setmore), kombinasi pengingat WhatsApp multi-tahap dan deposit memangkas pembatalan fiktif secara signifikan.
+        </p>
+      </div>
+
+      <div class="roi-calculator">
+        <div class="roi-grid">
+          <div>
+            <h3 style="font-size:20px; margin-bottom:16px;">Simulasikan Volume Pasien Bulanan Klinik Anda</h3>
+
+            <div class="field">
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <label style="margin:0;">Jumlah Reservasi / Bulan:</label>
+                <strong id="roiApptCountVal" style="color:var(--primary); font-size:16px;">500 pasien / bulan</strong>
+              </div>
+              <input type="range" id="roiApptSlider" min="100" max="3000" step="50" value="500" style="width:100%; accent-color:var(--primary); cursor:pointer;">
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px;">
+              <div style="background:#fee2e2; border:1px solid #fca5a5; padding:16px; border-radius:18px;">
+                <span style="font-size:11px; color:#991b1b; font-weight:800;">SEBELUM KLINIK TERPADU (EMAIL ONLY)</span>
+                <strong style="font-size:24px; color:#dc2626; display:block; margin:6px 0;">24.8%</strong>
+                <span style="font-size:12px; color:#b91c1c;" id="roiNoShowBeforeVal">124 no-shows / bln</span>
+              </div>
+
+              <div style="background:#ecfdf5; border:1px solid #a7f3d0; padding:16px; border-radius:18px;">
+                <span style="font-size:11px; color:#065f46; font-weight:800;">DENGAN CLINIVA WHATSAPP ENGINE</span>
+                <strong style="font-size:24px; color:#16a34a; display:block; margin:6px 0;">3.2%</strong>
+                <span style="font-size:12px; color:#15803d;" id="roiNoShowAfterVal">16 no-shows / bln</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="roi-stat-highlight">
+            <span style="font-size:13px; opacity:0.9;">ESTIMASI PENGHEMATAN POTENSI KERUGIAN</span>
+            <strong id="roiSavedLossVal">SGD 10,260</strong>
+            <p style="font-size:13px; opacity:0.9; line-height:1.5;">
+              Berhasil menyelamatkan rata-rata <strong>108 sesi terapi</strong> per bulan dari pembatalan mendadak dan jadwal kosong.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div>© 2026 Cliniva Healthcare Systems. Full Interactive Product Demo Sandbox.</div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="sign-in.html">Sign In</a>
+        <a href="ticket.html">Sample E-Ticket</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modular Demo Page Script Bootstrap -->
+  <script type="module" src="js/pages/demo.js"></script>
+</body>
+</html>

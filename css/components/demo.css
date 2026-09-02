@@ -394,6 +394,59 @@
   color: var(--primary-dark);
 }
 
+/* Payment Option Cards */
+.pay-option-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.pay-option-card {
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.pay-option-card:hover {
+  border-color: rgba(15, 118, 110, 0.4);
+  background: #f8fafc;
+}
+
+.pay-option-card.active {
+  border-color: var(--primary) !important;
+  background: #ecfdf5 !important;
+  color: var(--primary-dark) !important;
+  box-shadow: 0 4px 14px rgba(15, 118, 110, 0.12);
+}
+
+.pay-option-card input[type="radio"] {
+  accent-color: var(--primary);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Bottom Action Bar in Step 5 */
+.wizard-bottom-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
 /* Responsive Rules for Demo Page */
 @media (max-width: 980px) {
   .pain-map-container,

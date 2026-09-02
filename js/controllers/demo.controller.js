@@ -15,8 +15,10 @@ export class DemoController {
     this.selectedBranch = CLINIC_BRANCHES[0];
     this.selectedService = CLINIC_SERVICES[0];
     this.selectedPractitioner = PRACTITIONERS[0];
+    this.selectedDate = new Date().toISOString().split("T")[0];
     this.selectedSlot = DEFAULT_SLOTS[1];
     this.selectedPainSpots = new Set(["Pinggang / Lumbar"]);
+    this.selectedPayType = "deposit"; // 'deposit', 'full', 'clinic'
     this.patientName = "Amanda Tan";
     this.patientPhone = "+65 8123 4567";
     this.holdTimerInterval = null;
@@ -27,6 +29,8 @@ export class DemoController {
     this.setupRoleSwitcher();
     this.setupWizardNavigation();
     this.setupServiceAndBranchPickers();
+    this.setupDatePicker();
+    this.setupPaymentSelection();
     this.setupPainMap();
     this.setupTripleConstraintLive();
     this.setupCheckoutDemo();
@@ -198,6 +202,60 @@ export class DemoController {
     });
   }
 
+  /* -------------------------------------------------------------
+   * 4. DATE PICKER WITH ANTI-PAST CONSTRAINT
+   * ------------------------------------------------------------- */
+  setupDatePicker() {
+    const dateInput = document.getElementById("demoDateInput");
+    if (!dateInput) return;
+
+    const today = new Date().toISOString().split("T")[0];
+    dateInput.min = today;
+    dateInput.value = today;
+    this.selectedDate = today;
+
+    dateInput.addEventListener("change", (e) => {
+      if (e.target.value < today) {
+        e.target.value = today;
+        alert("⚠️ Tanggal tidak dapat dipilih ke masa lalu. Sistem telah mengembalikan pilihan ke hari ini.");
+      }
+      this.selectedDate = e.target.value || today;
+      this.updateWizardSummary();
+    });
+  }
+
+  /* -------------------------------------------------------------
+   * 5. PAYMENT SELECTION (DEPOSIT / FULL / CLINIC)
+   * ------------------------------------------------------------- */
+  setupPaymentSelection() {
+    const payCards = document.querySelectorAll(".pay-option-card");
+    payCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        payCards.forEach((c) => c.classList.remove("active"));
+        card.classList.add("active");
+
+        const radio = card.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+
+        this.selectedPayType = card.dataset.paytype || "deposit";
+        soundService.playClickTone();
+
+        const desc = document.getElementById("payTypeDesc");
+        if (desc) {
+          if (this.selectedPayType === "deposit") {
+            desc.innerHTML = "💡 <strong>Uang Muka:</strong> Bayar uang muka sekarang untuk mengunci slot, sisa tagihan dilunasi di meja kasir setelah terapi selesai.";
+          } else if (this.selectedPayType === "full") {
+            desc.innerHTML = "💡 <strong>Bayar Penuh:</strong> Bayar lunas 100% via instant gateway untuk administrasi cepat dan bebas antre di kasir klinik.";
+          } else if (this.selectedPayType === "clinic") {
+            desc.innerHTML = "💡 <strong>Bayar di Tempat:</strong> Tidak perlu bayar sekarang. Pelunasan tagihan dilakukan langsung di meja kasir/resepsionis saat kedatangan.";
+          }
+        }
+
+        this.updateWizardSummary();
+      });
+    });
+  }
+
   adjustIntakeFormProfile(serviceId) {
     const tcmGroup = document.getElementById("intakeGroupTCM");
     const spaGroup = document.getElementById("intakeGroupSpa");
@@ -209,7 +267,7 @@ export class DemoController {
   }
 
   /* -------------------------------------------------------------
-   * 4. VISUAL BODY PAIN MAP
+   * 6. VISUAL BODY PAIN MAP
    * ------------------------------------------------------------- */
   setupPainMap() {
     const tags = document.querySelectorAll(".pain-spot-tag");
@@ -230,7 +288,7 @@ export class DemoController {
   }
 
   /* -------------------------------------------------------------
-   * 5. TRIPLE-CONSTRAINT LIVE VALIDATION
+   * 7. TRIPLE-CONSTRAINT LIVE VALIDATION
    * ------------------------------------------------------------- */
   setupTripleConstraintLive() {
     this.updateTripleConstraintInspector();
@@ -269,38 +327,55 @@ export class DemoController {
   }
 
   /* -------------------------------------------------------------
-   * 6. CHECKOUT & TICKET SIMULATION
+   * 8. CHECKOUT & TICKET SIMULATION
    * ------------------------------------------------------------- */
   setupCheckoutDemo() {
-    const confirmBtn = document.getElementById("btnConfirmDemoBooking");
-    if (confirmBtn) {
-      confirmBtn.addEventListener("click", () => {
-        soundService.playQueueChime();
+    const handleCheckout = () => {
+      soundService.playQueueChime();
 
-        const booking = bookingService.createBooking({
-          patientName: this.patientName,
-          branchName: this.selectedBranch.name,
-          schedule: `Wed, ${this.selectedSlot}`,
-          serviceName: this.selectedService.name,
-          practitionerName: this.selectedPractitioner.name,
-          depositPaid: `${this.selectedBranch.currency} ${this.selectedBranch.region === "my" ? this.selectedService.depositMYR : this.selectedService.depositSGD}.00`
-        });
+      const isMY = this.selectedBranch.region === "my";
+      const curr = isMY ? "MYR" : "SGD";
+      const price = isMY ? this.selectedService.priceMYR : this.selectedService.priceSGD;
+      const deposit = isMY ? this.selectedService.depositMYR : this.selectedService.depositSGD;
 
-        // Trigger notification log
-        notificationService.logNotification({
-          channel: "WHATSAPP",
-          recipient: this.patientPhone,
-          status: "DELIVERED",
-          bookingCode: booking.code
-        });
+      let paymentText = "";
+      if (this.selectedPayType === "deposit") {
+        paymentText = `${curr} ${deposit}.00 (Deposit Dibayar, Sisa ${curr} ${price - deposit}.00 di Kasir)`;
+      } else if (this.selectedPayType === "full") {
+        paymentText = `${curr} ${price}.00 (Lunas 100%)`;
+      } else {
+        paymentText = `Bayar di Tempat (${curr} ${price}.00 saat kedatangan)`;
+      }
 
-        alert(`🎉 RESERVASI BERHASIL DISIMULASIKAN!\n\nKode Booking: ${booking.code}\nPasien: ${this.patientName}\nLayanan: ${this.selectedService.name}\nJadwal: ${this.selectedSlot}\nDeposit: ${booking.depositPaid}\n\nNotifikasi WhatsApp & Tiket Digital telah diterbitkan!`);
-
-        // Switch to WhatsApp simulator to show live effect
-        const waTab = document.querySelector('[data-pane="paneWhatsAppSimulator"]');
-        if (waTab) waTab.click();
+      const booking = bookingService.createBooking({
+        patientName: this.patientName,
+        branchName: this.selectedBranch.name,
+        schedule: `${this.selectedDate}, ${this.selectedSlot}`,
+        serviceName: this.selectedService.name,
+        practitionerName: this.selectedPractitioner.name,
+        depositPaid: paymentText
       });
-    }
+
+      // Trigger notification log
+      notificationService.logNotification({
+        channel: "WHATSAPP",
+        recipient: this.patientPhone,
+        status: "DELIVERED",
+        bookingCode: booking.code
+      });
+
+      alert(`🎉 RESERVASI BERHASIL DISIMULASIKAN!\n\nKode Booking: ${booking.code}\nPasien: ${this.patientName}\nLayanan: ${this.selectedService.name}\nTanggal & Jam: ${this.selectedDate} • ${this.selectedSlot}\nStatus Pembayaran: ${paymentText}\n\nNotifikasi WhatsApp & Tiket Digital telah diterbitkan!`);
+
+      // Switch to WhatsApp simulator to show live effect
+      const waTab = document.querySelector('[data-pane="paneWhatsAppSimulator"]');
+      if (waTab) waTab.click();
+    };
+
+    const confirmBtn = document.getElementById("btnConfirmDemoBooking");
+    if (confirmBtn) confirmBtn.addEventListener("click", handleCheckout);
+
+    const bottomCheckoutBtn = document.getElementById("btnBottomCheckout");
+    if (bottomCheckoutBtn) bottomCheckoutBtn.addEventListener("click", handleCheckout);
   }
 
   updateWizardSummary() {
@@ -313,23 +388,52 @@ export class DemoController {
     const summaryService = document.getElementById("summaryService");
     const summaryPrac = document.getElementById("summaryPractitioner");
     const summarySchedule = document.getElementById("summarySchedule");
+    const summaryPayLabel = document.getElementById("summaryPayLabel");
     const summaryDeposit = document.getElementById("summaryDeposit");
     const summaryPain = document.getElementById("summaryPain");
+    const confirmBtn = document.getElementById("btnConfirmDemoBooking");
+    const bottomCheckoutBtn = document.getElementById("btnBottomCheckout");
 
     if (summaryBranch) summaryBranch.textContent = this.selectedBranch.name;
     if (summaryService) summaryService.textContent = `${this.selectedService.name} (${curr} ${price})`;
     if (summaryPrac) summaryPrac.textContent = this.selectedPractitioner.name;
-    if (summarySchedule) summarySchedule.textContent = `Wednesday, ${this.selectedSlot}`;
-    if (summaryDeposit) summaryDeposit.textContent = `${curr} ${deposit}.00 (Deposit)`;
+    if (summarySchedule) summarySchedule.textContent = `${this.selectedDate || "Today"}, ${this.selectedSlot}`;
     if (summaryPain) {
       summaryPain.textContent = this.selectedPainSpots.size > 0
         ? Array.from(this.selectedPainSpots).join(", ")
         : "General Wellness";
     }
+
+    // Dynamic Payment Summary based on selectedPayType
+    if (this.selectedPayType === "deposit") {
+      if (summaryPayLabel) summaryPayLabel.textContent = "Biaya Deposit (Online):";
+      if (summaryDeposit) {
+        summaryDeposit.textContent = `${curr} ${deposit}.00 (Sisa ${curr} ${price - deposit}.00 di Kasir)`;
+        summaryDeposit.style.color = "var(--primary-dark)";
+      }
+      if (confirmBtn) confirmBtn.textContent = `⚡ Selesaikan Pembayaran Deposit (${curr} ${deposit}.00) & Terbitkan Tiket →`;
+      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 Bayar Deposit (${curr} ${deposit}.00) & Checkout →`;
+    } else if (this.selectedPayType === "full") {
+      if (summaryPayLabel) summaryPayLabel.textContent = "Total Pembayaran (Lunas):";
+      if (summaryDeposit) {
+        summaryDeposit.textContent = `${curr} ${price}.00 (Lunas / 100%)`;
+        summaryDeposit.style.color = "var(--success-dark)";
+      }
+      if (confirmBtn) confirmBtn.textContent = `⚡ Selesaikan Bayar Penuh (${curr} ${price}.00) & Terbitkan Tiket →`;
+      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 Bayar Penuh (${curr} ${price}.00) & Checkout →`;
+    } else if (this.selectedPayType === "clinic") {
+      if (summaryPayLabel) summaryPayLabel.textContent = "Metode Pembayaran:";
+      if (summaryDeposit) {
+        summaryDeposit.textContent = `Bayar di Tempat (${curr} ${price}.00 saat kedatangan)`;
+        summaryDeposit.style.color = "var(--text)";
+      }
+      if (confirmBtn) confirmBtn.textContent = `⚡ Konfirmasi Reservasi (Bayar di Klinik) & Terbitkan Tiket →`;
+      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 Konfirmasi Booking (Bayar di Klinik) →`;
+    }
   }
 
   /* -------------------------------------------------------------
-   * 7. STAFF OPERATIONS DEMO
+   * 9. STAFF OPERATIONS DEMO
    * ------------------------------------------------------------- */
   setupStaffOperations() {
     const callQueueBtns = document.querySelectorAll(".btn-demo-call-queue");
@@ -358,7 +462,7 @@ export class DemoController {
   }
 
   /* -------------------------------------------------------------
-   * 8. WHATSAPP 2-WAY SIMULATOR
+   * 10. WHATSAPP 2-WAY SIMULATOR
    * ------------------------------------------------------------- */
   setupWhatsAppSimulator() {
     const confirmAttendanceBtn = document.getElementById("waBtnConfirmAttendance");
@@ -401,7 +505,7 @@ export class DemoController {
   }
 
   /* -------------------------------------------------------------
-   * 9. ROI & COMPARATIVE CALCULATOR
+   * 11. ROI & COMPARATIVE CALCULATOR
    * ------------------------------------------------------------- */
   setupROICalculator() {
     const slider = document.getElementById("roiApptSlider");

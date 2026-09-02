@@ -223,8 +223,9 @@
             </p>
 
             <div class="field">
-              <label>Select Date</label>
-              <input type="date" value="2026-09-02" style="max-width:240px;">
+              <label for="demoDateInput">Select Date (Pilih Tanggal Booking)</label>
+              <input type="date" id="demoDateInput" style="max-width:260px;" required>
+              <small style="color:var(--muted); font-size:11px; display:block; margin-top:4px;">* Tanggal masa lalu otomatis dinonaktifkan.</small>
             </div>
 
             <label style="font-size:13px; font-weight:900; margin-bottom:8px; display:block;">Available Slots Today</label>
@@ -324,32 +325,38 @@
 
             <div style="display:flex; justify-content:space-between; margin-top:24px;">
               <button class="btn btn-soft btn-wizard-prev">← Back</button>
-              <button class="btn btn-primary btn-wizard-next">Next: Review &amp; Checkout →</button>
+              <button class="btn btn-primary btn-wizard-next">Lanjutkan ke Review &amp; Checkout →</button>
             </div>
           </div>
 
           <!-- STEP 5: Checkout & Final Confirmation -->
           <div class="wizard-step-panel" id="wizardStep5">
-            <h3 style="font-size:20px; margin-bottom:14px;">5. Review &amp; Secure Deposit Checkout</h3>
+            <h3 style="font-size:20px; margin-bottom:14px;">5. Review &amp; Secure Checkout</h3>
 
             <div style="background:#f8fafc; border:1px solid var(--line); border-radius:18px; padding:18px; margin-bottom:18px;">
-              <h4 style="font-size:15px; margin-bottom:12px;">Pilihan Pembayaran Deposit:</h4>
-              <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px;">
-                <label style="border:1px solid var(--primary); background:#ecfdf5; padding:12px; border-radius:12px; cursor:pointer; font-size:13px; font-weight:800; color:var(--primary-dark);">
-                  <input type="radio" name="payType" checked style="accent-color:var(--primary);"> Uang Muka (Deposit)
+              <h4 style="font-size:15px; margin-bottom:12px;">Pilihan Pembayaran / Pelunasan:</h4>
+              <div class="pay-option-cards">
+                <label class="pay-option-card active" data-paytype="deposit">
+                  <input type="radio" name="payType" value="deposit" checked>
+                  <span>Uang Muka (Deposit)</span>
                 </label>
-                <label style="border:1px solid var(--line); background:#fff; padding:12px; border-radius:12px; cursor:pointer; font-size:13px; font-weight:800;">
-                  <input type="radio" name="payType" style="accent-color:var(--primary);"> Bayar Penuh
+                <label class="pay-option-card" data-paytype="full">
+                  <input type="radio" name="payType" value="full">
+                  <span>Bayar Penuh (Full)</span>
                 </label>
-                <label style="border:1px solid var(--line); background:#fff; padding:12px; border-radius:12px; cursor:pointer; font-size:13px; font-weight:800;">
-                  <input type="radio" name="payType" style="accent-color:var(--primary);"> Bayar di Klinik
+                <label class="pay-option-card" data-paytype="clinic">
+                  <input type="radio" name="payType" value="clinic">
+                  <span>Bayar di Klinik</span>
                 </label>
               </div>
+              <p id="payTypeDesc" style="font-size:12px; color:var(--text-secondary); margin-top:10px; margin-bottom:0;">
+                💡 Bayar uang muka sekarang untuk mengunci slot, sisa tagihan dilunasi di meja kasir setelah sesi terapi selesai.
+              </p>
             </div>
 
-            <div class="field">
+            <div class="field" id="paymentMethodField">
               <label>Pilih Metode Pembayaran Instan Regional</label>
-              <select>
+              <select id="demoPaymentChannelSelect">
                 <option>🇸🇬 PayNow QR (Singapore Instant Rails)</option>
                 <option>🇲🇾 DuitNow QR &amp; FPX Online Banking (Malaysia)</option>
                 <option>🇮🇩 QRIS All Payment (BCA/Mandiri/GoPay/OVO)</option>
@@ -358,11 +365,14 @@
             </div>
 
             <button class="btn btn-primary full" id="btnConfirmDemoBooking" style="font-size:16px; padding:16px;">
-              ⚡ Simulasikan Pembayaran &amp; Terbitkan Tiket WhatsApp →
+              ⚡ Selesaikan Checkout &amp; Terbitkan Tiket WhatsApp →
             </button>
 
-            <div style="display:flex; justify-content:flex-start; margin-top:16px;">
+            <div class="wizard-bottom-actions">
               <button class="btn btn-soft btn-wizard-prev">← Kembali ke Form Intake</button>
+              <button class="btn btn-primary" id="btnBottomCheckout">
+                💳 Selesaikan Checkout &amp; Bayar Sekarang →
+              </button>
             </div>
           </div>
 
@@ -398,7 +408,7 @@
               <strong id="summaryPain">Pinggang / Lumbar</strong>
             </div>
             <div class="summary-item">
-              <span>Biaya Deposit:</span>
+              <span id="summaryPayLabel">Biaya Deposit (Online):</span>
               <strong id="summaryDeposit" style="color:var(--success-dark);">SGD 30.00 (Deposit)</strong>
             </div>
           </div>

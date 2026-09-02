@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Operasional Klinik & Master Calendar | Sistem CRM Terpadu</title>
+  <meta name="description" content="Dashboard Operasional Klinik untuk Resepsionis, Dokter, dan Manajemen: Master Calendar, Live Antrean Digital, Rujukan SIMRS Forwarder, dan Kasir POS.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body id="adminDashboard">
+
+  <!-- ==========================================
+       ADMIN APP HEADER
+       ========================================== -->
+  <header class="app-header">
+    <div class="container-fluid">
+      <div class="header-inner">
+        <!-- Brand Logo -->
+        <a href="admin.html" class="brand-logo">
+          <div class="logo-icon">🏥</div>
+          <div>
+            <span>Klinik Terpadu</span>
+            <span class="brand-badge" style="background:#fef3c7; color:#92400e;">PANEL STAF</span>
+          </div>
+        </a>
+
+        <!-- Header Controls -->
+        <div class="header-controls">
+          <!-- Active Branch Selector -->
+          <div class="selector-pill">
+            <span>📍 Cabang Aktif:</span>
+            <select id="adminBranchSelect" onchange="renderMasterCalendar()">
+              <option value="br-01">Cabang Jakarta Pusat (Menteng)</option>
+              <option value="br-02">Cabang Jakarta Selatan (Pondok Indah)</option>
+              <option value="br-03">Cabang Surabaya (Gubeng)</option>
+              <option value="br-04">Cabang Singapore (Novena Hub)</option>
+            </select>
+          </div>
+
+          <!-- Quick Action: Walk-in Dispatcher Button -->
+          <button type="button" class="btn btn-sm btn-primary" onclick="openWalkInModal()">
+            <span>⚡ + Input Pasien Walk-in / Telepon</span>
+          </button>
+
+          <!-- Mode Switcher -->
+          <div class="mode-toggle">
+            <a href="index.html" class="mode-btn">👤 Portal Pasien</a>
+            <a href="admin.html" class="mode-btn active">🏥 Panel Operasional</a>
+          </div>
+
+          <!-- Staf Profile Badge -->
+          <div style="display:flex; align-items:center; gap:0.5rem; background:white; padding:0.35rem 0.75rem; border-radius:var(--radius-full); border:1px solid var(--slate-200); font-size:0.82rem;">
+            <span>👩‍💼</span>
+            <div>
+              <strong>Sarah (Resepsionis)</strong>
+              <div style="font-size:0.68rem; color:var(--slate-500);">Shift Pagi • Menteng</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       ADMIN SIDEBAR & CONTENT LAYOUT
+       ========================================== -->
+  <div class="admin-layout">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--slate-400); letter-spacing:0.05em;">
+        Menu Operasional
+      </div>
+
+      <nav class="admin-nav">
+        <a href="#kpi" class="admin-nav-item active" data-target="paneKpiCalendar">
+          <span>🗓️</span> Master Calendar &amp; Jadwal
+        </a>
+        <a href="#queue" class="admin-nav-item" data-target="paneLiveQueue">
+          <span>📢</span> Antrean Digital (Live Queue)
+        </a>
+        <a href="#referrals" class="admin-nav-item" data-target="paneReferralHub">
+          <span>🔌</span> SIMRS Referral Bridging Hub
+        </a>
+        <a href="#notifications" class="admin-nav-item" data-target="paneNotifLogs">
+          <span>💬</span> Notification Engine (WA &amp; Email)
+        </a>
+        <a href="#pos" class="admin-nav-item" data-target="paneCashierPOS">
+          <span>💳</span> Kasir POS &amp; Pembayaran
+        </a>
+        <a href="#analytics" class="admin-nav-item" data-target="paneAnalytics">
+          <span>📈</span> Analitik Okupansi &amp; No-Show
+        </a>
+      </nav>
+
+      <div style="margin-top:auto; background:var(--slate-800); padding:1rem; border-radius:var(--radius-md); font-size:0.78rem;">
+        <div style="font-weight:700; color:var(--primary-300); margin-bottom:0.25rem;">🔒 Keamanan Data SIMRS</div>
+        <p style="color:var(--slate-400); line-height:1.4;">
+          Sistem beroperasi sebagai <em>Intake Bridge</em>. Tidak menyimpan catatan medis permanen. Dokumen rujukan ephemeral auto-delete dalam 72 jam.
+        </p>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-content">
+      
+      <!-- ==========================================
+           TAB 1: KPI & MASTER CALENDAR TIMELINE
+           ========================================== -->
+      <section class="admin-tab-pane" id="paneKpiCalendar" style="display:block;">
+        
+        <!-- KPI Row -->
+        <div class="kpi-grid" id="adminKpiGrid">
+          <!-- Rendered by JavaScript -->
+        </div>
+
+        <!-- Master Calendar Container -->
+        <div class="calendar-card">
+          <div class="calendar-header">
+            <div>
+              <h2 style="font-size:1.25rem; font-weight:800;">Master Calendar Operasional Harian</h2>
+              <div style="font-size:0.85rem; color:var(--slate-500);">Selasa, 01 September 2026 • Real-time Triple-Constraint Timeline</div>
+            </div>
+
+            <!-- Legend & Filter Controls -->
+            <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap;">
+              <span class="badge-tag chip-confirmed">● Terkonfirmasi</span>
+              <span class="badge-tag chip-checkedin">● Hadir (Check-In)</span>
+              <span class="badge-tag chip-inprogress">● Sedang Terapi</span>
+              <span class="badge-tag chip-pending">● Menunggu Bayar</span>
+              <span class="badge-tag chip-noshow">● No-Show</span>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="renderMasterCalendar()">🔄 Refresh</button>
+            </div>
+          </div>
+
+          <!-- Timeline Grid Table -->
+          <div id="masterCalendarTimeline">
+            <!-- Rendered by JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           TAB 2: LIVE DIGITAL QUEUE (ANTREAN)
+           ========================================== -->
+      <section class="admin-tab-pane" id="paneLiveQueue" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+          <div>
+            <h2 style="font-size:1.35rem; font-weight:800;">📢 Sistem Antrean Digital &amp; Panggilan Pasien</h2>
+            <p style="font-size:0.85rem; color:var(--slate-500);">Layar pemantau status antrean pasien di ruang tunggu klinik dengan audio chime synthesizer.</p>
+          </div>
+          <div style="display:flex; gap:0.5rem;">
+            <button type="button" class="btn btn-sm btn-secondary" onclick="playClinicChime()">🔊 Test Sound Chime</button>
+            <button type="button" class="btn btn-sm btn-primary" onclick="callNextQueue()">📢 Panggil Antrean Berikutnya</button>
+          </div>
+        </div>
+
+        <div class="queue-board-grid" id="liveQueueBoard">
+          <!-- Rendered by JavaScript -->
+        </div>
+      </section>
+
+      <!-- ==========================================
+           TAB 3: SIMRS REFERRAL BRIDGING HUB
+           ========================================== -->
+      <section class="admin-tab-pane" id="paneReferralHub" style="display:none;">
+        <div style="margin-bottom:1.5rem;">
+          <h2 style="font-size:1.35rem; font-weight:800;">🔌 SIMRS Referral Bridging Hub &amp; Ephemeral Monitor</h2>
+          <p style="font-size:0.85rem; color:var(--slate-500);">
+            Monitoring status pengiriman data rujukan pasien ke SIMRS internal klinik melalui REST API / Webhook (Sesuai Batasan Non-EMR Storage).
+          </p>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Booking Code</th>
+                <th>Nama Pasien</th>
+                <th>No. Surat Rujukan</th>
+                <th>Faskes Asal</th>
+                <th>Status Forwarding</th>
+                <th>Ephemeral Storage TTL</th>
+                <th>Aksi Inspeksi</th>
+              </tr>
+            </thead>
+            <tbody id="referralHubTableBody">
+              <!-- Rendered by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           TAB 4: NOTIFICATION ENGINE LOGS
+           ========================================== -->
+      <section class="admin-tab-pane" id="paneNotifLogs" style="display:none;">
+        <div style="margin-bottom:1.5rem;">
+          <h2 style="font-size:1.35rem; font-weight:800;">💬 Multi-Channel Notification Engine Center</h2>
+          <p style="font-size:0.85rem; color:var(--slate-500);">
+            Monitor pengiriman notifikasi WhatsApp Business API (Kanal Utama) dan Email SMTP Fallback (.ics Calendar).
+          </p>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Booking Code</th>
+                <th>Kanal</th>
+                <th>Penerima (Tujuan)</th>
+                <th>Jenis Notifikasi</th>
+                <th>Status Pengiriman</th>
+                <th>Tingkat Keterbacaan</th>
+                <th>Waktu Kirim</th>
+              </tr>
+            </thead>
+            <tbody id="notifLogTableBody">
+              <!-- Rendered by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           TAB 5: KASIR POS & BILLING SETTLEMENT
+           ========================================== -->
+      <section class="admin-tab-pane" id="paneCashierPOS" style="display:none;">
+        <div style="margin-bottom:1.5rem;">
+          <h2 style="font-size:1.35rem; font-weight:800;">💳 Kasir POS &amp; Pelunasan Tagihan Sesi</h2>
+          <p style="font-size:0.85rem; color:var(--slate-500);">Pencatatan pembayaran sisa tagihan, penerimaan tunai/EDC, dan penerbitan e-receipt.</p>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:1.5rem;">
+          <div class="data-table-container">
+            <h3 style="padding:1rem 1.25rem; font-size:1rem; border-bottom:1px solid var(--slate-200);">Daftar Tagihan Siap Dilunasi</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>No Antrean</th>
+                  <th>Nama Pasien</th>
+                  <th>Layanan</th>
+                  <th>Sisa Tagihan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>A-01</strong></td>
+                  <td>Rendra Pratama</td>
+                  <td>Akupunktur Medis</td>
+                  <td style="color:var(--primary-700); font-weight:700;">Rp 225.000</td>
+                  <td><button type="button" class="btn btn-sm btn-primary" onclick="openPOSModal('A-01')">Bayar di Kasir</button></td>
+                </tr>
+                <tr>
+                  <td><strong>C-01</strong></td>
+                  <td>Bambang Soediro</td>
+                  <td>Fisioterapi Postur</td>
+                  <td style="color:var(--primary-700); font-weight:700;">Rp 320.000</td>
+                  <td><button type="button" class="btn btn-sm btn-primary" onclick="openPOSModal('C-01')">Bayar di Kasir</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="background:white; padding:1.5rem; border-radius:var(--radius-lg); border:1px solid var(--slate-200);">
+            <h3 style="font-size:1.05rem; margin-bottom:1rem;">Ringkasan Kas Masuk Hari Ini</h3>
+            <div class="summary-row"><span>Total Penerimaan Online (DP/Full):</span><strong>Rp 1.450.000</strong></div>
+            <div class="summary-row"><span>Total Pelunasan Kasir (Tunai/EDC):</span><strong>Rp 2.180.000</strong></div>
+            <div class="summary-row total"><span>Total Omset Cabang:</span><span style="color:var(--primary-700);">Rp 3.630.000</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           TAB 6: ANALITIK OKUPANSI & NO-SHOW
+           ========================================== -->
+      <section class="admin-tab-pane" id="paneAnalytics" style="display:none;">
+        <div style="margin-bottom:1.5rem;">
+          <h2 style="font-size:1.35rem; font-weight:800;">📈 Analitik Okupansi &amp; Efektivitas Reminder</h2>
+          <p style="font-size:0.85rem; color:var(--slate-500);">Visualisasi performa jadwal, rasio kehadiran pasien, dan layanan terfavorit.</p>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+          <div style="background:white; padding:1.5rem; border-radius:var(--radius-lg); border:1px solid var(--slate-200);">
+            <h3 style="font-size:1.05rem; margin-bottom:0.75rem;">Okupansi Slot Praktisi Minggu Ini</h3>
+            <div style="display:flex; flex-direction:column; gap:0.75rem; margin-top:1rem;">
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:0.82rem; font-weight:700; margin-bottom:4px;">
+                  <span>dr. Budi Santoso, Sp.PD</span>
+                  <span>92%</span>
+                </div>
+                <div style="background:var(--slate-100); height:10px; border-radius:5px; overflow:hidden;">
+                  <div style="background:var(--primary-600); width:92%; height:100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:0.82rem; font-weight:700; margin-bottom:4px;">
+                  <span>Sinse Huang Wei, B.Med (TCM)</span>
+                  <span>96%</span>
+                </div>
+                <div style="background:var(--slate-100); height:10px; border-radius:5px; overflow:hidden;">
+                  <div style="background:var(--accent-600); width:96%; height:100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:0.82rem; font-weight:700; margin-bottom:4px;">
+                  <span>Siti Nurhaliza, S.Ft (Fisioterapi)</span>
+                  <span>88%</span>
+                </div>
+                <div style="background:var(--slate-100); height:10px; border-radius:5px; overflow:hidden;">
+                  <div style="background:var(--success-600); width:88%; height:100%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:white; padding:1.5rem; border-radius:var(--radius-lg); border:1px solid var(--slate-200);">
+            <h3 style="font-size:1.05rem; margin-bottom:0.75rem;">Efek Pengurangan No-Show (Sebelum vs Sesudah WA)</h3>
+            <div style="display:flex; align-items:center; justify-content:space-around; padding:1.5rem 0;">
+              <div style="text-align:center;">
+                <div style="font-size:2rem; font-weight:800; color:var(--danger-500);">24.8%</div>
+                <div style="font-size:0.78rem; color:var(--slate-500);">Sebelum Sistem (Email Only)</div>
+              </div>
+              <div style="font-size:1.5rem; color:var(--slate-400);">➔</div>
+              <div style="text-align:center;">
+                <div style="font-size:2.2rem; font-weight:800; color:var(--success-600);">3.2%</div>
+                <div style="font-size:0.78rem; color:var(--slate-500);">Dengan WhatsApp Multi-Stage Reminders</div>
+              </div>
+            </div>
+            <div style="background:var(--success-50); border:1px solid var(--success-500); padding:0.65rem; border-radius:8px; font-size:0.78rem; color:var(--success-600); text-align:center; font-weight:700;">
+              🎉 Menghemat potensi kerugian pembatalan &gt; Rp 18.500.000 / bulan per cabang
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

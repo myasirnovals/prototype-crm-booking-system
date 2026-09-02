@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Tiket Janji Temu Digital | Sistem Booking & CRM Klinik</title>
+  <meta name="description" content="Layar E-Tiket Digital Janji Temu Klinik dengan QR Code Check-in Mandiri dan Sinkronisasi Kalender.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body style="display:flex; flex-direction:column; min-height:100vh;">
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="brand-logo">
+          <div class="logo-icon">🏥</div>
+          <div>
+            <span>Klinik Terpadu</span>
+            <span class="brand-badge">E-TIKET RESMI</span>
+          </div>
+        </a>
+
+        <div style="display:flex; gap:0.75rem;">
+          <a href="index.html" class="btn btn-sm btn-secondary">← Buat Reservasi Baru</a>
+          <a href="admin.html" class="btn btn-sm btn-accent">Panel Staf Klinik →</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Ticket View -->
+  <main class="container container-sm" style="flex:1; padding:2.5rem 1.5rem;">
+    <div style="text-align:center; margin-bottom:1.5rem;">
+      <div style="display:inline-flex; align-items:center; gap:0.4rem; background:var(--success-50); color:var(--success-600); font-weight:700; padding:0.35rem 1rem; border-radius:var(--radius-full); font-size:0.85rem; border:1px solid rgba(34,197,94,0.3);">
+        <span>✓</span> Terverifikasi &amp; Terkonfirmasi
+      </div>
+      <h1 style="font-size:1.8rem; margin-top:0.75rem;">E-Tiket Janji Temu &amp; Kartu Antrean</h1>
+      <p style="color:var(--slate-500); font-size:0.92rem;">Simpan halaman ini atau unduh file kalender (.ics) untuk pengingat otomatis di ponsel Anda.</p>
+    </div>
+
+    <div id="standaloneTicketContainer">
+      <div class="digital-ticket">
+        <div class="ticket-header">
+          <div class="ticket-brand">KLINIK TERPADU SEHAT SENTOSA • CABANG MENTENG</div>
+          <div class="ticket-code">BK-20260901-0812</div>
+          <span class="ticket-status-pill">✓ STATUS: CONFIRMED</span>
+        </div>
+        <div class="ticket-body">
+          <div class="ticket-row">
+            <span class="ticket-label">Nama Pasien:</span>
+            <span class="ticket-val">Rendra Pratama</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-label">Nomor Antrean:</span>
+            <span class="ticket-val" style="color:var(--primary-600); font-size:1.35rem; font-weight:800;">A-01</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-label">Layanan / Terapi:</span>
+            <span class="ticket-val">Akupunktur Medis &amp; Stimulasi Syaraf</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-label">Dokter / Praktisi:</span>
+            <span class="ticket-val">Sinse Huang Wei, B.Med (TCM)</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-label">Jadwal Janji Temu:</span>
+            <span class="ticket-val" style="color:var(--primary-800);">Selasa, 01 September 2026 • 09:15 WIB</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-label">Ruangan / Bed:</span>
+            <span class="ticket-val">Ruang Akupunktur 1 (Lantai 2)</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-label">Status Pembayaran:</span>
+            <span class="ticket-val" style="color:var(--success-600);">DEPOSIT PAID (Sisa: Rp 225.000)</span>
+          </div>
+
+          <div class="ticket-divider-perforated">
+            <div class="ticket-dashed-line"></div>
+          </div>
+
+          <div class="ticket-qr-section">
+            <div class="qr-canvas-box" id="ticketQrWrapper">
+              <!-- SVG QR Code -->
+              <svg width="160" height="160" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="background:#fff; padding:6px; border-radius:8px;">
+                <rect x="5" y="5" width="26" height="26" fill="#0f172a" rx="4"/>
+                <rect x="9" y="9" width="18" height="18" fill="#fff" rx="2"/>
+                <rect x="13" y="13" width="10" height="10" fill="#0d9488" rx="1"/>
+                <rect x="69" y="5" width="26" height="26" fill="#0f172a" rx="4"/>
+                <rect x="73" y="9" width="18" height="18" fill="#fff" rx="2"/>
+                <rect x="77" y="13" width="10" height="10" fill="#0d9488" rx="1"/>
+                <rect x="5" y="69" width="26" height="26" fill="#0f172a" rx="4"/>
+                <rect x="9" y="73" width="18" height="18" fill="#fff" rx="2"/>
+                <rect x="13" y="77" width="10" height="10" fill="#0d9488" rx="1"/>
+                <rect x="36" y="8" width="6" height="6" fill="#0f172a"/>
+                <rect x="46" y="8" width="8" height="6" fill="#0f172a"/>
+                <rect x="58" y="12" width="6" height="6" fill="#0d9488"/>
+                <rect x="36" y="36" width="28" height="28" fill="#0f172a" rx="3"/>
+                <rect x="42" y="42" width="16" height="16" fill="#fff" rx="2"/>
+                <rect x="46" y="46" width="8" height="8" fill="#0d9488"/>
+                <rect x="72" y="70" width="20" height="6" fill="#0f172a"/>
+              </svg>
+            </div>
+            <div style="font-size:0.8rem; color:var(--slate-600); max-width:400px; margin:0.35rem auto 0;">
+              Tunjukkan kode QR ini ke scanner kiosk kedatangan atau staf resepsionis untuk melakukan Check-In mandiri secara instan.
+            </div>
+
+            <div style="display:flex; gap:0.5rem; margin-top:1.25rem; flex-wrap:wrap; justify-content:center;">
+              <button type="button" class="btn btn-primary" onclick="downloadICS('BK-20260901-0812')">📅 Simpan ke Google / Apple Calendar (.ics)</button>
+              <button type="button" class="btn btn-secondary" onclick="window.print()">🖨️ Cetak E-Tiket</button>
+              <button type="button" class="btn btn-secondary" onclick="openRescheduleModal('BK-20260901-0812')">🔄 Reschedule Jadwal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer style="text-align:center; padding:1.5rem; font-size:0.78rem; color:var(--slate-500); background:white; border-top:1px solid var(--slate-200); margin-top:auto;">
+    Sistem Manajemen Reservasi &amp; CRM Klinik Terpadu • Dokumen E-Tiket Sah Digital
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

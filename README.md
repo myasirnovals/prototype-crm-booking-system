@@ -1,4 +1,4 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.1.1
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.1.2
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 

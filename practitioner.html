@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Workspace Praktisi &amp; Dokter — Cliniva Clinical Suite</title>
-  <meta name="description" content="Dedicated workspace for doctors and therapists: patient consultation timeline, visual body pain map, digital chime queue calling, and session updates." />
+  <meta name="description"
+    content="Dedicated workspace for doctors and therapists: patient consultation timeline, visual body pain map, digital chime queue calling, and session updates." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
 
   <!-- Modular Design System Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
@@ -17,14 +20,16 @@
 
 <body>
   <!-- Header Topbar -->
-  <header style="background:#fff; border-bottom:1px solid var(--line); padding:14px 28px; position:sticky; top:0; z-index:100;">
+  <header
+    style="background:#fff; border-bottom:1px solid var(--line); padding:14px 28px; position:sticky; top:0; z-index:100;">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div style="display:flex; align-items:center; gap:16px;">
         <a href="index.html" class="logo">
           <span class="logo-mark">✦</span>
           Cliniva Clinical
         </a>
-        <span class="pill" style="font-size:11px; padding:4px 10px; background:#f0f9ff; color:#0284c7; font-weight:800;">
+        <span class="pill"
+          style="font-size:11px; padding:4px 10px; background:#f0f9ff; color:#0284c7; font-weight:800;">
           🧑‍⚕️ Practitioner Mode
         </span>
       </div>
@@ -33,10 +38,10 @@
         <div style="text-align:right;">
           <div id="doctorUserName" style="font-size:13px; font-weight:800; color:var(--text);">Dr. Lim Wei Han</div>
           <div style="font-size:11px; color:var(--muted); display:flex; gap:6px; justify-content:flex-end;">
-            <span id="doctorUserTitle">Senior Physiotherapist</span> · <span id="doctorUserRoom" style="font-weight:700; color:var(--primary);">📍 Room A2</span>
+            <span id="doctorUserTitle">Senior Physiotherapist</span> · <span id="doctorUserRoom"
+              style="font-weight:700; color:var(--primary);">📍 Room A2</span>
           </div>
         </div>
-        <a href="index.html" class="btn btn-sm btn-soft">← Portal Pasien</a>
         <button type="button" class="btn btn-sm btn-primary" id="doctorSignOutBtn">Sign Out</button>
       </div>
     </div>
@@ -49,22 +54,28 @@
         <h3 style="font-size:16px; margin:0;">Pasien Hari Ini</h3>
         <span class="badge-live">3 PASIEN</span>
       </div>
-      <p style="font-size:12px; color:var(--muted); margin:0 0 14px;">Pilih pasien untuk melihat keluhan awal &amp; anatomi Body Pain Map.</p>
+      <p style="font-size:12px; color:var(--muted); margin:0 0 14px;">Pilih pasien untuk melihat keluhan awal &amp;
+        anatomi Body Pain Map.</p>
 
       <div class="patient-queue-list">
         <!-- Patient 1 (Active) -->
-        <div class="patient-session-card active" data-queue="A-01" data-name="Amanda Tan" data-complaint="Nyeri tajam pinggang bawah (L4-L5) saat membungkuk setelah maraton. Kesulitan duduk tegak >20 menit." data-pain="7 / 10 (Sedang-Berat)" data-marker="marker-lumbar">
+        <div class="patient-session-card active" data-queue="A-01" data-name="Amanda Tan"
+          data-complaint="Nyeri tajam pinggang bawah (L4-L5) saat membungkuk setelah maraton. Kesulitan duduk tegak >20 menit."
+          data-pain="7 / 10 (Sedang-Berat)" data-marker="marker-lumbar">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <span class="queue-number" style="font-size:20px;">A-01</span>
             <span class="session-time-badge">10:30 SGT</span>
           </div>
           <h4 style="margin:0 0 4px; font-size:14px;">Amanda Tan</h4>
           <div style="font-size:12px; color:var(--muted);">Fisioterapi &amp; Spine Rehab</div>
-          <div style="margin-top:8px; font-size:11px; font-weight:700; color:var(--primary-dark);">● Ruang Tunggu A (Check-in)</div>
+          <div style="margin-top:8px; font-size:11px; font-weight:700; color:var(--primary-dark);">● Ruang Tunggu A
+            (Check-in)</div>
         </div>
 
         <!-- Patient 2 -->
-        <div class="patient-session-card" data-queue="B-02" data-name="Jason Lee" data-complaint="Rehabilitasi pasca operasi cedera ligamen lutut kanan (ACL rekonstruksi). Rasa kaku saat ekstensi penuh." data-pain="5 / 10 (Sedang)" data-marker="marker-knee">
+        <div class="patient-session-card" data-queue="B-02" data-name="Jason Lee"
+          data-complaint="Rehabilitasi pasca operasi cedera ligamen lutut kanan (ACL rekonstruksi). Rasa kaku saat ekstensi penuh."
+          data-pain="5 / 10 (Sedang)" data-marker="marker-knee">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <span class="queue-number" style="font-size:20px; color:#0284c7;">B-02</span>
             <span class="session-time-badge">11:45 SGT</span>
@@ -75,7 +86,9 @@
         </div>
 
         <!-- Patient 3 -->
-        <div class="patient-session-card" data-queue="C-03" data-name="Nur Aisyah" data-complaint="Kekakuan leher dan bahu atas kronis (trapezius spasm) akibat posisi kerja laptop berjam-jam." data-pain="6 / 10 (Sedang)" data-marker="marker-cervical">
+        <div class="patient-session-card" data-queue="C-03" data-name="Nur Aisyah"
+          data-complaint="Kekakuan leher dan bahu atas kronis (trapezius spasm) akibat posisi kerja laptop berjam-jam."
+          data-pain="6 / 10 (Sedang)" data-marker="marker-cervical">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <span class="queue-number" style="font-size:20px; color:#d97706;">C-03</span>
             <span class="session-time-badge">14:00 SGT</span>
@@ -87,7 +100,8 @@
       </div>
 
       <div style="margin-top:auto; padding-top:20px; border-top:1px solid var(--line);">
-        <div style="font-size:12px; font-weight:800; color:var(--text); margin-bottom:6px;">STANDAR STERILISASI JADWAL</div>
+        <div style="font-size:12px; font-weight:800; color:var(--text); margin-bottom:6px;">STANDAR STERILISASI JADWAL
+        </div>
         <p style="font-size:11px; color:var(--muted); line-height:1.5; margin:0;">
           Jeda otomatis 15 menit diterapkan antar sesi untuk persiapan bed &amp; unit Shockwave Therapy.
         </p>
@@ -99,11 +113,13 @@
       <!-- Action Banner: Queue Calling -->
       <div class="calling-banner" id="doctorCallingBanner">
         <div>
-          <span style="font-size:11px; text-transform:uppercase; letter-spacing:1px; opacity:0.9;">PASIEN AKTIF RUANG KONSULTASI</span>
+          <span style="font-size:11px; text-transform:uppercase; letter-spacing:1px; opacity:0.9;">PASIEN AKTIF RUANG
+            KONSULTASI</span>
           <h3 style="margin:4px 0 0; font-size:22px;">
             Antrean <span id="currentQueueBadge">A-01</span> — <span id="currentPatientName">Amanda Tan</span>
           </h3>
-          <div style="font-size:12px; opacity:0.9; margin-top:4px;">Layanan: Fisioterapi &amp; Rehabilitasi Postur · Ruang A2</div>
+          <div style="font-size:12px; opacity:0.9; margin-top:4px;">Layanan: Fisioterapi &amp; Rehabilitasi Postur ·
+            Ruang A2</div>
         </div>
 
         <div style="display:flex; gap:10px; align-items:center;">
@@ -114,10 +130,12 @@
       </div>
 
       <!-- Session Status Bar -->
-      <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px 20px; display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+      <div
+        style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px 20px; display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
         <div style="display:flex; align-items:center; gap:12px;">
           <strong style="font-size:14px;">Status Sesi Perawatan:</strong>
-          <select id="sessionStatusSelect" style="padding:6px 12px; border-radius:var(--radius-sm); border:1px solid var(--line); font-size:13px; font-weight:700;">
+          <select id="sessionStatusSelect"
+            style="padding:6px 12px; border-radius:var(--radius-sm); border:1px solid var(--line); font-size:13px; font-weight:700;">
             <option value="IN_PROGRESS">🔵 Sedang Berlangsung (In Therapy)</option>
             <option value="COMPLETED">🟢 Selesai Pemeriksaan (Completed)</option>
             <option value="NO_SHOW">🔴 Pasien Tidak Hadir (No-Show)</option>
@@ -139,21 +157,28 @@
           </div>
 
           <div style="margin-bottom:18px;">
-            <label style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Keluhan Utama Pasien (Chief Complaint):</label>
-            <div id="intakeChiefComplaint" style="font-size:14px; color:var(--text); line-height:1.6; background:#f8fafc; padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--line);">
+            <label
+              style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Keluhan
+              Utama Pasien (Chief Complaint):</label>
+            <div id="intakeChiefComplaint"
+              style="font-size:14px; color:var(--text); line-height:1.6; background:#f8fafc; padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--line);">
               Nyeri tajam pinggang bawah (L4-L5) saat membungkuk setelah maraton. Kesulitan duduk tegak &gt;20 menit.
             </div>
           </div>
 
           <div class="field-row" style="margin-bottom:18px;">
             <div>
-              <label style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Tingkat Keparahan Nyeri:</label>
+              <label
+                style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Tingkat
+                Keparahan Nyeri:</label>
               <div id="intakePainScale" style="font-size:16px; font-weight:900; color:#ef4444;">
                 7 / 10 (Sedang-Berat)
               </div>
             </div>
             <div>
-              <label style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Durasi Gejala:</label>
+              <label
+                style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Durasi
+                Gejala:</label>
               <div id="intakeDuration" style="font-size:14px; font-weight:700; color:var(--text);">
                 3 minggu terakhir
               </div>
@@ -161,20 +186,27 @@
           </div>
 
           <div style="margin-bottom:18px;">
-            <label style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Riwayat Alergi / Catatan Khusus:</label>
-            <p style="font-size:13px; color:var(--text); margin:0;">Tidak ada riwayat alergi obat analgesik topikal. Pernah fisioterapi tahun 2024.</p>
+            <label
+              style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Riwayat
+              Alergi / Catatan Khusus:</label>
+            <p style="font-size:13px; color:var(--text); margin:0;">Tidak ada riwayat alergi obat analgesik topikal.
+              Pernah fisioterapi tahun 2024.</p>
           </div>
 
           <!-- Ephemeral SIMRS Referral Bridge Status -->
-          <div style="background:#f0fdfa; border:1px solid #ccfbf1; border-radius:var(--radius-sm); padding:14px; margin-top:20px;">
+          <div
+            style="background:#f0fdfa; border:1px solid #ccfbf1; border-radius:var(--radius-sm); padding:14px; margin-top:20px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:12px; font-weight:800; color:var(--primary-dark);">📄 DOKUMEN RUJUKAN RS MITRA</span>
+              <span style="font-size:12px; font-weight:800; color:var(--primary-dark);">📄 DOKUMEN RUJUKAN RS
+                MITRA</span>
               <span class="status-pill confirmed" style="font-size:10px;">TTL: 70 JAM</span>
             </div>
             <p style="font-size:12px; color:var(--text-secondary); margin:6px 0 10px;">
-              Dokumen Rujukan_RS_Mitra.pdf telah ter-bridge ke SIMRS internal. Penyimpanan non-EMR sementara sesuai kebijakan privasi.
+              Dokumen Rujukan_RS_Mitra.pdf telah ter-bridge ke SIMRS internal. Penyimpanan non-EMR sementara sesuai
+              kebijakan privasi.
             </p>
-            <button type="button" class="btn btn-sm btn-soft" onclick="alert('Membuka pratinjau dokumen rujukan terenkripsi...')">
+            <button type="button" class="btn btn-sm btn-soft"
+              onclick="alert('Membuka pratinjau dokumen rujukan terenkripsi...')">
               👁️ Lihat Dokumen Rujukan
             </button>
           </div>
@@ -194,34 +226,40 @@
             <!-- Modern Anatomical Human Body Silhouette -->
             <svg class="pain-map-svg" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
               <!-- Head -->
-              <ellipse cx="100" cy="40" rx="20" ry="26" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+              <ellipse cx="100" cy="40" rx="20" ry="26" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
               <!-- Neck -->
-              <rect x="94" y="66" width="12" height="16" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+              <rect x="94" y="66" width="12" height="16" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
               <!-- Torso / Chest -->
-              <path d="M 65 82 L 135 82 L 125 200 L 75 200 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+              <path d="M 65 82 L 135 82 L 125 200 L 75 200 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
               <!-- Arms Left & Right -->
-              <path d="M 65 85 L 40 180 L 52 182 L 72 105 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
-              <path d="M 135 85 L 160 180 L 148 182 L 128 105 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+              <path d="M 65 85 L 40 180 L 52 182 L 72 105 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+              <path d="M 135 85 L 160 180 L 148 182 L 128 105 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
               <!-- Pelvis -->
-              <path d="M 75 200 L 125 200 L 120 230 L 80 230 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+              <path d="M 75 200 L 125 200 L 120 230 L 80 230 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
               <!-- Legs Left & Right -->
-              <path d="M 80 230 L 70 380 L 84 380 L 96 230 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
-              <path d="M 120 230 L 130 380 L 116 380 L 104 230 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+              <path d="M 80 230 L 70 380 L 84 380 L 96 230 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+              <path d="M 120 230 L 130 380 L 116 380 L 104 230 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
             </svg>
 
             <!-- Pain Markers (Anatomical Locations) -->
             <!-- Lumbar Spine (Lower Back) -->
-            <div class="pain-marker" id="marker-lumbar" style="top:47%; left:50%;" data-body-part="Pinggang Bawah (L4-L5 Lumbar)" data-clinical-note="Titik nyeri utama pasien Amanda Tan (Skala 7/10). Indikasi spasme otot paravertebralis.">
+            <div class="pain-marker" id="marker-lumbar" style="top:47%; left:50%;"
+              data-body-part="Pinggang Bawah (L4-L5 Lumbar)"
+              data-clinical-note="Titik nyeri utama pasien Amanda Tan (Skala 7/10). Indikasi spasme otot paravertebralis.">
               !
             </div>
 
             <!-- Cervical (Neck) -->
-            <div class="pain-marker" id="marker-cervical" style="top:20%; left:50%; background:#94a3b8;" data-body-part="Leher (Cervical Spine &amp; Trapezius)" data-clinical-note="Titik nyeri pasien Nur Aisyah (Skala 6/10). Kekakuan akibat postur duduk statis.">
+            <div class="pain-marker" id="marker-cervical" style="top:20%; left:50%; background:#94a3b8;"
+              data-body-part="Leher (Cervical Spine &amp; Trapezius)"
+              data-clinical-note="Titik nyeri pasien Nur Aisyah (Skala 6/10). Kekakuan akibat postur duduk statis.">
               !
             </div>
 
             <!-- Knee Joint -->
-            <div class="pain-marker" id="marker-knee" style="top:75%; left:62%; background:#94a3b8;" data-body-part="Lutut Kanan (Patellar &amp; ACL)" data-clinical-note="Titik rehabilitasi pasien Jason Lee (Skala 5/10). Pemulihan ligamen pasca rekonstruksi.">
+            <div class="pain-marker" id="marker-knee" style="top:75%; left:62%; background:#94a3b8;"
+              data-body-part="Lutut Kanan (Patellar &amp; ACL)"
+              data-clinical-note="Titik rehabilitasi pasien Jason Lee (Skala 5/10). Pemulihan ligamen pasca rekonstruksi.">
               !
             </div>
           </div>
@@ -244,4 +282,5 @@
   <!-- Modular Practitioner Script Bootstrap -->
   <script type="module" src="js/pages/practitioner.js"></script>
 </body>
+
 </html>

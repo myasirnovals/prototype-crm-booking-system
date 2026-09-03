@@ -19,7 +19,7 @@ export class AdminController {
     const session = authService.requireAuth([USER_ROLES.RECEPTIONIST, USER_ROLES.OWNER]);
     if (!session) return;
 
-    this.renderUserInfo(session.user);
+    this.renderUserInfo(session.user, session.role);
     this.setupAdminTabs();
     this.setupQueueCalling();
     this.setupPOSActions();
@@ -27,11 +27,18 @@ export class AdminController {
     this.setupSignOut();
   }
 
-  renderUserInfo(user) {
+  renderUserInfo(user, role) {
     const nameEl = document.getElementById("adminStaffName");
     const roleBadge = document.getElementById("adminRoleBadge");
+    const ownerLink = document.getElementById("adminOwnerPanelLink");
+
     if (nameEl) nameEl.textContent = user.name;
     if (roleBadge) roleBadge.textContent = `🏥 ${user.title || "Front Desk Receptionist"} (${user.branchName || "Orchard SG"})`;
+
+    // Strict security: Only OWNER role can see and access Owner HQ panel
+    if (ownerLink) {
+      ownerLink.style.display = role === USER_ROLES.OWNER ? "inline-flex" : "none";
+    }
   }
 
   setupAdminTabs() {

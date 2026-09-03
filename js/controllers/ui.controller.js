@@ -3,6 +3,8 @@
  * SOLID: Single Responsibility for Global UI Interactions, Navbar & Toasts
  */
 
+import { navbarService } from "../services/navbar.service.js";
+
 export class UIController {
   constructor() {
     this.navbar = document.getElementById("navbar");
@@ -14,6 +16,7 @@ export class UIController {
     this.setupNavbarScroll();
     this.setupMobileMenu();
     this.setupTabNavigation();
+    navbarService.sync();
   }
 
   setupNavbarScroll() {
@@ -49,12 +52,13 @@ export class UIController {
         </div>
         <div class="drawer-links">
           <a href="#features">Features</a>
-          <a href="#app">Product</a>
-          <a href="#markets">Market</a>
-          <a href="#demo">Demo</a>
+          <a href="#app">Katalog Layanan</a>
+          <a href="#markets">Cabang &amp; Regional</a>
+          <a href="demo.html">Demo</a>
           <hr style="border:0;border-top:1px solid var(--line);margin:12px 0;">
-          <a href="sign-in.html" class="btn btn-soft full">Sign In</a>
-          <a href="admin.html" class="btn btn-primary full">Panel Operasional</a>
+          <div class="drawer-auth-slot">
+            ${navbarService.getMobileDrawerAuthLinks()}
+          </div>
         </div>
       `;
       document.body.appendChild(drawer);

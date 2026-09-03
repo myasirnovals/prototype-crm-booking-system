@@ -239,3 +239,40 @@ footer {
     justify-content: center;
   }
 }
+
+/* Role-Based Navigation Security Rules */
+[data-role-access] {
+  display: none;
+}
+
+body.role-USER [data-role-access*="PATIENT"],
+body.role-USER [data-role-access*="USER"] {
+  display: inline-flex;
+}
+
+body.role-OWNER [data-role-access*="OWNER"],
+body.role-OWNER [data-role-access*="STAFF"] {
+  display: inline-flex;
+}
+
+body.role-RECEPTIONIST [data-role-access*="RECEPTIONIST"],
+body.role-RECEPTIONIST [data-role-access*="STAFF"] {
+  display: inline-flex;
+}
+
+body.role-PRACTITIONER [data-role-access*="PRACTITIONER"],
+body.role-PRACTITIONER [data-role-access*="STAFF"] {
+  display: inline-flex;
+}
+
+body.role-GUEST [data-role-access*="GUEST"] {
+  display: inline-flex;
+}
+
+/* Strictly hide internal staff & operational elements from patients */
+body.role-USER [data-hide-from*="PATIENT"],
+body.role-USER [data-hide-from*="USER"],
+body.role-USER .staff-only-nav {
+  display: none !important;
+}
+

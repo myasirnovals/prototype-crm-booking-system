@@ -6,8 +6,10 @@
 import { notificationService } from "../services/notification.service.js";
 import { bookingService } from "../services/booking.service.js";
 import { soundService } from "../services/sound.service.js";
+import { navbarService } from "../services/navbar.service.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  navbarService.sync();
   const latestBooking = bookingService.getAllBookings()[0] || {
     code: "BK-20260901-0812",
     patientName: "Amanda Tan",

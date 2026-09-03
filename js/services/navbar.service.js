@@ -85,7 +85,7 @@ class NavbarService {
     if (role === USER_ROLES.USER || role === "GUEST") {
       ticketNav.innerHTML = `
         <a href="patient-portal.html" class="btn btn-sm btn-soft">← Portal Pasien Mandiri</a>
-        <a href="index.html#app" class="btn btn-sm btn-primary">+ Buat Janji Baru</a>
+        <a href="booking.html" class="btn btn-sm btn-primary">+ Buat Janji Baru</a>
       `;
     } else if (role === USER_ROLES.OWNER) {
       ticketNav.innerHTML = `

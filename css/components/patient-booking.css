@@ -1,0 +1,302 @@
+/* ==========================================================================
+   Cliniva Component — Patient Booking Wizard (booking.html)
+   SOLID: Single Responsibility for 4-Step Patient Appointment Wizard
+   ========================================================================== */
+
+.booking-page-container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+/* Wizard Step Indicator */
+.booking-wizard-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.wizard-step-node {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.wizard-step-node .step-tag {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wizard-step-node .step-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.wizard-step-node.active {
+  border-color: var(--primary);
+  background: #f0fdfa;
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.08);
+}
+
+.wizard-step-node.active .step-tag {
+  color: var(--primary);
+}
+
+.wizard-step-node.completed {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.wizard-step-node.completed .step-tag {
+  color: var(--success-dark);
+}
+
+/* Wizard Panes */
+.wizard-step-pane {
+  display: none;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  animation: fadeUp 0.25s ease;
+}
+
+.wizard-step-pane.active {
+  display: block;
+}
+
+.wizard-pane-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.wizard-pane-header h2 {
+  font-size: 20px;
+  letter-spacing: -0.5px;
+  margin: 0 0 6px;
+  color: var(--text);
+}
+
+.wizard-pane-header p {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Step 1: Branch & Service Selection */
+.booking-branch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.branch-choice-card {
+  border: 2px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.branch-choice-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.branch-choice-card.selected {
+  border-color: var(--primary);
+  background: #f0fdfa;
+}
+
+.branch-choice-card.selected::after {
+  content: "TERPILIH";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--primary-dark);
+  background: #ccfbf1;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+.booking-service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.service-choice-card {
+  border: 2px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-choice-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.service-choice-card.selected {
+  border-color: var(--primary);
+  background: #f0fdfa;
+}
+
+.service-card-price {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+/* Step 2: Practitioner & Time Slots */
+.practitioner-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.practitioner-choice-card {
+  border: 2px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.practitioner-choice-card:hover {
+  border-color: var(--primary);
+}
+
+.practitioner-choice-card.selected {
+  border-color: var(--primary);
+  background: #f0fdfa;
+}
+
+.slot-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.slot-choice-btn {
+  padding: 12px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--text);
+}
+
+.slot-choice-btn:hover {
+  border-color: var(--primary);
+  background: #f8fafc;
+}
+
+.slot-choice-btn.selected {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+}
+
+/* Step 3: Intake Form & Body Pain Map */
+.intake-pain-map-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.intake-pain-visual {
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Step 4: Summary & Deposit */
+.booking-summary-card {
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.booking-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 13px;
+}
+
+.booking-summary-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.booking-deposit-total {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--primary-dark);
+}
+
+/* Wizard Navigation Bar */
+.wizard-footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 768px) {
+  .booking-wizard-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .intake-pain-map-container {
+    grid-template-columns: 1fr;
+  }
+  .wizard-step-pane {
+    padding: 20px 16px;
+  }
+}

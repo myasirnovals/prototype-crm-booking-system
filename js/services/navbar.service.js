@@ -228,7 +228,7 @@ class NavbarService {
 
     return `
       <a href="sign-in.html" class="btn btn-soft full">Sign In</a>
-      <a href="#app" class="btn btn-primary full">Booking Mandiri</a>
+      <a href="onboarding.html" class="btn btn-primary full">Get Started</a>
     `;
   }
 }

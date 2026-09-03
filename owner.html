@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Panel Eksekutif &amp; Pemilik — Cliniva Multi-Branch HQ</title>
-  <meta name="description" content="Executive dashboard for clinic owners: multi-branch consolidation, branch configuration, adaptive business profile, and audit logs." />
+  <meta name="description"
+    content="Executive dashboard for clinic owners: multi-branch consolidation, branch configuration, adaptive business profile, and audit logs." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
 
   <!-- Modular Design System Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
@@ -17,14 +20,16 @@
 
 <body>
   <!-- Header Topbar -->
-  <header style="background:#fff; border-bottom:1px solid var(--line); padding:14px 28px; position:sticky; top:0; z-index:100;">
+  <header
+    style="background:#fff; border-bottom:1px solid var(--line); padding:14px 28px; position:sticky; top:0; z-index:100;">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div style="display:flex; align-items:center; gap:16px;">
         <a href="index.html" class="logo">
           <span class="logo-mark">✦</span>
           Cliniva HQ
         </a>
-        <span class="pill" style="font-size:11px; padding:4px 10px; background:#f0fdfa; color:#0f766e; font-weight:800;">
+        <span class="pill"
+          style="font-size:11px; padding:4px 10px; background:#f0fdfa; color:#0f766e; font-weight:800;">
           Executive Mode: Multi-Branch Overview
         </span>
       </div>
@@ -44,23 +49,29 @@
     <!-- Sidebar Navigation -->
     <aside class="owner-sidebar">
       <div class="side-menu">
-        <button class="side-link owner-tab-btn active" data-pane="paneOverview" style="border:0;background:transparent;width:100%;text-align:left;">
+        <button class="side-link owner-tab-btn active" data-pane="paneOverview"
+          style="border:0;background:transparent;width:100%;text-align:left;">
           Analitik &amp; Omset Konsolidasi
         </button>
-        <button class="side-link owner-tab-btn" data-pane="paneAdaptiveProfile" style="border:0;background:transparent;width:100%;text-align:left;">
+        <button class="side-link owner-tab-btn" data-pane="paneAdaptiveProfile"
+          style="border:0;background:transparent;width:100%;text-align:left;">
           Profil Bisnis Adaptif
         </button>
-        <button class="side-link owner-tab-btn" data-pane="paneStaff" style="border:0;background:transparent;width:100%;text-align:left;">
+        <button class="side-link owner-tab-btn" data-pane="paneStaff"
+          style="border:0;background:transparent;width:100%;text-align:left;">
           Manajemen Praktisi &amp; Dokter
         </button>
-        <button class="side-link owner-tab-btn" data-pane="paneAudit" style="border:0;background:transparent;width:100%;text-align:left;">
+        <button class="side-link owner-tab-btn" data-pane="paneAudit"
+          style="border:0;background:transparent;width:100%;text-align:left;">
           Audit Trail Log Sistem
         </button>
       </div>
 
-      <div class="side-card" style="margin-top:auto; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px;">
+      <div class="side-card"
+        style="margin-top:auto; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px;">
         <div style="font-size:12px; font-weight:800; color:var(--primary); margin-bottom:4px;">MULTI-TENANT ACTIVE</div>
-        <p style="font-size:11px; color:var(--muted); margin:0;">Mengelola 3 cabang: Singapore Paragon, Kuala Lumpur Pavilion, &amp; Penang Gurney.</p>
+        <p style="font-size:11px; color:var(--muted); margin:0;">Mengelola 3 cabang: Singapore Paragon, Kuala Lumpur
+          Pavilion, &amp; Penang Gurney.</p>
       </div>
     </aside>
 
@@ -76,7 +87,8 @@
             </p>
           </div>
           <div style="display:flex; gap:8px;">
-            <button class="btn btn-sm btn-white" onclick="alert('Laporan keuangan bulan berjalan berhasil diunduh (PDF / Excel).')">Unduh Laporan</button>
+            <button class="btn btn-sm btn-white"
+              onclick="alert('Laporan keuangan bulan berjalan berhasil diunduh (PDF / Excel).')">Unduh Laporan</button>
           </div>
         </div>
 
@@ -131,7 +143,11 @@
         <div style="display:flex; justify-content:space-between; align-items:center; margin:28px 0 14px;">
           <div>
             <h3 style="margin:0; font-size:18px;">Performa Finansial &amp; Konfigurasi per Cabang</h3>
-            <p style="margin:4px 0 0; font-size:12px; color:var(--muted);">Klik tombol Kelola Cabang untuk memperbarui profil bisnis, jam buka, atau kontak cabang.</p>
+            <p style="margin:4px 0 0; font-size:12px; color:var(--muted);">Klik tombol Kelola Cabang untuk memperbarui
+              profil bisnis, jam buka, atau kontak cabang.</p>
+          </div>
+          <div>
+            <button class="btn btn-primary" id="addBranchBtn">Tambah Cabang</button>
           </div>
         </div>
 
@@ -146,7 +162,8 @@
           <div>
             <h2 style="font-size:24px; letter-spacing:-0.5px;">Katalog Profil Bisnis Adaptif</h2>
             <p style="color:var(--muted); font-size:14px; margin-top:4px;">
-              Sesuai SRS FR-CONFIG-03: Menyesuaikan alur formulir keluhan pasien (*intake form*) secara dinamis sesuai tipe spesialisasi tiap cabang.
+              Sesuai SRS FR-CONFIG-03: Menyesuaikan alur formulir keluhan pasien (*intake form*) secara dinamis sesuai
+              tipe spesialisasi tiap cabang.
             </p>
           </div>
         </div>
@@ -154,8 +171,10 @@
         <div class="profile-selection-grid">
           <div class="profile-card" data-profile="SPA_WELLNESS">
             <h3 style="font-size:16px; margin:0 0 6px;">Spa &amp; Wellness</h3>
-            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Fasilitas relaksasi, body scrub, aroma terapi, &amp; pijat refleksi.</p>
-            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Fitur Intake Aktif:</div>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Fasilitas relaksasi, body scrub, aroma
+              terapi, &amp; pijat refleksi.</p>
+            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Fitur Intake
+              Aktif:</div>
             <ul class="profile-feature-list">
               <li>Preferensi gender terapis</li>
               <li>Pilihan aroma minyak esensial</li>
@@ -166,8 +185,10 @@
 
           <div class="profile-card active" data-profile="TCM_PHYSIO">
             <h3 style="font-size:16px; margin:0 0 6px;">TCM &amp; Fisioterapi</h3>
-            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Akupunktur medis, rehabilitasi cedera olahraga, spinal decompression.</p>
-            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Fitur Intake Aktif:</div>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Akupunktur medis, rehabilitasi cedera
+              olahraga, spinal decompression.</p>
+            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Fitur Intake
+              Aktif:</div>
             <ul class="profile-feature-list">
               <li><strong>Body Pain Map</strong> visual interaktif</li>
               <li>Riwayat cedera sendi &amp; postur</li>
@@ -178,8 +199,10 @@
 
           <div class="profile-card" data-profile="MEDICAL_CLINIC">
             <h3 style="font-size:16px; margin:0 0 6px;">Klinik Medis &amp; Faskes</h3>
-            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Poli umum, spesialis, integrasi asuransi swasta &amp; bridging SIMRS.</p>
-            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Fitur Intake Aktif:</div>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Poli umum, spesialis, integrasi asuransi
+              swasta &amp; bridging SIMRS.</p>
+            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Fitur Intake
+              Aktif:</div>
             <ul class="profile-feature-list">
               <li>Upload berkas rujukan (SIMRS Proxy)</li>
               <li>Jalur pembayaran Asuransi / BPJS</li>
@@ -199,7 +222,9 @@
               Daftar praktisi, hak akses spesialisasi, dan alokasi ruangan per cabang klinik.
             </p>
           </div>
-          <button class="btn btn-primary" onclick="alert('Fitur registrasi praktisi baru siap dihubungkan ke modul database Prisma.')">+ Tambah Praktisi</button>
+          <button class="btn btn-primary"
+            onclick="alert('Fitur registrasi praktisi baru siap dihubungkan ke modul database Prisma.')">+ Tambah
+            Praktisi</button>
         </div>
 
         <div class="data-table-container">
@@ -253,7 +278,8 @@
           <div>
             <h2 style="font-size:24px; letter-spacing:-0.5px;">Audit Trail Log Keuangan &amp; Operasional</h2>
             <p style="color:var(--muted); font-size:14px; margin-top:4px;">
-              Catatan kepatuhan hukum UU PDP / PDPA: Semua transaksi, perubahan cabang, pembatalan, dan reschedule tercatat dengan timestamp.
+              Catatan kepatuhan hukum UU PDP / PDPA: Semua transaksi, perubahan cabang, pembatalan, dan reschedule
+              tercatat dengan timestamp.
             </p>
           </div>
         </div>
@@ -316,7 +342,8 @@
       <div class="branch-modal-header">
         <div>
           <h3 id="branchModalTitle" style="margin:0; font-size:18px;">Konfigurasi Cabang</h3>
-          <p style="margin:4px 0 0; font-size:12px; color:var(--muted);">Kelola profil bisnis adaptif, identitas sub-brand, dan jam operasional cabang.</p>
+          <p style="margin:4px 0 0; font-size:12px; color:var(--muted);">Kelola profil bisnis adaptif, identitas
+            sub-brand, dan jam operasional cabang.</p>
         </div>
         <button type="button" class="btn-close-modal" id="closeBranchModalBtn" aria-label="Tutup">✕</button>
       </div>
@@ -326,14 +353,16 @@
 
         <!-- Platform Governance Banner (Powered by Cliniva) -->
         <div class="platform-governance-box">
-          <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:var(--primary-dark);">
+          <div
+            style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:var(--primary-dark);">
             Standar Lisensi &amp; Watermark Platform
           </div>
           <div style="font-size:13px; font-weight:700; color:var(--text); margin-top:4px;">
             ✦ Cliniva Enterprise — Powered by Cliniva
           </div>
           <p style="font-size:11px; color:var(--muted); margin:4px 0 0; line-height:1.4;">
-            Watermark resmi Cliniva disematkan otomatis pada e-tiket, konfirmasi WhatsApp, dan portal reservasi untuk menjaga validitas lisensi platform.
+            Watermark resmi Cliniva disematkan otomatis pada e-tiket, konfirmasi WhatsApp, dan portal reservasi untuk
+            menjaga validitas lisensi platform.
           </p>
         </div>
 
@@ -361,11 +390,14 @@
         <!-- Branch Specific Logo Preview & Uploader -->
         <div class="field">
           <label>Logo Sub-Brand Cabang</label>
-          <div style="display:flex; align-items:center; gap:16px; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-sm); padding:12px;">
-            <img id="editBranchLogoPreview" src="" alt="Logo Cabang" style="width:48px; height:48px; border-radius:var(--radius-sm); object-fit:cover; border:1px solid var(--line); background:#fff;" />
+          <div
+            style="display:flex; align-items:center; gap:16px; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-sm); padding:12px;">
+            <img id="editBranchLogoPreview" src="" alt="Logo Cabang"
+              style="width:48px; height:48px; border-radius:var(--radius-sm); object-fit:cover; border:1px solid var(--line); background:#fff;" />
             <div style="flex:1;">
               <input type="file" id="editBranchLogoFile" accept="image/*" style="font-size:12px;" />
-              <div style="font-size:11px; color:var(--muted); margin-top:4px;">Maksimal 2MB (PNG, JPG, WebP transparan).</div>
+              <div style="font-size:11px; color:var(--muted); margin-top:4px;">Maksimal 2MB (PNG, JPG, WebP transparan).
+              </div>
             </div>
           </div>
         </div>
@@ -415,4 +447,5 @@
   <!-- Modular Owner Script Bootstrap -->
   <script type="module" src="js/pages/owner.js"></script>
 </body>
+
 </html>

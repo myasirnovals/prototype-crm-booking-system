@@ -114,6 +114,22 @@ class NavbarService {
     const langSwitcher = navActions.querySelector(".lang-switcher-wrap");
     const langHtml = langSwitcher ? langSwitcher.outerHTML : "";
 
+    if (role === "GUEST" || !user) {
+      // If guest and already rendered in static HTML, do not overwrite DOM or break language switcher
+      const existingGetStarted = navActions.querySelector('a[href="onboarding.html"]');
+      if (existingGetStarted) {
+        return;
+      }
+
+      // If resetting from logged-in session back to guest
+      navActions.innerHTML = `
+        ${langHtml}
+        <a href="sign-in.html" class="btn btn-soft" data-i18n="nav.signIn">Sign In</a>
+        <a href="onboarding.html" class="btn btn-primary" data-i18n="nav.getStarted">Get Started</a>
+      `;
+      return;
+    }
+
     if (role === USER_ROLES.USER && user) {
       // PATIENT LOGGED IN: Strictly patient options only. NO staff/operational buttons!
       navActions.innerHTML = `
@@ -163,13 +179,6 @@ class NavbarService {
           <a href="admin.html" class="btn btn-sm btn-soft">Operasional</a>
           <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Keluar">Sign Out</button>
         </div>
-      `;
-    } else {
-      // GUEST (Not logged in)
-      navActions.innerHTML = `
-        ${langHtml}
-        <a href="sign-in.html" class="btn btn-soft" data-i18n="nav.signIn">Sign In</a>
-        <a href="#app" class="btn btn-primary" data-i18n="nav.getStarted">Booking Mandiri</a>
       `;
     }
 

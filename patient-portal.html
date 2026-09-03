@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal Pasien Mandiri — Cliniva Digital Healthcare</title>
+  <meta name="description" content="Patient self-service portal for appointments, digital e-ticket QR, live queue tracking, and booking management." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Modular Design System Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="patient-layout">
+  <!-- Header Topbar -->
+  <header style="background:#fff; border-bottom:1px solid var(--line); padding:16px 28px; position:sticky; top:0; z-index:100;">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <a href="index.html" class="logo">
+          <span class="logo-mark">✦</span>
+          Cliniva Pasien
+        </a>
+        <span class="pill" style="font-size:11px; padding:4px 10px; background:#f0fdf4; color:#16a34a; font-weight:800;">
+          🛡️ Pasien Terverifikasi PDPA
+        </span>
+      </div>
+
+      <div style="display:flex; gap:14px; align-items:center;">
+        <div style="text-align:right;">
+          <div id="patientPortalName" style="font-size:13px; font-weight:800; color:var(--text);">Amanda Tan</div>
+          <div id="patientPortalContact" style="font-size:11px; color:var(--muted);">+65 8123 4567</div>
+        </div>
+        <a href="index.html#app" class="btn btn-sm btn-primary">+ Jadwal Baru</a>
+        <button type="button" class="btn btn-sm btn-soft" id="patientSignOutBtn">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Patient Portal Body -->
+  <main class="patient-container">
+    <!-- Welcome Banner -->
+    <section class="patient-welcome-banner">
+      <div>
+        <span class="badge-live" style="background:rgba(255,255,255,0.2); color:#fff; margin-bottom:10px;">
+          ✓ JANJI TEMU HARI INI AKTIF
+        </span>
+        <h1 style="font-size:28px; margin:4px 0 8px; letter-spacing:-0.5px;">
+          Selamat Datang, Amanda Tan
+        </h1>
+        <p style="font-size:14px; opacity:0.9; margin:0; max-width:600px; line-height:1.5;">
+          Janji temu fisioterapi Anda di Orchard Wellness Clinic telah terkonfirmasi. Tunjukkan kode QR di bawah ini pada saat kedatangan di kiosk klinik.
+        </p>
+      </div>
+
+      <div>
+        <a href="ticket.html" class="btn btn-white" style="font-weight:800;">
+          🎟️ Tampilan Tiket Lengkap
+        </a>
+      </div>
+    </section>
+
+    <!-- Live Waiting Room Queue Tracker -->
+    <section class="patient-queue-tracker">
+      <div style="display:flex; align-items:center; gap:20px;">
+        <div class="queue-badge-giant">A-01</div>
+        <div class="queue-status-text">
+          <h3>Nomor Antrean Anda: A-01</h3>
+          <p>
+            Status: <span style="font-weight:800; color:var(--primary);">Dipanggil ke Ruang Periksa</span> · Fisioterapi bersama <strong>Dr. Lim Wei Han</strong>
+          </p>
+        </div>
+      </div>
+
+      <div style="text-align:right;">
+        <span class="status-pill confirmed">READY IN CLINIC</span>
+        <div style="font-size:12px; color:var(--muted); margin-top:6px;">Lokasi: Lantai 2, Ruang A2</div>
+      </div>
+    </section>
+
+    <!-- Grid: Active Ticket on Left, History & Settings on Right -->
+    <div class="portal-grid">
+      <!-- Left Column: Active Digital Ticket -->
+      <section>
+        <div class="digital-ticket" style="margin-top:0;">
+          <div class="ticket-header">
+            <div class="ticket-brand">CLINIVA HEALTHCARE • ORCHARD WELLNESS CLINIC</div>
+            <div class="ticket-code">BK-20260901-0812</div>
+            <span class="ticket-status-pill">✓ STATUS: CONFIRMED</span>
+          </div>
+
+          <div class="ticket-body">
+            <div class="ticket-row">
+              <span class="ticket-label">Layanan Medis:</span>
+              <span class="ticket-val">Fisioterapi &amp; Postural Rehabilitation</span>
+            </div>
+            <div class="ticket-row">
+              <span class="ticket-label">Praktisi / Dokter:</span>
+              <span class="ticket-val">Dr. Lim Wei Han</span>
+            </div>
+            <div class="ticket-row">
+              <span class="ticket-label">Jadwal Sesi:</span>
+              <span class="ticket-val" style="color:var(--primary-dark);">Rabu, 10:30 SGT</span>
+            </div>
+            <div class="ticket-row">
+              <span class="ticket-label">Ruangan / Bed:</span>
+              <span class="ticket-val">Room A2 (Lantai 2)</span>
+            </div>
+            <div class="ticket-row">
+              <span class="ticket-label">Status Pembayaran:</span>
+              <span class="ticket-val" style="color:var(--success-dark);">DEPOSIT PAID (SGD 30.00)</span>
+            </div>
+
+            <div class="ticket-divider-perforated">
+              <div class="ticket-dashed-line"></div>
+            </div>
+
+            <div class="ticket-qr-section">
+              <div class="qr-canvas-box">
+                <!-- High Quality SVG QR Code for Scanner -->
+                <svg width="140" height="140" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="5" y="5" width="26" height="26" fill="#0f172a" rx="4"/>
+                  <rect x="9" y="9" width="18" height="18" fill="#fff" rx="2"/>
+                  <rect x="13" y="13" width="10" height="10" fill="#0f766e" rx="1"/>
+                  <rect x="69" y="5" width="26" height="26" fill="#0f172a" rx="4"/>
+                  <rect x="73" y="9" width="18" height="18" fill="#fff" rx="2"/>
+                  <rect x="77" y="13" width="10" height="10" fill="#0f766e" rx="1"/>
+                  <rect x="5" y="69" width="26" height="26" fill="#0f172a" rx="4"/>
+                  <rect x="9" y="73" width="18" height="18" fill="#fff" rx="2"/>
+                  <rect x="13" y="77" width="10" height="10" fill="#0f766e" rx="1"/>
+                  <rect x="36" y="8" width="6" height="6" fill="#0f172a"/>
+                  <rect x="46" y="8" width="8" height="6" fill="#0f172a"/>
+                  <rect x="58" y="12" width="6" height="6" fill="#0f766e"/>
+                  <rect x="36" y="36" width="28" height="28" fill="#0f172a" rx="3"/>
+                  <rect x="42" y="42" width="16" height="16" fill="#fff" rx="2"/>
+                  <rect x="46" y="46" width="8" height="8" fill="#0f766e"/>
+                  <rect x="72" y="70" width="20" height="6" fill="#0f172a"/>
+                </svg>
+              </div>
+
+              <p style="font-size:12px; color:var(--muted); margin:10px 0 16px;">
+                Tunjukkan QR Code ini ke scanner kiosk klinik untuk check-in otomatis.
+              </p>
+
+              <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+                <button type="button" class="btn btn-sm btn-primary" id="patientDownloadIcsBtn">
+                  📅 Simpan ke Kalender (.ics)
+                </button>
+                <button type="button" class="btn btn-sm btn-soft" id="patientRescheduleBtn">
+                  🔄 Reschedule Jadwal
+                </button>
+                <button type="button" class="btn btn-sm btn-soft" id="patientCancelBtn" style="color:#ef4444;">
+                  ✕ Batalkan Janji
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Past History & Preferences -->
+      <section>
+        <!-- Past Visits Card -->
+        <div class="portal-card">
+          <h3 style="font-size:16px; margin:0 0 14px;">Riwayat Kunjungan Sebelumnya</h3>
+
+          <div class="history-item">
+            <div class="history-meta">
+              <strong>Fisioterapi &amp; Rehabilitasi Pinggang</strong>
+              <span>15 Agustus 2026 · Dr. Lim Wei Han · Orchard SG</span>
+            </div>
+            <span class="status-pill confirmed" style="font-size:11px;">SELESAI</span>
+          </div>
+
+          <div class="history-item">
+            <div class="history-meta">
+              <strong>Konsultasi Evaluasi Postur &amp; Spine</strong>
+              <span>28 Juli 2026 · Dr. Lim Wei Han · Orchard SG</span>
+            </div>
+            <span class="status-pill confirmed" style="font-size:11px;">SELESAI</span>
+          </div>
+        </div>
+
+        <!-- Notification Preferences Card -->
+        <div class="portal-card">
+          <h3 style="font-size:16px; margin:0 0 12px;">Preferensi Pengingat Notifikasi</h3>
+          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">
+            Pilih saluran komunikasi utama untuk menerima konfirmasi, pengingat H-24 jam, dan update antrean:
+          </p>
+
+          <label class="checkbox-line" style="margin-bottom:10px;">
+            <input type="radio" name="patientNotifChannel" value="whatsapp" checked>
+            <span><strong>WhatsApp (+65 8123 4567)</strong> — Direkomendasikan</span>
+          </label>
+
+          <label class="checkbox-line">
+            <input type="radio" name="patientNotifChannel" value="email">
+            <span><strong>Email Resmi (amanda@tan.sg)</strong></span>
+          </label>
+        </div>
+
+        <!-- Quick Booking Banner -->
+        <div style="background:#f8fafc; border:1px dashed var(--line); border-radius:var(--radius-lg); padding:20px; text-align:center;">
+          <h4 style="font-size:14px; margin:0 0 6px;">Butuh reservasi sesi berikutnya?</h4>
+          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">
+            Dapatkan diskon paket sesi terapi atau jadwalkan reservasi untuk keluarga Anda.
+          </p>
+          <a href="index.html#app" class="btn btn-sm btn-primary full">
+            Buka Katalog &amp; Pilih Jadwal Baru →
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="margin-top:auto; background:#fff; border-top:1px solid var(--line); padding:20px 0;">
+    <div class="container footer-inner" style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted);">
+      <div>© 2026 Cliniva Healthcare Systems. Portal Pasien Mandiri Terenkripsi.</div>
+      <div style="display:flex; gap:16px;">
+        <a href="index.html">Beranda Publik</a>
+        <a href="sign-in.html">Ganti Akun</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modular Patient Portal Script Bootstrap -->
+  <script type="module" src="js/pages/patient-portal.js"></script>
+</body>
+</html>

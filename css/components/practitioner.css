@@ -1,0 +1,193 @@
+/* ==========================================================================
+   Cliniva Component — Practitioner / Doctor Workspace
+   SOLID: Single Responsibility for Doctor Schedule, Calling Chime & Body Pain Map
+   ========================================================================== */
+
+.doctor-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.doctor-sidebar {
+  width: 320px;
+  background: #ffffff;
+  border-right: 1px solid var(--line);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.doctor-main {
+  flex: 1;
+  padding: 28px 36px;
+  overflow-y: auto;
+}
+
+/* Patient Queue List on Doctor Dashboard */
+.patient-queue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.patient-session-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.patient-session-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.patient-session-card.active {
+  border-color: #0284c7;
+  background: #f0f9ff;
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.12);
+}
+
+.session-time-badge {
+  font-size: 12px;
+  font-weight: 800;
+  color: #0284c7;
+  background: #e0f2fe;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+/* Clinical Intake Details & Body Pain Map */
+.clinical-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.intake-detail-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.pain-map-container {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.pain-map-visual {
+  position: relative;
+  display: inline-block;
+  margin: 16px auto;
+  max-width: 280px;
+  width: 100%;
+}
+
+.pain-map-svg {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 12px rgba(15, 23, 42, 0.06));
+}
+
+.pain-marker {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.35);
+  animation: pulseMarker 2s infinite;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes pulseMarker {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.pain-legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* Call Queue Banner for Doctor */
+.calling-banner {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(2, 132, 199, 0.25);
+  margin-bottom: 24px;
+}
+
+.calling-banner.chime-active {
+  animation: bannerPulse 1s infinite alternate;
+}
+
+@keyframes bannerPulse {
+  from {
+    box-shadow: 0 10px 25px rgba(2, 132, 199, 0.25);
+  }
+  to {
+    box-shadow: 0 15px 35px rgba(2, 132, 199, 0.5);
+  }
+}
+
+@media (max-width: 960px) {
+  .doctor-layout {
+    flex-direction: column;
+  }
+  .doctor-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .clinical-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -20,3 +20,7 @@
 @import "components/ticket.css";
 @import "components/demo.css";
 @import "components/onboarding.css";
+@import "components/owner.css";
+@import "components/practitioner.css";
+@import "components/patient-portal.css";
+

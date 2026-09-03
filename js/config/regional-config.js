@@ -33,17 +33,20 @@ export const REGIONAL_CONFIG = {
   }
 };
 
+export { USER_ROLES, ROLE_CONFIG, REGISTERED_USERS } from "./role-routes.js";
+
 export const DEMO_CREDENTIALS = {
   staff: {
-    email: "admin@orchardclinic.sg",
+    email: "owner@cliniva.com",
     roles: [
       "Super Admin / Owner",
-      "Branch Admin",
-      "Receptionist / Front Desk",
-      "Practitioner / Doctor / Therapist"
+      "Practitioner / Doctor / Therapist",
+      "Receptionist / Front Desk"
     ]
   },
   patient: {
+    phone: "+65 8123 4567",
+    email: "amanda@tan.sg",
     demoOtp: "123456"
   }
 };

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Eksekutif &amp; Pemilik — Cliniva Multi-Branch HQ</title>
+  <meta name="description" content="Executive dashboard for clinic owners: multi-branch consolidation, clinic brand configuration, adaptive business profile, and audit logs." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Modular Design System Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <!-- Header Topbar -->
+  <header style="background:#fff; border-bottom:1px solid var(--line); padding:14px 28px; position:sticky; top:0; z-index:100;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <a href="index.html" class="logo">
+          <span class="logo-mark">✦</span>
+          Cliniva HQ
+        </a>
+        <span class="pill" style="font-size:11px; padding:4px 10px; background:#f0fdfa; color:#0f766e; font-weight:800;">
+          👑 Executive Mode: Multi-Branch Overview
+        </span>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:center;">
+        <div style="text-align:right; margin-right:8px;">
+          <div id="ownerUserName" style="font-size:13px; font-weight:800; color:var(--text);">Dr. Hendra Wijaya</div>
+          <div id="ownerUserRole" style="font-size:11px; color:var(--muted);">Chief Executive &amp; Clinic Owner</div>
+        </div>
+        <a href="admin.html" class="btn btn-sm btn-soft">Panel Operasional →</a>
+        <button type="button" class="btn btn-sm btn-primary" id="ownerSignOutBtn">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="owner-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="owner-sidebar">
+      <div class="side-menu">
+        <button class="side-link owner-tab-btn active" data-pane="paneOverview" style="border:0;background:transparent;width:100%;text-align:left;">
+          📊 Analitik &amp; Omset Konsolidasi
+        </button>
+        <button class="side-link owner-tab-btn" data-pane="paneBranding" style="border:0;background:transparent;width:100%;text-align:left;">
+          ⚙️ Identitas &amp; Logo Resmi Klinik
+        </button>
+        <button class="side-link owner-tab-btn" data-pane="paneAdaptiveProfile" style="border:0;background:transparent;width:100%;text-align:left;">
+          🔄 Profil Bisnis Adaptif
+        </button>
+        <button class="side-link owner-tab-btn" data-pane="paneStaff" style="border:0;background:transparent;width:100%;text-align:left;">
+          🧑‍⚕️ Manajemen Praktisi &amp; Dokter
+        </button>
+        <button class="side-link owner-tab-btn" data-pane="paneAudit" style="border:0;background:transparent;width:100%;text-align:left;">
+          📜 Audit Trail Log Sistem
+        </button>
+      </div>
+
+      <div class="side-card" style="margin-top:auto; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px;">
+        <div style="font-size:12px; font-weight:800; color:var(--primary); margin-bottom:4px;">MULTI-TENANT ACTIVE</div>
+        <p style="font-size:11px; color:var(--muted); margin:0;">Mengelola 3 cabang: Singapore Paragon, Kuala Lumpur Pavilion, &amp; Penang Gurney.</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="owner-main">
+      <!-- PANE 1: OVERVIEW & MULTI-BRANCH ANALYTICS -->
+      <section class="owner-tab-pane active" id="paneOverview">
+        <div class="panel-top">
+          <div>
+            <h2 style="font-size:24px; letter-spacing:-0.5px;">Dashboard Eksekutif &amp; Analitik Omset</h2>
+            <p style="color:var(--muted); font-size:14px; margin-top:4px;">
+              Konsolidasi data performa seluruh cabang faskes, klinik, dan spa secara real-time.
+            </p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-sm btn-white" onclick="alert('Laporan keuangan bulan berjalan berhasil diunduh (PDF / Excel).')">📥 Unduh Laporan</button>
+          </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="executive-kpi-grid">
+          <div class="kpi-card emerald">
+            <div class="kpi-title">
+              <span>TOTAL OMSET BULAN INI</span>
+              <span>🇸🇬 🇲🇾</span>
+            </div>
+            <div class="kpi-value">SGD 148,250</div>
+            <div class="kpi-meta" style="color:var(--success-dark); font-weight:700;">
+              ↑ 18.4% vs bulan lalu (RM 512,000)
+            </div>
+          </div>
+
+          <div class="kpi-card gold">
+            <div class="kpi-title">
+              <span>TINGKAT OKUPANSI SLOT</span>
+              <span>📅</span>
+            </div>
+            <div class="kpi-value">88.4%</div>
+            <div class="kpi-meta" style="color:var(--warning-dark); font-weight:700;">
+              Kapasitas optimal (Target: ≥85%)
+            </div>
+          </div>
+
+          <div class="kpi-card blue">
+            <div class="kpi-title">
+              <span>TINGKAT NO-SHOW</span>
+              <span>📉</span>
+            </div>
+            <div class="kpi-value">3.1%</div>
+            <div class="kpi-meta" style="color:#0284c7; font-weight:700;">
+              ↓ Dipangkas via WhatsApp Reminder &amp; Deposit
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-title">
+              <span>ANTI-DOUBLE BOOKING</span>
+              <span>🛡️</span>
+            </div>
+            <div class="kpi-value">0 Bentrok</div>
+            <div class="kpi-meta" style="color:var(--primary); font-weight:700;">
+              100% Protected by Triple-Constraint
+            </div>
+          </div>
+        </div>
+
+        <!-- Branch Performance Cards -->
+        <h3 style="margin:28px 0 14px; font-size:18px;">Performa Finansial per Cabang</h3>
+        <div class="branch-grid">
+          <div class="branch-card">
+            <div class="branch-card-header">
+              <div>
+                <strong style="font-size:16px;">🇸🇬 Orchard Wellness Clinic</strong>
+                <div style="font-size:12px; color:var(--muted);">Paragon Medical #14-02, Singapore</div>
+              </div>
+              <span class="status-pill confirmed">AKTIF</span>
+            </div>
+            <div class="summary-row">
+              <span style="color:var(--muted);">Pendapatan:</span>
+              <strong>SGD 84,500.00</strong>
+            </div>
+            <div class="summary-row">
+              <span style="color:var(--muted);">Okupansi Jadwal:</span>
+              <strong>92.1%</strong>
+            </div>
+            <div class="summary-row">
+              <span style="color:var(--muted);">Praktisi Bertugas:</span>
+              <strong>3 Dokter / Terapis</strong>
+            </div>
+          </div>
+
+          <div class="branch-card">
+            <div class="branch-card-header">
+              <div>
+                <strong style="font-size:16px;">🇲🇾 Kuala Lumpur Integrated Care</strong>
+                <div style="font-size:12px; color:var(--muted);">Pavilion Embassy Tower, Jalan Ampang</div>
+              </div>
+              <span class="status-pill confirmed">AKTIF</span>
+            </div>
+            <div class="summary-row">
+              <span style="color:var(--muted);">Pendapatan:</span>
+              <strong>MYR 142,200.00</strong>
+            </div>
+            <div class="summary-row">
+              <span style="color:var(--muted);">Okupansi Jadwal:</span>
+              <strong>86.5%</strong>
+            </div>
+            <div class="summary-row">
+              <span style="color:var(--muted);">Praktisi Bertugas:</span>
+              <strong>2 Dokter Spesialis</strong>
+            </div>
+          </div>
+
+          <div class="branch-card">
+            <div class="branch-card-header">
+              <div>
+                <strong style="font-size:16px;">🇲🇾 Penang TCM &amp; Physio Center</strong>
+                <div style="font-size:12px; color:var(--muted);">Gurney Walk, Persiaran Gurney</div>
+              </div>
+              <span class="status-pill confirmed">AKTIF</span>
+            </div>
+            <div class="summary-row">
+              <span style="color:var(--muted);">Pendapatan:</span>
+              <strong>MYR 78,800.00</strong>
+            </div>
+            <div class="summary-row">
+              <span style="color:var(--muted);">Okupansi Jadwal:</span>
+              <strong>81.0%</strong>
+            </div>
+            <div class="summary-row">
+              <span style="color:var(--muted);">Praktisi Bertugas:</span>
+              <strong>2 Praktisi TCM</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANE 2: IDENTITAS & LOGO RESMI KLINIK (FR-CONFIG-01 & FR-CONFIG-02) -->
+      <section class="owner-tab-pane" id="paneBranding">
+        <div class="panel-top">
+          <div>
+            <h2 style="font-size:24px; letter-spacing:-0.5px;">Pengaturan Profil &amp; Identitas Resmi Klinik</h2>
+            <p style="color:var(--muted); font-size:14px; margin-top:4px;">
+              Sesuai SRS FR-CONFIG-01: Perubahan nama dan logo resmi langsung ditampilkan dinamis pada navbar portal pasien, e-tiket, dan notifikasi.
+            </p>
+          </div>
+        </div>
+
+        <div class="config-card">
+          <form id="clinicBrandForm">
+            <!-- Logo Upload Section -->
+            <label style="font-size:13px; font-weight:800; color:var(--text); display:block; margin-bottom:8px;">
+              Logo Resmi Klinik / Spa (Live Preview)
+            </label>
+
+            <div class="logo-uploader-box">
+              <img id="logoPreview" class="logo-preview-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f766e'/%3E%3Ctext x='50' y='64' font-size='42' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E✦%3C/text%3E%3C/svg%3E" alt="Logo Klinik" />
+
+              <div class="logo-upload-controls">
+                <div style="font-weight:700; font-size:14px; margin-bottom:4px;">Unggah Logo Baru</div>
+                <p style="font-size:12px; color:var(--muted); margin-bottom:10px;">
+                  Mendukung format PNG, JPG, SVG, WebP transparan (Maks. 2MB).
+                </p>
+                <input type="file" id="logoFileInput" accept="image/*" style="font-size:12px;" />
+              </div>
+            </div>
+
+            <!-- Identity Fields -->
+            <div class="field-row">
+              <div class="field">
+                <label for="inputClinicName">Nama Resmi Klinik / Brand</label>
+                <input type="text" id="inputClinicName" value="Cliniva Healthcare &amp; Wellness" required>
+              </div>
+
+              <div class="field">
+                <label for="inputClinicTagline">Slogan / Tagline Operasional</label>
+                <input type="text" id="inputClinicTagline" value="Integrated Clinical Appointment &amp; Patient Relationship Management">
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="inputClinicWA">Nomor WhatsApp Gateway Resmi</label>
+                <input type="text" id="inputClinicWA" value="+65 8123 4567" required>
+              </div>
+
+              <div class="field">
+                <label for="inputClinicEmail">Email Layanan Pasien / Info</label>
+                <input type="email" id="inputClinicEmail" value="contact@orchardclinic.sg" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="inputClinicAddress">Alamat Fisik Kantor Pusat / Flagship</label>
+              <input type="text" id="inputClinicAddress" value="290 Orchard Road, Paragon Medical #14-02, Singapore 238859" required>
+            </div>
+
+            <div class="field">
+              <label for="inputClinicHours">Jam Operasional Pelayanan</label>
+              <input type="text" id="inputClinicHours" value="Senin - Sabtu (08:30 - 20:00 SGT) · Minggu Libur">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top:14px;">
+              💾 Simpan Perubahan Identitas Klinik
+            </button>
+
+            <div id="brandSaveStatus" class="status-box success" style="display:none; margin-top:16px;"></div>
+          </form>
+        </div>
+      </section>
+
+      <!-- PANE 3: PROFIL BISNIS ADAPTIF (FR-CONFIG-03) -->
+      <section class="owner-tab-pane" id="paneAdaptiveProfile">
+        <div class="panel-top">
+          <div>
+            <h2 style="font-size:24px; letter-spacing:-0.5px;">Konfigurasi Profil Bisnis Adaptif</h2>
+            <p style="color:var(--muted); font-size:14px; margin-top:4px;">
+              Sesuai SRS FR-CONFIG-03: Menyesuaikan alur formulir keluhan pasien (*intake form*) secara dinamis sesuai tipe layanan.
+            </p>
+          </div>
+        </div>
+
+        <div class="profile-selection-grid">
+          <div class="profile-card" data-profile="SPA_WELLNESS">
+            <h3 style="font-size:16px; margin:0 0 6px;">🌺 Spa &amp; Wellness</h3>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Fasilitas relaksasi, body scrub, aroma terapi, &amp; pijat refleksi.</p>
+            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Fitur Intake Aktif:</div>
+            <ul class="profile-feature-list">
+              <li>✓ Preferensi gender terapis</li>
+              <li>✓ Pilihan aroma minyak esensial</li>
+              <li>✓ Tingkat tekanan pijatan tubuh</li>
+              <li style="color:#94a3b8;">✕ Dokumen rujukan &amp; BPJS (Non-aktif)</li>
+            </ul>
+          </div>
+
+          <div class="profile-card active" data-profile="TCM_PHYSIO">
+            <h3 style="font-size:16px; margin:0 0 6px;">☯️ TCM &amp; Fisioterapi</h3>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Akupunktur medis, rehabilitasi cedera olahraga, spinal decompress.</p>
+            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Fitur Intake Aktif:</div>
+            <ul class="profile-feature-list">
+              <li>✓ <strong>Body Pain Map</strong> visual interaktif</li>
+              <li>✓ Riwayat cedera sendi &amp; postur</li>
+              <li>✓ Skala derajat nyeri (1 - 10)</li>
+              <li>✓ Catatan durasi keluhan otot</li>
+            </ul>
+          </div>
+
+          <div class="profile-card" data-profile="MEDICAL_CLINIC">
+            <h3 style="font-size:16px; margin:0 0 6px;">🏥 Klinik Medis &amp; Faskes</h3>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Poli umum, spesialis, integrasi asuransi swasta &amp; bridging SIMRS.</p>
+            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Fitur Intake Aktif:</div>
+            <ul class="profile-feature-list">
+              <li>✓ Upload berkas rujukan (SIMRS Proxy)</li>
+              <li>✓ Jalur pembayaran Asuransi / BPJS</li>
+              <li>✓ Verifikasi nomor polis kartu</li>
+              <li>✓ Auto-retention TTL 72 jam</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANE 4: MANAJEMEN PRAKTISI -->
+      <section class="owner-tab-pane" id="paneStaff">
+        <div class="panel-top">
+          <div>
+            <h2 style="font-size:24px; letter-spacing:-0.5px;">Manajemen Dokter &amp; Praktisi Terdaftar</h2>
+            <p style="color:var(--muted); font-size:14px; margin-top:4px;">
+              Daftar praktisi, hak akses spesialisasi, dan alokasi ruangan per cabang klinik.
+            </p>
+          </div>
+          <button class="btn btn-primary" onclick="alert('Fitur registrasi praktisi baru siap dihubungkan ke modul database Prisma.')">+ Tambah Praktisi</button>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nama Praktisi</th>
+                <th>Spesialisasi</th>
+                <th>Cabang Penugasan</th>
+                <th>Ruangan Alokasi</th>
+                <th>Status Jadwal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Dr. Lim Wei Han</strong></td>
+                <td>Senior Physiotherapist &amp; Spine</td>
+                <td>Orchard Wellness (SG)</td>
+                <td>Room A2 (Physio Suite)</td>
+                <td><span class="status-pill confirmed">TERSEDIA</span></td>
+              </tr>
+              <tr>
+                <td><strong>Dr. Wong Mei Ling</strong></td>
+                <td>Registered TCM Physician</td>
+                <td>Orchard Wellness (SG)</td>
+                <td>Room B1 (TCM Suite)</td>
+                <td><span class="status-pill confirmed">TERSEDIA</span></td>
+              </tr>
+              <tr>
+                <td><strong>Therapist Sarah Tan</strong></td>
+                <td>Lead Clinical Therapist</td>
+                <td>Orchard Wellness (SG)</td>
+                <td>Room A1</td>
+                <td><span class="status-pill pending">SEDANG SESI</span></td>
+              </tr>
+              <tr>
+                <td><strong>Sinse Huang Wei</strong></td>
+                <td>Chief Acupuncturist</td>
+                <td>Kuala Lumpur Care (MY)</td>
+                <td>Suite 101</td>
+                <td><span class="status-pill confirmed">TERSEDIA</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PANE 5: AUDIT TRAIL LOGS -->
+      <section class="owner-tab-pane" id="paneAudit">
+        <div class="panel-top">
+          <div>
+            <h2 style="font-size:24px; letter-spacing:-0.5px;">Audit Trail Log Keuangan &amp; Operasional</h2>
+            <p style="color:var(--muted); font-size:14px; margin-top:4px;">
+              Catatan kepatuhan hukum UU PDP / PDPA: Semua transaksi, pembatalan, dan reschedule tercatat dengan timestamp.
+            </p>
+          </div>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Waktu (SGT)</th>
+                <th>Aktor / User</th>
+                <th>Peristiwa (Event)</th>
+                <th>Kode Booking</th>
+                <th>Rincian Finansial</th>
+                <th>Audit Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2026-09-03 10:45</td>
+                <td>Amanda Tan (Pasien)</td>
+                <td>Pembayaran Deposit QRIS</td>
+                <td>BK-20260901-0812</td>
+                <td>+ SGD 30.00</td>
+                <td><span class="status-pill confirmed">VERIFIED</span></td>
+              </tr>
+              <tr>
+                <td>2026-09-03 10:12</td>
+                <td>Siti Rahmah (Resepsionis)</td>
+                <td>Pelunasan Kasir POS</td>
+                <td>BK-20260901-0730</td>
+                <td>+ SGD 90.00 (Cash)</td>
+                <td><span class="status-pill confirmed">AUDITED</span></td>
+              </tr>
+              <tr>
+                <td>2026-09-03 09:15</td>
+                <td>Sistem Otomatis</td>
+                <td>Webhook Forward SIMRS</td>
+                <td>BK-20260901-0610</td>
+                <td>HMAC Validated</td>
+                <td><span class="status-pill confirmed">DELIVERED</span></td>
+              </tr>
+              <tr>
+                <td>2026-09-03 08:30</td>
+                <td>Dr. Hendra Wijaya</td>
+                <td>Update Konfigurasi Brand</td>
+                <td>SYSTEM-CFG</td>
+                <td>Profile: TCM_PHYSIO</td>
+                <td><span class="status-pill confirmed">RECORDED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modular Owner Script Bootstrap -->
+  <script type="module" src="js/pages/owner.js"></script>
+</body>
+</html>

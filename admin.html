@@ -24,13 +24,18 @@
           <span class="logo-mark">✦</span>
           Cliniva Operations
         </a>
-        <span class="pill" style="font-size:11px; padding:4px 10px;">🏥 Staff Mode: Orchard SG</span>
+        <span class="pill" id="adminRoleBadge" style="font-size:11px; padding:4px 10px; background:#fffbeb; color:#d97706; font-weight:800;">
+          🛎️ Front Desk Receptionist: Orchard SG
+        </span>
       </div>
 
-      <div style="display:flex; gap:10px; align-items:center;">
-        <a href="index.html" class="btn btn-sm btn-soft">← Patient Portal</a>
-        <a href="ticket.html" class="btn btn-sm btn-soft">🎟️ E-Tiket Sample</a>
-        <a href="sign-in.html" class="btn btn-sm btn-primary">Sign Out</a>
+      <div style="display:flex; gap:14px; align-items:center;">
+        <div style="text-align:right;">
+          <div id="adminStaffName" style="font-size:13px; font-weight:800; color:var(--text);">Siti Rahmah</div>
+          <div style="font-size:11px; color:var(--muted);">Lead Front Desk</div>
+        </div>
+        <a href="owner.html" class="btn btn-sm btn-soft">Panel Owner →</a>
+        <button type="button" class="btn btn-sm btn-primary" id="adminSignOutBtn">Sign Out</button>
       </div>
     </div>
   </header>
@@ -69,7 +74,10 @@
             <h2>Papan Antrean Digital &amp; Operasional Hari Ini</h2>
             <p>Monitor pasien di ruang tunggu dan panggil giliran periksa secara otomatis.</p>
           </div>
-          <button class="btn btn-primary" onclick="alert('Membuka Kiosk Check-In Mandiri...')">+ Kiosk Check-in</button>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-primary" id="adminWalkInBtn">+ Walk-in Patient</button>
+            <button class="btn btn-white" onclick="alert('Membuka Kiosk Check-In Mandiri...')">Kiosk Check-in</button>
+          </div>
         </div>
 
         <!-- Metric Cards -->

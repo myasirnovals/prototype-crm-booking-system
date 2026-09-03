@@ -1,9 +1,9 @@
 /**
  * Cliniva — Auth Controller
- * SOLID: Single Responsibility for Sign-In Page Interactions & OTP Input Control
+ * SOLID: Single Responsibility for Sign-In Interactions, Quick Role Login & OTP Verification
  */
 
-import { authService } from "../services/auth.service.js";
+import { authService, USER_ROLES } from "../services/auth.service.js";
 import { soundService } from "../services/sound.service.js";
 
 export class AuthController {
@@ -20,6 +20,7 @@ export class AuthController {
     this.patientStatus = document.getElementById("patientStatus");
     this.patientForm = document.getElementById("patientForm");
     this.otpInputs = document.querySelectorAll(".otp-input");
+    this.quickRoleCards = document.querySelectorAll(".demo-role-card");
     this.selectedRegion = "sg";
   }
 
@@ -29,6 +30,7 @@ export class AuthController {
     this.setupPasswordToggle();
     this.setupStaffForm();
     this.setupOtpWorkflow();
+    this.setupQuickDemoLogin();
   }
 
   setupModeSwitching() {
@@ -72,6 +74,39 @@ export class AuthController {
     });
   }
 
+  /**
+   * 1-Click Fast Demo Login for all 4 roles
+   */
+  setupQuickDemoLogin() {
+    this.quickRoleCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const roleKey = card.dataset.role;
+        soundService.playQueueChime();
+
+        card.style.transform = "scale(0.96)";
+        setTimeout(() => (card.style.transform = ""), 200);
+
+        const result = authService.loginByRoleKey(roleKey);
+        if (!result.success) {
+          alert(result.error);
+          return;
+        }
+
+        const activeStatus = document.querySelector(".form.active .status-box") || this.staffStatus;
+        if (activeStatus) {
+          this.showSuccess(
+            activeStatus,
+            `⚡ Berhasil masuk sebagai <strong>${result.session.user.name}</strong> (${result.session.user.title})! Mengalihkan ke halaman ${result.targetRoute}...`
+          );
+        }
+
+        setTimeout(() => {
+          window.location.href = result.targetRoute;
+        }, 800);
+      });
+    });
+  }
+
   setupStaffForm() {
     if (!this.staffForm) return;
 
@@ -80,11 +115,11 @@ export class AuthController {
 
       const email = document.getElementById("staffEmail")?.value.trim() || "";
       const password = document.getElementById("staffPassword")?.value.trim() || "";
-      const role = document.getElementById("staffRole")?.value || "Staff";
+      const role = document.getElementById("staffRole")?.value || null;
 
       this.resetStatus(this.staffStatus);
 
-      const result = authService.loginStaff(email, password, role, this.selectedRegion);
+      const result = authService.loginWithCredentials(email, password, role, this.selectedRegion);
 
       if (!result.success) {
         this.showError(this.staffStatus, result.error);
@@ -94,12 +129,12 @@ export class AuthController {
       soundService.playQueueChime();
       this.showSuccess(
         this.staffStatus,
-        `Success! Redirecting as ${role} to clinic operations dashboard...`
+        `✓ Berhasil! Masuk sebagai <strong>${result.session.user.name}</strong>. Mengalihkan ke ${result.targetRoute}...`
       );
 
       setTimeout(() => {
-        window.location.href = "admin.html";
-      }, 1000);
+        window.location.href = result.targetRoute;
+      }, 900);
     });
   }
 
@@ -124,7 +159,7 @@ export class AuthController {
       if (this.otpArea) this.otpArea.style.display = "block";
       this.showSuccess(
         this.patientStatus,
-        `${result.message} Demo verification code: <strong>${result.demoOtp}</strong>`
+        `${result.message} Kode verifikasi demo: <strong>${result.demoOtp}</strong>`
       );
 
       const firstOtp = this.otpInputs[0];
@@ -169,12 +204,12 @@ export class AuthController {
       soundService.playQueueChime();
       this.showSuccess(
         this.patientStatus,
-        "OTP verified successfully. Redirecting to Patient Self-Booking portal..."
+        `✓ OTP terverifikasi! Masuk sebagai <strong>${result.session.user.name}</strong>. Mengalihkan ke Portal Pasien...`
       );
 
       setTimeout(() => {
-        window.location.href = "index.html#app";
-      }, 1000);
+        window.location.href = result.targetRoute;
+      }, 900);
     });
   }
 

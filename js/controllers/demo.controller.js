@@ -98,12 +98,7 @@ export class DemoController {
       });
     });
 
-    stepItems.forEach((item) => {
-      item.addEventListener("click", () => {
-        const step = parseInt(item.dataset.step, 10);
-        if (step) this.goToStep(step);
-      });
-    });
+    // Step items are informational flow indicators only (non-clickable by design)
   }
 
   goToStep(step) {
@@ -114,9 +109,17 @@ export class DemoController {
     const stepItems = document.querySelectorAll(".wizard-step-item");
     stepItems.forEach((item) => {
       const s = parseInt(item.dataset.step, 10);
+      const circle = item.querySelector(".wizard-step-circle");
       item.classList.remove("active", "completed");
-      if (s === step) item.classList.add("active");
-      else if (s < step) item.classList.add("completed");
+      if (s === step) {
+        item.classList.add("active");
+        if (circle) circle.textContent = s;
+      } else if (s < step) {
+        item.classList.add("completed");
+        if (circle) circle.textContent = "✓";
+      } else {
+        if (circle) circle.textContent = s;
+      }
     });
 
     // Update Step Panels

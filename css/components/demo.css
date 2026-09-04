@@ -78,17 +78,20 @@
   display: block;
 }
 
-/* Wizard Stepper */
-.wizard-stepper {
+/* Wizard Stepper / Step Bar (Informational Flow Indicator) */
+.wizard-stepper,
+.wizard-step-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
   margin-bottom: 32px;
   padding: 0 20px;
+  user-select: none;
 }
 
-.wizard-stepper::before {
+.wizard-stepper::before,
+.wizard-step-bar::before {
   content: "";
   position: absolute;
   top: 18px;
@@ -106,7 +109,8 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  cursor: pointer;
+  cursor: default;
+  pointer-events: none; /* Pure informational flow indicator, non-clickable */
 }
 
 .wizard-step-circle {
@@ -662,7 +666,8 @@
     grid-template-columns: 1fr;
   }
 
-  .wizard-stepper {
+  .wizard-stepper,
+  .wizard-step-bar {
     overflow-x: auto;
     padding-bottom: 10px;
   }

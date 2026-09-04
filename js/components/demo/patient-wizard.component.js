@@ -15,7 +15,7 @@ export function renderPatientWizard() {
       </div>
 
       <!-- Patient Booking Step Bar -->
-      <div class="wizard-step-bar">
+      <div class="wizard-stepper wizard-step-bar">
         <div class="wizard-step-item active" data-step="1">
           <div class="wizard-step-circle">1</div>
           <span class="wizard-step-label" data-i18n="demo.step1">Branch &amp; Service</span>

@@ -28,7 +28,7 @@ export class OnboardingController {
       btnNext1.addEventListener("click", () => {
         const clinicName = document.getElementById("clinicName").value.trim();
         if (!clinicName) {
-          alert("Silakan masukkan nama klinik Anda.");
+          alert("Please enter your clinic / practice brand name.");
           return;
         }
         this.goToStep(2);
@@ -43,12 +43,12 @@ export class OnboardingController {
         const confirmPass = document.getElementById("confirmPassword").value;
 
         if (!ownerName || !ownerEmail) {
-          alert("Silakan lengkapi nama pemilik dan email resmi.");
+          alert("Please provide the owner's full name and official work email.");
           return;
         }
 
         if (ownerPass !== confirmPass) {
-          alert("Kata sandi dan konfirmasi kata sandi tidak cocok.");
+          alert("Passwords do not match. Please verify and try again.");
           return;
         }
 
@@ -70,8 +70,17 @@ export class OnboardingController {
       const panel = document.getElementById(`onboardingStep${i}`);
 
       if (ind) {
-        ind.classList.remove("active");
-        if (i === step) ind.classList.add("active");
+        ind.classList.remove("active", "completed");
+        const numSpan = ind.querySelector(".step-num");
+        if (i < step) {
+          ind.classList.add("completed");
+          if (numSpan) numSpan.textContent = "✓";
+        } else if (i === step) {
+          ind.classList.add("active");
+          if (numSpan) numSpan.textContent = i.toString();
+        } else {
+          if (numSpan) numSpan.textContent = i.toString();
+        }
       }
 
       if (panel) {
@@ -116,19 +125,19 @@ export class OnboardingController {
 
       // Step 1
       setTimeout(() => {
-        if (statusText) statusText.textContent = `Membuat Tenant ID: ${tenantId}...`;
+        if (statusText) statusText.textContent = `Allocating Tenant ID: ${tenantId}...`;
         if (logBox) logBox.innerHTML += `<br>&gt; [OK] Created tenant '${clinicName}' (ID: ${tenantId})`;
       }, 700);
 
       // Step 2
       setTimeout(() => {
-        if (statusText) statusText.textContent = "Mengonfigurasi Hak Akses SUPER_ADMIN & RBAC...";
+        if (statusText) statusText.textContent = "Configuring SUPER_ADMIN & RBAC permissions...";
         if (logBox) logBox.innerHTML += `<br>&gt; [OK] Bound user '${ownerEmail}' with role 'SUPER_ADMIN'`;
       }, 1400);
 
       // Step 3
       setTimeout(() => {
-        if (statusText) statusText.textContent = "Menginisialisasi Triple-Constraint Engine & WhatsApp Gateway...";
+        if (statusText) statusText.textContent = "Initializing Triple-Constraint Engine & WhatsApp Gateway...";
         if (logBox) logBox.innerHTML += "<br>&gt; [OK] Triple-Constraint Resource Engine: Active";
       }, 2100);
 
@@ -146,7 +155,7 @@ export class OnboardingController {
           role: "SUPER_ADMIN"
         });
 
-        alert(`🎉 SELAMAT! PENDAFTARAN KLINIK BERHASIL!\n\nTenant: ${clinicName}\nOwner / Super Admin: ${ownerName} (${ownerEmail})\nTenant ID: ${tenantId}\n\nSistem mengalihkan Anda ke Konsol Super Admin...`);
+        alert(`🎉 CONGRATULATIONS! CLINIC REGISTERED SUCCESSFULLY!\n\nTenant: ${clinicName}\nOwner / Super Admin: ${ownerName} (${ownerEmail})\nTenant ID: ${tenantId}\n\nRedirecting to Super Admin Console...`);
 
         // Redirect to Demo Super Admin view or Admin Panel
         window.location.href = "demo.html";

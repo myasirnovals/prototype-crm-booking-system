@@ -31,8 +31,14 @@ export class PatientBookingController {
       chiefComplaint: "Sharp lower back pain (L4-L5) upon forward bending after marathon.",
       painMarker: "marker-lumbar",
       painBodyPart: "Lower Back (L4-L5 Lumbar)",
-      painScale: 7
+      painScale: 7,
+      intakeData: ""
     };
+
+    // Wellness & Spa specific selections
+    this.selectedAromaOil = "Lemongrass";
+    this.selectedPressure = "Medium";
+    this.selectedSpaFocus = new Set(["Full Body Balanced", "Upper Back & Shoulders"]);
   }
 
   init() {
@@ -49,6 +55,7 @@ export class PatientBookingController {
     this.setupPractitionerChoices();
     this.setupSlotChoices();
     this.setupPainMapInteractions();
+    this.setupWellnessIntakeInteractions();
     this.setupCheckoutAction(session.user);
   }
 
@@ -245,6 +252,24 @@ export class PatientBookingController {
     // Sync active template and re-render services
     bookingService.setActiveTemplate(branch.templateId || "tcm");
     this.renderServices();
+
+    // Toggle Step 3 Intake Assessment Panes (TCM Pain Map vs Wellness Spa Preferences)
+    const tcmPane = document.getElementById("intakeTcmContainer");
+    const wellnessPane = document.getElementById("intakeWellnessContainer");
+    const step3Title = document.getElementById("step3PaneTitle");
+    const step3Desc = document.getElementById("step3PaneDesc");
+
+    if (branch.templateId === "wellness") {
+      if (tcmPane) tcmPane.style.display = "none";
+      if (wellnessPane) wellnessPane.style.display = "grid";
+      if (step3Title) step3Title.textContent = "Spa Preferences & Wellness Intake Assessment";
+      if (step3Desc) step3Desc.textContent = "Customize your aromatherapy essential oil, massage pressure, and target therapy focus areas.";
+    } else {
+      if (tcmPane) tcmPane.style.display = "grid";
+      if (wellnessPane) wellnessPane.style.display = "none";
+      if (step3Title) step3Title.textContent = "Patient Information & Pain Map Intake Assessment";
+      if (step3Desc) step3Desc.textContent = "Provide your patient details, discomfort areas, and intake notes to help your doctor prepare in advance.";
+    }
   }
 
   calculateDistance(lat1, lon1, lat2, lon2) {
@@ -503,10 +528,81 @@ export class PatientBookingController {
     }
   }
 
+  setupWellnessIntakeInteractions() {
+    // Aroma Choice Cards
+    const cards = document.querySelectorAll(".aroma-choice-card");
+    cards.forEach((card) => {
+      card.addEventListener("click", () => {
+        soundService.playClickTone();
+        cards.forEach((c) => {
+          c.classList.remove("selected");
+          c.style.borderColor = "#e2e8f0";
+          c.style.background = "#fff";
+        });
+        card.classList.add("selected");
+        card.style.borderColor = "var(--primary)";
+        card.style.background = "#f0fdf4";
+        this.selectedAromaOil = card.dataset.oil || "Lemongrass";
+      });
+    });
+
+    // Pressure Pills
+    const pressurePills = document.querySelectorAll(".pressure-pills-row .pressure-pill");
+    pressurePills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        soundService.playClickTone();
+        pressurePills.forEach((p) => {
+          p.classList.remove("active");
+          p.style.borderColor = "var(--line)";
+          p.style.color = "var(--text)";
+          p.style.fontWeight = "700";
+        });
+        pill.classList.add("active");
+        pill.style.borderColor = "var(--primary)";
+        pill.style.color = "var(--primary-dark)";
+        pill.style.fontWeight = "800";
+        this.selectedPressure = pill.dataset.pressure || "Medium";
+      });
+    });
+
+    // Focus Tags
+    const tags = document.querySelectorAll(".spa-focus-tags .spa-focus-tag");
+    tags.forEach((tag) => {
+      tag.addEventListener("click", () => {
+        soundService.playClickTone();
+        const focusArea = tag.dataset.focus || tag.textContent.trim();
+        if (this.selectedSpaFocus.has(focusArea)) {
+          this.selectedSpaFocus.delete(focusArea);
+          tag.classList.remove("active");
+          tag.style.borderColor = "var(--line)";
+          tag.style.background = "#fff";
+          tag.style.color = "var(--text)";
+        } else {
+          this.selectedSpaFocus.add(focusArea);
+          tag.classList.add("active");
+          tag.style.borderColor = "var(--primary)";
+          tag.style.background = "var(--primary)";
+          tag.style.color = "#fff";
+        }
+      });
+    });
+  }
+
   captureIntakeFormData() {
-    const complaintEl = document.getElementById("inputChiefComplaint");
-    if (complaintEl && complaintEl.value.trim()) {
-      this.bookingDraft.chiefComplaint = complaintEl.value.trim();
+    if (this.selectedBranch.templateId === "wellness") {
+      const notesEl = document.getElementById("inputSpaNotes");
+      const notes = notesEl && notesEl.value.trim() ? notesEl.value.trim() : "Standard luxury relaxation";
+      const focusStr = Array.from(this.selectedSpaFocus).join(", ") || "Full Body Balanced";
+
+      this.bookingDraft.intakeData = `Aroma: ${this.selectedAromaOil} | Pressure: ${this.selectedPressure} | Focus: ${focusStr} | Notes: ${notes}`;
+      this.bookingDraft.chiefComplaint = `Aroma: ${this.selectedAromaOil} (${this.selectedPressure} Pressure) · Focus: ${focusStr}`;
+      this.bookingDraft.painBodyPart = `Spa Aromatherapy (${this.selectedAromaOil})`;
+    } else {
+      const complaintEl = document.getElementById("inputChiefComplaint");
+      const complaint = complaintEl && complaintEl.value.trim() ? complaintEl.value.trim() : "General discomfort";
+
+      this.bookingDraft.chiefComplaint = complaint;
+      this.bookingDraft.intakeData = `Pain Focus: ${this.bookingDraft.painBodyPart} | Scale: ${this.bookingDraft.painScale}/10 | Notes: ${complaint}`;
     }
   }
 
@@ -523,7 +619,15 @@ export class PatientBookingController {
     if (serviceEl) serviceEl.textContent = `${this.bookingDraft.serviceName} (${this.bookingDraft.serviceDuration})`;
     if (doctorEl) doctorEl.textContent = this.bookingDraft.practitionerName;
     if (scheduleEl) scheduleEl.textContent = `${this.bookingDraft.scheduleDate} · ${this.bookingDraft.scheduleSlot}`;
-    if (complaintEl) complaintEl.textContent = `${this.bookingDraft.painBodyPart} (Skala Nyeri: ${this.bookingDraft.painScale}/10) — "${this.bookingDraft.chiefComplaint}"`;
+
+    if (complaintEl) {
+      if (this.selectedBranch.templateId === "wellness") {
+        complaintEl.textContent = `Preferensi Spa: ${this.bookingDraft.intakeData}`;
+      } else {
+        complaintEl.textContent = `${this.bookingDraft.painBodyPart} (Skala Nyeri: ${this.bookingDraft.painScale}/10) — "${this.bookingDraft.chiefComplaint}"`;
+      }
+    }
+
     if (priceEl) priceEl.textContent = this.bookingDraft.servicePrice;
     if (depositEl) depositEl.textContent = this.bookingDraft.depositAmount;
   }
@@ -544,6 +648,7 @@ export class PatientBookingController {
         const codeSuffix = Math.floor(1000 + Math.random() * 9000);
         const bookingCode = `BK-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}-${codeSuffix}`;
 
+        const isWellness = this.selectedBranch.templateId === "wellness";
         const newBooking = {
           code: bookingCode,
           patientName: user.name || "Amanda Tan",
@@ -553,10 +658,13 @@ export class PatientBookingController {
           serviceName: this.bookingDraft.serviceName,
           practitionerName: this.bookingDraft.practitionerName,
           schedule: this.bookingDraft.scheduleSlot,
-          room: "Room A2 (Physio Suite)",
+          room: isWellness ? "Private Spa Suite 01" : "Room A2 (TCM/Physio)",
+          depositPaid: this.bookingDraft.depositAmount,
           paymentStatus: `DEPOSIT PAID (${this.bookingDraft.depositAmount})`,
           complaint: this.bookingDraft.chiefComplaint,
-          painScale: `${this.bookingDraft.painScale} / 10`,
+          templateType: this.selectedBranch.templateId || "tcm",
+          intakeData: this.bookingDraft.intakeData,
+          painScale: isWellness ? "N/A (Spa Relaxation)" : `${this.bookingDraft.painScale} / 10`,
           createdAt: now.toISOString()
         };
 

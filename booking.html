@@ -208,11 +208,12 @@
     <!-- STEP 3 PANE: INTAKE & HEALTH ASSESSMENT -->
     <section class="wizard-step-pane" id="bookingStepPane3">
       <div class="wizard-pane-header">
-        <h2 data-i18n="booking.step3.title">Patient Information &amp; Intake Assessment</h2>
-        <p data-i18n="booking.step3.desc">Provide your patient details and intake notes to help your practitioner prepare in advance.</p>
+        <h2 id="step3PaneTitle" data-i18n="booking.step3.title">Patient Information &amp; Intake Assessment</h2>
+        <p id="step3PaneDesc" data-i18n="booking.step3.desc">Provide your patient details and intake notes to help your practitioner prepare in advance.</p>
       </div>
 
-      <div class="intake-pain-map-container">
+      <!-- TCM / PHYSIO INTAKE CONTAINER (Default) -->
+      <div class="intake-pain-map-container" id="intakeTcmContainer">
         <!-- Visual Body Pain Map Interactive -->
         <div class="intake-pain-visual">
           <span style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; margin-bottom:12px;" data-i18n="booking.step3.painMapTitle">
@@ -267,6 +268,78 @@
               <input type="checkbox" checked required style="margin-top:3px;" />
               <span style="font-size:12px; color:var(--text-secondary); line-height:1.4;">
                 I consent to the collection and processing of my health consultation intake data in accordance with the clinic privacy standard and Singapore / Malaysia Personal Data Protection Act (PDPA).
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- WELLNESS & SPA INTAKE CONTAINER -->
+      <div class="intake-wellness-container" id="intakeWellnessContainer" style="display:none;">
+        <!-- Left: Aroma Essential Oil & Massage Pressure -->
+        <div style="background:#fefce8; border:1px solid #fef08a; border-radius:var(--radius-md); padding:20px;">
+          <span style="font-size:11px; font-weight:800; color:#854d0e; text-transform:uppercase; margin-bottom:12px; display:block;">
+            🌸 Aromatherapy Essential Oil (Select 1 preferred blend)
+          </span>
+          <div class="aroma-oil-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+            <div class="aroma-choice-card" data-oil="Lavender" style="border:1.5px solid #e2e8f0; background:#fff; border-radius:var(--radius-md); padding:12px; cursor:pointer; transition:all 0.2s;">
+              <strong style="font-size:13px; color:var(--text); display:block;">🌿 French Lavender</strong>
+              <small style="font-size:11px; color:var(--muted); line-height:1.3; display:block; margin-top:2px;">Deep calming, stress reduction &amp; sleep.</small>
+            </div>
+            <div class="aroma-choice-card selected" data-oil="Lemongrass" style="border:1.5px solid var(--primary); background:#f0fdf4; border-radius:var(--radius-md); padding:12px; cursor:pointer; transition:all 0.2s;">
+              <strong style="font-size:13px; color:var(--primary-dark); display:block;">🌱 Balinese Lemongrass</strong>
+              <small style="font-size:11px; color:var(--muted); line-height:1.3; display:block; margin-top:2px;">Detoxification &amp; fresh vitality.</small>
+            </div>
+            <div class="aroma-choice-card" data-oil="Eucalyptus" style="border:1.5px solid #e2e8f0; background:#fff; border-radius:var(--radius-md); padding:12px; cursor:pointer; transition:all 0.2s;">
+              <strong style="font-size:13px; color:var(--text); display:block;">🍃 Eucalyptus Radiata</strong>
+              <small style="font-size:11px; color:var(--muted); line-height:1.3; display:block; margin-top:2px;">Muscle ease &amp; breathing clarity.</small>
+            </div>
+            <div class="aroma-choice-card" data-oil="Frangipani" style="border:1.5px solid #e2e8f0; background:#fff; border-radius:var(--radius-md); padding:12px; cursor:pointer; transition:all 0.2s;">
+              <strong style="font-size:13px; color:var(--text); display:block;">🌸 Tropical Frangipani</strong>
+              <small style="font-size:11px; color:var(--muted); line-height:1.3; display:block; margin-top:2px;">Skin nourishing &amp; luxury floral glow.</small>
+            </div>
+          </div>
+
+          <span style="font-size:11px; font-weight:800; color:#854d0e; text-transform:uppercase; margin-bottom:8px; display:block;">
+            💆 Preferred Massage Pressure
+          </span>
+          <div class="pressure-pills-row" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+            <button type="button" class="pressure-pill btn btn-soft" data-pressure="Soft" style="text-align:center; padding:10px 6px; font-size:12px; font-weight:700; background:#fff; border:1px solid var(--line);">
+              Gentle / Soft
+            </button>
+            <button type="button" class="pressure-pill btn btn-soft active" data-pressure="Medium" style="text-align:center; padding:10px 6px; font-size:12px; font-weight:800; border:2px solid var(--primary); background:#fff; color:var(--primary-dark);">
+              Medium
+            </button>
+            <button type="button" class="pressure-pill btn btn-soft" data-pressure="Deep" style="text-align:center; padding:10px 6px; font-size:12px; font-weight:700; background:#fff; border:1px solid var(--line);">
+              Deep / Firm
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Therapy Focus Areas & Special Requests -->
+        <div>
+          <div class="field" style="margin-bottom:20px;">
+            <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:8px;">
+              Target Focus Areas (Tap all that apply)
+            </label>
+            <div class="spa-focus-tags" style="display:flex; flex-wrap:wrap; gap:8px;">
+              <span class="spa-focus-tag active" data-focus="Full Body Balanced" style="padding:6px 12px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--primary); background:var(--primary); color:#fff; cursor:pointer;">✨ Full Body Balanced</span>
+              <span class="spa-focus-tag active" data-focus="Upper Back &amp; Shoulders" style="padding:6px 12px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--primary); background:var(--primary); color:#fff; cursor:pointer;">🧣 Upper Back &amp; Shoulders</span>
+              <span class="spa-focus-tag" data-focus="Lower Back &amp; Lumbar" style="padding:6px 12px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--line); background:#fff; color:var(--text); cursor:pointer;">⚡ Lower Back &amp; Lumbar</span>
+              <span class="spa-focus-tag" data-focus="Legs &amp; Foot Reflex" style="padding:6px 12px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--line); background:#fff; color:var(--text); cursor:pointer;">🦶 Legs &amp; Foot Reflex</span>
+            </div>
+          </div>
+
+          <div class="field" style="margin-bottom:20px;">
+            <label for="inputSpaNotes" style="font-size:12px; font-weight:700;">Special Requests / Skin Allergies / Preferences</label>
+            <textarea id="inputSpaNotes" rows="4" class="input" style="width:100%;" placeholder="Describe any allergies, sensitive areas, or room temperature preferences...">Extra focus on neck and shoulder tightness after long desk work. Balanced pressure, no nut oils please.</textarea>
+          </div>
+
+          <div class="field" style="margin-bottom:16px;">
+            <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer;">
+              <input type="checkbox" checked required style="margin-top:3px;" />
+              <span style="font-size:12px; color:var(--text-secondary); line-height:1.4;">
+                I consent to the collection and processing of my spa consultation preferences in accordance with the clinic privacy standard and Singapore / Malaysia Personal Data Protection Act (PDPA).
               </span>
             </label>
           </div>

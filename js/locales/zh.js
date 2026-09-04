@@ -209,10 +209,10 @@ export const zh = {
   "auth.signInBtn": "进入系统控制台 →",
   "auth.requestOnboarding": "申请入驻新诊所",
   "auth.quickLoginTitle": "⚡ 1键免密快速演示登录",
-  "auth.quickOwner": "👑 诊所老板 / 超级管理员",
-  "auth.quickDoctor": "🧑‍⚕️ 主治医师 / 理疗师",
-  "auth.quickReception": "🛎️ 前台接待 / 导医",
-  "auth.quickPatient": "👤 就诊患者 / 客户",
+  "auth.quickOwner": "诊所老板 / 超级管理员",
+  "auth.quickDoctor": "主治医师 / 理疗师",
+  "auth.quickReception": "前台接待 / 导医",
+  "auth.quickPatient": "就诊患者 / 客户",
 
   // Regional Settings
   "regional.sg": "🇸🇬 新加坡 (SGT • SGD $)",

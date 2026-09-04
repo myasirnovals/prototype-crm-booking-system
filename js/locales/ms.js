@@ -209,10 +209,10 @@ export const ms = {
   "auth.signInBtn": "Log Masuk ke Papan Kawalan →",
   "auth.requestOnboarding": "Mohon pendaftaran klinik",
   "auth.quickLoginTitle": "⚡ 1-Klik Log Masuk Demo Pantas",
-  "auth.quickOwner": "👑 Pemilik / Super Admin",
-  "auth.quickDoctor": "🧑‍⚕️ Doktor / Pengamal",
-  "auth.quickReception": "🛎️ Staf Kaunter / Resepsionis",
-  "auth.quickPatient": "👤 Pesakit / Pelanggan",
+  "auth.quickOwner": "Pemilik / Super Admin",
+  "auth.quickDoctor": "Doktor / Pengamal",
+  "auth.quickReception": "Staf Kaunter / Resepsionis",
+  "auth.quickPatient": "Pesakit / Pelanggan",
 
   // Regional Settings
   "regional.sg": "🇸🇬 Singapura (SGT • SGD $)",

@@ -77,10 +77,10 @@ export class OwnerController {
         currency: "SGD",
         revenue: "SGD 84,500.00",
         occupancy: "92.1%",
-        practitioners: "3 Praktisi Bertugas",
+        practitioners: "3 On-Duty Practitioners",
         phone: "+65 8123 4567",
-        hours: "Senin - Sabtu (08:30 - 20:00 SGT)",
-        status: "AKTIF",
+        hours: "Mon - Sat (08:30 - 20:00 SGT)",
+        status: "ACTIVE",
         logoUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f766e'/%3E%3Ctext x='50' y='64' font-size='42' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E✦%3C/text%3E%3C/svg%3E"
       },
       {
@@ -92,10 +92,10 @@ export class OwnerController {
         currency: "MYR",
         revenue: "MYR 142,200.00",
         occupancy: "86.5%",
-        practitioners: "2 Dokter Spesialis",
+        practitioners: "2 Specialist Physicians",
         phone: "+60 12 345 6789",
-        hours: "Senin - Sabtu (09:00 - 18:00 MYT)",
-        status: "AKTIF",
+        hours: "Mon - Sat (09:00 - 18:00 MYT)",
+        status: "ACTIVE",
         logoUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230284c7'/%3E%3Ctext x='50' y='64' font-size='42' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E✦%3C/text%3E%3C/svg%3E"
       },
       {
@@ -107,10 +107,10 @@ export class OwnerController {
         currency: "MYR",
         revenue: "MYR 78,800.00",
         occupancy: "81.0%",
-        practitioners: "2 Praktisi TCM",
+        practitioners: "2 TCM Physicians",
         phone: "+60 17 888 9922",
-        hours: "Selasa - Minggu (10:00 - 19:00 MYT)",
-        status: "AKTIF",
+        hours: "Tue - Sun (10:00 - 19:00 MYT)",
+        status: "ACTIVE",
         logoUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23d97706'/%3E%3Ctext x='50' y='64' font-size='42' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E✦%3C/text%3E%3C/svg%3E"
       }
     ];
@@ -125,15 +125,15 @@ export class OwnerController {
   getProfileTypeLabel(type) {
     switch (type) {
       case "TCM_PHYSIO":
-        return "Fisioterapi & Postur (Body Pain Map)";
+        return "Physiotherapy & Posture (Body Pain Map)";
       case "TCM_ACUPUNCTURE":
         return "Traditional Chinese Medicine (TCM)";
       case "SPA_WELLNESS":
         return "Spa & Wellness";
       case "MEDICAL_CLINIC":
-        return "Klinik Medis & Faskes";
+        return "Medical Clinic & Practice";
       default:
-        return "Layanan Terpadu";
+        return "Integrated Care";
     }
   }
 
@@ -142,10 +142,10 @@ export class OwnerController {
 
     this.branchCardsContainer.innerHTML = this.branches
       .map((b) => {
-        const isAktif = b.status === "AKTIF";
+        const isAktif = b.status === "ACTIVE";
         const statusBadge = isAktif
-          ? `<span class="status-pill confirmed">● Aktif</span>`
-          : `<span class="status-pill cancelled">● Tutup Sementara</span>`;
+          ? `<span class="status-pill confirmed">● Active</span>`
+          : `<span class="status-pill cancelled">● Temporarily Closed</span>`;
 
         return `
           <div class="branch-card" id="card-${b.id}">
@@ -161,31 +161,31 @@ export class OwnerController {
             </div>
 
             <div style="margin:12px 0 14px; padding:8px 12px; background:#f8fafc; border-radius:var(--radius-sm); border:1px solid var(--line); font-size:12px;">
-              <span style="color:var(--muted);">Profil Bisnis:</span>
+              <span style="color:var(--muted);">Business Profile:</span>
               <strong style="color:var(--primary-dark); margin-left:4px;">${this.getProfileTypeLabel(b.profileType)}</strong>
             </div>
 
             <div class="summary-row">
-              <span style="color:var(--muted);">Pendapatan Bulan Ini:</span>
+              <span style="color:var(--muted);">Monthly Revenue:</span>
               <strong>${b.revenue}</strong>
             </div>
             <div class="summary-row">
-              <span style="color:var(--muted);">Okupansi Jadwal:</span>
+              <span style="color:var(--muted);">Schedule Occupancy:</span>
               <strong>${b.occupancy}</strong>
             </div>
             <div class="summary-row">
-              <span style="color:var(--muted);">Praktisi Bertugas:</span>
+              <span style="color:var(--muted);">On-Duty Practitioners:</span>
               <strong>${b.practitioners}</strong>
             </div>
             <div class="summary-row">
-              <span style="color:var(--muted);">Jam Operasional:</span>
+              <span style="color:var(--muted);">Operating Hours:</span>
               <span style="font-size:12px; font-weight:600;">${b.hours}</span>
             </div>
 
             <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center;">
               <span style="font-size:11px; color:var(--muted);">WhatsApp: ${b.phone}</span>
               <button type="button" class="btn btn-sm btn-soft edit-branch-btn" data-branch-id="${b.id}">
-                Kelola Cabang
+                Manage Branch
               </button>
             </div>
           </div>
@@ -230,7 +230,7 @@ export class OwnerController {
         if (!file) return;
 
         if (file.size > 2 * 1024 * 1024) {
-          alert("Ukuran berkas logo maksimal 2MB.");
+          alert("Maximum logo file size is 2MB.");
           return;
         }
 
@@ -273,11 +273,11 @@ export class OwnerController {
         this.renderBranchCards();
 
         // Append to Audit Trail
-        this.addAuditEntry("Dr. Hendra Wijaya", `Update Konfigurasi: ${branch.name}`, branch.id, `Status: ${branch.status} · ${branch.profileType}`);
+        this.addAuditEntry("Dr. Hendra Wijaya", `Update Configuration: ${branch.name}`, branch.id, `Status: ${branch.status} · ${branch.profileType}`);
 
         soundService.playQueueChime();
         this.closeBranchModal();
-        alert(`Konfigurasi cabang "${branch.name}" berhasil disimpan.`);
+        alert(`Branch configuration for "${branch.name}" saved successfully.`);
       });
     }
   }
@@ -307,7 +307,7 @@ export class OwnerController {
 
     const titleEl = document.getElementById("branchModalTitle");
     if (titleEl) {
-      titleEl.textContent = `Konfigurasi Cabang: ${branch.name}`;
+      titleEl.textContent = `Branch Settings: ${branch.name}`;
     }
 
     this.modalOverlay.style.display = "flex";
@@ -349,7 +349,7 @@ export class OwnerController {
         card.classList.add("active");
 
         storageService.set(this.PROFILE_KEY, profile);
-        this.addAuditEntry("Dr. Hendra Wijaya", "Set Default Intake Blueprint", "BLUEPRINT", `Tipe: ${profile}`);
+        this.addAuditEntry("Dr. Hendra Wijaya", "Set Default Intake Blueprint", "BLUEPRINT", `Type: ${profile}`);
       });
     });
   }
@@ -357,7 +357,7 @@ export class OwnerController {
   setupSignOut() {
     if (!this.signOutBtn) return;
     this.signOutBtn.addEventListener("click", () => {
-      if (confirm("Apakah Anda yakin ingin keluar dari panel eksekutif?")) {
+      if (confirm("Are you sure you want to sign out from the executive console?")) {
         authService.logout();
       }
     });

@@ -56,7 +56,7 @@ class AuthService {
    */
   loginWithCredentials(identifier, password, preferredRole = null, region = "sg") {
     if (!identifier || !password) {
-      return { success: false, error: "Harap masukkan alamat email/kontak dan kata sandi." };
+      return { success: false, error: "Please enter your email/contact and password." };
     }
 
     const cleanIdentifier = identifier.trim().toLowerCase();
@@ -76,7 +76,7 @@ class AuthService {
     if (!user || (password !== user.password && password !== "cliniva2026")) {
       return { 
         success: false, 
-        error: "Kredensial tidak valid. Silakan gunakan akun demo atau kata sandi: cliniva2026" 
+        error: "Invalid credentials. Please use demo account or password: cliniva2026" 
       };
     }
 
@@ -113,7 +113,7 @@ class AuthService {
   loginByRoleKey(roleKey) {
     const user = this.USERS.find((u) => u.role === roleKey);
     if (!user) {
-      return { success: false, error: `Akun demo untuk peran ${roleKey} tidak ditemukan.` };
+      return { success: false, error: `Demo account for role ${roleKey} not found.` };
     }
 
     const targetRoute = this.getHomeRouteForRole(user.role);
@@ -148,7 +148,7 @@ class AuthService {
    */
   requestPatientOtp(contact, channel = "whatsapp", countryCode = "+65") {
     if (!contact) {
-      return { success: false, error: "Silakan masukkan nomor WhatsApp atau email untuk menerima OTP." };
+      return { success: false, error: "Please enter your WhatsApp number or email to receive OTP." };
     }
 
     const fullContact = `${countryCode} ${contact}`.trim();
@@ -158,7 +158,7 @@ class AuthService {
       channel,
       contact: fullContact,
       demoOtp: this.DEFAULT_OTP,
-      message: `Kode verifikasi OTP terkirim via ${channel === "whatsapp" ? "WhatsApp" : "Email"} ke ${fullContact}.`
+      message: `OTP verification code sent via ${channel === "whatsapp" ? "WhatsApp" : "Email"} to ${fullContact}.`
     };
   }
 
@@ -167,15 +167,15 @@ class AuthService {
    */
   verifyPatientOtp(otp, consentAccepted, contact = "+65 8123 4567") {
     if (!otp || otp.length !== 6) {
-      return { success: false, error: "Harap masukkan 6 digit kode OTP secara lengkap." };
+      return { success: false, error: "Please enter all 6 digits of the OTP code." };
     }
 
     if (otp !== this.DEFAULT_OTP) {
-      return { success: false, error: "Kode OTP tidak valid. Untuk pengujian demo, gunakan: 123456." };
+      return { success: false, error: "Invalid OTP code. For demo testing, use: 123456." };
     }
 
     if (!consentAccepted) {
-      return { success: false, error: "Harap setujui syarat privasi dan komunikasi sebelum melanjutkan." };
+      return { success: false, error: "Please accept the privacy consent and terms before continuing." };
     }
 
     // Use default patient demo account or create dynamic
@@ -186,7 +186,7 @@ class AuthService {
       email: contact.includes("@") ? contact : "patient@cliniva.com",
       phone: contact,
       role: USER_ROLES.USER,
-      title: "Pasien Terdaftar",
+      title: "Registered Patient",
       branchId: "sg-orchard",
       branchName: "Orchard Wellness Clinic",
       region: "sg",

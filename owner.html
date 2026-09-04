@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel Eksekutif &amp; Pemilik — Cliniva Multi-Branch HQ</title>
-  <meta name="description"
-    content="Executive dashboard for clinic owners: multi-branch consolidation, branch configuration, adaptive business profile, and audit logs." />
+  <title data-i18n="owner.pageTitle">Executive Dashboard — Cliniva Multi-Branch HQ</title>
+  <meta name="description" content="Executive dashboard for clinic owners: multi-branch consolidation, branch configuration, adaptive business profile, and audit logs." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Modular Design System Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
@@ -20,27 +17,34 @@
 
 <body>
   <!-- Header Topbar -->
-  <header
-    style="background:#fff; border-bottom:1px solid var(--line); padding:14px 28px; position:sticky; top:0; z-index:100;">
+  <header style="background:#fff; border-bottom:1px solid var(--line); padding:14px 28px; position:sticky; top:0; z-index:100;">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div style="display:flex; align-items:center; gap:16px;">
         <a href="index.html" class="logo">
           <span class="logo-mark">✦</span>
           Cliniva HQ
         </a>
-        <span class="pill"
-          style="font-size:11px; padding:4px 10px; background:#f0fdfa; color:#0f766e; font-weight:800;">
-          Executive Mode: Multi-Branch Overview
+        <span class="pill" style="font-size:11px; padding:4px 10px; background:#f0fdfa; color:#0f766e; font-weight:800;" data-i18n="owner.topbar">
+          Executive Mode: Multi-Branch HQ
         </span>
       </div>
 
       <div style="display:flex; gap:12px; align-items:center;">
+        <!-- Language Switcher -->
+        <div class="lang-switcher-wrap">
+          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+            <option value="en">🇬🇧 English</option>
+            <option value="ms">🇲🇾 Melayu</option>
+            <option value="zh">🇨🇳 中文</option>
+          </select>
+        </div>
+
         <div style="text-align:right; margin-right:8px;">
           <div id="ownerUserName" style="font-size:13px; font-weight:800; color:var(--text);">Dr. Hendra Wijaya</div>
           <div id="ownerUserRole" style="font-size:11px; color:var(--muted);">Chief Executive &amp; Clinic Owner</div>
         </div>
-        <a href="admin.html" class="btn btn-sm btn-soft">Panel Operasional →</a>
-        <button type="button" class="btn btn-sm btn-primary" id="ownerSignOutBtn">Sign Out</button>
+        <a href="admin.html" class="btn btn-sm btn-soft">Operations Panel →</a>
+        <button type="button" class="btn btn-sm btn-primary" id="ownerSignOutBtn" data-i18n="nav.signOut">Sign Out</button>
       </div>
     </div>
   </header>
@@ -49,29 +53,23 @@
     <!-- Sidebar Navigation -->
     <aside class="owner-sidebar">
       <div class="side-menu">
-        <button class="side-link owner-tab-btn active" data-pane="paneOverview"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          Analitik &amp; Omset Konsolidasi
+        <button class="side-link owner-tab-btn active" data-pane="paneOverview" style="border:0;background:transparent;width:100%;text-align:left;">
+          📊 Consolidated Revenue &amp; Analytics
         </button>
-        <button class="side-link owner-tab-btn" data-pane="paneAdaptiveProfile"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          Profil Bisnis Adaptif
+        <button class="side-link owner-tab-btn" data-pane="paneAdaptiveProfile" style="border:0;background:transparent;width:100%;text-align:left;">
+          🏢 Adaptive Business Profiles
         </button>
-        <button class="side-link owner-tab-btn" data-pane="paneStaff"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          Manajemen Praktisi &amp; Dokter
+        <button class="side-link owner-tab-btn" data-pane="paneStaff" style="border:0;background:transparent;width:100%;text-align:left;">
+          🧑‍⚕️ Practitioners &amp; Specialists
         </button>
-        <button class="side-link owner-tab-btn" data-pane="paneAudit"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          Audit Trail Log Sistem
+        <button class="side-link owner-tab-btn" data-pane="paneAudit" style="border:0;background:transparent;width:100%;text-align:left;">
+          🛡️ System Audit Trail Logs
         </button>
       </div>
 
-      <div class="side-card"
-        style="margin-top:auto; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px;">
+      <div class="side-card" style="margin-top:auto; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px;">
         <div style="font-size:12px; font-weight:800; color:var(--primary); margin-bottom:4px;">MULTI-TENANT ACTIVE</div>
-        <p style="font-size:11px; color:var(--muted); margin:0;">Mengelola 3 cabang: Singapore Paragon, Kuala Lumpur
-          Pavilion, &amp; Penang Gurney.</p>
+        <p style="font-size:11px; color:var(--muted); margin:0;">Managing 3 regional branches: Singapore Paragon, Kuala Lumpur Pavilion, &amp; Penang Gurney.</p>
       </div>
     </aside>
 
@@ -81,14 +79,13 @@
       <section class="owner-tab-pane active" id="paneOverview">
         <div class="panel-top">
           <div>
-            <h2 style="font-size:24px; letter-spacing:-0.5px;">Dashboard Eksekutif &amp; Analitik Omset</h2>
+            <h2 style="font-size:24px; letter-spacing:-0.5px;" data-i18n="owner.revenue">Consolidated Revenue &amp; Executive Analytics</h2>
             <p style="color:var(--muted); font-size:14px; margin-top:4px;">
-              Konsolidasi data performa seluruh cabang faskes, klinik, dan spa secara real-time.
+              Real-time multi-branch performance metrics across healthcare, TCM, and wellness centers.
             </p>
           </div>
           <div style="display:flex; gap:8px;">
-            <button class="btn btn-sm btn-white"
-              onclick="alert('Laporan keuangan bulan berjalan berhasil diunduh (PDF / Excel).')">Unduh Laporan</button>
+            <button class="btn btn-sm btn-white" onclick="alert('Monthly executive report downloaded (PDF / Excel).')">Download Report</button>
           </div>
         </div>
 
@@ -96,45 +93,45 @@
         <div class="executive-kpi-grid">
           <div class="kpi-card emerald">
             <div class="kpi-title">
-              <span>TOTAL OMSET BULAN INI</span>
+              <span>TOTAL REVENUE (THIS MONTH)</span>
               <span style="font-size:11px; font-weight:800; color:var(--primary-dark);">SG / MY</span>
             </div>
             <div class="kpi-value">SGD 148,250</div>
             <div class="kpi-meta" style="color:var(--success-dark); font-weight:700;">
-              ↑ 18.4% vs bulan lalu (RM 512,000)
+              ↑ 18.4% vs last month (RM 512,000)
             </div>
           </div>
 
           <div class="kpi-card gold">
             <div class="kpi-title">
-              <span>TINGKAT OKUPANSI SLOT</span>
+              <span data-i18n="owner.occupancy">SLOT OCCUPANCY RATE</span>
               <span style="font-size:11px; font-weight:800; color:#d97706;">OPTIMAL</span>
             </div>
             <div class="kpi-value">88.4%</div>
             <div class="kpi-meta" style="color:var(--warning-dark); font-weight:700;">
-              Kapasitas optimal (Target: ≥85%)
+              Optimal utilization (Target: ≥85%)
             </div>
           </div>
 
           <div class="kpi-card blue">
             <div class="kpi-title">
-              <span>TINGKAT NO-SHOW</span>
-              <span style="font-size:11px; font-weight:800; color:#0284c7;">TERKENDALI</span>
+              <span data-i18n="owner.noShowRate">NO-SHOW RATE</span>
+              <span style="font-size:11px; font-weight:800; color:#0284c7;">CONTROLLED</span>
             </div>
             <div class="kpi-value">3.1%</div>
             <div class="kpi-meta" style="color:#0284c7; font-weight:700;">
-              ↓ Dipangkas via WhatsApp Reminder &amp; Deposit
+              ↓ Reduced via WhatsApp &amp; Deposit
             </div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-title">
-              <span>JUMLAH CABANG</span>
-              <span style="font-size:11px; font-weight:800; color:var(--primary);">SISTEM</span>
+              <span>ACTIVE BRANCHES</span>
+              <span style="font-size:11px; font-weight:800; color:var(--primary);">NETWORK</span>
             </div>
-            <div class="kpi-value">3 Aktif</div>
+            <div class="kpi-value">3 Active</div>
             <div class="kpi-meta" style="color:var(--primary); font-weight:700;">
-              Jumlah cabang aktif yang terdaftar dalam sistem
+              Active branches in network
             </div>
           </div>
         </div>
@@ -142,13 +139,12 @@
         <!-- Branch Performance Cards -->
         <div style="display:flex; justify-content:space-between; align-items:center; margin:28px 0 14px;">
           <div>
-            <h3 style="margin:0; font-size:18px;">Performa Finansial &amp; Konfigurasi per Cabang</h3>
-            <p style="margin:4px 0 0; font-size:12px; color:var(--muted);">Klik tombol Kelola Cabang untuk memperbarui
-              profil bisnis, jam buka, atau kontak cabang.</p>
+            <h3 style="margin:0; font-size:18px;" data-i18n="owner.branches">Branch Network Financials &amp; Configuration</h3>
+            <p style="margin:4px 0 0; font-size:12px; color:var(--muted);">Click Manage Branch to update business profile, working hours, or contact information.</p>
           </div>
           <div>
-            <button class="btn btn-danger" id="deleteBranchBtn">Hapus Cabang</button>
-            <button class="btn btn-primary" id="addBranchBtn">Tambah Cabang</button>
+            <button class="btn btn-danger" id="deleteBranchBtn">Remove Branch</button>
+            <button class="btn btn-primary" id="addBranchBtn">+ Add Branch</button>
           </div>
         </div>
 
@@ -157,87 +153,78 @@
         </div>
       </section>
 
-      <!-- PANE 2: PROFIL BISNIS ADAPTIF (FR-CONFIG-03) -->
+      <!-- PANE 2: ADAPTIVE BUSINESS PROFILES (FR-CONFIG-03) -->
       <section class="owner-tab-pane" id="paneAdaptiveProfile">
         <div class="panel-top">
           <div>
-            <h2 style="font-size:24px; letter-spacing:-0.5px;">Katalog Profil Bisnis Adaptif</h2>
+            <h2 style="font-size:24px; letter-spacing:-0.5px;">Adaptive Business Profiles Catalog</h2>
             <p style="color:var(--muted); font-size:14px; margin-top:4px;">
-              Sesuai SRS FR-CONFIG-03: Menyesuaikan alur formulir keluhan pasien (*intake form*) secara dinamis sesuai
-              tipe spesialisasi tiap cabang.
+              Per SRS FR-CONFIG-03: Dynamically adapts patient intake forms and service flows according to the branch specialization.
             </p>
           </div>
-          <div><button class="btn btn-primary" id="addProfileBtn">+ Tambah Katalog</button></div>
+          <div><button class="btn btn-primary" id="addProfileBtn">+ Add Profile</button></div>
         </div>
 
         <div class="profile-selection-grid">
           <div class="profile-card" data-profile="SPA_WELLNESS">
-            <h3 style="font-size:16px; margin:0 0 6px;">Spa &amp; Wellness</h3>
-            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Fasilitas relaksasi, body scrub, aroma
-              terapi, &amp; pijat refleksi.</p>
-            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Fitur Intake
-              Aktif:</div>
+            <h3 style="font-size:16px; margin:0 0 6px;" data-i18n="admin.settings.templateWellness">Wellness &amp; Spa Care</h3>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Relaxation therapy, aromatherapy massage, body scrub &amp; reflexology.</p>
+            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Active Intake Features:</div>
             <ul class="profile-feature-list">
-              <li>Preferensi gender terapis</li>
-              <li>Pilihan aroma minyak esensial</li>
-              <li>Tingkat tekanan pijatan tubuh</li>
-              <li style="color:#94a3b8;">Dokumen rujukan &amp; BPJS (Non-aktif)</li>
+              <li>Therapist gender preference</li>
+              <li>Essential oil scent choice (Lavender/Lemongrass)</li>
+              <li>Massage pressure calibration (Soft/Med/Deep)</li>
+              <li style="color:#94a3b8;">Medical referral doc (Disabled)</li>
             </ul>
           </div>
 
           <div class="profile-card active" data-profile="TCM_PHYSIO">
-            <h3 style="font-size:16px; margin:0 0 6px;">TCM &amp; Fisioterapi</h3>
-            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Akupunktur medis, rehabilitasi cedera
-              olahraga, spinal decompression.</p>
-            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Fitur Intake
-              Aktif:</div>
+            <h3 style="font-size:16px; margin:0 0 6px;" data-i18n="admin.settings.templateTcm">Traditional Chinese Medicine (TCM)</h3>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Clinical acupuncture, pulse assessment, sports injury rehab &amp; spinal decompression.</p>
+            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Active Intake Features:</div>
             <ul class="profile-feature-list">
-              <li><strong>Body Pain Map</strong> visual interaktif</li>
-              <li>Riwayat cedera sendi &amp; postur</li>
-              <li>Skala derajat nyeri (1 - 10)</li>
-              <li>Catatan durasi keluhan otot</li>
+              <li><strong>Interactive Body Pain Map</strong></li>
+              <li>Joint &amp; posture injury history</li>
+              <li>Pain severity scale (1 - 10)</li>
+              <li>Symptom onset notes</li>
             </ul>
           </div>
 
           <div class="profile-card" data-profile="MEDICAL_CLINIC">
-            <h3 style="font-size:16px; margin:0 0 6px;">Klinik Medis &amp; Faskes</h3>
-            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Poli umum, spesialis, integrasi asuransi
-              swasta &amp; bridging SIMRS.</p>
-            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Fitur Intake
-              Aktif:</div>
+            <h3 style="font-size:16px; margin:0 0 6px;">Integrated Medical Clinic</h3>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">General outpatient, specialist consultations, and hospital SIMRS bridging.</p>
+            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Active Intake Features:</div>
             <ul class="profile-feature-list">
-              <li>Upload berkas rujukan (SIMRS Proxy)</li>
-              <li>Jalur pembayaran Asuransi / BPJS</li>
-              <li>Verifikasi nomor polis kartu</li>
-              <li>Auto-retention TTL 72 jam</li>
+              <li>Referral document upload (SIMRS Proxy)</li>
+              <li>Private Insurance / Medisave channel</li>
+              <li>Policy verification</li>
+              <li>72-Hour Ephemeral Retention TTL</li>
             </ul>
           </div>
         </div>
       </section>
 
-      <!-- PANE 3: MANAJEMEN PRAKTISI -->
+      <!-- PANE 3: PRACTITIONER MANAGEMENT -->
       <section class="owner-tab-pane" id="paneStaff">
         <div class="panel-top">
           <div>
-            <h2 style="font-size:24px; letter-spacing:-0.5px;">Manajemen Dokter &amp; Praktisi Terdaftar</h2>
+            <h2 style="font-size:24px; letter-spacing:-0.5px;">Registered Practitioners &amp; Specialists</h2>
             <p style="color:var(--muted); font-size:14px; margin-top:4px;">
-              Daftar praktisi, hak akses spesialisasi, dan alokasi ruangan per cabang klinik.
+              Roster of specialists, licensed privileges, and room allocations across clinic branches.
             </p>
           </div>
-          <button class="btn btn-primary"
-            onclick="alert('Fitur registrasi praktisi baru siap dihubungkan ke modul database Prisma.')">+ Tambah
-            Praktisi</button>
+          <button class="btn btn-primary" onclick="alert('New practitioner modal ready.')">+ Add Practitioner</button>
         </div>
 
         <div class="data-table-container">
           <table class="data-table">
             <thead>
               <tr>
-                <th>Nama Praktisi</th>
-                <th>Spesialisasi</th>
-                <th>Cabang Penugasan</th>
-                <th>Ruangan Alokasi</th>
-                <th>Status Jadwal</th>
+                <th>Practitioner Name</th>
+                <th>Specialty</th>
+                <th>Assigned Branch</th>
+                <th>Allocated Suite</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -246,28 +233,28 @@
                 <td>Senior Physiotherapist &amp; Spine</td>
                 <td>Orchard Wellness (SG)</td>
                 <td>Room A2 (Physio Suite)</td>
-                <td><span class="status-pill confirmed">● Tersedia</span></td>
+                <td><span class="status-pill confirmed">● Available</span></td>
               </tr>
               <tr>
                 <td><strong>Dr. Wong Mei Ling</strong></td>
                 <td>Registered TCM Physician</td>
                 <td>Orchard Wellness (SG)</td>
                 <td>Room B1 (TCM Suite)</td>
-                <td><span class="status-pill confirmed">● Tersedia</span></td>
+                <td><span class="status-pill confirmed">● Available</span></td>
               </tr>
               <tr>
                 <td><strong>Therapist Sarah Tan</strong></td>
-                <td>Lead Clinical Therapist</td>
+                <td>Lead Wellness &amp; Spa Therapist</td>
                 <td>Orchard Wellness (SG)</td>
                 <td>Room A1</td>
-                <td><span class="status-pill pending">● Sedang Sesi</span></td>
+                <td><span class="status-pill pending">● In Session</span></td>
               </tr>
               <tr>
                 <td><strong>Sinse Huang Wei</strong></td>
                 <td>Chief Acupuncturist</td>
                 <td>Kuala Lumpur Care (MY)</td>
                 <td>Suite 101</td>
-                <td><span class="status-pill confirmed">● Tersedia</span></td>
+                <td><span class="status-pill confirmed">● Available</span></td>
               </tr>
             </tbody>
           </table>
@@ -278,10 +265,9 @@
       <section class="owner-tab-pane" id="paneAudit">
         <div class="panel-top">
           <div>
-            <h2 style="font-size:24px; letter-spacing:-0.5px;">Audit Trail Log Keuangan &amp; Operasional</h2>
+            <h2 style="font-size:24px; letter-spacing:-0.5px;">Financial &amp; Operations Audit Trail</h2>
             <p style="color:var(--muted); font-size:14px; margin-top:4px;">
-              Catatan kepatuhan hukum UU PDP / PDPA: Semua transaksi, perubahan cabang, pembatalan, dan reschedule
-              tercatat dengan timestamp.
+              PDPA Regulatory Compliance: All transactions, branch modifications, cancellations, and reschedules recorded with tamper-evident timestamps.
             </p>
           </div>
         </div>
@@ -290,35 +276,35 @@
           <table class="data-table">
             <thead>
               <tr>
-                <th>Waktu (SGT)</th>
-                <th>Aktor / User</th>
-                <th>Peristiwa (Event)</th>
-                <th>Kode / Target</th>
-                <th>Rincian Finansial / Info</th>
-                <th>Status Audit</th>
+                <th>Timestamp (SGT/MYT)</th>
+                <th>User / Actor</th>
+                <th>System Event</th>
+                <th>Target Reference</th>
+                <th>Financial / Event Details</th>
+                <th>Audit Status</th>
               </tr>
             </thead>
             <tbody id="auditTrailTableBody">
               <tr>
                 <td>2026-09-03 10:45</td>
-                <td>Amanda Tan (Pasien)</td>
-                <td>Pembayaran Deposit QRIS</td>
+                <td>Amanda Tan (Patient)</td>
+                <td>PayNow QR Deposit Payment</td>
                 <td>BK-20260901-0812</td>
                 <td>+ SGD 30.00</td>
                 <td><span class="status-pill confirmed">● Verified</span></td>
               </tr>
               <tr>
                 <td>2026-09-03 10:12</td>
-                <td>Siti Rahmah (Resepsionis)</td>
-                <td>Pelunasan Kasir POS</td>
+                <td>Siti Rahmah (Receptionist)</td>
+                <td>POS Cashier Settlement</td>
                 <td>BK-20260901-0730</td>
                 <td>+ SGD 90.00 (Cash)</td>
                 <td><span class="status-pill confirmed">● Audited</span></td>
               </tr>
               <tr>
                 <td>2026-09-03 09:15</td>
-                <td>Sistem Otomatis</td>
-                <td>Webhook Forward SIMRS</td>
+                <td>Automated System</td>
+                <td>SIMRS Webhook Dispatch</td>
                 <td>BK-20260901-0610</td>
                 <td>HMAC Validated</td>
                 <td><span class="status-pill confirmed">● Delivered</span></td>
@@ -326,7 +312,7 @@
               <tr>
                 <td>2026-09-03 08:30</td>
                 <td>Dr. Hendra Wijaya</td>
-                <td>Update Konfigurasi Cabang</td>
+                <td>Branch Config Update</td>
                 <td>Penang Gurney</td>
                 <td>Profile: TCM_PHYSIO</td>
                 <td><span class="status-pill confirmed">● Recorded</span></td>
@@ -338,109 +324,102 @@
     </main>
   </div>
 
-  <!-- MODAL POP-UP: KONFIGURASI CABANG -->
+  <!-- MODAL POP-UP: BRANCH CONFIGURATION -->
   <div class="branch-modal-overlay" id="branchModalOverlay" style="display:none;">
     <div class="branch-modal" role="dialog" aria-modal="true" aria-labelledby="branchModalTitle">
       <div class="branch-modal-header">
         <div>
-          <h3 id="branchModalTitle" style="margin:0; font-size:18px;">Konfigurasi Cabang</h3>
-          <p style="margin:4px 0 0; font-size:12px; color:var(--muted);">Kelola profil bisnis adaptif, identitas
-            sub-brand, dan jam operasional cabang.</p>
+          <h3 id="branchModalTitle" style="margin:0; font-size:18px;">Branch Configuration</h3>
+          <p style="margin:4px 0 0; font-size:12px; color:var(--muted);">Configure adaptive business profiles, sub-brand identity, and operational hours.</p>
         </div>
-        <button type="button" class="btn-close-modal" id="closeBranchModalBtn" aria-label="Tutup">✕</button>
+        <button type="button" class="btn-close-modal" id="closeBranchModalBtn" aria-label="Close">✕</button>
       </div>
 
       <form id="branchEditForm" class="branch-modal-body">
         <input type="hidden" id="editBranchId" />
 
-        <!-- Platform Governance Banner (Powered by Cliniva) -->
+        <!-- Platform Governance Banner -->
         <div class="platform-governance-box">
-          <div
-            style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:var(--primary-dark);">
-            Standar Lisensi &amp; Watermark Platform
+          <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:var(--primary-dark);">
+            Platform License &amp; Watermark Standard
           </div>
           <div style="font-size:13px; font-weight:700; color:var(--text); margin-top:4px;">
             ✦ Cliniva Enterprise — Powered by Cliniva
           </div>
           <p style="font-size:11px; color:var(--muted); margin:4px 0 0; line-height:1.4;">
-            Watermark resmi Cliniva disematkan otomatis pada e-tiket, konfirmasi WhatsApp, dan portal reservasi untuk
-            menjaga validitas lisensi platform.
+            Official Cliniva watermark is automatically attached to e-tickets, WhatsApp alerts, and reservation portals.
           </p>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="editBranchName">Nama Cabang / Sub-Brand</label>
+            <label for="editBranchName">Branch / Sub-Brand Name</label>
             <input type="text" id="editBranchName" required />
           </div>
           <div class="field">
-            <label for="editBranchRegion">Wilayah Operasional</label>
+            <label for="editBranchRegion">Operational Territory</label>
             <input type="text" id="editBranchRegion" required />
           </div>
         </div>
 
         <div class="field">
-          <label for="editBranchProfileType">Profil Bisnis Adaptif (Alur Intake Formulir Pasien)</label>
+          <label for="editBranchProfileType">Adaptive Business Profile (Patient Intake Flow)</label>
           <select id="editBranchProfileType" required>
-            <option value="TCM_PHYSIO">Fisioterapi &amp; Rehabilitasi Postur (Body Pain Map)</option>
-            <option value="TCM_ACUPUNCTURE">Traditional Chinese Medicine (TCM) &amp; Akupunktur</option>
-            <option value="SPA_WELLNESS">Spa, Relaksasi &amp; Reflexology</option>
-            <option value="MEDICAL_CLINIC">Klinik Medis &amp; Terapi Terpadu (SIMRS Bridge)</option>
+            <option value="TCM_PHYSIO">Physiotherapy &amp; Postural Recovery (Body Pain Map)</option>
+            <option value="TCM_ACUPUNCTURE">Traditional Chinese Medicine (TCM) &amp; Acupuncture</option>
+            <option value="SPA_WELLNESS">Wellness, Spa &amp; Reflexology</option>
+            <option value="MEDICAL_CLINIC">Integrated Medical Clinic (SIMRS Bridge)</option>
           </select>
         </div>
 
         <!-- Branch Specific Logo Preview & Uploader -->
         <div class="field">
-          <label>Logo Sub-Brand Cabang</label>
-          <div
-            style="display:flex; align-items:center; gap:16px; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-sm); padding:12px;">
-            <img id="editBranchLogoPreview" src="" alt="Logo Cabang"
-              style="width:48px; height:48px; border-radius:var(--radius-sm); object-fit:cover; border:1px solid var(--line); background:#fff;" />
+          <label>Branch Sub-Brand Official Logo</label>
+          <div style="display:flex; align-items:center; gap:16px; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-sm); padding:12px;">
+            <img id="editBranchLogoPreview" src="" alt="Branch Logo" style="width:48px; height:48px; border-radius:var(--radius-sm); object-fit:cover; border:1px solid var(--line); background:#fff;" />
             <div style="flex:1;">
               <input type="file" id="editBranchLogoFile" accept="image/*" style="font-size:12px;" />
-              <div style="font-size:11px; color:var(--muted); margin-top:4px;">Maksimal 2MB (PNG, JPG, WebP transparan).
-              </div>
+              <div style="font-size:11px; color:var(--muted); margin-top:4px;">Max 2MB (PNG, JPG, WebP transparent).</div>
             </div>
           </div>
         </div>
 
         <div class="field">
-          <label for="editBranchAddress">Alamat Fisik Cabang</label>
+          <label for="editBranchAddress">Branch Physical Address</label>
           <input type="text" id="editBranchAddress" required />
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="editBranchPhone">Nomor WhatsApp Gateway</label>
+            <label for="editBranchPhone">WhatsApp Gateway Number</label>
             <input type="text" id="editBranchPhone" required />
           </div>
           <div class="field">
-            <label for="editBranchHours">Jam Operasional Pelayanan</label>
+            <label for="editBranchHours">Operating Hours</label>
             <input type="text" id="editBranchHours" required />
           </div>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="editBranchCurrency">Mata Uang &amp; Pajak</label>
+            <label for="editBranchCurrency">Currency &amp; Tax</label>
             <select id="editBranchCurrency">
-              <option value="SGD">SGD (Singapura - GST 9%)</option>
+              <option value="SGD">SGD (Singapore - GST 9%)</option>
               <option value="MYR">MYR (Malaysia - SST 8%)</option>
-              <option value="IDR">IDR (Indonesia - PPN 11%)</option>
             </select>
           </div>
           <div class="field">
-            <label for="editBranchStatus">Status Operasional Cabang</label>
+            <label for="editBranchStatus">Operational Status</label>
             <select id="editBranchStatus">
-              <option value="AKTIF">● Aktif Melayani</option>
-              <option value="TUTUP_SEMENTARA">● Tutup Sementara</option>
+              <option value="AKTIF">● Active &amp; Serving</option>
+              <option value="TUTUP_SEMENTARA">● Temporarily Closed</option>
             </select>
           </div>
         </div>
 
         <div class="branch-modal-footer">
-          <button type="button" class="btn btn-soft" id="cancelBranchModalBtn">Batal</button>
-          <button type="submit" class="btn btn-primary" id="saveBranchModalBtn">Simpan Perubahan Cabang</button>
+          <button type="button" class="btn btn-soft" id="cancelBranchModalBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveBranchModalBtn">Save Branch Settings</button>
         </div>
       </form>
     </div>
@@ -449,5 +428,4 @@
   <!-- Modular Owner Script Bootstrap -->
   <script type="module" src="js/pages/owner.js"></script>
 </body>
-
 </html>

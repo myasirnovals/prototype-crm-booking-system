@@ -107,8 +107,8 @@ export class PractitionerController {
         this.callingBanner.classList.add("chime-active");
         this.callingBanner.innerHTML = `
           <div>
-            <span style="font-size:11px; text-transform:uppercase; letter-spacing:1px; opacity:0.9;">🔊 SEDANG MEMANGGIL KE RUANG PERIKSA</span>
-            <h3 style="margin:4px 0 0; font-size:20px;">Antrean ${this.activePatient.queueNo} — ${this.activePatient.name}</h3>
+            <span style="font-size:11px; text-transform:uppercase; letter-spacing:1px; opacity:0.9;">🔊 CALLING TO CONSULTATION ROOM</span>
+            <h3 style="margin:4px 0 0; font-size:20px;">Queue ${this.activePatient.queueNo} — ${this.activePatient.name}</h3>
           </div>
           <span class="badge-live" style="background:#fff; color:#0369a1; font-weight:900;">LIVE CALLING</span>
         `;
@@ -118,7 +118,7 @@ export class PractitionerController {
         }, 4000);
       }
 
-      alert(`🔊 Panggilan Suara Aktif:\n"Nomor Antrean ${this.activePatient.queueNo}, atas nama ${this.activePatient.name}, dipersilakan masuk ke Ruang Konsultasi."`);
+      alert(`🔊 Voice Calling Simulation:\n"Queue Number ${this.activePatient.queueNo}, ${this.activePatient.name}, please proceed to Consultation Room."`);
     });
   }
 
@@ -128,7 +128,7 @@ export class PractitionerController {
     this.statusSelect.addEventListener("change", (e) => {
       const newStatus = e.target.value;
       soundService.playClickTone();
-      alert(`✓ Status sesi ${this.activePatient.name} diperbarui menjadi: ${newStatus}`);
+      alert(`✓ Session status for ${this.activePatient.name} updated to: ${newStatus}`);
     });
   }
 
@@ -136,9 +136,9 @@ export class PractitionerController {
     this.painMarkers.forEach((marker) => {
       marker.addEventListener("click", () => {
         soundService.playClickTone();
-        const part = marker.dataset.bodyPart || "Area Nyeri";
-        const note = marker.dataset.clinicalNote || "Keluhan nyeri terlaporkan oleh pasien.";
-        alert(`🩺 Titik Anatomi: ${part}\nCatatan Klinis: ${note}`);
+        const part = marker.dataset.bodyPart || "Pain Area";
+        const note = marker.dataset.clinicalNote || "Pain complaint reported by patient.";
+        alert(`🩺 Anatomical Point: ${part}\nClinical Note: ${note}`);
       });
     });
   }
@@ -147,7 +147,7 @@ export class PractitionerController {
     if (this.signOutBtn) {
       this.signOutBtn.addEventListener("click", () => {
         soundService.playClickTone();
-        if (confirm("Apakah Anda yakin ingin keluar dari workspace Dokter?")) {
+        if (confirm("Are you sure you want to sign out from the Practitioner workspace?")) {
           authService.logout();
         }
       });

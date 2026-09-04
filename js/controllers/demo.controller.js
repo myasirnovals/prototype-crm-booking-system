@@ -17,7 +17,7 @@ export class DemoController {
     this.selectedPractitioner = PRACTITIONERS[0];
     this.selectedDate = new Date().toISOString().split("T")[0];
     this.selectedSlot = DEFAULT_SLOTS[1];
-    this.selectedPainSpots = new Set(["Pinggang / Lumbar"]);
+    this.selectedPainSpots = new Set(["Lower Back / Lumbar"]);
     this.selectedPayType = "deposit"; // 'deposit', 'full', 'clinic'
     this.patientName = "Amanda Tan";
     this.patientPhone = "+65 8123 4567";
@@ -217,7 +217,7 @@ export class DemoController {
     dateInput.addEventListener("change", (e) => {
       if (e.target.value < today) {
         e.target.value = today;
-        alert("⚠️ Tanggal tidak dapat dipilih ke masa lalu. Sistem telah mengembalikan pilihan ke hari ini.");
+        alert("⚠️ Cannot select past dates. Selection reset to today.");
       }
       this.selectedDate = e.target.value || today;
       this.updateWizardSummary();
@@ -243,11 +243,11 @@ export class DemoController {
         const desc = document.getElementById("payTypeDesc");
         if (desc) {
           if (this.selectedPayType === "deposit") {
-            desc.innerHTML = "💡 <strong>Uang Muka:</strong> Bayar uang muka sekarang untuk mengunci slot, sisa tagihan dilunasi di meja kasir setelah terapi selesai.";
+            desc.innerHTML = "💡 <strong>Deposit:</strong> Pay deposit now to lock the slot, balance settled at counter after therapy.";
           } else if (this.selectedPayType === "full") {
-            desc.innerHTML = "💡 <strong>Bayar Penuh:</strong> Bayar lunas 100% via instant gateway untuk administrasi cepat dan bebas antre di kasir klinik.";
+            desc.innerHTML = "💡 <strong>Pay in Full:</strong> Pay 100% online for expedited front-desk clearance and priority access.";
           } else if (this.selectedPayType === "clinic") {
-            desc.innerHTML = "💡 <strong>Bayar di Tempat:</strong> Tidak perlu bayar sekarang. Pelunasan tagihan dilakukan langsung di meja kasir/resepsionis saat kedatangan.";
+            desc.innerHTML = "💡 <strong>Pay at Clinic:</strong> No upfront payment. Settle full amount directly at clinic counter upon arrival.";
           }
         }
 
@@ -340,11 +340,11 @@ export class DemoController {
 
       let paymentText = "";
       if (this.selectedPayType === "deposit") {
-        paymentText = `${curr} ${deposit}.00 (Deposit Dibayar, Sisa ${curr} ${price - deposit}.00 di Kasir)`;
+        paymentText = `${curr} ${deposit}.00 (Deposit Paid, Balance ${curr} ${price - deposit}.00 at Counter)`;
       } else if (this.selectedPayType === "full") {
-        paymentText = `${curr} ${price}.00 (Lunas 100%)`;
+        paymentText = `${curr} ${price}.00 (Paid in Full / 100%)`;
       } else {
-        paymentText = `Bayar di Tempat (${curr} ${price}.00 saat kedatangan)`;
+        paymentText = `Pay at Clinic (${curr} ${price}.00 upon arrival)`;
       }
 
       const booking = bookingService.createBooking({
@@ -364,7 +364,7 @@ export class DemoController {
         bookingCode: booking.code
       });
 
-      alert(`🎉 RESERVASI BERHASIL DISIMULASIKAN!\n\nKode Booking: ${booking.code}\nPasien: ${this.patientName}\nLayanan: ${this.selectedService.name}\nTanggal & Jam: ${this.selectedDate} • ${this.selectedSlot}\nStatus Pembayaran: ${paymentText}\n\nNotifikasi WhatsApp & Tiket Digital telah diterbitkan!`);
+      alert(`🎉 RESERVATION CONFIRMED!\n\nBooking Code: ${booking.code}\nPatient: ${this.patientName}\nService: ${this.selectedService.name}\nDate & Time: ${this.selectedDate} • ${this.selectedSlot}\nPayment Status: ${paymentText}\n\nWhatsApp notification & digital e-ticket issued!`);
 
       // Switch to WhatsApp simulator to show live effect
       const waTab = document.querySelector('[data-pane="paneWhatsAppSimulator"]');
@@ -405,29 +405,29 @@ export class DemoController {
     }
 
     if (this.selectedPayType === "deposit") {
-      if (summaryPayLabel) summaryPayLabel.textContent = "Biaya Deposit (Online):";
+      if (summaryPayLabel) summaryPayLabel.textContent = "Online Deposit:";
       if (summaryDeposit) {
-        summaryDeposit.textContent = `${curr} ${deposit}.00 (Sisa ${curr} ${price - deposit}.00 di Kasir)`;
+        summaryDeposit.textContent = `${curr} ${deposit}.00 (Balance ${curr} ${price - deposit}.00 at Counter)`;
         summaryDeposit.style.color = "var(--primary-dark)";
       }
-      if (confirmBtn) confirmBtn.textContent = `⚡ Selesaikan Pembayaran Deposit (${curr} ${deposit}.00) & Terbitkan Tiket →`;
-      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 Bayar Deposit (${curr} ${deposit}.00) & Checkout →`;
+      if (confirmBtn) confirmBtn.textContent = `⚡ Complete Deposit (${curr} ${deposit}.00) & Issue Ticket →`;
+      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 Pay Deposit (${curr} ${deposit}.00) & Checkout →`;
     } else if (this.selectedPayType === "full") {
-      if (summaryPayLabel) summaryPayLabel.textContent = "Total Pembayaran (Lunas):";
+      if (summaryPayLabel) summaryPayLabel.textContent = "Total Payment (Full):";
       if (summaryDeposit) {
-        summaryDeposit.textContent = `${curr} ${price}.00 (Lunas / 100%)`;
+        summaryDeposit.textContent = `${curr} ${price}.00 (Paid in Full / 100%)`;
         summaryDeposit.style.color = "var(--success-dark)";
       }
-      if (confirmBtn) confirmBtn.textContent = `⚡ Selesaikan Bayar Penuh (${curr} ${price}.00) & Terbitkan Tiket →`;
-      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 Bayar Penuh (${curr} ${price}.00) & Checkout →`;
+      if (confirmBtn) confirmBtn.textContent = `⚡ Pay in Full (${curr} ${price}.00) & Issue Ticket →`;
+      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 Pay in Full (${curr} ${price}.00) & Checkout →`;
     } else if (this.selectedPayType === "clinic") {
-      if (summaryPayLabel) summaryPayLabel.textContent = "Metode Pembayaran:";
+      if (summaryPayLabel) summaryPayLabel.textContent = "Payment Method:";
       if (summaryDeposit) {
-        summaryDeposit.textContent = `Bayar di Tempat (${curr} ${price}.00 saat kedatangan)`;
+        summaryDeposit.textContent = `Pay at Clinic (${curr} ${price}.00 upon arrival)`;
         summaryDeposit.style.color = "var(--text)";
       }
-      if (confirmBtn) confirmBtn.textContent = `⚡ Konfirmasi Reservasi (Bayar di Klinik) & Terbitkan Tiket →`;
-      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 Konfirmasi Booking (Bayar di Klinik) →`;
+      if (confirmBtn) confirmBtn.textContent = `⚡ Confirm Booking (Pay at Clinic) & Issue Ticket →`;
+      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 Confirm Booking (Pay at Clinic) →`;
     }
   }
 
@@ -463,7 +463,7 @@ export class DemoController {
         modal.classList.remove("active");
         form.reset();
 
-        alert(`🎟️ TIKET WALK-IN BERHASIL DITERBITKAN!\n\nNomor Antrean: D-04\nPasien: ${name}\nLayanan: ${service}\nStatus: Siap dipanggil di resepsionis.`);
+        alert(`🎟️ WALK-IN TICKET ISSUED!\n\nQueue Number: D-04\nPatient: ${name}\nService: ${service}\nStatus: Ready to be called at reception.`);
       });
     }
 
@@ -473,9 +473,9 @@ export class DemoController {
       btn.addEventListener("click", () => {
         const queueNo = btn.dataset.queue || "A-01";
         const patient = btn.dataset.patient || "Patient";
-        const room = btn.dataset.room || "Ruangan Terapi";
+        const room = btn.dataset.room || "Therapy Room";
         soundService.playQueueChime();
-        alert(`🔊 [Simulasi Audio Chime Aktif]\n"Nomor Antrean ${queueNo}, atas nama ${patient}, dipersilakan menuju ${room}."`);
+        alert(`🔊 [Audio Chime Simulation Active]\n"Queue Number ${queueNo}, ${patient}, please proceed to ${room}."`);
       });
     });
 
@@ -486,10 +486,10 @@ export class DemoController {
 
     window.openDemoPOSModal = (queue, patient, balance) => {
       soundService.playClickTone();
-      const confirmed = confirm(`Pelunasan Kasir POS Antrean ${queue} (${patient}).\n\nSisa Tagihan: SGD/MYR ${balance}\nMetode: Kartu Debit/Kredit EDC atau QRIS/PayNow.\n\nLanjutkan pelunasan transaksi?`);
+      const confirmed = confirm(`POS Cashier Settlement for Queue ${queue} (${patient}).\n\nBalance Due: SGD/MYR ${balance}\nMethod: Debit/Credit EDC or PayNow/DuitNow.\n\nProceed with settlement?`);
       if (confirmed) {
         soundService.playQueueChime();
-        alert(`✓ Pelunasan antrean ${queue} (${patient}) sebesar ${balance} LUNAS! E-Receipt dikirimkan ke WhatsApp pasien.`);
+        alert(`✓ Queue ${queue} (${patient}) payment of ${balance} COMPLETED! E-Receipt sent to patient's WhatsApp.`);
       }
     };
   }
@@ -504,10 +504,10 @@ export class DemoController {
     if (docSlider && docPainVal) {
       docSlider.addEventListener("input", (e) => {
         const v = parseInt(e.target.value, 10);
-        let desc = "Bebas Nyeri";
-        if (v > 7) desc = "Nyeri Hebat";
-        else if (v > 4) desc = "Nyeri Sedang";
-        else if (v > 0) desc = "Nyeri Ringan";
+        let desc = "Pain Free";
+        if (v > 7) desc = "Severe Pain";
+        else if (v > 4) desc = "Moderate Pain";
+        else if (v > 0) desc = "Mild Pain";
 
         docPainVal.textContent = `${v} / 10 (${desc})`;
       });
@@ -517,7 +517,7 @@ export class DemoController {
     if (completeBtn) {
       completeBtn.addEventListener("click", () => {
         soundService.playQueueChime();
-        alert(`✓ SESI TERAPI SELESAI DICATAT!\n\nPasien: Amanda Tan\nEvaluasi Nyeri: Penurunan dari 8/10 menjadi ${docSlider ? docSlider.value : 3}/10.\nSisa Paket: 5 dari 8 sesi.\n\nSistem otomatis mengirimkan WhatsApp Ringkasan Terapi & Petunjuk Latihan Rumah ke pasien.`);
+        alert(`✓ THERAPY SESSION COMPLETED!\n\nPatient: Amanda Tan\nPain Evaluation: Reduced from 8/10 to ${docSlider ? docSlider.value : 3}/10.\nRemaining Package: 5 of 8 sessions.\n\nSystem automatically sent WhatsApp Therapy Summary & Home Exercise guide to patient.`);
       });
     }
   }
@@ -537,13 +537,13 @@ export class DemoController {
         if (chatBody) {
           const reply = document.createElement("div");
           reply.className = "wa-msg wa-outgoing";
-          reply.textContent = "✅ Ya, saya konfirmasi akan hadir tepat waktu.";
+          reply.textContent = "✅ Yes, I confirm I will attend on time.";
           chatBody.appendChild(reply);
 
           setTimeout(() => {
             const botReply = document.createElement("div");
             botReply.className = "wa-msg wa-incoming";
-            botReply.textContent = "Terima kasih Amanda! Status kehadiran Anda telah terverifikasi di sistem resepsionis klinik.";
+            botReply.textContent = "Thank you Amanda! Your attendance status has been confirmed at the clinic reception.";
             chatBody.appendChild(botReply);
           }, 600);
         }
@@ -553,14 +553,14 @@ export class DemoController {
     if (rescheduleBtn) {
       rescheduleBtn.addEventListener("click", () => {
         soundService.playClickTone();
-        alert("Simulasi Reschedule: Link token reschedule mandiri 1-klik terbuka di browser pasien tanpa perlu login.");
+        alert("Reschedule Simulation: 1-click self-service reschedule link opened in patient's browser without requiring login.");
       });
     }
 
     if (mapsBtn) {
       mapsBtn.addEventListener("click", () => {
         soundService.playClickTone();
-        alert("Membuka rute Google Maps / Waze menuju Paragon Medical Orchard Singapore.");
+        alert("Opening Google Maps / Waze directions to Paragon Medical Orchard Singapore.");
       });
     }
   }

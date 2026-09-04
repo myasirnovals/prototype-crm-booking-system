@@ -5,6 +5,8 @@
 
 import { authService, USER_ROLES } from "../services/auth.service.js";
 import { soundService } from "../services/sound.service.js";
+import { i18nService } from "../services/i18n.service.js";
+import { storageService } from "../services/storage.service.js";
 
 export class AdminController {
   constructor() {
@@ -24,6 +26,7 @@ export class AdminController {
     this.setupQueueCalling();
     this.setupPOSActions();
     this.setupWalkInDispatcher();
+    this.setupClinicConfig();
     this.setupSignOut();
   }
 
@@ -72,7 +75,7 @@ export class AdminController {
           setTimeout(() => card.classList.remove("calling"), 3000);
         }
 
-        alert(`🔊 Memanggil Nomor Antrean ${queueNo} atas nama ${patientName} ke Ruang Pemeriksaan!`);
+        alert(`🔊 Calling Queue Number ${queueNo}: [${patientName}] to Consultation Room.`);
       });
     });
   }
@@ -81,14 +84,14 @@ export class AdminController {
     if (this.walkInBtn) {
       this.walkInBtn.addEventListener("click", () => {
         soundService.playClickTone();
-        const patientName = prompt("Pendaftaran Pasien Walk-in / Telepon.\nMasukkan Nama Pasien:", "Budi Santoso");
+        const patientName = prompt("Walk-In Patient Registration.\nEnter Patient Full Name:", "David Lee");
         if (!patientName) return;
 
-        const service = prompt("Pilih Layanan (1: Fisioterapi, 2: TCM Akupunktur, 3: Wellness):", "1");
-        const serviceName = service === "2" ? "TCM Akupunktur" : service === "3" ? "Wellness Therapy" : "Fisioterapi";
+        const service = prompt("Select Service (1: Physiotherapy, 2: TCM Acupuncture, 3: Wellness Spa):", "1");
+        const serviceName = service === "2" ? "TCM Acupuncture" : service === "3" ? "Wellness Spa Therapy" : "Physiotherapy & Spine";
 
         soundService.playQueueChime();
-        alert(`✓ Pasien Walk-in [${patientName}] berhasil didaftarkan untuk [${serviceName}]!\nNomor Antrean: D-04 tercetak.`);
+        alert(`✓ Walk-in patient [${patientName}] registered successfully for [${serviceName}]!\nQueue Ticket: D-04 issued.`);
       });
     }
   }
@@ -96,26 +99,39 @@ export class AdminController {
   setupPOSActions() {
     window.openPOSModal = (queueNo) => {
       soundService.playClickTone();
-      const amount = prompt(`Proses Pelunasan Kasir POS untuk Antrean ${queueNo}.\nMasukkan Jumlah Pembayaran (SGD):`, "90.00");
+      const amount = prompt(`POS Cashier Settlement for Queue #${queueNo}.\nEnter Payment Amount (SGD/MYR):`, "90.00");
       if (amount) {
         soundService.playQueueChime();
-        alert(`✓ Pembayaran SGD ${amount} untuk antrean ${queueNo} berhasil dicatat! Struk pembayaran tercetak.`);
+        alert(`✓ Settlement recorded: ${amount} received via POS Cashier for Queue #${queueNo}. Receipt issued.`);
       }
     };
 
-    window.openSIMRSInspection = (referralId) => {
+    window.openSIMRSInspection = (code) => {
       soundService.playClickTone();
-      alert(`Inspeksi Ephemeral SIMRS Webhook Payload [${referralId}]:\n\nHMAC: Valid SHA-256\nRetention TTL: 70 Jam tersisa\nStatus: FORWARDED TO HOSPITAL SIMRS`);
+      alert(`[SIMRS Bridge Payload: ${code}]\nStatus: FORWARDED\nProtocol: HL7 / FHIR Ephemeral\nTTL: 72 Hours retention policy active.`);
     };
+  }
+
+  setupClinicConfig() {
+    const configForm = document.getElementById("clinicConfigForm");
+    if (configForm) {
+      configForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        soundService.playClickTone();
+        const clinicName = document.getElementById("cfgClinicName").value;
+        const template = document.getElementById("cfgTemplateSelect").value;
+        storageService.set("cliniva_active_template", template);
+        storageService.set("cliniva_clinic_name", clinicName);
+        alert(`✓ Clinic configuration saved successfully!\nActive Template: ${template}\nBrand Name: ${clinicName}`);
+      });
+    }
   }
 
   setupSignOut() {
     if (this.signOutBtn) {
       this.signOutBtn.addEventListener("click", () => {
-        soundService.playClickTone();
-        if (confirm("Apakah Anda yakin ingin keluar dari panel Operasional?")) {
-          authService.logout();
-        }
+        authService.signOut();
+        window.location.href = "sign-in.html";
       });
     }
   }

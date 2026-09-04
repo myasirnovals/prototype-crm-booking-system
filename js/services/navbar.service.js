@@ -80,25 +80,23 @@ class NavbarService {
    */
   secureTicketNav(role) {
     const ticketNav = document.getElementById("ticketNavActions");
-    if (!ticketNav) return;
-
-    if (role === USER_ROLES.USER || role === "GUEST") {
+    if (!ticketNav) return;    if (role === USER_ROLES.USER || role === "GUEST") {
       ticketNav.innerHTML = `
-        <a href="patient-portal.html" class="btn btn-sm btn-soft">← Portal Pasien Mandiri</a>
-        <a href="booking.html" class="btn btn-sm btn-primary">+ Buat Janji Baru</a>
+        <a href="patient-portal.html" class="btn btn-sm btn-soft">← Patient Portal</a>
+        <a href="booking.html" class="btn btn-sm btn-primary">+ New Booking</a>
       `;
     } else if (role === USER_ROLES.OWNER) {
       ticketNav.innerHTML = `
-        <a href="owner.html" class="btn btn-sm btn-soft">← Panel Owner</a>
-        <a href="admin.html" class="btn btn-sm btn-primary">Panel Operasional →</a>
+        <a href="owner.html" class="btn btn-sm btn-soft">← Owner Console</a>
+        <a href="admin.html" class="btn btn-sm btn-primary">Operations Panel →</a>
       `;
     } else if (role === USER_ROLES.RECEPTIONIST) {
       ticketNav.innerHTML = `
-        <a href="admin.html" class="btn btn-sm btn-primary">← Panel Operasional</a>
+        <a href="admin.html" class="btn btn-sm btn-primary">← Operations Panel</a>
       `;
     } else if (role === USER_ROLES.PRACTITIONER) {
       ticketNav.innerHTML = `
-        <a href="practitioner.html" class="btn btn-sm btn-primary">← Workspace Dokter</a>
+        <a href="practitioner.html" class="btn btn-sm btn-primary">← Practitioner Workspace</a>
       `;
     }
   }
@@ -137,10 +135,10 @@ class NavbarService {
         <div style="display:flex; align-items:center; gap:12px;">
           <div style="text-align:right; line-height:1.2;">
             <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
-            <div style="font-size:10px; color:#16a34a; font-weight:700;">🛡️ Pasien Terverifikasi</div>
+            <div style="font-size:10px; color:#16a34a; font-weight:700;">🛡️ Verified Patient</div>
           </div>
-          <a href="patient-portal.html" class="btn btn-sm btn-primary">Portal Pasien →</a>
-          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Keluar">Sign Out</button>
+          <a href="patient-portal.html" class="btn btn-sm btn-primary">Patient Portal →</a>
+          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
         </div>
       `;
     } else if (role === USER_ROLES.PRACTITIONER && user) {
@@ -149,10 +147,10 @@ class NavbarService {
         <div style="display:flex; align-items:center; gap:12px;">
           <div style="text-align:right; line-height:1.2;">
             <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
-            <div style="font-size:10px; color:#0284c7; font-weight:700;">🧑‍⚕️ ${user.title || "Dokter"}</div>
+            <div style="font-size:10px; color:#0284c7; font-weight:700;">🧑‍⚕️ ${user.title || "Practitioner"}</div>
           </div>
-          <a href="practitioner.html" class="btn btn-sm btn-primary">Workspace Dokter →</a>
-          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Keluar">Sign Out</button>
+          <a href="practitioner.html" class="btn btn-sm btn-primary">Practitioner Workspace →</a>
+          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
         </div>
       `;
     } else if (role === USER_ROLES.RECEPTIONIST && user) {
@@ -163,8 +161,8 @@ class NavbarService {
             <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
             <div style="font-size:10px; color:#d97706; font-weight:700;">🛎️ Front Desk</div>
           </div>
-          <a href="admin.html" class="btn btn-sm btn-primary">Panel Operasional →</a>
-          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Keluar">Sign Out</button>
+          <a href="admin.html" class="btn btn-sm btn-primary">Operations Panel →</a>
+          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
         </div>
       `;
     } else if (role === USER_ROLES.OWNER && user) {
@@ -175,9 +173,9 @@ class NavbarService {
             <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
             <div style="font-size:10px; color:#0f766e; font-weight:700;">👑 Owner HQ</div>
           </div>
-          <a href="owner.html" class="btn btn-sm btn-primary">Panel Owner →</a>
-          <a href="admin.html" class="btn btn-sm btn-soft">Operasional</a>
-          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Keluar">Sign Out</button>
+          <a href="owner.html" class="btn btn-sm btn-primary">Owner Console →</a>
+          <a href="admin.html" class="btn btn-sm btn-soft">Operations</a>
+          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
         </div>
       `;
     }
@@ -185,7 +183,7 @@ class NavbarService {
     // Attach Sign Out listener to dynamic buttons
     document.querySelectorAll(".global-nav-signout").forEach((btn) => {
       btn.addEventListener("click", () => {
-        if (confirm("Apakah Anda yakin ingin keluar?")) {
+        if (confirm("Are you sure you want to sign out?")) {
           authService.logout();
         }
       });
@@ -203,9 +201,9 @@ class NavbarService {
     if (role === USER_ROLES.USER && user) {
       return `
         <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
-          👤 ${user.name} (Pasien)
+          👤 ${user.name} (Patient)
         </div>
-        <a href="patient-portal.html" class="btn btn-primary full">Portal Pasien Mandiri</a>
+        <a href="patient-portal.html" class="btn btn-primary full">Patient Portal</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
       `;
     } else if (role === USER_ROLES.PRACTITIONER && user) {
@@ -213,15 +211,15 @@ class NavbarService {
         <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
           🧑‍⚕️ ${user.name}
         </div>
-        <a href="practitioner.html" class="btn btn-primary full">Workspace Dokter</a>
+        <a href="practitioner.html" class="btn btn-primary full">Practitioner Workspace</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
       `;
     } else if (role === USER_ROLES.RECEPTIONIST && user) {
       return `
         <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
-          🛎️ ${user.name} (Resepsionis)
+          🛎️ ${user.name} (Receptionist)
         </div>
-        <a href="admin.html" class="btn btn-primary full">Panel Operasional</a>
+        <a href="admin.html" class="btn btn-primary full">Operations Panel</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
       `;
     } else if (role === USER_ROLES.OWNER && user) {
@@ -229,8 +227,8 @@ class NavbarService {
         <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
           👑 ${user.name} (Owner)
         </div>
-        <a href="owner.html" class="btn btn-primary full">Panel Owner HQ</a>
-        <a href="admin.html" class="btn btn-soft full" style="margin-top:8px;">Panel Operasional</a>
+        <a href="owner.html" class="btn btn-primary full">Owner HQ Console</a>
+        <a href="admin.html" class="btn btn-soft full" style="margin-top:8px;">Operations Panel</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
       `;
     }

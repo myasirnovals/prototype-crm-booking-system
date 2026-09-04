@@ -15,11 +15,11 @@ class I18nService {
   }
 
   init() {
-    // If not set, check browser language
+    // If not explicitly set by user, default to English (Standard for SG & MY business)
     if (!storageService.get("cliniva_lang")) {
       const navLang = navigator.language || navigator.userLanguage || "en";
       if (navLang.startsWith("zh")) this.currentLang = "zh";
-      else if (navLang.startsWith("ms") || navLang.startsWith("id")) this.currentLang = "ms";
+      else if (navLang.startsWith("ms")) this.currentLang = "ms";
       else this.currentLang = "en";
       storageService.set("cliniva_lang", this.currentLang);
     }
@@ -67,6 +67,14 @@ class I18nService {
         el.placeholder = translation;
       }
     });
+
+    // Update document title if present
+    const titleEl = root.querySelector("title[data-i18n]");
+    if (titleEl) {
+      const titleKey = titleEl.dataset.i18n;
+      const translatedTitle = this.t(titleKey);
+      if (translatedTitle) document.title = translatedTitle;
+    }
 
     // Set html lang attribute
     document.documentElement.lang = this.currentLang;

@@ -18,11 +18,11 @@ export class PatientPortalController {
     this.activeBooking = {
       code: "BK-20260901-0812",
       patientName: "Amanda Tan",
-      serviceName: "Fisioterapi & Postural Rehabilitation",
+      serviceName: "Physiotherapy & Postural Rehabilitation",
       practitionerName: "Dr. Lim Wei Han",
       branchName: "Orchard Wellness Clinic",
-      schedule: "Rabu, 10:30 SGT",
-      room: "Room A2 (Lantai 2)",
+      schedule: "Wed, 10:30 SGT (UTC+8)",
+      room: "Room A2 (Level 2)",
       depositPaid: "SGD 30.00",
       queueNumber: "A-01"
     };
@@ -57,12 +57,12 @@ export class PatientPortalController {
       this.rescheduleBtn.addEventListener("click", () => {
         soundService.playClickTone();
         const newDate = prompt(
-          `Pengajuan Reschedule untuk Booking [${this.activeBooking.code}].\nPilih slot baru yang Anda inginkan:`,
-          "Kamis, 03 September 2026 - 14:00"
+          `Reschedule Request for Booking [${this.activeBooking.code}].\nEnter preferred new slot:`,
+          "Thu, 03 September 2026 - 14:00"
         );
         if (newDate) {
           soundService.playQueueChime();
-          alert(`✓ Jadwal berhasil diajukan reschedule ke: ${newDate}. Notifikasi konfirmasi baru telah dikirim via WhatsApp!`);
+          alert(`✓ Appointment rescheduled to: ${newDate}. Updated confirmation sent via WhatsApp!`);
         }
       });
     }
@@ -70,9 +70,9 @@ export class PatientPortalController {
     if (this.cancelBookingBtn) {
       this.cancelBookingBtn.addEventListener("click", () => {
         soundService.playClickTone();
-        if (confirm(`Apakah Anda yakin ingin membatalkan janji temu [${this.activeBooking.code}]? Deposit SGD 30.00 akan dikembalikan sesuai kebijakan klinik.`)) {
+        if (confirm(`Are you sure you want to cancel appointment [${this.activeBooking.code}]? Deposit SGD 30.00 will be refunded per clinic policy.`)) {
           soundService.playQueueChime();
-          alert("✓ Reservasi Anda telah dibatalkan. Dana deposit diproses refund otomatis.");
+          alert("✓ Your reservation has been cancelled. Deposit refund is being processed.");
         }
       });
     }
@@ -80,7 +80,7 @@ export class PatientPortalController {
     this.channelRadios.forEach((radio) => {
       radio.addEventListener("change", (e) => {
         soundService.playClickTone();
-        alert(`✓ Preferensi notifikasi utama diubah menjadi: ${e.target.value.toUpperCase()}`);
+        alert(`✓ Primary notification channel set to: ${e.target.value.toUpperCase()}`);
       });
     });
   }
@@ -89,7 +89,7 @@ export class PatientPortalController {
     if (this.signOutBtn) {
       this.signOutBtn.addEventListener("click", () => {
         soundService.playClickTone();
-        if (confirm("Apakah Anda yakin ingin keluar dari Portal Pasien?")) {
+        if (confirm("Are you sure you want to sign out from the Patient Portal?")) {
           authService.logout();
         }
       });

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel Operasional Klinik — Cliniva Staff & CRM Dashboard</title>
+  <title data-i18n="admin.pageTitle">Reception &amp; Operations Desk — Cliniva Staff &amp; CRM Dashboard</title>
   <meta name="description" content="Operations dashboard for clinic receptionist, practitioners, live queue calling, SIMRS bridging hub, and cashier POS." />
 
   <!-- Google Fonts -->
@@ -30,12 +30,21 @@
       </div>
 
       <div style="display:flex; gap:14px; align-items:center;">
+        <!-- Language Switcher -->
+        <div class="lang-switcher-wrap">
+          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+            <option value="en">🇬🇧 English</option>
+            <option value="ms">🇲🇾 Melayu</option>
+            <option value="zh">🇨🇳 中文</option>
+          </select>
+        </div>
+
         <div style="text-align:right;">
           <div id="adminStaffName" style="font-size:13px; font-weight:800; color:var(--text);">Siti Rahmah</div>
           <div style="font-size:11px; color:var(--muted);">Lead Front Desk</div>
         </div>
-        <a href="owner.html" class="btn btn-sm btn-soft" id="adminOwnerPanelLink" data-role-access="OWNER" style="display:none;">Panel Owner →</a>
-        <button type="button" class="btn btn-sm btn-primary" id="adminSignOutBtn">Sign Out</button>
+        <a href="owner.html" class="btn btn-sm btn-soft" id="adminOwnerPanelLink" data-role-access="OWNER" style="display:none;">Owner Panel →</a>
+        <button type="button" class="btn btn-sm btn-primary" id="adminSignOutBtn" data-i18n="nav.signOut">Sign Out</button>
       </div>
     </div>
   </header>
@@ -44,24 +53,27 @@
     <!-- Sidebar Navigation -->
     <aside class="admin-sidebar">
       <div class="side-menu">
-        <button class="side-link admin-tab-btn active" data-pane="paneOverview" style="border:0;background:transparent;width:100%;text-align:left;">
-          📊 Ringkasan &amp; Live Queue
+        <button class="side-link admin-tab-btn active" data-pane="paneOverview" style="border:0;background:transparent;width:100%;text-align:left;" data-i18n="admin.tab.queue">
+          📊 Live Waiting Queue
         </button>
         <button class="side-link admin-tab-btn" data-pane="paneCalendar" style="border:0;background:transparent;width:100%;text-align:left;">
-          📅 Master Timeline Praktisi
+          📅 Master Timeline &amp; Rooms
         </button>
-        <button class="side-link admin-tab-btn" data-pane="paneSIMRS" style="border:0;background:transparent;width:100%;text-align:left;">
-          🔁 SIMRS Referral Hub (Proxy)
+        <button class="side-link admin-tab-btn" data-pane="paneSIMRS" style="border:0;background:transparent;width:100%;text-align:left;" data-i18n="admin.tab.simrs">
+          🔁 SIMRS Referral Bridge
         </button>
-        <button class="side-link admin-tab-btn" data-pane="panePOS" style="border:0;background:transparent;width:100%;text-align:left;">
-          💳 Kasir POS &amp; Billing
+        <button class="side-link admin-tab-btn" data-pane="panePOS" style="border:0;background:transparent;width:100%;text-align:left;" data-i18n="admin.tab.pos">
+          💳 POS Cashier &amp; Billing
+        </button>
+        <button class="side-link admin-tab-btn" data-pane="paneClinicSettings" style="border:0;background:transparent;width:100%;text-align:left;" data-i18n="admin.tab.settings">
+          ⚙️ Clinic Profile &amp; Branding
         </button>
       </div>
 
       <div class="side-card" style="margin-top:auto;">
-        <h4>Live Chime Active</h4>
-        <p>Web Audio API Synthesizer siap memanggil nomor antrean ruang tunggu.</p>
-        <button class="btn btn-white btn-sm" onclick="alert('Chime synthesizer audio is active and ready!')">Test Audio</button>
+        <h4>Live Chime Synthesizer</h4>
+        <p>Web Audio API Synthesizer ready for queue audio calling.</p>
+        <button class="btn btn-white btn-sm" onclick="alert('Chime audio synthesizer active and ready.')">Test Chime Audio</button>
       </div>
     </aside>
 
@@ -71,40 +83,40 @@
       <section class="admin-tab-pane" id="paneOverview" style="display:block;">
         <div class="panel-top">
           <div>
-            <h2>Papan Antrean Digital &amp; Operasional Hari Ini</h2>
-            <p>Monitor pasien di ruang tunggu dan panggil giliran periksa secara otomatis.</p>
+            <h2>Waiting Lounge Live Queue &amp; Operations</h2>
+            <p>Monitor patients in the waiting area and call next appointments automatically.</p>
           </div>
           <div style="display:flex; gap:8px;">
-            <button class="btn btn-primary" id="adminWalkInBtn">+ Walk-in Patient</button>
-            <button class="btn btn-white" onclick="alert('Membuka Kiosk Check-In Mandiri...')">Kiosk Check-in</button>
+            <button class="btn btn-primary" id="adminWalkInBtn" data-i18n="admin.walkIn">+ Register Walk-In Patient</button>
+            <button class="btn btn-white" onclick="alert('Opening Self-Service Kiosk Check-In...')">Kiosk Check-in</button>
           </div>
         </div>
 
         <!-- Metric Cards -->
         <div class="dashboard-grid">
           <div class="metric-card">
-            <span>PASIEN HARI INI</span>
+            <span>PATIENTS TODAY</span>
             <strong>42</strong>
-            <small>↑ 12% vs minggu lalu</small>
+            <small>↑ 12% vs last week</small>
           </div>
           <div class="metric-card">
-            <span>SEDANG MENUNGGU</span>
+            <span>WAITING IN LOUNGE</span>
             <strong>3</strong>
-            <small style="color:var(--warning);">Ruang Tunggu A</small>
+            <small style="color:var(--warning);">Waiting Area A</small>
           </div>
           <div class="metric-card">
-            <span>SEDANG TERAPI</span>
+            <span>IN CONSULTATION</span>
             <strong>4</strong>
-            <small>Ruang 1, 2, Bed 3</small>
+            <small>Room 1, 2, Bed 3</small>
           </div>
           <div class="metric-card">
-            <span>SLOT COLLISION</span>
+            <span>SLOT COLLISIONS</span>
             <strong>0</strong>
             <small style="color:var(--success);">Protected by Triple-Constraint</small>
           </div>
         </div>
 
-        <h3 style="margin-top:24px; font-size:18px;">Antrean Aktif Ruang Tunggu</h3>
+        <h3 style="margin-top:24px; font-size:18px;">Active Waiting Queue</h3>
         <div class="queue-card-grid">
           <div class="queue-card">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
@@ -112,53 +124,53 @@
               <span class="badge-live">READY</span>
             </div>
             <h4 style="margin:8px 0 4px;">Rendra Pratama</h4>
-            <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Akupunktur Medis · Sinse Huang Wei</p>
-            <button class="btn btn-sm btn-primary full btn-call-queue" data-queue="A-01" data-patient="Rendra Pratama">
-              🔊 Panggil Pasien (Audio Chime)
+            <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Clinical Acupuncture · Physician Huang Wei</p>
+            <button class="btn btn-sm btn-primary full btn-call-queue" data-queue="A-01" data-patient="Rendra Pratama" data-i18n="admin.callNext">
+              🔊 Call Next Patient (Audio Chime)
             </button>
           </div>
 
           <div class="queue-card">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
               <span class="queue-number">B-02</span>
-              <span class="badge-live" style="background:#fef3c7; color:#b45309;">MENUNGGU</span>
+              <span class="badge-live" style="background:#fef3c7; color:#b45309;">WAITING</span>
             </div>
             <h4 style="margin:8px 0 4px;">Amanda Tan</h4>
-            <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Fisioterapi &amp; Spine · Dr. Lim</p>
-            <button class="btn btn-sm btn-primary full btn-call-queue" data-queue="B-02" data-patient="Amanda Tan">
-              🔊 Panggil Pasien (Audio Chime)
+            <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Physiotherapy &amp; Spine · Dr. Lim</p>
+            <button class="btn btn-sm btn-primary full btn-call-queue" data-queue="B-02" data-patient="Amanda Tan" data-i18n="admin.callNext">
+              🔊 Call Next Patient (Audio Chime)
             </button>
           </div>
 
           <div class="queue-card">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
               <span class="queue-number">C-03</span>
-              <span class="badge-live" style="background:#e0f2fe; color:#0369a1;">CHECK-IN</span>
+              <span class="badge-live" style="background:#e0f2fe; color:#0369a1;">CHECKED-IN</span>
             </div>
-            <h4 style="margin:8px 0 4px;">Bambang Soediro</h4>
-            <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Wellness Aromatherapy · Therapist Sarah</p>
-            <button class="btn btn-sm btn-primary full btn-call-queue" data-queue="C-03" data-patient="Bambang Soediro">
-              🔊 Panggil Pasien (Audio Chime)
+            <h4 style="margin:8px 0 4px;">Jason Lee</h4>
+            <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">Wellness Spa Aromatherapy · Therapist Sarah</p>
+            <button class="btn btn-sm btn-primary full btn-call-queue" data-queue="C-03" data-patient="Jason Lee" data-i18n="admin.callNext">
+              🔊 Call Next Patient (Audio Chime)
             </button>
           </div>
         </div>
       </section>
 
-      <!-- PANE 2: TIMELINE KALENDER -->
+      <!-- PANE 2: TIMELINE CALENDAR -->
       <section class="admin-tab-pane" id="paneCalendar">
         <div class="panel-top">
           <div>
-            <h2>Master Timeline Praktisi &amp; Ruangan</h2>
-            <p>Jadwal visual multi-sumber daya dengan jeda sterilisasi 15 menit otomatis.</p>
+            <h2>Master Practitioner &amp; Room Timeline</h2>
+            <p>Multi-resource schedule visualization with automatic 15-minute sanitization buffer.</p>
           </div>
         </div>
 
         <div class="calendar-board">
           <div class="calendar-table">
-            <div class="cell head">Jam</div>
+            <div class="cell head">Time</div>
             <div class="cell head">Dr. Lim (Physio)</div>
             <div class="cell head">Dr. Wong (TCM)</div>
-            <div class="cell head">Therapist Sarah</div>
+            <div class="cell head">Therapist Sarah (Spa)</div>
             <div class="cell head">Room A2 (Bed)</div>
 
             <div class="cell time-cell">09:00</div>
@@ -187,7 +199,7 @@
         <div class="panel-top">
           <div>
             <h2>SIMRS Referral Ephemeral Proxy Hub</h2>
-            <p>Non-EMR Ephemeral Storage: Berkas rujukan pasien di-bridge ke SIMRS lalu otomatis terhapus dalam 72 jam.</p>
+            <p>Non-EMR Ephemeral Storage: Patient referral documents bridged to SIMRS and auto-deleted in 72 hours.</p>
           </div>
         </div>
 
@@ -196,41 +208,41 @@
             <thead>
               <tr>
                 <th>Booking Code</th>
-                <th>Nama Pasien</th>
-                <th>Dokumen Rujukan</th>
-                <th>Status Bridge SIMRS</th>
+                <th>Patient Name</th>
+                <th>Referral Document</th>
+                <th>Bridge Status</th>
                 <th>Storage TTL</th>
-                <th>Aksi</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td><strong>BK-20260901-0812</strong></td>
                 <td>Rendra Pratama</td>
-                <td>Rujukan_RS_Mitra.pdf</td>
+                <td>Hospital_Referral.pdf</td>
                 <td><span class="status-pill confirmed">✓ FORWARDED</span></td>
-                <td>70 Jam tersisa</td>
-                <td><button class="btn btn-sm btn-soft" onclick="openSIMRSInspection('BK-20260901-0812')">Inspeksi Payload</button></td>
+                <td>70 Hours left</td>
+                <td><button class="btn btn-sm btn-soft" onclick="openSIMRSInspection('BK-20260901-0812')">Inspect Payload</button></td>
               </tr>
               <tr>
                 <td><strong>BK-20260901-0945</strong></td>
                 <td>Nur Aisyah</td>
-                <td>Surat_Faskes1.jpg</td>
+                <td>Clinical_Letter.jpg</td>
                 <td><span class="status-pill confirmed">✓ FORWARDED</span></td>
-                <td>71 Jam tersisa</td>
-                <td><button class="btn btn-sm btn-soft" onclick="openSIMRSInspection('BK-20260901-0945')">Inspeksi Payload</button></td>
+                <td>71 Hours left</td>
+                <td><button class="btn btn-sm btn-soft" onclick="openSIMRSInspection('BK-20260901-0945')">Inspect Payload</button></td>
               </tr>
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- PANE 4: KASIR POS -->
+      <!-- PANE 4: POS CASHIER -->
       <section class="admin-tab-pane" id="panePOS">
         <div class="panel-top">
           <div>
-            <h2>Kasir POS &amp; Pelunasan Tagihan Sesi</h2>
-            <p>Pencatatan sisa tagihan dikurangi deposit awal untuk pelunasan di tempat.</p>
+            <h2>POS Cashier &amp; Session Settlement</h2>
+            <p>Deducting initial online deposit for instant on-premise checkout.</p>
           </div>
         </div>
 
@@ -239,47 +251,86 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>No Antrean</th>
-                  <th>Pasien</th>
-                  <th>Layanan</th>
-                  <th>Sisa Tagihan</th>
-                  <th>Aksi</th>
+                  <th>Queue No</th>
+                  <th>Patient</th>
+                  <th>Service</th>
+                  <th>Remaining Bill</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><strong>A-01</strong></td>
                   <td>Rendra Pratama</td>
-                  <td>Akupunktur Medis</td>
+                  <td>Clinical Acupuncture</td>
                   <td style="color:var(--primary); font-weight:800;">SGD 65.00</td>
-                  <td><button class="btn btn-sm btn-primary" onclick="openPOSModal('A-01')">Bayar di Kasir</button></td>
+                  <td><button class="btn btn-sm btn-primary" onclick="openPOSModal('A-01')">Checkout at POS</button></td>
                 </tr>
                 <tr>
                   <td><strong>B-02</strong></td>
                   <td>Amanda Tan</td>
-                  <td>Fisioterapi &amp; Spine</td>
+                  <td>Physiotherapy &amp; Spine</td>
                   <td style="color:var(--primary); font-weight:800;">SGD 90.00</td>
-                  <td><button class="btn btn-sm btn-primary" onclick="openPOSModal('B-02')">Bayar di Kasir</button></td>
+                  <td><button class="btn btn-sm btn-primary" onclick="openPOSModal('B-02')">Checkout at POS</button></td>
                 </tr>
               </tbody>
             </table>
           </div>
 
           <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:22px;">
-            <h3 style="font-size:16px; margin-bottom:14px;">Ringkasan Kas Masuk Hari Ini</h3>
+            <h3 style="font-size:16px; margin-bottom:14px;">Today's Inflow Summary</h3>
             <div class="summary-row">
-              <span style="color:var(--muted);">Total Deposit Online:</span>
+              <span style="color:var(--muted);">Total Online Deposits:</span>
               <strong>SGD 1,260.00</strong>
             </div>
             <div class="summary-row">
-              <span style="color:var(--muted);">Total Pelunasan Kasir:</span>
+              <span style="color:var(--muted);">Total POS Cashier Settlements:</span>
               <strong>SGD 2,480.00</strong>
             </div>
             <div class="summary-row total">
-              <span>Total Penerimaan Cabang:</span>
+              <span>Total Branch Collections:</span>
               <span style="color:var(--primary);">SGD 3,740.00</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- PANE 5: CLINIC SETTINGS & BRANDING -->
+      <section class="admin-tab-pane" id="paneClinicSettings">
+        <div class="panel-top">
+          <div>
+            <h2 data-i18n="admin.settings.title">Clinic Identity &amp; Regional Configuration</h2>
+            <p data-i18n="admin.settings.desc">Configure clinic branding, logo, contact, and business template for your branch.</p>
+          </div>
+        </div>
+
+        <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:24px; max-width:700px;">
+          <form id="clinicConfigForm">
+            <div class="field" style="margin-bottom:16px;">
+              <label for="cfgClinicName" data-i18n="admin.settings.name">Clinic / Brand Name</label>
+              <input type="text" id="cfgClinicName" value="Orchard Wellness Clinic" class="input" style="width:100%;" required />
+            </div>
+
+            <div class="field" style="margin-bottom:16px;">
+              <label for="cfgTemplateSelect" data-i18n="admin.settings.template">Business Template Profile</label>
+              <select id="cfgTemplateSelect" class="input" style="width:100%; padding:10px;">
+                <option value="TCM" data-i18n="admin.settings.templateTcm">Traditional Chinese Medicine (TCM)</option>
+                <option value="WELLNESS" data-i18n="admin.settings.templateWellness" selected>Wellness &amp; Spa Care</option>
+              </select>
+            </div>
+
+            <div class="field" style="margin-bottom:16px;">
+              <label for="cfgClinicPhone" data-i18n="admin.settings.phone">WhatsApp &amp; Contact Number</label>
+              <input type="text" id="cfgClinicPhone" value="+65 6738 8899" class="input" style="width:100%;" />
+            </div>
+
+            <div class="field" style="margin-bottom:20px;">
+              <label for="cfgClinicAddress" data-i18n="admin.settings.address">Physical Branch Address</label>
+              <textarea id="cfgClinicAddress" rows="2" class="input" style="width:100%;">290 Orchard Road, Paragon Medical #14-02, Singapore 238859</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" data-i18n="admin.settings.save">Save Clinic Configuration</button>
+          </form>
         </div>
       </section>
     </main>

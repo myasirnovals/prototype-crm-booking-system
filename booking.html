@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jadwal Baru &amp; Reservasi — Cliniva Pasien</title>
-  <meta name="description" content="Formulir reservasi janji temu klinik multi-cabang terstandarisasi untuk pasien: pemilihan cabang, layanan, dokter, jadwal, dan keluhan awal." />
+  <title data-i18n="booking.pageTitle">Book Appointment — Cliniva Patient Portal</title>
+  <meta name="description" content="Multi-branch clinical appointment booking portal for patients: branch selection, clinical services, specialists, time slots, and intake assessment." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,20 +22,29 @@
       <div style="display:flex; align-items:center; gap:16px;">
         <a href="index.html" class="logo">
           <span class="logo-mark">✦</span>
-          Cliniva Pasien
+          <span data-i18n="booking.headerTitle">Cliniva Patient Portal</span>
         </a>
-        <span class="pill" style="font-size:11px; padding:4px 10px; background:#f0fdf4; color:#16a34a; font-weight:800;">
-          ● Pasien Terverifikasi PDPA
+        <span class="pill" style="font-size:11px; padding:4px 10px; background:#f0fdf4; color:#16a34a; font-weight:800;" data-i18n="nav.verifiedPdpa">
+          ● PDPA Compliant
         </span>
       </div>
 
       <div style="display:flex; gap:14px; align-items:center;">
+        <!-- Language Switcher -->
+        <div class="lang-switcher-wrap">
+          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+            <option value="en">🇬🇧 English</option>
+            <option value="ms">🇲🇾 Melayu</option>
+            <option value="zh">🇨🇳 中文</option>
+          </select>
+        </div>
+
         <div style="text-align:right;">
           <div id="bookingPatientName" style="font-size:13px; font-weight:800; color:var(--text);">Amanda Tan</div>
           <div id="bookingPatientContact" style="font-size:11px; color:var(--muted);">+65 8123 4567</div>
         </div>
-        <a href="patient-portal.html" class="btn btn-sm btn-soft">← Portal Pasien</a>
-        <button type="button" class="btn btn-sm btn-soft" id="bookingSignOutBtn">Sign Out</button>
+        <a href="patient-portal.html" class="btn btn-sm btn-soft" data-i18n="nav.patientPortal">← Patient Portal</a>
+        <button type="button" class="btn btn-sm btn-soft" id="bookingSignOutBtn" data-i18n="nav.signOut">Sign Out</button>
       </div>
     </div>
   </header>
@@ -45,33 +54,33 @@
     <!-- Wizard Step Progress Indicator -->
     <div class="booking-wizard-steps">
       <div class="wizard-step-node active" id="wizardStep1">
-        <span class="step-tag">LANGKAH 1</span>
-        <span class="step-name">Cabang &amp; Layanan</span>
+        <span class="step-tag" data-i18n="booking.step1.tag">STEP 1</span>
+        <span class="step-name" data-i18n="booking.step1.name">Branch &amp; Service</span>
       </div>
       <div class="wizard-step-node" id="wizardStep2">
-        <span class="step-tag">LANGKAH 2</span>
-        <span class="step-name">Praktisi &amp; Jadwal</span>
+        <span class="step-tag" data-i18n="booking.step2.tag">STEP 2</span>
+        <span class="step-name" data-i18n="booking.step2.name">Practitioner &amp; Schedule</span>
       </div>
       <div class="wizard-step-node" id="wizardStep3">
-        <span class="step-tag">LANGKAH 3</span>
-        <span class="step-name">Keluhan &amp; Pain Map</span>
+        <span class="step-tag" data-i18n="booking.step3.tag">STEP 3</span>
+        <span class="step-name" data-i18n="booking.step3.name">Intake &amp; Assessment</span>
       </div>
       <div class="wizard-step-node" id="wizardStep4">
-        <span class="step-tag">LANGKAH 4</span>
-        <span class="step-name">Konfirmasi &amp; E-Tiket</span>
+        <span class="step-tag" data-i18n="booking.step4.tag">STEP 4</span>
+        <span class="step-name" data-i18n="booking.step4.name">Confirmation &amp; Ticket</span>
       </div>
     </div>
 
-    <!-- STEP 1 PANE: PILIH CABANG & LAYANAN -->
+    <!-- STEP 1 PANE: SELECT BRANCH & SERVICE -->
     <section class="wizard-step-pane active" id="bookingStepPane1">
       <div class="wizard-pane-header">
-        <h2>Pilih Cabang Klinik &amp; Jenis Layanan</h2>
-        <p>Tentukan lokasi fasilitas kesehatan yang paling dekat dengan Anda beserta layanan terapi yang dibutuhkan.</p>
+        <h2 data-i18n="booking.step1.title">Select Clinic Branch &amp; Treatment Service</h2>
+        <p data-i18n="booking.step1.desc">Choose your nearest healthcare facility and the required treatment or consultation.</p>
       </div>
 
       <div style="margin-bottom:20px;">
-        <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; display:block; margin-bottom:10px;">
-          1. Pilih Lokasi Cabang Terdekat
+        <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; display:block; margin-bottom:10px;" data-i18n="booking.step1.branchLabel">
+          1. Select Nearest Location
         </label>
         <div class="booking-branch-grid" id="bookingBranchList">
           <!-- Dynamic Branch choices rendered by controller -->
@@ -79,8 +88,8 @@
       </div>
 
       <div>
-        <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; display:block; margin-bottom:10px;">
-          2. Pilih Layanan Terapi / Konsultasi
+        <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; display:block; margin-bottom:10px;" data-i18n="booking.step1.serviceLabel">
+          2. Select Treatment / Consultation Service
         </label>
         <div class="booking-service-grid" id="bookingServiceList">
           <!-- Dynamic Services rendered by controller -->
@@ -88,56 +97,56 @@
       </div>
 
       <div class="wizard-footer-nav">
-        <a href="patient-portal.html" class="btn btn-soft">← Batal &amp; Kembali</a>
-        <button type="button" class="btn btn-primary" id="toStep2Btn">Lanjutkan ke Praktisi &amp; Jadwal →</button>
+        <a href="patient-portal.html" class="btn btn-soft" data-i18n="booking.step1.cancelBtn">← Cancel &amp; Return</a>
+        <button type="button" class="btn btn-primary" id="toStep2Btn" data-i18n="booking.step1.nextBtn">Continue to Practitioner &amp; Schedule →</button>
       </div>
     </section>
 
-    <!-- STEP 2 PANE: PILIH PRAKTISI & JADWAL -->
+    <!-- STEP 2 PANE: SELECT PRACTITIONER & SCHEDULE -->
     <section class="wizard-step-pane" id="bookingStepPane2">
       <div class="wizard-pane-header">
-        <h2>Pilih Dokter / Praktisi &amp; Slot Waktu</h2>
-        <p>Pilih tenaga medis yang Anda inginkan atau gunakan opsi jadwal tercepat untuk penanganan segera.</p>
+        <h2 data-i18n="booking.step2.title">Select Practitioner &amp; Time Slot</h2>
+        <p data-i18n="booking.step2.desc">Choose your preferred specialist or select the earliest available slot for prompt treatment.</p>
       </div>
 
       <div style="margin-bottom:24px;">
-        <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; display:block; margin-bottom:10px;">
-          1. Dokter / Praktisi yang Bertugas
+        <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; display:block; margin-bottom:10px;" data-i18n="booking.step2.practitionerLabel">
+          1. Select Specialist / Practitioner
         </label>
         <div class="practitioner-choice-grid">
-          <div class="practitioner-choice-card selected" data-practitioner-name="Jadwal Tercepat (Dokter mana saja)">
-            <strong style="font-size:14px; display:block; color:var(--text);">Jadwal Tercepat</strong>
-            <span style="font-size:12px; color:var(--primary); font-weight:700;">Dokter yang tersedia paling awal</span>
-            <p style="font-size:11px; color:var(--muted); margin:4px 0 0;">Ideal untuk penanganan keluhan mendesak tanpa menunggu dokter tertentu.</p>
+          <div class="practitioner-choice-card selected" data-practitioner-name="Earliest Available Specialist">
+            <strong style="font-size:14px; display:block; color:var(--text);">Earliest Available Specialist</strong>
+            <span style="font-size:12px; color:var(--primary); font-weight:700;">First available licensed doctor</span>
+            <p style="font-size:11px; color:var(--muted); margin:4px 0 0;">Ideal for immediate attention without waiting for a specific physician.</p>
           </div>
 
           <div class="practitioner-choice-card" data-practitioner-name="Dr. Lim Wei Han">
             <strong style="font-size:14px; display:block; color:var(--text);">Dr. Lim Wei Han</strong>
             <span style="font-size:12px; color:var(--muted);">Senior Physiotherapist</span>
-            <p style="font-size:11px; color:var(--muted); margin:4px 0 0;">Spesialisasi rehabilitasi tulang belakang &amp; cedera ligamen.</p>
+            <p style="font-size:11px; color:var(--muted); margin:4px 0 0;">Specialized in spinal rehabilitation &amp; ligament recovery.</p>
           </div>
 
           <div class="practitioner-choice-card" data-practitioner-name="Dr. Wong Mei Ling">
             <strong style="font-size:14px; display:block; color:var(--text);">Dr. Wong Mei Ling</strong>
             <span style="font-size:12px; color:var(--muted);">Registered TCM Physician</span>
-            <p style="font-size:11px; color:var(--muted); margin:4px 0 0;">Spesialisasi akupunktur medis, meridian, &amp; terapi pereda nyeri otot.</p>
+            <p style="font-size:11px; color:var(--muted); margin:4px 0 0;">Specialized in clinical acupuncture, meridian therapy &amp; pain relief.</p>
           </div>
 
           <div class="practitioner-choice-card" data-practitioner-name="Therapist Sarah Tan">
             <strong style="font-size:14px; display:block; color:var(--text);">Therapist Sarah Tan</strong>
-            <span style="font-size:12px; color:var(--muted);">Lead Clinical Therapist</span>
-            <p style="font-size:11px; color:var(--muted); margin:4px 0 0;">Spesialisasi terapi postur, peregangan otot dalam, &amp; relaksasi sendi.</p>
+            <span style="font-size:12px; color:var(--muted);">Lead Wellness &amp; Spa Specialist</span>
+            <p style="font-size:11px; color:var(--muted); margin:4px 0 0;">Specialized in deep tissue relaxation, posture therapy &amp; body relief.</p>
           </div>
         </div>
       </div>
 
       <div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; margin:0;">
-            2. Pilih Slot Jam Konsultasi (Hari Ini / Besok)
+          <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; margin:0;" data-i18n="booking.step2.slotLabel">
+            2. Available Time Slots (10-Minute Hold)
           </label>
           <span id="slotHoldAlert" style="display:none; font-size:11px; font-weight:800; color:var(--primary); background:#ccfbf1; padding:2px 8px; border-radius:var(--radius-full);">
-            Slot ditahan sementara selama 10 menit
+            Slot temporarily held for 10 minutes
           </span>
         </div>
 
@@ -154,23 +163,23 @@
       </div>
 
       <div class="wizard-footer-nav">
-        <button type="button" class="btn btn-soft" id="backToStep1Btn">← Kembali</button>
-        <button type="button" class="btn btn-primary" id="toStep3Btn">Lanjutkan ke Formulir Keluhan →</button>
+        <button type="button" class="btn btn-soft" id="backToStep1Btn" data-i18n="booking.step2.prevBtn">← Back to Service</button>
+        <button type="button" class="btn btn-primary" id="toStep3Btn" data-i18n="booking.step2.nextBtn">Continue to Intake Assessment →</button>
       </div>
     </section>
 
-    <!-- STEP 3 PANE: INTAKE & BODY PAIN MAP -->
+    <!-- STEP 3 PANE: INTAKE & HEALTH ASSESSMENT -->
     <section class="wizard-step-pane" id="bookingStepPane3">
       <div class="wizard-pane-header">
-        <h2>Formulir Keluhan Awal &amp; Body Pain Map</h2>
-        <p>Bantu praktisi memahami titik nyeri atau gejala yang Anda rasakan sebelum sesi konsultasi dimulai.</p>
+        <h2 data-i18n="booking.step3.title">Patient Information &amp; Intake Assessment</h2>
+        <p data-i18n="booking.step3.desc">Provide your patient details and intake notes to help your practitioner prepare in advance.</p>
       </div>
 
       <div class="intake-pain-map-container">
         <!-- Visual Body Pain Map Interactive -->
         <div class="intake-pain-visual">
-          <span style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; margin-bottom:12px;">
-            Klik Titik Nyeri Tubuh
+          <span style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; margin-bottom:12px;" data-i18n="booking.step3.painMapTitle">
+            Body Pain Map (Tap to highlight discomfort areas)
           </span>
 
           <div style="position:relative; width:160px; height:320px;">
@@ -186,13 +195,13 @@
             </svg>
 
             <!-- Clickable Pain Markers -->
-            <button type="button" class="pain-marker booking-pain-marker selected" id="marker-lumbar" style="top:47%; left:50%; background:#ef4444;" data-body-part="Pinggang Bawah (L4-L5 Lumbar)" aria-label="Titik Nyeri Pinggang">!</button>
-            <button type="button" class="pain-marker booking-pain-marker" id="marker-cervical" style="top:20%; left:50%; background:#94a3b8;" data-body-part="Leher &amp; Sendi Bahu" aria-label="Titik Nyeri Leher">!</button>
-            <button type="button" class="pain-marker booking-pain-marker" id="marker-knee" style="top:75%; left:62%; background:#94a3b8;" data-body-part="Lutut Kanan &amp; Ligamen" aria-label="Titik Nyeri Lutut">!</button>
+            <button type="button" class="pain-marker booking-pain-marker selected" id="marker-lumbar" style="top:47%; left:50%; background:#ef4444;" data-body-part="Lower Back (L4-L5 Lumbar)" aria-label="Lower Back Pain Area">!</button>
+            <button type="button" class="pain-marker booking-pain-marker" id="marker-cervical" style="top:20%; left:50%; background:#94a3b8;" data-body-part="Neck &amp; Shoulder Joint" aria-label="Neck Pain Area">!</button>
+            <button type="button" class="pain-marker booking-pain-marker" id="marker-knee" style="top:75%; left:62%; background:#94a3b8;" data-body-part="Right Knee &amp; Ligament" aria-label="Knee Pain Area">!</button>
           </div>
 
           <div id="selectedPainLocationText" style="margin-top:14px; font-size:12px; font-weight:800; color:var(--text); text-align:center;">
-            Titik Terpilih: Pinggang Bawah (L4-L5 Lumbar)
+            Selected Focus: Lower Back (L4-L5 Lumbar)
           </div>
         </div>
 
@@ -200,27 +209,27 @@
         <div>
           <div class="field" style="margin-bottom:20px;">
             <label for="painScaleRange" style="display:flex; justify-content:space-between; align-items:center;">
-              <span>Skala Derajat Nyeri (1 - 10)</span>
+              <span>Discomfort Scale (1 - 10)</span>
               <strong id="painScaleDisplay" style="font-size:16px; color:#ef4444;">7 / 10</strong>
             </label>
             <input type="range" id="painScaleRange" min="1" max="10" value="7" style="width:100%; margin-top:8px;" />
             <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--muted); margin-top:4px;">
-              <span>Ringan (1-3)</span>
-              <span>Sedang (4-6)</span>
-              <span>Berat (7-10)</span>
+              <span>Mild (1-3)</span>
+              <span>Moderate (4-6)</span>
+              <span>Severe (7-10)</span>
             </div>
           </div>
 
           <div class="field" style="margin-bottom:20px;">
-            <label for="inputChiefComplaint">Deskripsi Keluhan / Gejala Utama</label>
-            <textarea id="inputChiefComplaint" rows="4" placeholder="Jelaskan sejak kapan gejala dirasakan, pemicu nyeri, atau riwayat fisioterapi sebelumnya...">Nyeri tajam pinggang bawah (L4-L5) saat membungkuk setelah maraton. Kesulitan duduk tegak lebih dari 20 menit.</textarea>
+            <label for="inputChiefComplaint" data-i18n="booking.step3.complaints">Primary Symptoms / Medical History Notes</label>
+            <textarea id="inputChiefComplaint" rows="4" placeholder="Describe symptoms, onset duration, triggers, or previous therapy history...">Sharp discomfort in lower lumbar spine (L4-L5) during forward bend after marathon training. Difficulty sitting upright for over 20 minutes.</textarea>
           </div>
 
           <div class="field" style="margin-bottom:16px;">
             <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer;">
               <input type="checkbox" checked required style="margin-top:3px;" />
               <span style="font-size:12px; color:var(--text-secondary); line-height:1.4;">
-                Saya menyetujui pemrosesan data medis intake awal ini sesuai standar privasi pasien dan undang-undang perlindungan data PDPA.
+                I consent to the collection and processing of my health consultation intake data in accordance with the clinic privacy standard and Singapore / Malaysia Personal Data Protection Act (PDPA).
               </span>
             </label>
           </div>
@@ -228,68 +237,71 @@
       </div>
 
       <div class="wizard-footer-nav">
-        <button type="button" class="btn btn-soft" id="backToStep2Btn">← Kembali</button>
-        <button type="button" class="btn btn-primary" id="toStep4Btn">Lanjutkan ke Ringkasan &amp; E-Tiket →</button>
+        <button type="button" class="btn btn-soft" id="backToStep2Btn" data-i18n="booking.step3.prevBtn">← Back to Schedule</button>
+        <button type="button" class="btn btn-primary" id="toStep4Btn" data-i18n="booking.step3.nextBtn">Review &amp; Confirm Booking →</button>
       </div>
     </section>
 
-    <!-- STEP 4 PANE: RINGKASAN & DEPOSIT E-TIKET -->
+    <!-- STEP 4 PANE: SUMMARY & DEPOSIT E-TICKET -->
     <section class="wizard-step-pane" id="bookingStepPane4">
       <div class="wizard-pane-header">
-        <h2>Ringkasan Reservasi &amp; Pembayaran Deposit</h2>
-        <p>Periksa kembali rincian janji temu Anda sebelum melakukan konfirmasi deposit dan penerbitan E-Tiket resmi.</p>
+        <h2 data-i18n="booking.step4.title">Review Appointment &amp; Deposit Payment</h2>
+        <p data-i18n="booking.step4.desc">Review your appointment details and complete deposit payment to secure your reservation.</p>
       </div>
 
       <div class="booking-summary-card">
         <div class="booking-summary-row">
-          <span style="color:var(--muted);">Cabang Klinik:</span>
+          <span style="color:var(--muted);" data-i18n="booking.step4.branch">Branch Location:</span>
           <strong id="summaryBranchVal" style="color:var(--text);">Orchard Wellness Clinic</strong>
         </div>
         <div class="booking-summary-row">
-          <span style="color:var(--muted);">Layanan Medis:</span>
-          <strong id="summaryServiceVal" style="color:var(--text);">Fisioterapi &amp; Tulang Belakang (60 Menit)</strong>
+          <span style="color:var(--muted);" data-i18n="booking.step4.service">Clinical Service:</span>
+          <strong id="summaryServiceVal" style="color:var(--text);">Physiotherapy &amp; Spine Rehabilitation (60 mins)</strong>
         </div>
         <div class="booking-summary-row">
-          <span style="color:var(--muted);">Dokter / Praktisi:</span>
+          <span style="color:var(--muted);" data-i18n="booking.step4.practitioner">Specialist / Doctor:</span>
           <strong id="summaryDoctorVal" style="color:var(--primary-dark);">Dr. Lim Wei Han</strong>
         </div>
         <div class="booking-summary-row">
-          <span style="color:var(--muted);">Jadwal Janji Temu:</span>
+          <span style="color:var(--muted);" data-i18n="booking.step4.schedule">Date &amp; Time (SGT/MYT):</span>
           <strong id="summaryScheduleVal" style="color:var(--text);">Wednesday, 9 September 2026 · 10:30 SGT</strong>
         </div>
         <div class="booking-summary-row">
-          <span style="color:var(--muted);">Keluhan Terdata:</span>
-          <span id="summaryComplaintVal" style="font-size:12px; max-width:60%; text-align:right; color:var(--text-secondary);">Pinggang Bawah (L4-L5 Lumbar)</span>
+          <span style="color:var(--muted);">Selected Focus:</span>
+          <span id="summaryComplaintVal" style="font-size:12px; max-width:60%; text-align:right; color:var(--text-secondary);">Lower Back (L4-L5 Lumbar)</span>
         </div>
         <div class="booking-summary-row">
-          <span style="color:var(--muted);">Total Tarif Layanan:</span>
+          <span style="color:var(--muted);">Estimated Service Fee:</span>
           <strong id="summaryPriceVal" style="font-size:15px; color:var(--text);">SGD 120.00</strong>
         </div>
         <div class="booking-summary-row" style="background:#f0fdf4; padding:12px; border-radius:var(--radius-sm); margin-top:8px;">
-          <span style="color:#16a34a; font-weight:800;">Deposit Konfirmasi (Hold Slot):</span>
+          <span style="color:#16a34a; font-weight:800;" data-i18n="booking.step4.depositFee">Deposit Commitment Fee (Hold Slot):</span>
           <strong id="summaryDepositVal" class="booking-deposit-total">SGD 30.00</strong>
         </div>
       </div>
 
       <div style="background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-sm); padding:16px; margin-bottom:24px;">
-        <div style="font-size:12px; font-weight:800; color:var(--text); margin-bottom:4px;">METODE PEMBAYARAN CEPAT</div>
+        <div style="font-size:12px; font-weight:800; color:var(--text); margin-bottom:4px;" data-i18n="booking.step4.paymentMethod">SELECT PAYMENT METHOD:</div>
         <p style="font-size:12px; color:var(--muted); margin:0 0 10px;">
-          Sisa tagihan akan dilunasi di kasir klinik setelah sesi selesai. Pembayaran deposit langsung mengunci kuota slot Anda.
+          The remaining balance will be settled at the clinic cashier after your session. The deposit instantly guarantees your reserved time slot.
         </p>
         <div style="display:flex; gap:12px; align-items:center;">
           <span class="pill" style="font-size:12px; background:#fff; border:1px solid var(--line); color:var(--text);">
-            ● PayNow / QRIS Instant
+            ● PayNow QR (Instant SG)
           </span>
           <span class="pill" style="font-size:12px; background:#fff; border:1px solid var(--line); color:var(--text);">
-            ● DuitNow QR
+            ● DuitNow QR (Instant MY)
+          </span>
+          <span class="pill" style="font-size:12px; background:#fff; border:1px solid var(--line); color:var(--text);">
+            ● Credit / Debit Card (Stripe)
           </span>
         </div>
       </div>
 
       <div class="wizard-footer-nav">
-        <button type="button" class="btn btn-soft" id="backToStep3Btn">← Kembali</button>
-        <button type="button" class="btn btn-primary" id="confirmBookingCheckoutBtn" style="font-size:15px; padding:12px 24px;">
-          Bayar Deposit &amp; Terbitkan E-Tiket Digital →
+        <button type="button" class="btn btn-soft" id="backToStep3Btn" data-i18n="booking.step4.prevBtn">← Edit Information</button>
+        <button type="button" class="btn btn-primary" id="confirmBookingCheckoutBtn" style="font-size:15px; padding:12px 24px;" data-i18n="booking.step4.confirmBtn">
+          Confirm &amp; Issue Digital E-Ticket 🎟️
         </button>
       </div>
     </section>
@@ -298,10 +310,10 @@
   <!-- Footer -->
   <footer style="background:#fff; border-top:1px solid var(--line); padding:20px 0; margin-top:auto;">
     <div class="container footer-inner">
-      <div>✦ Cliniva Enterprise — Powered by Cliniva</div>
+      <div>✦ Cliniva Healthcare Platform — Singapore &amp; Malaysia</div>
       <div class="footer-links">
-        <a href="patient-portal.html">Portal Pasien</a>
-        <a href="ticket.html">Lihat E-Tiket Aktif</a>
+        <a href="patient-portal.html" data-i18n="nav.patientPortal">Patient Portal</a>
+        <a href="ticket.html">Active E-Ticket</a>
       </div>
     </div>
   </footer>

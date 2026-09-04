@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>E-Tiket Janji Temu Digital — Cliniva Booking & CRM</title>
+  <title data-i18n="ticket.pageTitle">Digital Appointment E-Ticket — Cliniva</title>
   <meta name="description" content="Official digital appointment confirmation ticket and self check-in QR code for Cliniva clinics." />
 
   <!-- Google Fonts -->
@@ -24,9 +24,18 @@
         Cliniva
       </a>
 
-      <div style="display:flex; gap:10px; align-items:center;" id="ticketNavActions">
-        <a href="patient-portal.html" class="btn btn-sm btn-soft">← Portal Pasien Mandiri</a>
-        <a href="booking.html" class="btn btn-sm btn-primary">+ Buat Janji Baru</a>
+      <div style="display:flex; gap:12px; align-items:center;" id="ticketNavActions">
+        <!-- Language Switcher -->
+        <div class="lang-switcher-wrap">
+          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+            <option value="en">🇬🇧 English</option>
+            <option value="ms">🇲🇾 Melayu</option>
+            <option value="zh">🇨🇳 中文</option>
+          </select>
+        </div>
+
+        <a href="patient-portal.html" class="btn btn-sm btn-soft" data-i18n="ticket.portalLink">← Self-Service Patient Portal</a>
+        <a href="booking.html" class="btn btn-sm btn-primary" data-i18n="ticket.newBookingLink">+ Book New Appointment</a>
       </div>
     </div>
   </header>
@@ -34,51 +43,51 @@
   <!-- Ticket View -->
   <main class="container" style="flex:1; padding:40px 20px;">
     <div style="text-align:center; margin-bottom:28px;">
-      <div class="badge-live" style="margin-bottom:10px;">
-        ✓ Terverifikasi &amp; Terkonfirmasi
+      <div class="badge-live" style="margin-bottom:10px;" data-i18n="ticket.badge">
+        ✓ Verified &amp; Confirmed
       </div>
-      <h1 style="font-size:28px; letter-spacing:-1px;">E-Tiket Janji Temu &amp; Kartu Antrean</h1>
-      <p style="color:var(--muted); font-size:14px; margin-top:6px;">
-        Tunjukkan kode QR ini ke scanner kiosk klinik atau simpan ke kalender ponsel Anda.
+      <h1 style="font-size:28px; letter-spacing:-1px;" data-i18n="ticket.title">Digital Appointment E-Ticket &amp; Queue Card</h1>
+      <p style="color:var(--muted); font-size:14px; margin-top:6px;" data-i18n="ticket.subtitle">
+        Present this QR code at the clinic self check-in kiosk or add to your mobile calendar.
       </p>
     </div>
 
     <!-- Digital Ticket Card -->
     <div class="digital-ticket">
       <div class="ticket-header">
-        <div class="ticket-brand">CLINIVA HEALTHCARE • ORCHARD WELLNESS CLINIC</div>
+        <div class="ticket-brand" data-i18n="ticket.brandHeader">CLINIVA HEALTHCARE • ORCHARD WELLNESS CLINIC</div>
         <div class="ticket-code" id="ticketCodeVal">BK-20260901-0812</div>
-        <span class="ticket-status-pill">✓ STATUS: CONFIRMED</span>
+        <span class="ticket-status-pill" data-i18n="ticket.statusConfirmed">✓ STATUS: CONFIRMED</span>
       </div>
 
       <div class="ticket-body">
         <div class="ticket-row">
-          <span class="ticket-label">Nama Pasien:</span>
+          <span class="ticket-label" data-i18n="ticket.patientName">Patient Name:</span>
           <span class="ticket-val" id="ticketPatientVal">Amanda Tan</span>
         </div>
         <div class="ticket-row">
-          <span class="ticket-label">Nomor Antrean:</span>
-          <span class="ticket-val" style="color:var(--primary); font-size:22px; font-weight:900;">A-01</span>
+          <span class="ticket-label" data-i18n="ticket.queueNo">Queue Number:</span>
+          <span class="ticket-val" style="color:var(--primary); font-size:22px; font-weight:900;" id="ticketQueueVal">A-01</span>
         </div>
         <div class="ticket-row">
-          <span class="ticket-label">Layanan Medis:</span>
-          <span class="ticket-val" id="ticketServiceVal">Fisioterapi &amp; Rehabilitasi Postur</span>
+          <span class="ticket-label" data-i18n="ticket.service">Clinical Service:</span>
+          <span class="ticket-val" id="ticketServiceVal">Physiotherapy &amp; Postural Rehabilitation</span>
         </div>
         <div class="ticket-row">
-          <span class="ticket-label">Praktisi / Dokter:</span>
+          <span class="ticket-label" data-i18n="ticket.practitioner">Practitioner / Doctor:</span>
           <span class="ticket-val" id="ticketPractitionerVal">Dr. Lim Wei Han</span>
         </div>
         <div class="ticket-row">
-          <span class="ticket-label">Jadwal Sesi:</span>
-          <span class="ticket-val" id="ticketScheduleVal" style="color:var(--primary-dark);">Rabu, 10:30 WIB / SGT</span>
+          <span class="ticket-label" data-i18n="ticket.schedule">Schedule:</span>
+          <span class="ticket-val" id="ticketScheduleVal" style="color:var(--primary-dark);">Wednesday, 10:30 SGT</span>
         </div>
         <div class="ticket-row">
-          <span class="ticket-label">Ruangan / Bed:</span>
-          <span class="ticket-val">Room A2 (Lantai 2)</span>
+          <span class="ticket-label" data-i18n="ticket.room">Treatment Room:</span>
+          <span class="ticket-val" id="ticketRoomVal">Room A2 (Level 2)</span>
         </div>
         <div class="ticket-row">
-          <span class="ticket-label">Status Pembayaran:</span>
-          <span class="ticket-val" style="color:var(--success-dark);">DEPOSIT PAID (SGD 30.00)</span>
+          <span class="ticket-label" data-i18n="ticket.payment">Payment Status:</span>
+          <span class="ticket-val" id="ticketPaymentVal" style="color:var(--success-dark);">DEPOSIT PAID (SGD 30.00)</span>
         </div>
 
         <div class="ticket-divider-perforated">
@@ -108,19 +117,19 @@
             </svg>
           </div>
 
-          <p style="font-size:12px; color:var(--muted); max-width:400px; margin:0 auto 18px;">
-            Pindai kode QR ini pada scanner kiosk kedatangan klinik untuk proses Check-In instan.
+          <p style="font-size:12px; color:var(--muted); max-width:400px; margin:0 auto 18px;" data-i18n="ticket.qrInstruction">
+            Scan this QR code upon arrival at the kiosk for instant priority queue check-in.
           </p>
 
           <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-            <button type="button" class="btn btn-primary" onclick="downloadICS('BK-20260901-0812')">
-              📅 Simpan ke Kalender (.ics)
+            <button type="button" class="btn btn-primary" id="ticketIcsBtn" data-i18n="ticket.addToCalendar">
+              📅 Add to Mobile Calendar (.ics)
             </button>
-            <button type="button" class="btn btn-soft" onclick="window.print()">
-              🖨️ Cetak E-Tiket
+            <button type="button" class="btn btn-soft" onclick="window.print()" data-i18n="ticket.download">
+              📥 Print / Download Ticket
             </button>
-            <button type="button" class="btn btn-soft" onclick="openRescheduleModal('BK-20260901-0812')">
-              🔄 Reschedule Jadwal
+            <button type="button" class="btn btn-soft" id="ticketRescheduleBtn" data-i18n="portal.reschedule">
+              🔄 Reschedule
             </button>
           </div>
         </div>
@@ -131,11 +140,11 @@
   <!-- Footer -->
   <footer>
     <div class="container footer-inner">
-      <div>© 2026 Cliniva Healthcare Systems. Dokumen E-Tiket Resmi.</div>
+      <div>© 2026 Cliniva Healthcare Systems. Official Digital E-Ticket Document.</div>
       <div class="footer-links">
-        <a href="index.html">Beranda</a>
-        <a href="patient-portal.html">Portal Pasien</a>
-        <a href="booking.html">Jadwal Baru</a>
+        <a href="index.html" data-i18n="nav.backHome">Home</a>
+        <a href="patient-portal.html" data-i18n="nav.patientPortal">Patient Portal</a>
+        <a href="booking.html" data-i18n="ticket.newBookingLink">Book Appointment</a>
       </div>
     </div>
   </footer>

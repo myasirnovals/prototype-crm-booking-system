@@ -96,7 +96,7 @@ export class AuthController {
         if (activeStatus) {
           this.showSuccess(
             activeStatus,
-            `⚡ Berhasil masuk sebagai <strong>${result.session.user.name}</strong> (${result.session.user.title})! Mengalihkan ke halaman ${result.targetRoute}...`
+            `⚡ Signed in as <strong>${result.session.user.name}</strong> (${result.session.user.title})! Redirecting to ${result.targetRoute}...`
           );
         }
 
@@ -129,7 +129,7 @@ export class AuthController {
       soundService.playQueueChime();
       this.showSuccess(
         this.staffStatus,
-        `✓ Berhasil! Masuk sebagai <strong>${result.session.user.name}</strong>. Mengalihkan ke ${result.targetRoute}...`
+        `✓ Success! Signed in as <strong>${result.session.user.name}</strong>. Redirecting to ${result.targetRoute}...`
       );
 
       setTimeout(() => {
@@ -159,7 +159,7 @@ export class AuthController {
       if (this.otpArea) this.otpArea.style.display = "block";
       this.showSuccess(
         this.patientStatus,
-        `${result.message} Kode verifikasi demo: <strong>${result.demoOtp}</strong>`
+        `${result.message} Demo verification code: <strong>${result.demoOtp}</strong>`
       );
 
       const firstOtp = this.otpInputs[0];
@@ -204,7 +204,7 @@ export class AuthController {
       soundService.playQueueChime();
       this.showSuccess(
         this.patientStatus,
-        `✓ OTP terverifikasi! Masuk sebagai <strong>${result.session.user.name}</strong>. Mengalihkan ke Portal Pasien...`
+        `✓ OTP verified! Signed in as <strong>${result.session.user.name}</strong>. Redirecting to Patient Portal...`
       );
 
       setTimeout(() => {

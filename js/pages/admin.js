@@ -4,10 +4,12 @@
  */
 
 import { AdminController } from "../controllers/admin.controller.js";
+import { i18nService } from "../services/i18n.service.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  i18nService.init();
   const admin = new AdminController();
   admin.init();
 
-  console.log("Cliniva Admin Controller initialized.");
+  console.log("Cliniva Admin Controller initialized with i18n.");
 });

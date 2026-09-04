@@ -1,10 +1,10 @@
 /**
- * Cliniva — English Locale Dictionary (Default)
+ * Cliniva — English Locale Dictionary (Default / International & Singapore Standard)
  * SOLID: Single Responsibility for English Language Translations
  */
 
 export const en = {
-  // Navigation
+  // Navigation & Header
   "nav.features": "Features",
   "nav.product": "Product",
   "nav.market": "Market",
@@ -12,6 +12,10 @@ export const en = {
   "nav.signIn": "Sign In",
   "nav.getStarted": "Get Started",
   "nav.backHome": "← Back to Home",
+  "nav.patientPortal": "← Patient Portal",
+  "nav.newBooking": "+ Book Appointment",
+  "nav.signOut": "Sign Out",
+  "nav.verifiedPdpa": "● PDPA Compliant",
 
   // Hero Section
   "hero.pill": "🇸🇬 🇲🇾 Built for modern clinics in Singapore & Malaysia",
@@ -42,7 +46,7 @@ export const en = {
   "features.f4.title": "Referral Intake Bridge",
   "features.f4.desc": "Upload referral documents temporarily, forward them securely to SIMRS or EMR webhook endpoints, then auto-delete files based on 72h retention policy.",
   "features.f5.title": "Deposit & Flexible Payments",
-  "features.f5.desc": "Collect flat or percentage deposits via PayNow (SG), DuitNow (MY), QRIS (ID), and Stripe cards to guarantee commitment.",
+  "features.f5.desc": "Collect flat or percentage deposits via PayNow (SG), DuitNow (MY), and Stripe cards to guarantee commitment.",
   "features.f6.title": "Multi-Tenant & Multi-Branch",
   "features.f6.desc": "Manage multiple clinic branches or brands from one unified workspace with localized currency, calendars, and role-based staff permissions.",
 
@@ -55,33 +59,147 @@ export const en = {
   "showcase.tab.notifications": "Notifications & WhatsApp",
   "showcase.tab.referral": "Referral & Payments",
 
-  // Patient Booking Flow
-  "booking.title": "Book an Appointment",
-  "booking.subtitle": "Select your preferred branch, therapy service, practitioner, and available time slot.",
-  "booking.branchLabel": "Select Clinic Branch",
-  "booking.serviceLabel": "Select Treatment Category",
-  "booking.practitionerLabel": "Select Doctor / Practitioner",
-  "booking.dateLabel": "Select Date",
-  "booking.slotLabel": "Available Time Slots (10-Minute Hold)",
-  "booking.intakeLabel": "Initial Complaint / Intake Notes",
-  "booking.checkoutBtn": "Continue to Checkout →",
+  // Booking Flow (booking.html)
+  "booking.pageTitle": "Book Appointment — Cliniva Patient Portal",
+  "booking.headerTitle": "Cliniva Patient Portal",
+  "booking.step1.tag": "STEP 1",
+  "booking.step1.name": "Branch & Service",
+  "booking.step1.title": "Select Clinic Branch & Treatment Service",
+  "booking.step1.desc": "Choose your nearest healthcare facility and the required treatment or consultation.",
+  "booking.step1.branchLabel": "1. Select Nearest Location",
+  "booking.step1.serviceLabel": "2. Select Treatment / Consultation Service",
+  "booking.step1.cancelBtn": "← Cancel & Return",
+  "booking.step1.nextBtn": "Continue to Practitioner & Schedule →",
 
-  // Markets Section
-  "markets.pill": "Regional-Ready Design",
-  "markets.title": "Designed for healthcare and wellness businesses across Southeast Asia.",
-  "markets.subtitle": "The interface supports regional payment habits, multilingual markets, privacy expectations, and multi-branch clinic operations.",
-  "markets.sg.title": "🇸🇬 Singapore Market",
-  "markets.sg.desc": "Clean, premium, compliance-aware user experience for private clinics, wellness centers, TCM practices, and outpatient services.",
-  "markets.my.title": "🇲🇾 Malaysia Market",
-  "markets.my.desc": "Built for fast-growing multi-branch clinics with WhatsApp-first communication, flexible deposits, and bilingual operational needs.",
+  "booking.step2.tag": "STEP 2",
+  "booking.step2.name": "Practitioner & Schedule",
+  "booking.step2.title": "Select Practitioner & Time Slot",
+  "booking.step2.desc": "Choose your preferred specialist or select the earliest available slot for prompt treatment.",
+  "booking.step2.practitionerLabel": "1. Select Specialist / Practitioner",
+  "booking.step2.dateLabel": "2. Select Appointment Date",
+  "booking.step2.slotLabel": "3. Available Time Slots (10-Minute Hold)",
+  "booking.step2.prevBtn": "← Back to Service",
+  "booking.step2.nextBtn": "Continue to Intake Assessment →",
 
-  // Call to Action
-  "cta.title": "Modernize clinic booking without turning it into a complicated EMR.",
-  "cta.subtitle": "Cliniva focuses on appointment flow, CRM, notifications, payment deposit, operational dashboards, and referral bridging — exactly where clinics lose time every day.",
-  "cta.getStarted": "Get Started",
-  "cta.viewDemo": "View Dashboard Demo",
+  "booking.step3.tag": "STEP 3",
+  "booking.step3.name": "Intake & Assessment",
+  "booking.step3.title": "Patient Information & Intake Assessment",
+  "booking.step3.desc": "Provide your patient details and intake notes to help your practitioner prepare in advance.",
+  "booking.step3.infoSection": "Patient Details",
+  "booking.step3.fullName": "Full Name (as in NRIC/Passport)",
+  "booking.step3.phone": "Mobile Number (WhatsApp Enabled)",
+  "booking.step3.email": "Email Address",
+  "booking.step3.dob": "Date of Birth",
+  "booking.step3.gender": "Gender",
+  "booking.step3.male": "Male",
+  "booking.step3.female": "Female",
+  "booking.step3.intakeSection": "Health Assessment / Intake Notes",
+  "booking.step3.painMapTitle": "Body Pain Map (Tap to highlight discomfort areas)",
+  "booking.step3.wellnessPrefsTitle": "Wellness & Spa Preferences",
+  "booking.step3.aromatherapy": "Aromatherapy Oil Preference",
+  "booking.step3.massagePressure": "Massage Pressure Level",
+  "booking.step3.complaints": "Primary Symptoms / Medical History Notes",
+  "booking.step3.prevBtn": "← Back to Schedule",
+  "booking.step3.nextBtn": "Review & Confirm Booking →",
 
-  // Authentication & Onboarding
+  "booking.step4.tag": "STEP 4",
+  "booking.step4.name": "Confirmation & Ticket",
+  "booking.step4.title": "Review Appointment & Deposit Payment",
+  "booking.step4.desc": "Review your appointment details and complete deposit payment to secure your reservation.",
+  "booking.step4.summaryTitle": "Appointment Summary",
+  "booking.step4.branch": "Branch Location:",
+  "booking.step4.service": "Clinical Service:",
+  "booking.step4.practitioner": "Specialist / Doctor:",
+  "booking.step4.schedule": "Date & Time (SGT/MYT):",
+  "booking.step4.room": "Allocated Room:",
+  "booking.step4.depositFee": "Deposit Commitment Fee:",
+  "booking.step4.paymentMethod": "Select Payment Method:",
+  "booking.step4.paynow": "PayNow QR (Singapore Instant)",
+  "booking.step4.duitnow": "DuitNow QR (Malaysia Instant)",
+  "booking.step4.card": "Credit / Debit Card (Stripe)",
+  "booking.step4.prevBtn": "← Edit Information",
+  "booking.step4.confirmBtn": "Confirm & Issue Digital E-Ticket 🎟️",
+
+  // Digital E-Ticket (ticket.html)
+  "ticket.pageTitle": "Digital Appointment E-Ticket — Cliniva",
+  "ticket.badge": "✓ Verified & Confirmed",
+  "ticket.title": "Digital Appointment E-Ticket & Queue Card",
+  "ticket.subtitle": "Present this QR code at the clinic self check-in kiosk or add to your mobile calendar.",
+  "ticket.brandHeader": "CLINIVA HEALTHCARE • REGIONAL NETWORK",
+  "ticket.statusConfirmed": "✓ STATUS: CONFIRMED",
+  "ticket.statusCompleted": "✓ STATUS: COMPLETED",
+  "ticket.patientName": "Patient Name:",
+  "ticket.queueNo": "Queue Number:",
+  "ticket.service": "Clinical Service:",
+  "ticket.practitioner": "Practitioner / Doctor:",
+  "ticket.schedule": "Schedule:",
+  "ticket.room": "Treatment Room:",
+  "ticket.payment": "Payment Status:",
+  "ticket.depositPaid": "DEPOSIT PAID",
+  "ticket.qrInstruction": "Scan this QR code upon arrival at the kiosk for instant priority queue check-in.",
+  "ticket.addToCalendar": "📅 Add to Mobile Calendar (.ics)",
+  "ticket.download": "📥 Download E-Ticket (PDF)",
+  "ticket.contactClinic": "💬 Contact Clinic via WhatsApp",
+  "ticket.portalLink": "← Self-Service Patient Portal",
+  "ticket.newBookingLink": "+ Book New Appointment",
+
+  // Patient Portal (patient-portal.html)
+  "portal.pageTitle": "Patient Self-Service Portal — Cliniva",
+  "portal.topbar": "Patient Self-Service Portal",
+  "portal.welcome": "Welcome,",
+  "portal.liveQueue": "Live Waiting Lounge Queue Tracker",
+  "portal.yourTicket": "Your Active E-Ticket",
+  "portal.queueNumber": "Queue Number",
+  "portal.nowServing": "Currently Serving in Room",
+  "portal.estWait": "Estimated Wait Time:",
+  "portal.minutes": "minutes",
+  "portal.statusWaiting": "In Waiting Lounge",
+  "portal.statusCalling": "Calling Patient to Room",
+  "portal.upcoming": "Upcoming Appointments",
+  "portal.history": "Visit & Treatment History",
+  "portal.reschedule": "Reschedule",
+  "portal.cancel": "Cancel",
+  "portal.viewTicket": "View E-Ticket",
+
+  // Admin Operational Panel (admin.html)
+  "admin.pageTitle": "Reception & Operations Desk — Cliniva",
+  "admin.topbar": "Reception & Front Desk Operations",
+  "admin.tab.queue": "Live Waiting Queue",
+  "admin.tab.pos": "POS Cashier & Billing",
+  "admin.tab.simrs": "SIMRS / EMR Bridging",
+  "admin.tab.settings": "Clinic Profile & Branding",
+  "admin.callNext": "🔊 Call Next Patient",
+  "admin.walkIn": "+ Register Walk-In Patient",
+  "admin.settings.title": "Clinic Identity & Regional Configuration",
+  "admin.settings.desc": "Configure clinic branding, logo, contact, and business template for your branch.",
+  "admin.settings.name": "Clinic / Brand Name",
+  "admin.settings.logo": "Official Clinic Logo (PNG/SVG)",
+  "admin.settings.tagline": "Tagline / Slogan",
+  "admin.settings.template": "Business Template Profile",
+  "admin.settings.templateTcm": "Traditional Chinese Medicine (TCM)",
+  "admin.settings.templateWellness": "Wellness & Spa Care",
+  "admin.settings.phone": "WhatsApp & Contact Number",
+  "admin.settings.address": "Physical Address",
+  "admin.settings.save": "Save Clinic Configuration",
+
+  // Owner Panel (owner.html)
+  "owner.pageTitle": "Executive Dashboard — Cliniva",
+  "owner.topbar": "Executive Owner Panel",
+  "owner.revenue": "Consolidated Revenue",
+  "owner.occupancy": "Slot Occupancy Rate",
+  "owner.noShowRate": "No-Show Rate",
+  "owner.branches": "Branch Network Performance",
+
+  // Practitioner Workspace (practitioner.html)
+  "practitioner.pageTitle": "Practitioner Workspace — Cliniva",
+  "practitioner.topbar": "Consultation Workspace",
+  "practitioner.timeline": "Today's Consultation Timeline",
+  "practitioner.painMap": "Body Pain Map Visualizer",
+  "practitioner.callChime": "Call Patient (Audio Chime)",
+  "practitioner.notes": "Consultation Notes",
+  "practitioner.complete": "Complete Session",
+
+  // Authentication (sign-in.html)
   "auth.welcomeTitle": "Welcome back to",
   "auth.welcomeSubtitle": "Sign in to manage appointments, patient intake, WhatsApp reminders, deposits, referrals, and daily clinic operations.",
   "auth.staffTab": "Staff / Admin",
@@ -90,11 +208,39 @@ export const en = {
   "auth.password": "Password",
   "auth.signInBtn": "Sign In to Dashboard →",
   "auth.requestOnboarding": "Request onboarding",
-  "onboarding.title": "Register your clinic with",
-  "onboarding.subtitle": "Create the initial Super Admin account for your clinic. The system will provision an isolated Tenant ID and scheduling portal in minutes.",
-  "onboarding.submitBtn": "🚀 Create Super Admin Account & Launch Tenant →",
+  "auth.quickLoginTitle": "⚡ 1-Click Quick Demo Login",
+  "auth.quickOwner": "👑 Owner / Super Admin",
+  "auth.quickDoctor": "🧑‍⚕️ Doctor / Practitioner",
+  "auth.quickReception": "🛎️ Receptionist / Front Desk",
+  "auth.quickPatient": "👤 Patient / User",
 
-  // Demo Page Roles
+  // Regional Settings
+  "regional.sg": "🇸🇬 Singapore (SGT • SGD $)",
+  "regional.my": "🇲🇾 Malaysia (MYT • RM)",
+  "regional.pdpaSg": "PDPA Compliance: Processed under Singapore Personal Data Protection Act 2012.",
+  "regional.pdpaMy": "PDPA Compliance: Governed by Malaysia Personal Data Protection Act 2010.",
+
+  // Common UI
+  "common.live": "LIVE",
+  "common.confirmed": "CONFIRMED",
+  "common.completed": "COMPLETED",
+  "common.pending": "PENDING",
+  "common.cancel": "Cancel",
+  "common.save": "Save",
+  "common.back": "Back",
+  "common.next": "Next",
+  "common.close": "Close",
+  "common.loading": "Loading...",
+  "common.success": "Success",
+
+  // Footer
+  "footer.patientPortal": "👤 Patient Portal",
+  "footer.doctorWorkspace": "🧑‍⚕️ Practitioner Workspace",
+  "footer.receptionistPanel": "🛎️ Receptionist Panel",
+  "footer.ownerConsole": "👑 Owner HQ Console",
+  "footer.servicesCatalog": "Services Catalog",
+
+  // Demo Roles
   "demo.role.patient": "🩺 Patient Booking",
   "demo.role.receptionist": "👩‍💼 Receptionist & Front-Desk",
   "demo.role.doctor": "👨‍⚕️ Doctor & Practitioner",
@@ -102,13 +248,8 @@ export const en = {
   "demo.role.superAdmin": "👑 Super Admin / Owner",
   "demo.role.whatsapp": "💬 WhatsApp Engine",
 
-  // Common UI
-  "common.live": "LIVE",
-  "common.confirmed": "CONFIRMED",
-  "common.pending": "PENDING",
-  "common.cancel": "Cancel",
-  "common.save": "Save",
-  "common.back": "Back",
-  "common.next": "Next",
-  "common.close": "Close"
+  // Onboarding
+  "onboarding.title": "Clinic Onboarding & Super Admin Setup — Cliniva",
+  "onboarding.subtitle": "Create the initial Super Admin account for your clinic. The system will provision an isolated Tenant ID and scheduling portal in minutes.",
+  "onboarding.submitBtn": "🚀 Create Super Admin Account & Launch Tenant →"
 };

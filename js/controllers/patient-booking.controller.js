@@ -21,16 +21,16 @@ export class PatientBookingController {
       branchName: this.selectedBranch.name,
       branchAddress: this.selectedBranch.address,
       currency: this.selectedBranch.currency,
-      serviceName: "Fisioterapi & Tulang Belakang",
-      serviceDuration: "60 Menit",
+      serviceName: "Physiotherapy & Spine Rehabilitation",
+      serviceDuration: "60 mins",
       servicePrice: this.selectedBranch.currency === "SGD" ? "SGD 120.00" : "MYR 180.00",
       depositAmount: this.selectedBranch.currency === "SGD" ? "SGD 30.00" : "MYR 50.00",
-      practitionerName: "Jadwal Tercepat (Dokter mana saja)",
+      practitionerName: "Earliest Available Specialist",
       scheduleDate: "Wednesday, 9 September 2026",
       scheduleSlot: "10:30 SGT",
-      chiefComplaint: "Nyeri tajam pinggang bawah (L4-L5) saat membungkuk setelah maraton.",
+      chiefComplaint: "Sharp lower back pain (L4-L5) upon forward bending after marathon.",
       painMarker: "marker-lumbar",
-      painBodyPart: "Pinggang Bawah (L4-L5 Lumbar)",
+      painBodyPart: "Lower Back (L4-L5 Lumbar)",
       painScale: 7
     };
   }
@@ -148,58 +148,82 @@ export class PatientBookingController {
       services = [
         {
           id: "physio-spine",
-          title: "Fisioterapi & Tulang Belakang",
-          duration: "60 Menit",
+          title: "Physiotherapy & Spine Rehabilitation",
+          duration: "60 mins",
           price: isSGD ? "SGD 120.00" : "MYR 180.00",
-          desc: "Penanganan spasme lumbar L4-L5, dekompresi tulang belakang, & terapi postur."
+          desc: "Lumbar spine decompression (L4-L5), core muscle stabilization & postural therapy."
         },
         {
           id: "physio-sport",
-          title: "Rehabilitasi Cedera Olahraga",
-          duration: "75 Menit",
+          title: "Sports Injury Rehabilitation",
+          duration: "75 mins",
           price: isSGD ? "SGD 140.00" : "MYR 220.00",
-          desc: "Pemulihan pasca rekonstruksi ligamen (ACL/MCL) dan terapi Shockwave."
+          desc: "Post-op ligament recovery (ACL/MCL), joint mobilization & Shockwave unit."
         },
         {
           id: "physio-neck",
-          title: "Terapi Leher & Sendi Bahu",
-          duration: "45 Menit",
+          title: "Cervical Neck & Shoulder Joint Therapy",
+          duration: "45 mins",
           price: isSGD ? "SGD 95.00" : "MYR 150.00",
-          desc: "Pelepasan ketegangan trapezius spasm dan mobilisasi sendi cervical."
+          desc: "Trapezius tension release, posture adjustment & mobility restoration."
         }
       ];
     } else if (this.selectedBranch.profileType === "TCM_ACUPUNCTURE") {
       services = [
         {
           id: "tcm-acupuncture",
-          title: "Akupunktur Medis & Tuina",
-          duration: "50 Menit",
+          title: "Clinical Acupuncture & Tuina",
+          duration: "50 mins",
           price: isSGD ? "SGD 110.00" : "MYR 140.00",
-          desc: "Stimulasi titik meridian tubuh, pelancaran sirkulasi darah dan pereda nyeri sendi."
+          desc: "Meridian channel stimulation, blood circulation enhancement & joint pain relief."
         },
         {
           id: "tcm-cupping",
-          title: "Bekam Kering & Terapi Herbal",
-          duration: "45 Menit",
+          title: "Medical Cupping & Herbal Therapy",
+          duration: "45 mins",
           price: isSGD ? "SGD 85.00" : "MYR 110.00",
-          desc: "Relaksasi otot dalam dan detoksifikasi sistem limfatik sesuai formula TCM."
+          desc: "Deep myofascial release and lymphatic detoxification per TCM formulation."
+        }
+      ];
+    } else if (this.selectedBranch.profileType === "SPA_WELLNESS" || this.selectedBranch.profileType === "WELLNESS") {
+      services = [
+        {
+          id: "spa-aromatherapy",
+          title: "Balinese Aromatherapy Full Body Massage",
+          duration: "75 mins",
+          price: isSGD ? "SGD 135.00" : "MYR 190.00",
+          desc: "Holistic essential oil massage tailored for deep tension and mental relaxation."
+        },
+        {
+          id: "spa-deeptissue",
+          title: "Deep Tissue Muscle Relief Spa",
+          duration: "60 mins",
+          price: isSGD ? "SGD 120.00" : "MYR 170.00",
+          desc: "Intensive acupressure targeting knot points, shoulder tightness & lower back."
+        },
+        {
+          id: "spa-reflexology",
+          title: "Foot Reflexology & Herbal Foot Bath",
+          duration: "45 mins",
+          price: isSGD ? "SGD 80.00" : "MYR 110.00",
+          desc: "Zone therapy stimulating vital organs with warm organic botanical foot soak."
         }
       ];
     } else {
       services = [
         {
           id: "clinic-consult",
-          title: "Konsultasi Dokter & Terapi Terpadu",
-          duration: "40 Menit",
+          title: "Doctor Consultation & Integrated Therapy",
+          duration: "40 mins",
           price: isSGD ? "SGD 130.00" : "MYR 160.00",
-          desc: "Pemeriksaan medis terpadu, diagnosis awal, dan rujukan EMR terenkripsi."
+          desc: "Comprehensive outpatient check-up, primary diagnosis, and referral bridging."
         },
         {
           id: "clinic-rehab",
-          title: "Fisioterapi Medis & SIMRS Bridging",
-          duration: "60 Menit",
+          title: "Medical Physiotherapy & Rehabilitation",
+          duration: "60 mins",
           price: isSGD ? "SGD 150.00" : "MYR 190.00",
-          desc: "Sesi rehabilitasi terstandarisasi dengan bridging laporan ke RS mitra."
+          desc: "Standardized clinical rehab session with hospital partner bridging report."
         }
       ];
     }
@@ -394,7 +418,7 @@ export class PatientBookingController {
 
     confirmBtn.addEventListener("click", () => {
       confirmBtn.disabled = true;
-      confirmBtn.textContent = "Memproses Pembayaran Deposit...";
+      confirmBtn.textContent = "Processing Deposit Payment...";
 
       setTimeout(() => {
         soundService.playQueueChime();
@@ -425,7 +449,7 @@ export class PatientBookingController {
         existingBookings.unshift(newBooking);
         storageService.set("cliniva_bookings", existingBookings);
 
-        alert(`Reservasi ${bookingCode} Berhasil! Deposit telah terverifikasi. Anda dialihkan ke E-Tiket Digital.`);
+        alert(`✓ Appointment ${bookingCode} confirmed! Deposit verified. Redirecting to your digital E-Ticket.`);
         window.location.href = "ticket.html";
       }, 1000);
     });

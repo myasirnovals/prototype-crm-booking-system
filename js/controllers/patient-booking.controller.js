@@ -41,7 +41,9 @@ export class PatientBookingController {
     if (!session) return;
 
     this.renderPatientHeader(session.user);
-    this.renderBranchChoices();
+    this.initInteractiveMap();
+    this.setupBranchPills();
+    this.setupLocationDetector();
     this.renderServices();
     this.setupStepNavigation();
     this.setupPractitionerChoices();
@@ -57,9 +59,14 @@ export class PatientBookingController {
         name: "Orchard Wellness Clinic",
         region: "Singapore",
         address: "Paragon Medical #14-02, Singapore 238859",
-        profileType: "TCM_PHYSIO",
+        profileType: "WELLNESS",
+        templateId: "wellness",
         currency: "SGD",
-        hours: "Senin - Sabtu (08:30 - 20:00 SGT)"
+        hours: "Senin - Sabtu (08:30 - 20:00 SGT)",
+        lat: 1.3039,
+        lng: 103.8358,
+        badge: "🌸 LUXURY WELLNESS SPA",
+        icon: "🌸"
       },
       {
         id: "my-kl",
@@ -67,8 +74,13 @@ export class PatientBookingController {
         region: "Malaysia",
         address: "Pavilion Embassy Tower, Jalan Ampang, Kuala Lumpur",
         profileType: "MEDICAL_CLINIC",
+        templateId: "tcm",
         currency: "MYR",
-        hours: "Senin - Sabtu (09:00 - 18:00 MYT)"
+        hours: "Senin - Sabtu (09:00 - 18:00 MYT)",
+        lat: 3.1593,
+        lng: 101.7196,
+        badge: "🌿 INTEGRATED PHYSIO & TCM",
+        icon: "🏥"
       },
       {
         id: "my-penang",
@@ -76,12 +88,22 @@ export class PatientBookingController {
         region: "Malaysia",
         address: "Gurney Walk, Persiaran Gurney, Penang",
         profileType: "TCM_ACUPUNCTURE",
+        templateId: "tcm",
         currency: "MYR",
-        hours: "Selasa - Minggu (10:00 - 19:00 MYT)"
+        hours: "Selasa - Minggu (10:00 - 19:00 MYT)",
+        lat: 5.4332,
+        lng: 100.3106,
+        badge: "🌿 TCM & ACUPUNCTURE",
+        icon: "🌿"
       }
     ];
 
-    return storageService.get(this.BRANCHES_KEY, defaultBranches);
+    const stored = storageService.get(this.BRANCHES_KEY, null);
+    if (!stored || !Array.isArray(stored) || !stored[0]?.lat) {
+      storageService.set(this.BRANCHES_KEY, defaultBranches);
+      return defaultBranches;
+    }
+    return stored;
   }
 
   renderPatientHeader(user) {
@@ -100,40 +122,190 @@ export class PatientBookingController {
     }
   }
 
-  renderBranchChoices() {
-    const container = document.getElementById("bookingBranchList");
-    if (!container) return;
+  /* ------------------------------------------------------------------
+   * LEAFLET INTERACTIVE MAP & BRANCH CONTROLS
+   * ------------------------------------------------------------------ */
+  initInteractiveMap() {
+    const mapContainer = document.getElementById("clinicInteractiveMap");
+    if (!mapContainer) return;
 
-    container.innerHTML = this.branches
-      .map(
-        (b) => `
-        <div class="branch-choice-card ${b.id === this.selectedBranch.id ? "selected" : ""}" data-branch-id="${b.id}">
-          <strong style="font-size:15px; color:var(--text); display:block;">${b.name}</strong>
-          <div style="font-size:12px; color:var(--muted); margin-top:4px;">${b.region} · ${b.address}</div>
-          <div style="margin-top:10px; font-size:11px; font-weight:700; color:var(--primary);">
-            Mata Uang: ${b.currency} · Jam: ${b.hours}
-          </div>
-        </div>
-      `
-      )
-      .join("");
+    const defaultCoords = [this.selectedBranch.lat, this.selectedBranch.lng];
 
-    container.querySelectorAll(".branch-choice-card").forEach((card) => {
-      card.addEventListener("click", () => {
+    if (typeof window !== "undefined" && typeof window.L !== "undefined") {
+      try {
+        this.map = window.L.map("clinicInteractiveMap", {
+          center: defaultCoords,
+          zoom: 13,
+          scrollWheelZoom: false
+        });
+
+        window.L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 18
+        }).addTo(this.map);
+
+        this.markers = {};
+
+        this.branches.forEach((b) => {
+          const pinHtml = `<div class="custom-map-pin ${b.id === this.selectedBranch.id ? "active-pin" : ""}" id="pin-${b.id}">${b.icon || "📍"}</div>`;
+          const customIcon = window.L.divIcon({
+            html: pinHtml,
+            className: "custom-div-icon",
+            iconSize: [38, 38],
+            iconAnchor: [19, 19],
+            popupAnchor: [0, -20]
+          });
+
+          const marker = window.L.marker([b.lat, b.lng], { icon: customIcon }).addTo(this.map);
+
+          const popupContent = `
+            <div style="font-family:inherit; min-width:190px;">
+              <strong style="font-size:13px; color:var(--text); display:block; margin-bottom:2px;">${b.name}</strong>
+              <div style="font-size:11px; color:var(--muted); line-height:1.3;">${b.address}</div>
+              <div style="margin-top:6px; font-size:10px; font-weight:800; color:var(--primary);">${b.badge}</div>
+            </div>
+          `;
+
+          marker.bindPopup(popupContent, { className: "cliniva-map-popup" });
+
+          marker.on("click", () => {
+            soundService.playClickTone();
+            this.selectBranch(b, false);
+          });
+
+          this.markers[b.id] = marker;
+        });
+
+        // Open initial popup
+        if (this.markers[this.selectedBranch.id]) {
+          this.markers[this.selectedBranch.id].openPopup();
+        }
+      } catch (e) {
+        console.warn("Leaflet map initialization warning:", e);
+      }
+    }
+  }
+
+  setupBranchPills() {
+    const pills = document.querySelectorAll("#clinicMapPills .clinic-pill");
+    pills.forEach((pill) => {
+      pill.addEventListener("click", () => {
         soundService.playClickTone();
-        const branchId = card.dataset.branchId;
-        this.selectedBranch = this.branches.find((b) => b.id === branchId) || this.branches[0];
-
-        this.bookingDraft.branchId = this.selectedBranch.id;
-        this.bookingDraft.branchName = this.selectedBranch.name;
-        this.bookingDraft.branchAddress = this.selectedBranch.address;
-        this.bookingDraft.currency = this.selectedBranch.currency;
-
-        container.querySelectorAll(".branch-choice-card").forEach((c) => c.classList.remove("selected"));
-        card.classList.add("selected");
-
-        this.renderServices();
+        const branchId = pill.dataset.branchId;
+        const targetBranch = this.branches.find((b) => b.id === branchId);
+        if (targetBranch) {
+          this.selectBranch(targetBranch, true);
+        }
       });
+    });
+  }
+
+  selectBranch(branch, flyTo = true) {
+    this.selectedBranch = branch;
+    this.bookingDraft.branchId = branch.id;
+    this.bookingDraft.branchName = branch.name;
+    this.bookingDraft.branchAddress = branch.address;
+    this.bookingDraft.currency = branch.currency;
+
+    // Update active state on pills
+    const pills = document.querySelectorAll("#clinicMapPills .clinic-pill");
+    pills.forEach((p) => {
+      p.classList.toggle("active", p.dataset.branchId === branch.id);
+    });
+
+    // Update Info Bar Card
+    const titleEl = document.getElementById("activeClinicTitle");
+    const badgeEl = document.getElementById("activeClinicBadge");
+    const addrEl = document.getElementById("activeClinicAddress");
+    const metaEl = document.getElementById("activeClinicMeta");
+    const distEl = document.getElementById("activeClinicDistanceBadge");
+
+    if (titleEl) titleEl.textContent = branch.name;
+    if (badgeEl) badgeEl.textContent = branch.badge;
+    if (addrEl) addrEl.textContent = `${branch.region} · ${branch.address}`;
+    if (metaEl) metaEl.textContent = `Mata Uang: ${branch.currency} · Jam: ${branch.hours}`;
+    if (distEl) {
+      distEl.textContent = branch.distance ? `📍 ~${branch.distance} km dari lokasi Anda` : "📍 Terpilih pada Peta";
+    }
+
+    // Fly map & update active pin styling
+    if (this.map && branch.lat && branch.lng) {
+      if (flyTo) {
+        this.map.flyTo([branch.lat, branch.lng], 13, { duration: 1.2 });
+      }
+      if (this.markers && this.markers[branch.id]) {
+        this.markers[branch.id].openPopup();
+      }
+
+      document.querySelectorAll(".custom-map-pin").forEach((p) => p.classList.remove("active-pin"));
+      const activePin = document.getElementById(`pin-${branch.id}`);
+      if (activePin) activePin.classList.add("active-pin");
+    }
+
+    // Sync active template and re-render services
+    bookingService.setActiveTemplate(branch.templateId || "tcm");
+    this.renderServices();
+  }
+
+  calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Earth radius in KM
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return Math.round(R * c * 10) / 10;
+  }
+
+  setupLocationDetector() {
+    const btn = document.getElementById("btnDetectLocation");
+    if (!btn) return;
+
+    btn.addEventListener("click", () => {
+      soundService.playClickTone();
+      if (!navigator.geolocation) {
+        alert("Geolocation tidak didukung pada peramban ini.");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<span>⏳</span> <span>Mencari lokasi terdekat...</span>`;
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          btn.disabled = false;
+          const userLat = pos.coords.latitude;
+          const userLng = pos.coords.longitude;
+
+          let nearestBranch = this.branches[0];
+          let minDistance = Infinity;
+
+          this.branches.forEach((b) => {
+            const dist = this.calculateDistance(userLat, userLng, b.lat, b.lng);
+            b.distance = dist;
+            if (dist < minDistance) {
+              minDistance = dist;
+              nearestBranch = b;
+            }
+          });
+
+          btn.innerHTML = `<span>📍</span> <span>Terdekat: ${nearestBranch.name} (~${minDistance} km)</span>`;
+          this.selectBranch(nearestBranch, true);
+          soundService.playQueueChime();
+        },
+        (err) => {
+          btn.disabled = false;
+          btn.innerHTML = `<span>📍</span> <span>Detect Nearest Clinic</span>`;
+          console.warn("Geolocation warning:", err);
+          alert("Tidak dapat mendeteksi lokasi GPS Anda secara otomatis. Menampilkan cabang utama Singapore Orchard.");
+          this.selectBranch(this.branches[0], true);
+        },
+        { timeout: 8000 }
+      );
     });
   }
 
@@ -142,106 +314,43 @@ export class PatientBookingController {
     if (!container) return;
 
     const isSGD = this.selectedBranch.currency === "SGD";
-    let services = [];
+    const templateId = this.selectedBranch.templateId || "tcm";
+    const templateServices = bookingService.getServices(templateId);
 
-    if (this.selectedBranch.profileType === "TCM_PHYSIO") {
-      services = [
-        {
-          id: "physio-spine",
-          title: "Physiotherapy & Spine Rehabilitation",
-          duration: "60 mins",
-          price: isSGD ? "SGD 120.00" : "MYR 180.00",
-          desc: "Lumbar spine decompression (L4-L5), core muscle stabilization & postural therapy."
-        },
-        {
-          id: "physio-sport",
-          title: "Sports Injury Rehabilitation",
-          duration: "75 mins",
-          price: isSGD ? "SGD 140.00" : "MYR 220.00",
-          desc: "Post-op ligament recovery (ACL/MCL), joint mobilization & Shockwave unit."
-        },
-        {
-          id: "physio-neck",
-          title: "Cervical Neck & Shoulder Joint Therapy",
-          duration: "45 mins",
-          price: isSGD ? "SGD 95.00" : "MYR 150.00",
-          desc: "Trapezius tension release, posture adjustment & mobility restoration."
-        }
-      ];
-    } else if (this.selectedBranch.profileType === "TCM_ACUPUNCTURE") {
-      services = [
-        {
-          id: "tcm-acupuncture",
-          title: "Clinical Acupuncture & Tuina",
-          duration: "50 mins",
-          price: isSGD ? "SGD 110.00" : "MYR 140.00",
-          desc: "Meridian channel stimulation, blood circulation enhancement & joint pain relief."
-        },
-        {
-          id: "tcm-cupping",
-          title: "Medical Cupping & Herbal Therapy",
-          duration: "45 mins",
-          price: isSGD ? "SGD 85.00" : "MYR 110.00",
-          desc: "Deep myofascial release and lymphatic detoxification per TCM formulation."
-        }
-      ];
-    } else if (this.selectedBranch.profileType === "SPA_WELLNESS" || this.selectedBranch.profileType === "WELLNESS") {
-      services = [
-        {
-          id: "spa-aromatherapy",
-          title: "Balinese Aromatherapy Full Body Massage",
-          duration: "75 mins",
-          price: isSGD ? "SGD 135.00" : "MYR 190.00",
-          desc: "Holistic essential oil massage tailored for deep tension and mental relaxation."
-        },
-        {
-          id: "spa-deeptissue",
-          title: "Deep Tissue Muscle Relief Spa",
-          duration: "60 mins",
-          price: isSGD ? "SGD 120.00" : "MYR 170.00",
-          desc: "Intensive acupressure targeting knot points, shoulder tightness & lower back."
-        },
-        {
-          id: "spa-reflexology",
-          title: "Foot Reflexology & Herbal Foot Bath",
-          duration: "45 mins",
-          price: isSGD ? "SGD 80.00" : "MYR 110.00",
-          desc: "Zone therapy stimulating vital organs with warm organic botanical foot soak."
-        }
-      ];
-    } else {
-      services = [
-        {
-          id: "clinic-consult",
-          title: "Doctor Consultation & Integrated Therapy",
-          duration: "40 mins",
-          price: isSGD ? "SGD 130.00" : "MYR 160.00",
-          desc: "Comprehensive outpatient check-up, primary diagnosis, and referral bridging."
-        },
-        {
-          id: "clinic-rehab",
-          title: "Medical Physiotherapy & Rehabilitation",
-          duration: "60 mins",
-          price: isSGD ? "SGD 150.00" : "MYR 190.00",
-          desc: "Standardized clinical rehab session with hospital partner bridging report."
-        }
-      ];
-    }
+    const services = templateServices.map((s) => {
+      const priceStr = isSGD ? `SGD ${s.priceSGD}.00` : `MYR ${s.priceMYR}.00`;
+      const depositStr = isSGD ? `SGD ${s.depositSGD}.00` : `MYR ${s.depositMYR}.00`;
+      return {
+        id: s.id,
+        title: s.name,
+        duration: `${s.durationMinutes} mins`,
+        price: priceStr,
+        deposit: depositStr,
+        desc: s.description,
+        badge: s.badge
+      };
+    });
 
     // Set initial selected service
     this.bookingDraft.serviceName = services[0].title;
     this.bookingDraft.serviceDuration = services[0].duration;
     this.bookingDraft.servicePrice = services[0].price;
-    this.bookingDraft.depositAmount = isSGD ? "SGD 30.00" : "MYR 50.00";
+    this.bookingDraft.depositAmount = services[0].deposit;
 
     container.innerHTML = services
       .map(
         (s, idx) => `
-        <div class="service-choice-card ${idx === 0 ? "selected" : ""}" data-title="${s.title}" data-duration="${s.duration}" data-price="${s.price}">
-          <strong style="font-size:15px; color:var(--text); margin-bottom:4px;">${s.title}</strong>
-          <span style="font-size:11px; color:var(--muted); margin-bottom:8px;">${s.duration}</span>
+        <div class="service-choice-card ${idx === 0 ? "selected" : ""}" data-title="${s.title}" data-duration="${s.duration}" data-price="${s.price}" data-deposit="${s.deposit}">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
+            <strong style="font-size:14px; color:var(--text);">${s.title}</strong>
+            ${s.badge ? `<span class="pill" style="font-size:10px; padding:2px 8px; background:rgba(15,118,110,0.1); color:var(--primary); font-weight:800;">${s.badge}</span>` : ""}
+          </div>
+          <span style="font-size:11px; color:var(--muted); margin-bottom:8px; display:block;">${s.duration}</span>
           <p style="font-size:12px; color:var(--text-secondary); margin:0 0 12px; line-height:1.4;">${s.desc}</p>
-          <div class="service-card-price">${s.price}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:8px; border-top:1px dashed var(--line);">
+            <div class="service-card-price" style="font-size:14px; font-weight:800; color:var(--primary);">${s.price}</div>
+            <small style="font-size:11px; color:var(--muted); font-weight:700;">Deposit: ${s.deposit}</small>
+          </div>
         </div>
       `
       )
@@ -256,6 +365,7 @@ export class PatientBookingController {
         this.bookingDraft.serviceName = card.dataset.title;
         this.bookingDraft.serviceDuration = card.dataset.duration;
         this.bookingDraft.servicePrice = card.dataset.price;
+        this.bookingDraft.depositAmount = card.dataset.deposit;
       });
     });
   }
@@ -307,6 +417,12 @@ export class PatientBookingController {
       if (pane) {
         pane.style.display = i === stepNumber ? "block" : "none";
       }
+    }
+
+    if (stepNumber === 1 && this.map) {
+      setTimeout(() => {
+        this.map.invalidateSize();
+      }, 150);
     }
 
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -450,7 +566,7 @@ export class PatientBookingController {
         storageService.set("cliniva_bookings", existingBookings);
 
         alert(`✓ Appointment ${bookingCode} confirmed! Deposit verified. Redirecting to your digital E-Ticket.`);
-        window.location.href = "ticket.html";
+        window.location.href = `ticket.html?code=${encodeURIComponent(bookingCode)}`;
       }, 1000);
     });
   }

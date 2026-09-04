@@ -13,6 +13,10 @@
 
   <!-- Modular Design System Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Leaflet Interactive Map CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 
 <body style="background:var(--bg); min-height:100vh; display:flex; flex-direction:column;">
@@ -78,12 +82,45 @@
         <p data-i18n="booking.step1.desc">Choose your nearest healthcare facility and the required treatment or consultation.</p>
       </div>
 
-      <div style="margin-bottom:20px;">
-        <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; display:block; margin-bottom:10px;" data-i18n="booking.step1.branchLabel">
-          1. Select Nearest Location
-        </label>
-        <div class="booking-branch-grid" id="bookingBranchList">
-          <!-- Dynamic Branch choices rendered by controller -->
+      <div style="margin-bottom:24px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+          <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; margin:0;" data-i18n="booking.step1.branchLabel">
+            1. Select Nearest Location (Interactive Map)
+          </label>
+          <button type="button" class="btn btn-sm btn-soft" id="btnDetectLocation" style="font-size:11px; padding:5px 12px; display:inline-flex; align-items:center; gap:6px; font-weight:700;">
+            <span>📍</span> <span>Detect Nearest Clinic</span>
+          </button>
+        </div>
+
+        <!-- Quick Switcher Pills for Branches -->
+        <div class="clinic-map-pills" id="clinicMapPills">
+          <button type="button" class="clinic-pill active" data-branch-id="sg-orchard">
+            🇸🇬 Singapore (Orchard Paragon)
+          </button>
+          <button type="button" class="clinic-pill" data-branch-id="my-kl">
+            🇲🇾 Kuala Lumpur (Pavilion Embassy)
+          </button>
+          <button type="button" class="clinic-pill" data-branch-id="my-penang">
+            🇲🇾 Penang (Gurney Walk)
+          </button>
+        </div>
+
+        <!-- Interactive Map Container -->
+        <div id="clinicInteractiveMap"></div>
+
+        <!-- Active Selected Clinic Info Bar -->
+        <div id="selectedClinicInfoBar" class="selected-clinic-card">
+          <div>
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <strong id="activeClinicTitle" style="font-size:15px; color:var(--text);">Orchard Wellness Clinic</strong>
+              <span id="activeClinicBadge" class="pill" style="font-size:10px; padding:2px 8px; background:rgba(15,118,110,0.1); color:var(--primary); font-weight:800;">🌸 LUXURY WELLNESS SPA</span>
+            </div>
+            <div id="activeClinicAddress" style="font-size:12px; color:var(--muted); margin-top:4px;">Paragon Medical #14-02, Singapore 238859</div>
+            <div id="activeClinicMeta" style="font-size:11px; color:var(--primary-dark); font-weight:700; margin-top:4px;">Mata Uang: SGD · Jam: Senin - Sabtu (08:30 - 20:00 SGT)</div>
+          </div>
+          <div style="text-align:right;">
+            <span id="activeClinicDistanceBadge" class="pill" style="font-size:11px; padding:4px 10px; background:#f0fdf4; color:#16a34a; font-weight:800;">📍 Selected on Map</span>
+          </div>
         </div>
       </div>
 

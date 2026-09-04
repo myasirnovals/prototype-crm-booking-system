@@ -62,6 +62,8 @@ export const ms = {
   // Booking Flow (booking.html)
   "booking.pageTitle": "Tempah Janji Temu — Portal Pesakit Cliniva",
   "booking.headerTitle": "Portal Pesakit Cliniva",
+  "booking.title": "Enjin Tempahan Mandiri Pesakit",
+  "booking.subtitle": "Aliran janji temu pelbagai templat interaktif dengan tempahan slot dan deposit.",
   "booking.step1.tag": "LANGKAH 1",
   "booking.step1.name": "Cawangan & Rawatan",
   "booking.step1.title": "Pilih Cawangan Klinik & Jenis Rawatan",

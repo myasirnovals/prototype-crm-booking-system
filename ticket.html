@@ -89,6 +89,10 @@
           <span class="ticket-label" data-i18n="ticket.payment">Payment Status:</span>
           <span class="ticket-val" id="ticketPaymentVal" style="color:var(--success-dark);">DEPOSIT PAID (SGD 30.00)</span>
         </div>
+        <div class="ticket-row" id="ticketIntakeRow" style="display:none;">
+          <span class="ticket-label">Intake Assessment:</span>
+          <span class="ticket-val" id="ticketIntakeVal" style="color:var(--text); font-size:12px; font-weight:600;">-</span>
+        </div>
 
         <div class="ticket-divider-perforated">
           <div class="ticket-dashed-line"></div>
@@ -125,6 +129,9 @@
             <button type="button" class="btn btn-primary" id="ticketIcsBtn" data-i18n="ticket.addToCalendar">
               📅 Add to Mobile Calendar (.ics)
             </button>
+            <a href="#" class="btn btn-soft" id="ticketWhatsAppBtn" target="_blank" style="display:inline-flex; align-items:center; gap:6px;">
+              💬 WhatsApp Confirmation
+            </a>
             <button type="button" class="btn btn-soft" onclick="window.print()" data-i18n="ticket.download">
               📥 Print / Download Ticket
             </button>

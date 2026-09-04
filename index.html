@@ -489,57 +489,66 @@
             <section class="screen" id="booking">
               <div class="panel-top">
                 <div>
-                  <h3>Patient Self-Booking</h3>
-                  <p>Mobile-first appointment flow with slot hold and deposit checkout.</p>
+                  <h3 data-i18n="booking.title">Patient Self-Booking Engine</h3>
+                  <p data-i18n="booking.subtitle">Interactive multi-template appointment flow with slot hold and deposit checkout.</p>
+                </div>
+              </div>
+
+              <!-- Template Model Selector Bar -->
+              <div class="template-selector-box" style="margin-bottom:20px; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-md); padding:16px;">
+                <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--primary); display:block; margin-bottom:10px;">
+                  🏢 Select Clinical Practice Model (Business Template)
+                </label>
+                <div class="template-toggle-bar" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                  <button type="button" class="btn btn-soft template-pill active" id="btnTplTcm" data-template="tcm" style="text-align:center; padding:12px; font-weight:800; border:2px solid var(--primary); background:#fff;">
+                    🌿 Traditional Chinese Medicine (TCM)
+                  </button>
+                  <button type="button" class="btn btn-soft template-pill" id="btnTplWellness" data-template="wellness" style="text-align:center; padding:12px; font-weight:800; border:2px solid transparent; background:#fff;">
+                    💆 Wellness &amp; Luxury Spa Care
+                  </button>
                 </div>
               </div>
 
               <div class="booking-screen">
                 <div class="booking-form">
-                  <div class="field">
-                    <label>Clinic Branch</label>
-                    <select>
-                      <option value="sg-orchard">Orchard Wellness Clinic — Singapore</option>
-                      <option value="my-kl">Kuala Lumpur Integrated Care — Malaysia</option>
-                      <option value="my-penang">Penang TCM & Physio Center — Malaysia</option>
-                    </select>
-                  </div>
-
-                  <div class="field">
-                    <label>Service Type</label>
-                    <div class="service-cards">
-                      <div class="service-card active">
-                        <h4>Physiotherapy</h4>
-                        <small>60 min · SGD 120</small>
-                      </div>
-                      <div class="service-card">
-                        <h4>TCM Consult</h4>
-                        <small>45 min · SGD 90</small>
-                      </div>
-                      <div class="service-card">
-                        <h4>Wellness Therapy</h4>
-                        <small>75 min · MYR 260</small>
-                      </div>
-                      <div class="service-card">
-                        <h4>Medical Referral</h4>
-                        <small>30 min · Insurance</small>
-                      </div>
+                  <!-- Patient Identity Info -->
+                  <div class="field-row" style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div class="field">
+                      <label for="bookingPatientName">Patient Full Name</label>
+                      <input type="text" id="bookingPatientName" class="input" value="Amanda Tan" placeholder="e.g. Amanda Tan" required />
+                    </div>
+                    <div class="field">
+                      <label for="bookingPatientPhone">WhatsApp Mobile</label>
+                      <input type="text" id="bookingPatientPhone" class="input" value="+65 8123 4567" placeholder="e.g. +65 8123 4567" required />
                     </div>
                   </div>
 
                   <div class="field">
-                    <label>Preferred Practitioner</label>
-                    <select>
-                      <option>Fastest Available</option>
-                      <option>Dr. Lim Wei Han</option>
-                      <option>Dr. Wong Mei Ling</option>
-                      <option>Therapist Sarah Tan</option>
+                    <label for="bookingBranchSelect">Clinic Branch Location</label>
+                    <select id="bookingBranchSelect" class="input" style="width:100%;">
+                      <option value="sg-orchard">🇸🇬 Orchard Wellness Clinic — Paragon Medical #14-02, Singapore</option>
+                      <option value="my-kl">🇲🇾 Kuala Lumpur Integrated Care — Pavilion Embassy, Malaysia</option>
+                      <option value="my-penang">🇲🇾 Penang TCM &amp; Physio Center — Gurney Walk, Penang</option>
                     </select>
                   </div>
 
                   <div class="field">
-                    <label>Available Slots</label>
-                    <div class="slot-grid" style="grid-template-columns:repeat(4,1fr);">
+                    <label id="bookingServiceHeaderLabel">Service Type</label>
+                    <div class="service-cards" id="bookingServiceCards" style="grid-template-columns:repeat(2,1fr);">
+                      <!-- Dynamically rendered by BookingController -->
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label for="bookingPractitionerSelect" id="bookingPractitionerHeaderLabel">Preferred Doctor / Practitioner</label>
+                    <select id="bookingPractitionerSelect" class="input" style="width:100%;">
+                      <!-- Dynamically rendered by BookingController -->
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label>Available Slots (10-Min Temporary Hold Active)</label>
+                    <div class="slot-grid" id="bookingSlotGrid" style="grid-template-columns:repeat(4,1fr);">
                       <div class="slot">09:00</div>
                       <div class="slot active">10:30</div>
                       <div class="slot">11:45</div>
@@ -551,10 +560,47 @@
                     </div>
                   </div>
 
+                  <!-- Dynamic Intake Form: TCM Pain Map vs Spa Preferences -->
+                  <div id="bookingIntakeTcm" class="booking-intake-card" style="background:#f0fdfa; border:1px solid #ccfbf1; border-radius:var(--radius-md); padding:16px; margin-bottom:16px;">
+                    <label style="font-size:13px; font-weight:800; color:#0f766e; display:block; margin-bottom:8px;">
+                      ⚡ Body Pain &amp; Discomfort Areas (Tap to select)
+                    </label>
+                    <div class="pain-spots-grid" id="bookingPainSpotsGrid" style="display:flex; flex-wrap:wrap; gap:8px;">
+                      <span class="pain-spot-tag" data-spot="Head & Migraine">💆 Head &amp; Migraine</span>
+                      <span class="pain-spot-tag" data-spot="Stiff Neck & Shoulder">🧣 Neck &amp; Shoulder</span>
+                      <span class="pain-spot-tag" data-spot="Upper Back">🦾 Upper Back</span>
+                      <span class="pain-spot-tag active" data-spot="Lower Back / Lumbar">⚡ Lower Back / Lumbar</span>
+                      <span class="pain-spot-tag" data-spot="Knee Joint">🦵 Knee Joint</span>
+                      <span class="pain-spot-tag" data-spot="Ankle & Foot">🦶 Ankle &amp; Foot</span>
+                    </div>
+                  </div>
+
+                  <div id="bookingIntakeWellness" class="booking-intake-card" style="display:none; background:#fefce8; border:1px solid #fef08a; border-radius:var(--radius-md); padding:16px; margin-bottom:16px;">
+                    <div class="field-row" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                      <div class="field" style="margin-bottom:0;">
+                        <label for="bookingAromaSelect" style="font-size:12px; font-weight:700; color:#854d0e;">Aroma Essential Oil</label>
+                        <select id="bookingAromaSelect" class="input" style="width:100%; font-size:13px;">
+                          <option value="Lavender">🌿 French Lavender (Calm &amp; Sleep)</option>
+                          <option value="Lemongrass" selected>🌱 Balinese Lemongrass (Detox)</option>
+                          <option value="Eucalyptus">🍃 Eucalyptus (Muscle Ease)</option>
+                          <option value="Frangipani">🌸 Tropical Frangipani (Glow)</option>
+                        </select>
+                      </div>
+                      <div class="field" style="margin-bottom:0;">
+                        <label for="bookingPressureSelect" style="font-size:12px; font-weight:700; color:#854d0e;">Massage Pressure</label>
+                        <select id="bookingPressureSelect" class="input" style="width:100%; font-size:13px;">
+                          <option value="Soft">Gentle / Soft (Light Touch)</option>
+                          <option value="Medium" selected>Moderate / Medium (Balanced)</option>
+                          <option value="Deep">Deep Tissue / Firm (Intensive)</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="field">
-                    <label>Initial Complaint / Intake Note</label>
-                    <textarea rows="4"
-                      placeholder="Describe symptoms, preferences, or referral information..."></textarea>
+                    <label for="bookingNotesInput">Initial Complaint / Intake Notes</label>
+                    <textarea id="bookingNotesInput" rows="3" class="input" style="width:100%;"
+                      placeholder="Describe symptoms, preferences, or allergies..."></textarea>
                   </div>
                 </div>
 
@@ -570,37 +616,47 @@
                   <div class="summary-list">
                     <div class="summary-item">
                       <span>Patient</span>
-                      <strong>Amanda Tan</strong>
+                      <strong id="sumPatientName">Amanda Tan</strong>
                     </div>
 
                     <div class="summary-item">
                       <span>Branch</span>
-                      <strong>Orchard Wellness Clinic</strong>
+                      <strong id="sumBranchName">Orchard Wellness Clinic</strong>
+                    </div>
+
+                    <div class="summary-item">
+                      <span>Service</span>
+                      <strong id="sumServiceName">Electro-Acupuncture Therapy</strong>
+                    </div>
+
+                    <div class="summary-item">
+                      <span>Practitioner</span>
+                      <strong id="sumPractitionerName">Dr. Wong Mei Ling</strong>
                     </div>
 
                     <div class="summary-item">
                       <span>Schedule</span>
-                      <strong>Wed, 10:30 AM</strong>
+                      <strong id="sumScheduleTime">Today, 10:30 AM SGT</strong>
                     </div>
 
                     <div class="summary-item">
                       <span>Resource Check</span>
-                      <strong>Practitioner ✅ Room ✅ Equipment ✅</strong>
+                      <strong style="color:var(--success);">Practitioner ✅ Room ✅ Equipment ✅</strong>
                     </div>
 
                     <div class="summary-item">
-                      <span>Payment Option</span>
-                      <strong>Deposit · SGD 30</strong>
+                      <span>Deposit Required</span>
+                      <strong id="sumDepositAmount" style="color:var(--primary-dark);">SGD 25.00</strong>
                     </div>
 
                     <div class="summary-item">
-                      <span>Notification</span>
-                      <strong>WhatsApp + Email fallback</strong>
+                      <span>Slot Hold</span>
+                      <strong id="sumHoldTimer" style="color:var(--warning-dark);">10:00 left</strong>
                     </div>
                   </div>
 
-                  <button class="btn btn-primary" style="width:100%;margin-top:18px;">
-                    Continue to Secure Checkout
+                  <button type="button" class="btn btn-primary" id="bookingSubmitBtn" style="width:100%; margin-top:18px; padding:14px; font-size:15px; font-weight:800;">
+                    ✓ Confirm Appointment &amp; Issue E-Ticket →
                   </button>
                 </div>
               </div>

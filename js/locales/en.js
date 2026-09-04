@@ -62,6 +62,8 @@ export const en = {
   // Booking Flow (booking.html)
   "booking.pageTitle": "Book Appointment — Cliniva Patient Portal",
   "booking.headerTitle": "Cliniva Patient Portal",
+  "booking.title": "Patient Self-Booking Engine",
+  "booking.subtitle": "Interactive multi-template appointment flow with slot hold and deposit checkout.",
   "booking.step1.tag": "STEP 1",
   "booking.step1.name": "Branch & Service",
   "booking.step1.title": "Select Clinic Branch & Treatment Service",

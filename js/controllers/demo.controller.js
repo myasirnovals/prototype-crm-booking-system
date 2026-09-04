@@ -143,6 +143,34 @@ export class DemoController {
    * 3. SERVICE, BRANCH & RESOURCE PICKERS
    * ------------------------------------------------------------- */
   setupServiceAndBranchPickers() {
+    // Template Switcher (TCM vs Wellness/Spa)
+    const tplBtns = document.querySelectorAll(".demo-template-btn");
+    tplBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tpl = btn.dataset.template;
+        if (!tpl) return;
+        tplBtns.forEach((b) => {
+          b.classList.remove("active");
+          b.style.borderColor = "transparent";
+        });
+        btn.classList.add("active");
+        btn.style.borderColor = "var(--primary)";
+
+        this.activeTemplate = tpl;
+        bookingService.setActiveTemplate(tpl);
+        soundService.playClickTone();
+
+        // Automatically activate corresponding service & intake form
+        if (tpl === "wellness") {
+          const spaCard = document.querySelector('.demo-service-card[data-service="wellness"]');
+          if (spaCard) spaCard.click();
+        } else {
+          const tcmCard = document.querySelector('.demo-service-card[data-service="tcm"]');
+          if (tcmCard) tcmCard.click();
+        }
+      });
+    });
+
     // Mode Switcher (In-Clinic vs Homecare)
     const modeTabs = document.querySelectorAll(".service-mode-tab");
     modeTabs.forEach((tab) => {
@@ -360,13 +388,23 @@ export class DemoController {
         paymentText = `Pay at Clinic (${curr} ${price}.00 upon arrival)`;
       }
 
+      const intakeText = this.activeTemplate === "wellness"
+        ? "Aromatherapy: Balinese Lemongrass | Pressure: Moderate Medium"
+        : `Pain Areas: ${Array.from(this.selectedPainSpots).join(", ") || "Lower Back / Lumbar"}`;
+
       const booking = bookingService.createBooking({
         patientName: this.patientName,
+        patientPhone: this.patientPhone,
+        branchId: this.selectedBranch.id,
         branchName: this.selectedBranch.name,
-        schedule: `${this.selectedDate}, ${this.selectedSlot}`,
+        branchAddress: this.selectedBranch.address,
+        schedule: `${this.selectedDate}, ${this.selectedSlot} SGT`,
         serviceName: this.selectedService.name,
         practitionerName: this.selectedPractitioner.name,
-        depositPaid: paymentText
+        depositPaid: paymentText,
+        paymentStatus: paymentText,
+        templateType: this.activeTemplate || "tcm",
+        intakeData: intakeText
       });
 
       // Trigger notification log

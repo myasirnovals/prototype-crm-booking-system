@@ -62,6 +62,8 @@ export const zh = {
   // Booking Flow (booking.html)
   "booking.pageTitle": "预约诊疗 — Cliniva 患者中心",
   "booking.headerTitle": "Cliniva 患者中心",
+  "booking.title": "患者自助预约系统",
+  "booking.subtitle": "支持多模式业务模板的交互式预约流程，含实时锁号与定金结算功能。",
   "booking.step1.tag": "第 1 步",
   "booking.step1.name": "分院与项目",
   "booking.step1.title": "选择就诊分院与诊疗服务",

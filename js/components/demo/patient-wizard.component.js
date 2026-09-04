@@ -60,6 +60,21 @@ export function renderPatientWizard() {
               📍 GPS Travel Logistics Buffer Active: Automatically calculates 15 km radius, therapist travel buffer 35 mins, and travel surcharge.
             </div>
 
+            <!-- Clinical Business Template Switcher -->
+            <div style="margin-bottom:18px; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-md); padding:12px;">
+              <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--primary); display:block; margin-bottom:8px;">
+                🏢 Select Clinic Business Model (Template)
+              </label>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <button type="button" class="btn btn-soft demo-template-btn active" data-template="tcm" style="padding:8px 12px; font-weight:800; font-size:12px; border:2px solid var(--primary); background:#fff;">
+                  🌿 Traditional Chinese Medicine (TCM)
+                </button>
+                <button type="button" class="btn btn-soft demo-template-btn" data-template="wellness" style="padding:8px 12px; font-weight:800; font-size:12px; border:2px solid transparent; background:#fff;">
+                  💆 Wellness &amp; Luxury Spa Care
+                </button>
+              </div>
+            </div>
+
             <div class="field">
               <label data-i18n="demo.selectBranch">Select Branch Location</label>
               <select id="demoBranchSelect">

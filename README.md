@@ -1,4 +1,4 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.1.2
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.2.0
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 
@@ -45,9 +45,17 @@ Desain/
 │
 └── ⚡ js/
     ├── config/
-    │   ├── role-routes.js              # [NEW] RBAC Matrix, route mapping & kredensial master per role (OCP)
+    │   ├── role-routes.js              # RBAC Matrix, route mapping & kredensial master per role (OCP)
     │   ├── clinic-data.js              # Master data: Cabang SG/MY, praktisi, layanan, slot default
     │   └── regional-config.js          # Konfigurasi regional: Mata uang, template WA, consent PDPA
+    ├── components/demo/                # [NEW v1.2.0] Modular ES Components untuk Demo Sandbox (SRP)
+    │   ├── patient-wizard.component.js # Component Wizard 5 Langkah & hold timer
+    │   ├── receptionist-desk.component.js # Component meja resepsionis & kasir POS
+    │   ├── doctor-console.component.js # Component ruang konsultasi dokter & pain map
+    │   ├── branch-admin.component.js   # Component admin cabang & inventory
+    │   ├── owner-hq.component.js       # Component analitik omset konsolidasian
+    │   ├── walkin-modal.component.js   # Component pendaftaran walk-in cepat
+    │   └── whatsapp-simulator.component.js # Component simulasi live chat WA 2-way
     ├── locales/
     │   ├── en.js                       # Kamus Bahasa Inggris (Default SG / Global)
     │   ├── ms.js                       # Kamus Bahasa Melayu / Indonesia (MY / ID)
@@ -121,3 +129,21 @@ npx serve .
 ```
 Lalu buka:
 - [`sign-in.html`](sign-in.html) — Coba tombol **1-Click Quick Demo Login** untuk masing-masing peran!
+
+---
+
+## 📦 Riwayat Rilis & Semantic Versioning (SemVer)
+
+### 🏷️ V1.2.0 (Minor Release)
+*Rilis pembaruan modular arsitektur SOLID, standarisasi meja kerja Resepsionis, dan penguatan UI multi-peran.*
+
+- **🚀 New Features & Architecture (Minor)**:
+  - **Modular Demo Sandbox**: Memecah berkas monolitik `demo.html` (>1000 baris) menjadi 7 modul komponen ES terpisah di bawah `js/components/demo/` mengikuti prinsip *Single Responsibility Principle* (SRP).
+  - **Receptionist Dedicated Subsystem**: Standardisasi rute dan arsitektur meja resepsionis menjadi `receptionist.html`, `receptionist.controller.js`, `receptionist.js`, dan `receptionist.css` guna menjamin simetri 4 peran pengguna (Owner, Doctor, Receptionist, Patient) dan menghilangkan duplikasi *dead code* (`admin.html`).
+  - **Expanded Multilingual (i18n)**: Dukungan kamus bahasa lengkap (EN/MS/ZH) untuk seluruh langkah wizard, status reservasi, dan komponen interaktif.
+  - **Patient Booking Expansion**: Pembaruan alur reservasi mandiri pasien dengan sinkronisasi slot dan timer *hold*.
+- **🩹 Bug Fixes & UI Hardening (Patch)**:
+  - Perbaikan fungsi tombol **Sign Out** pada meja kerja Resepsionis melalui penambahan alias `signOut()` pada `AuthService`.
+  - Penyesuaian tata letak grid dan konsistensi emoji (`🩺`) pada kartu 1-Click Quick Demo Login (`sign-in.html`).
+  - Perbaikan tata letak 2 kolom dan indikator langkah (*horizontal stepper*) pada halaman registrasi klinik (`onboarding.html`).
+  - Perbaikan styling dan alignment pada Wizard Step Indicator (`demo.html`).

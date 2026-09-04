@@ -7,6 +7,7 @@ import { CLINIC_BRANCHES, CLINIC_SERVICES, PRACTITIONERS, DEFAULT_SLOTS } from "
 import { bookingService } from "../services/booking.service.js";
 import { notificationService } from "../services/notification.service.js";
 import { soundService } from "../services/sound.service.js";
+import { i18nService } from "../services/i18n.service.js";
 
 export class DemoController {
   constructor() {
@@ -38,6 +39,13 @@ export class DemoController {
     this.setupDoctor();
     this.setupWhatsAppSimulator();
     this.updateWizardSummary();
+
+    // Re-render dynamic text on language switch
+    document.addEventListener("cliniva:languageChanged", () => {
+      this.updateWizardSummary();
+      this.updatePaymentDescription();
+      this.updateDoctorPainDisplay();
+    });
   }
 
   /* -------------------------------------------------------------
@@ -240,20 +248,22 @@ export class DemoController {
         this.selectedPayType = card.dataset.paytype || "deposit";
         soundService.playClickTone();
 
-        const desc = document.getElementById("payTypeDesc");
-        if (desc) {
-          if (this.selectedPayType === "deposit") {
-            desc.innerHTML = "💡 <strong>Deposit:</strong> Pay deposit now to lock the slot, balance settled at counter after therapy.";
-          } else if (this.selectedPayType === "full") {
-            desc.innerHTML = "💡 <strong>Pay in Full:</strong> Pay 100% online for expedited front-desk clearance and priority access.";
-          } else if (this.selectedPayType === "clinic") {
-            desc.innerHTML = "💡 <strong>Pay at Clinic:</strong> No upfront payment. Settle full amount directly at clinic counter upon arrival.";
-          }
-        }
-
+        this.updatePaymentDescription();
         this.updateWizardSummary();
       });
     });
+  }
+
+  updatePaymentDescription() {
+    const desc = document.getElementById("payTypeDesc");
+    if (!desc) return;
+    if (this.selectedPayType === "deposit") {
+      desc.innerHTML = i18nService.t("demo.pay.descDeposit") || "💡 Pay deposit now to guarantee your slot, settle remaining balance at the clinic cashier after treatment.";
+    } else if (this.selectedPayType === "full") {
+      desc.innerHTML = i18nService.t("demo.pay.descFull") || "💡 Pay 100% online for expedited front-desk clearance and priority access.";
+    } else if (this.selectedPayType === "clinic") {
+      desc.innerHTML = i18nService.t("demo.pay.descClinic") || "💡 No upfront payment. Settle full amount directly at clinic counter upon arrival.";
+    }
   }
 
   adjustIntakeFormProfile(serviceId) {
@@ -401,33 +411,40 @@ export class DemoController {
     if (summaryPain) {
       summaryPain.textContent = this.selectedPainSpots.size > 0
         ? Array.from(this.selectedPainSpots).join(", ")
-        : "General Wellness";
+        : (i18nService.t("nav.services") || "General Wellness");
     }
 
     if (this.selectedPayType === "deposit") {
-      if (summaryPayLabel) summaryPayLabel.textContent = "Online Deposit:";
+      if (summaryPayLabel) summaryPayLabel.textContent = i18nService.t("demo.summary.payLabelDeposit") || "Online Deposit:";
       if (summaryDeposit) {
-        summaryDeposit.textContent = `${curr} ${deposit}.00 (Balance ${curr} ${price - deposit}.00 at Counter)`;
+        const balanceSuffix = i18nService.t("demo.summary.balanceAtCounter") || "at counter";
+        summaryDeposit.textContent = `${curr} ${deposit}.00 (${curr} ${price - deposit}.00 ${balanceSuffix})`;
         summaryDeposit.style.color = "var(--primary-dark)";
       }
-      if (confirmBtn) confirmBtn.textContent = `⚡ Complete Deposit (${curr} ${deposit}.00) & Issue Ticket →`;
-      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 Pay Deposit (${curr} ${deposit}.00) & Checkout →`;
+      const depositTitle = i18nService.t("demo.pay.deposit") || "Deposit";
+      if (confirmBtn) confirmBtn.textContent = `⚡ ${depositTitle} (${curr} ${deposit}.00) →`;
+      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 ${depositTitle} (${curr} ${deposit}.00) →`;
     } else if (this.selectedPayType === "full") {
-      if (summaryPayLabel) summaryPayLabel.textContent = "Total Payment (Full):";
+      if (summaryPayLabel) summaryPayLabel.textContent = i18nService.t("demo.summary.payLabelFull") || "Total Payment (Full):";
       if (summaryDeposit) {
-        summaryDeposit.textContent = `${curr} ${price}.00 (Paid in Full / 100%)`;
+        const paidText = i18nService.t("demo.summary.paidInFull") || "Paid in Full / 100%";
+        summaryDeposit.textContent = `${curr} ${price}.00 (${paidText})`;
         summaryDeposit.style.color = "var(--success-dark)";
       }
-      if (confirmBtn) confirmBtn.textContent = `⚡ Pay in Full (${curr} ${price}.00) & Issue Ticket →`;
-      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 Pay in Full (${curr} ${price}.00) & Checkout →`;
+      const fullTitle = i18nService.t("demo.pay.full") || "Full Payment";
+      if (confirmBtn) confirmBtn.textContent = `⚡ ${fullTitle} (${curr} ${price}.00) →`;
+      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 ${fullTitle} (${curr} ${price}.00) →`;
     } else if (this.selectedPayType === "clinic") {
-      if (summaryPayLabel) summaryPayLabel.textContent = "Payment Method:";
+      if (summaryPayLabel) summaryPayLabel.textContent = i18nService.t("demo.summary.payLabelClinic") || "Payment Method:";
       if (summaryDeposit) {
-        summaryDeposit.textContent = `Pay at Clinic (${curr} ${price}.00 upon arrival)`;
+        const arrivalText = i18nService.t("demo.summary.payUponArrival") || "upon arrival";
+        const clinicTitle = i18nService.t("demo.pay.clinic") || "Pay at Clinic";
+        summaryDeposit.textContent = `${clinicTitle} (${curr} ${price}.00 ${arrivalText})`;
         summaryDeposit.style.color = "var(--text)";
       }
-      if (confirmBtn) confirmBtn.textContent = `⚡ Confirm Booking (Pay at Clinic) & Issue Ticket →`;
-      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 Confirm Booking (Pay at Clinic) →`;
+      const clinicBtnTitle = i18nService.t("demo.pay.clinic") || "Pay at Clinic";
+      if (confirmBtn) confirmBtn.textContent = `⚡ ${clinicBtnTitle} →`;
+      if (bottomCheckoutBtn) bottomCheckoutBtn.textContent = `💳 ${clinicBtnTitle} →`;
     }
   }
 
@@ -499,17 +516,9 @@ export class DemoController {
    * ------------------------------------------------------------- */
   setupDoctor() {
     const docSlider = document.getElementById("docPainScaleSlider");
-    const docPainVal = document.getElementById("docPainScaleVal");
-
-    if (docSlider && docPainVal) {
-      docSlider.addEventListener("input", (e) => {
-        const v = parseInt(e.target.value, 10);
-        let desc = "Pain Free";
-        if (v > 7) desc = "Severe Pain";
-        else if (v > 4) desc = "Moderate Pain";
-        else if (v > 0) desc = "Mild Pain";
-
-        docPainVal.textContent = `${v} / 10 (${desc})`;
+    if (docSlider) {
+      docSlider.addEventListener("input", () => {
+        this.updateDoctorPainDisplay();
       });
     }
 
@@ -520,6 +529,20 @@ export class DemoController {
         alert(`✓ THERAPY SESSION COMPLETED!\n\nPatient: Amanda Tan\nPain Evaluation: Reduced from 8/10 to ${docSlider ? docSlider.value : 3}/10.\nRemaining Package: 5 of 8 sessions.\n\nSystem automatically sent WhatsApp Therapy Summary & Home Exercise guide to patient.`);
       });
     }
+  }
+
+  updateDoctorPainDisplay() {
+    const docSlider = document.getElementById("docPainScaleSlider");
+    const docPainVal = document.getElementById("docPainScaleVal");
+    if (!docSlider || !docPainVal) return;
+
+    const v = parseInt(docSlider.value, 10);
+    let desc = i18nService.t("demo.doc.painFree") || "Pain Free";
+    if (v > 7) desc = i18nService.t("demo.doc.severePain") || "Severe Pain";
+    else if (v > 4) desc = i18nService.t("demo.doc.moderatePain") || "Moderate Pain";
+    else if (v > 0) desc = i18nService.t("demo.doc.mildPain") || "Mild Discomfort";
+
+    docPainVal.textContent = `${v} / 10 (${desc})`;
   }
 
   /* -------------------------------------------------------------

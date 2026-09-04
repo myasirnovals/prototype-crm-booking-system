@@ -77,9 +77,9 @@
          ========================================================================= -->
     <section class="demo-pane active" id="panePatientBooking">
       <div style="text-align:center; max-width:680px; margin:0 auto 28px;">
-        <div class="pill" style="margin-bottom:12px;">Step-by-Step Patient Journey</div>
-        <h1 style="font-size:32px; letter-spacing:-1.2px;">Patient Self-Booking Simulator</h1>
-        <p style="color:var(--muted); font-size:15px; margin-top:6px;">
+        <div class="pill" style="margin-bottom:12px;" data-i18n="demo.journey">Step-by-Step Patient Journey</div>
+        <h1 style="font-size:32px; letter-spacing:-1.2px;" data-i18n="demo.title">Patient Self-Booking Simulator</h1>
+        <p style="color:var(--muted); font-size:15px; margin-top:6px;" data-i18n="demo.desc">
           Experience how patients effortlessly schedule therapies 24/7 without phone calls or double-booking collisions.
         </p>
       </div>
@@ -88,23 +88,23 @@
       <div class="wizard-stepper">
         <div class="wizard-step-item active" data-step="1">
           <div class="wizard-step-circle">1</div>
-          <span class="wizard-step-label">Branch &amp; Service</span>
+          <span class="wizard-step-label" data-i18n="demo.step1">Branch &amp; Service</span>
         </div>
         <div class="wizard-step-item" data-step="2">
           <div class="wizard-step-circle">2</div>
-          <span class="wizard-step-label">Practitioner &amp; TC Engine</span>
+          <span class="wizard-step-label" data-i18n="demo.step2">Practitioner &amp; Engine</span>
         </div>
         <div class="wizard-step-item" data-step="3">
           <div class="wizard-step-circle">3</div>
-          <span class="wizard-step-label">Slot &amp; Hold Timer</span>
+          <span class="wizard-step-label" data-i18n="demo.step3">Slot &amp; Hold Timer</span>
         </div>
         <div class="wizard-step-item" data-step="4">
           <div class="wizard-step-circle">4</div>
-          <span class="wizard-step-label">Intake &amp; Pain Map</span>
+          <span class="wizard-step-label" data-i18n="demo.step4">Intake &amp; Pain Map</span>
         </div>
         <div class="wizard-step-item" data-step="5">
           <div class="wizard-step-circle">5</div>
-          <span class="wizard-step-label">Checkout &amp; Ticket</span>
+          <span class="wizard-step-label" data-i18n="demo.step5">Checkout &amp; Ticket</span>
         </div>
       </div>
 
@@ -114,24 +114,24 @@
 
           <!-- STEP 1: Branch & Service Selection -->
           <div class="wizard-step-panel active" id="wizardStep1">
-            <h3 style="font-size:20px; margin-bottom:14px;">1. Choose Clinic Location &amp; Treatment</h3>
+            <h3 style="font-size:20px; margin-bottom:14px;" data-i18n="demo.step1Title">1. Choose Clinic Location &amp; Treatment</h3>
 
             <!-- Mode Selector: In-Clinic vs Homecare -->
             <div class="service-mode-tabs">
-              <button class="service-mode-tab active" data-mode="in-clinic">
+              <button class="service-mode-tab active" data-mode="in-clinic" data-i18n="demo.mode.inClinic">
                 🏥 In-Clinic Treatment (Visit Branch)
               </button>
-              <button class="service-mode-tab" data-mode="homecare">
+              <button class="service-mode-tab" data-mode="homecare" data-i18n="demo.mode.homecare">
                 🚗 Homecare / Home Visit (+ Travel Matrix)
               </button>
             </div>
 
-            <div id="homecareTravelBox" style="display:none; background:#ecfdf5; border:1px solid #a7f3d0; padding:12px 16px; border-radius:14px; margin-bottom:16px; font-size:13px; color:#065f46;">
-              <strong>📍 GPS Travel Logistics Buffer Active:</strong> Otomatis menghitung radius 15 km, waktu perjalanan terapis 35 menit, dan travel fee SGD 25.00.
+            <div id="homecareTravelBox" style="display:none; background:#ecfdf5; border:1px solid #a7f3d0; padding:12px 16px; border-radius:14px; margin-bottom:16px; font-size:13px; color:#065f46;" data-i18n="demo.homecareBuffer">
+              📍 GPS Travel Logistics Buffer Active: Automatically calculates 15 km radius, therapist travel buffer 35 mins, and travel surcharge.
             </div>
 
             <div class="field">
-              <label>Select Branch Location</label>
+              <label data-i18n="demo.selectBranch">Select Branch Location</label>
               <select id="demoBranchSelect">
                 <option value="sg-orchard">🇸🇬 Orchard Wellness Clinic — Paragon Medical #14-02, Singapore</option>
                 <option value="my-kl">🇲🇾 Kuala Lumpur Integrated Care — Pavilion Embassy, Malaysia</option>
@@ -139,7 +139,7 @@
               </select>
             </div>
 
-            <label style="margin-top:16px; display:block; font-size:13px; font-weight:900; color:#334155;">
+            <label style="margin-top:16px; display:block; font-size:13px; font-weight:900; color:#334155;" data-i18n="demo.selectService">
               Select Therapy / Service Profile
             </label>
             <div class="service-cards" style="grid-template-columns:repeat(2,1fr);">
@@ -173,19 +173,19 @@
             </div>
 
             <div style="display:flex; justify-content:flex-end; margin-top:24px;">
-              <button class="btn btn-primary btn-wizard-next">Next: Practitioner &amp; Engine →</button>
+              <button class="btn btn-primary btn-wizard-next" data-i18n="demo.btnNextPrac">Next: Practitioner &amp; Engine →</button>
             </div>
           </div>
 
           <!-- STEP 2: Practitioner & Triple-Constraint Engine -->
           <div class="wizard-step-panel" id="wizardStep2">
-            <h3 style="font-size:20px; margin-bottom:10px;">2. Practitioner &amp; Multi-Resource Allocation</h3>
-            <p style="color:var(--muted); font-size:13px; margin-bottom:18px;">
-              Cliniva's <strong>Triple-Constraint</strong> engine validates simultaneous real-time availability of Practitioner + Room/Bed + Medical Device.
+            <h3 style="font-size:20px; margin-bottom:10px;" data-i18n="demo.step2Title">2. Practitioner &amp; Multi-Resource Allocation</h3>
+            <p style="color:var(--muted); font-size:13px; margin-bottom:18px;" data-i18n="demo.step2Desc">
+              Cliniva's Triple-Constraint engine validates simultaneous real-time availability of Practitioner + Room/Bed + Medical Device.
             </p>
 
             <div class="field">
-              <label>Select Preferred Doctor / Practitioner</label>
+              <label data-i18n="demo.selectPrac">Select Preferred Doctor / Practitioner</label>
               <select id="demoPracSelect">
                 <option value="dr-lim">Dr. Lim Wei Han (Senior Physiotherapist - Spine &amp; Sports)</option>
                 <option value="dr-wong">Dr. Wong Mei Ling (Registered TCM Physician)</option>
@@ -197,56 +197,56 @@
             <!-- Triple Constraint Live Inspector -->
             <div class="tc-inspector">
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <strong>⚡ Triple-Constraint Engine Status</strong>
-                <span class="badge-live" style="background:#042f2e; color:#2dd4bf; border:1px solid #14b8a6;">ZERO COLLISION GUARANTEE</span>
+                <strong data-i18n="demo.tc.status">⚡ Triple-Constraint Engine Status</strong>
+                <span class="badge-live" style="background:#042f2e; color:#2dd4bf; border:1px solid #14b8a6;" data-i18n="demo.tc.zeroCollision">ZERO COLLISION GUARANTEE</span>
               </div>
 
               <div class="tc-grid">
                 <div class="tc-card">
-                  <span style="color:#94a3b8; font-size:10px;">1. PRACTITIONER</span>
+                  <span style="color:#94a3b8; font-size:10px;" data-i18n="demo.tc.practitioner">1. PRACTITIONER</span>
                   <strong id="tcPractitionerVal">Dr. Lim Wei Han (Ready)</strong>
-                  <span>✓ 100% Available</span>
+                  <span data-i18n="demo.tc.pracStatus">✓ 100% Available</span>
                 </div>
                 <div class="tc-card">
-                  <span style="color:#94a3b8; font-size:10px;">2. ROOM / BED</span>
+                  <span style="color:#94a3b8; font-size:10px;" data-i18n="demo.tc.room">2. ROOM / BED</span>
                   <strong id="tcRoomVal">Room A2 - Bed 01</strong>
-                  <span>✓ Sterilized (15m Buffer)</span>
+                  <span data-i18n="demo.tc.roomStatus">✓ Sterilized (15m Buffer)</span>
                 </div>
                 <div class="tc-card">
-                  <span style="color:#94a3b8; font-size:10px;">3. SPECIALIZED EQUIPMENT</span>
+                  <span style="color:#94a3b8; font-size:10px;" data-i18n="demo.tc.equipment">3. SPECIALIZED EQUIPMENT</span>
                   <strong id="tcEquipVal">Shockwave Therapy Unit</strong>
-                  <span>✓ Calibrated &amp; Ready</span>
+                  <span data-i18n="demo.tc.equipStatus">✓ Calibrated &amp; Ready</span>
                 </div>
               </div>
             </div>
 
             <div style="display:flex; justify-content:space-between; margin-top:24px;">
-              <button class="btn btn-soft btn-wizard-prev">← Back</button>
-              <button class="btn btn-primary btn-wizard-next">Next: Date &amp; Slot Hold →</button>
+              <button class="btn btn-soft btn-wizard-prev" data-i18n="common.back">← Back</button>
+              <button class="btn btn-primary btn-wizard-next" data-i18n="demo.btnNextSlot">Next: Date &amp; Slot Hold →</button>
             </div>
           </div>
 
           <!-- STEP 3: Slot Picker & Hold Countdown Timer -->
           <div class="wizard-step-panel" id="wizardStep3">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-              <h3 style="font-size:20px;">3. Choose Date &amp; Available Time Slot</h3>
+              <h3 style="font-size:20px;" data-i18n="demo.step3Title">3. Choose Date &amp; Available Time Slot</h3>
               <div class="hold-timer-badge">
-                <span>⏳ Temporary Hold:</span>
+                <span data-i18n="demo.holdTimerLabel">⏳ Temporary Hold:</span>
                 <strong id="demoHoldTimerDisplay">10:00 left</strong>
               </div>
             </div>
 
-            <p style="color:var(--muted); font-size:13px; margin-bottom:18px;">
+            <p style="color:var(--muted); font-size:13px; margin-bottom:18px;" data-i18n="demo.holdTimerDesc">
               Selected slots are exclusively held for 10 minutes to prevent collisions while you complete your intake form.
             </p>
 
             <div class="field">
-              <label for="demoDateInput">Select Appointment Date</label>
+              <label for="demoDateInput" data-i18n="demo.selectDate">Select Appointment Date</label>
               <input type="date" id="demoDateInput" style="max-width:260px;" required>
-              <small style="color:var(--muted); font-size:11px; display:block; margin-top:4px;">* Past dates automatically disabled.</small>
+              <small style="color:var(--muted); font-size:11px; display:block; margin-top:4px;" data-i18n="demo.pastDisabled">* Past dates automatically disabled.</small>
             </div>
 
-            <label style="font-size:13px; font-weight:900; margin-bottom:8px; display:block;">Available Slots Today</label>
+            <label style="font-size:13px; font-weight:900; margin-bottom:8px; display:block;" data-i18n="demo.availableSlots">Available Slots Today</label>
             <div class="slot-grid" style="grid-template-columns:repeat(4,1fr); gap:10px;">
               <div class="slot demo-slot">09:00</div>
               <div class="slot demo-slot active">10:30</div>
@@ -259,21 +259,21 @@
             </div>
 
             <div style="display:flex; justify-content:space-between; margin-top:24px;">
-              <button class="btn btn-soft btn-wizard-prev">← Back</button>
-              <button class="btn btn-primary btn-wizard-next">Next: Intake &amp; Pain Map →</button>
+              <button class="btn btn-soft btn-wizard-prev" data-i18n="common.back">← Back</button>
+              <button class="btn btn-primary btn-wizard-next" data-i18n="demo.btnNextIntake">Next: Intake &amp; Pain Map →</button>
             </div>
           </div>
 
           <!-- STEP 4: Dynamic Intake Form & Visual Body Pain Map -->
           <div class="wizard-step-panel" id="wizardStep4">
-            <h3 style="font-size:20px; margin-bottom:10px;">4. Dynamic Intake &amp; Visual Pain Map</h3>
-            <p style="color:var(--muted); font-size:13px; margin-bottom:18px;">
+            <h3 style="font-size:20px; margin-bottom:10px;" data-i18n="demo.step4Title">4. Dynamic Intake &amp; Visual Pain Map</h3>
+            <p style="color:var(--muted); font-size:13px; margin-bottom:18px;" data-i18n="demo.step4Desc">
               This intake assessment dynamically adapts to the selected clinical practice profile.
             </p>
 
             <!-- TCM / Physio Profile: Visual Body Pain Map -->
             <div id="intakeGroupTCM">
-              <label style="font-size:13px; font-weight:900; color:#334155;">
+              <label style="font-size:13px; font-weight:900; color:#334155;" data-i18n="demo.painMapTitle">
                 Visual Body Pain Map (Tap to highlight discomfort location)
               </label>
 
@@ -287,13 +287,13 @@
                 </div>
 
                 <div class="pain-spots-grid">
-                  <span class="pain-spot-tag" data-spot="Kepala / Migrain">💆 Kepala &amp; Migrain</span>
-                  <span class="pain-spot-tag" data-spot="Leher & Bahu Kaku">🧣 Leher &amp; Bahu Kaku</span>
-                  <span class="pain-spot-tag" data-spot="Punggung Atas">🦾 Punggung Atas (Thoracic)</span>
-                  <span class="pain-spot-tag active" data-spot="Pinggang / Lumbar">⚡ Pinggang / Lumbar (L4-L5)</span>
-                  <span class="pain-spot-tag" data-spot="Sendi Lutut">🦵 Sendi Lutut (Knee Pain)</span>
-                  <span class="pain-spot-tag" data-spot="Telapak Kaki / Ankle">🦶 Telapak Kaki (Plantar)</span>
-                  <span class="pain-spot-tag" data-spot="Syaraf Kejepit (HNP)">💥 Syaraf Kejepit (HNP / Sciatica)</span>
+                  <span class="pain-spot-tag" data-spot="Head / Migraine" data-i18n="demo.pain.head">💆 Head &amp; Migraine</span>
+                  <span class="pain-spot-tag" data-spot="Stiff Neck & Shoulder" data-i18n="demo.pain.neck">🧣 Stiff Neck &amp; Shoulder</span>
+                  <span class="pain-spot-tag" data-spot="Upper Back" data-i18n="demo.pain.upperBack">🦾 Upper Back (Thoracic)</span>
+                  <span class="pain-spot-tag active" data-spot="Lower Back / Lumbar" data-i18n="demo.pain.lowerBack">⚡ Lower Back / Lumbar (L4-L5)</span>
+                  <span class="pain-spot-tag" data-spot="Knee Joint" data-i18n="demo.pain.knee">🦵 Knee Joint (Knee Pain)</span>
+                  <span class="pain-spot-tag" data-spot="Foot Sole" data-i18n="demo.pain.plantar">🦶 Foot Sole (Plantar)</span>
+                  <span class="pain-spot-tag" data-spot="Pinched Nerve" data-i18n="demo.pain.sciatica">💥 Pinched Nerve (HNP / Sciatica)</span>
                 </div>
               </div>
             </div>
@@ -301,15 +301,15 @@
             <!-- Spa Profile: Pressure & Aromatherapy -->
             <div id="intakeGroupSpa" style="display:none; margin-top:16px;">
               <div class="field">
-                <label>Massage Pressure Preference</label>
+                <label data-i18n="demo.spa.pressure">Massage Pressure Preference</label>
                 <select>
-                  <option>Medium Relaxing (Tekanan Sedang)</option>
-                  <option>Soft Gentle (Tekanan Lembut)</option>
-                  <option>Deep Tissue Strong (Tekanan Kuat)</option>
+                  <option data-i18n="demo.spa.pressureMedium">Medium Relaxing (Moderate Pressure)</option>
+                  <option data-i18n="demo.spa.pressureSoft">Soft Gentle (Light Touch)</option>
+                  <option data-i18n="demo.spa.pressureDeep">Deep Tissue Strong (Firm Pressure)</option>
                 </select>
               </div>
               <div class="field">
-                <label>Infused Essential Aroma</label>
+                <label data-i18n="demo.spa.aroma">Infused Essential Aroma</label>
                 <select>
                   <option>🌿 Lavender &amp; Chamomile (Calming)</option>
                   <option>🌱 Peppermint &amp; Eucalyptus (Refreshing)</option>
@@ -321,58 +321,58 @@
             <!-- Medical Referral Profile: Upload Document -->
             <div id="intakeGroupMedical" style="display:none; margin-top:16px;">
               <div class="field">
-                <label>Nomor Rujukan BPJS / Asuransi</label>
-                <input type="text" placeholder="Contoh: 0115R0010926P0001">
+                <label data-i18n="demo.med.refNumber">Insurance / Referral ID</label>
+                <input type="text" placeholder="e.g. 0115R0010926P0001">
               </div>
               <div class="field">
-                <label>Unggah Surat Rujukan (Ephemeral Transit 72 Jam)</label>
+                <label data-i18n="demo.med.refUpload">Upload Referral Document (Ephemeral Transit 72 Hours)</label>
                 <input type="file" style="background:#fff;">
               </div>
             </div>
 
             <div class="field" style="margin-top:16px;">
-              <label>Additional Patient Notes (Specific Symptoms / Allergies)</label>
-              <textarea rows="3" placeholder="Mention any allergies to topical oils, medications, or special requests..."></textarea>
+              <label data-i18n="demo.notes">Additional Patient Notes (Specific Symptoms / Allergies)</label>
+              <textarea rows="3" data-i18n-placeholder="demo.notesPlaceholder" placeholder="Mention any allergies to topical oils, medications, or special requests..."></textarea>
             </div>
 
             <label class="checkbox-line">
               <input type="checkbox" checked>
-              <span>I consent to data processing and WhatsApp communications based on Singapore PDPA &amp; Malaysia PDPA compliance.</span>
+              <span data-i18n="demo.pdpaConsent">I consent to data processing and WhatsApp communications based on Singapore PDPA &amp; Malaysia PDPA compliance.</span>
             </label>
 
             <div style="display:flex; justify-content:space-between; margin-top:24px;">
-              <button class="btn btn-soft btn-wizard-prev">← Back</button>
-              <button class="btn btn-primary btn-wizard-next">Continue to Review &amp; Checkout →</button>
+              <button class="btn btn-soft btn-wizard-prev" data-i18n="common.back">← Back</button>
+              <button class="btn btn-primary btn-wizard-next" data-i18n="demo.btnNextCheckout">Continue to Review &amp; Checkout →</button>
             </div>
           </div>
 
           <!-- STEP 5: Checkout & Final Confirmation -->
           <div class="wizard-step-panel" id="wizardStep5">
-            <h3 style="font-size:20px; margin-bottom:14px;">5. Review &amp; Secure Checkout</h3>
+            <h3 style="font-size:20px; margin-bottom:14px;" data-i18n="demo.step5Title">5. Review &amp; Secure Checkout</h3>
 
             <div style="background:#f8fafc; border:1px solid var(--line); border-radius:18px; padding:18px; margin-bottom:18px;">
-              <h4 style="font-size:15px; margin-bottom:12px;">Payment &amp; Settlement Option:</h4>
+              <h4 style="font-size:15px; margin-bottom:12px;" data-i18n="demo.pay.settlementOption">Payment &amp; Settlement Option:</h4>
               <div class="pay-option-cards">
                 <label class="pay-option-card active" data-paytype="deposit">
                   <input type="radio" name="payType" value="deposit" checked>
-                  <span>Deposit (Hold Slot)</span>
+                  <span data-i18n="demo.pay.deposit">Deposit (Hold Slot)</span>
                 </label>
                 <label class="pay-option-card" data-paytype="full">
                   <input type="radio" name="payType" value="full">
-                  <span>Full Payment</span>
+                  <span data-i18n="demo.pay.full">Full Payment</span>
                 </label>
                 <label class="pay-option-card" data-paytype="clinic">
                   <input type="radio" name="payType" value="clinic">
-                  <span>Pay at Clinic</span>
+                  <span data-i18n="demo.pay.clinic">Pay at Clinic</span>
                 </label>
               </div>
-              <p id="payTypeDesc" style="font-size:12px; color:var(--text-secondary); margin-top:10px; margin-bottom:0;">
+              <p id="payTypeDesc" style="font-size:12px; color:var(--text-secondary); margin-top:10px; margin-bottom:0;" data-i18n="demo.pay.descDeposit">
                 💡 Pay deposit now to guarantee your slot, settle remaining balance at the clinic cashier after treatment.
               </p>
             </div>
 
             <div class="field" id="paymentMethodField">
-              <label>Select Regional Payment Method</label>
+              <label data-i18n="demo.pay.methodLabel">Select Regional Payment Method</label>
               <select id="demoPaymentChannelSelect">
                 <option>🇸🇬 PayNow QR (Singapore Instant Rails)</option>
                 <option>🇲🇾 DuitNow QR &amp; FPX Online Banking (Malaysia)</option>
@@ -380,13 +380,13 @@
               </select>
             </div>
 
-            <button class="btn btn-primary full" id="btnConfirmDemoBooking" style="font-size:16px; padding:16px;">
+            <button class="btn btn-primary full" id="btnConfirmDemoBooking" style="font-size:16px; padding:16px;" data-i18n="demo.pay.btnConfirm">
               ⚡ Complete Checkout &amp; Issue WhatsApp E-Ticket →
             </button>
 
             <div class="wizard-bottom-actions">
-              <button class="btn btn-soft btn-wizard-prev">← Back to Intake Form</button>
-              <button class="btn btn-primary" id="btnBottomCheckout">
+              <button class="btn btn-soft btn-wizard-prev" data-i18n="demo.pay.backToIntake">← Back to Intake Form</button>
+              <button class="btn btn-primary" id="btnBottomCheckout" data-i18n="demo.pay.btnBottom">
                 💳 Complete Checkout &amp; Confirm Now →
               </button>
             </div>
@@ -397,34 +397,34 @@
         <!-- Right: Real-Time Order & Engine Summary Card -->
         <div style="background:#fff; border:1px solid var(--line); border-radius:24px; padding:22px; box-shadow:var(--shadow-soft);">
           <div class="preview-card" style="margin-bottom:16px; padding:18px;">
-            <div style="font-size:11px; font-weight:800; opacity:0.85;">LIVE ORDER SUMMARY</div>
-            <h4 style="font-size:18px; margin:4px 0;">Cliniva Intake Engine</h4>
-            <p style="font-size:12px; opacity:0.9;">Kombinasi jadwal dan alokasi resource otomatis.</p>
+            <div style="font-size:11px; font-weight:800; opacity:0.85;" data-i18n="demo.summary.badge">LIVE ORDER SUMMARY</div>
+            <h4 style="font-size:18px; margin:4px 0;" data-i18n="demo.summary.engineTitle">Cliniva Intake Engine</h4>
+            <p style="font-size:12px; opacity:0.9;" data-i18n="demo.summary.engineSubtitle">Automated scheduling and multi-resource allocation.</p>
           </div>
 
           <div class="summary-list">
             <div class="summary-item">
-              <span>Branch Location:</span>
+              <span data-i18n="demo.summary.branch">Branch Location:</span>
               <strong id="summaryBranch">Orchard Wellness Clinic</strong>
             </div>
             <div class="summary-item">
-              <span>Selected Service:</span>
+              <span data-i18n="demo.summary.service">Selected Service:</span>
               <strong id="summaryService">Physiotherapy (SGD 120)</strong>
             </div>
             <div class="summary-item">
-              <span>Practitioner:</span>
+              <span data-i18n="demo.summary.practitioner">Practitioner:</span>
               <strong id="summaryPractitioner">Dr. Lim Wei Han</strong>
             </div>
             <div class="summary-item">
-              <span>Schedule Slot:</span>
+              <span data-i18n="demo.summary.schedule">Schedule Slot:</span>
               <strong id="summarySchedule" style="color:var(--primary);">Wednesday, 10:30 SGT</strong>
             </div>
             <div class="summary-item">
-              <span>Primary Complaint:</span>
+              <span data-i18n="demo.summary.painFocus">Primary Complaint:</span>
               <strong id="summaryPain">Lower Back / Lumbar</strong>
             </div>
             <div class="summary-item">
-              <span id="summaryPayLabel">Deposit Commitment (Online):</span>
+              <span id="summaryPayLabel" data-i18n="demo.summary.payLabelDeposit">Deposit Commitment (Online):</span>
               <strong id="summaryDeposit" style="color:var(--success-dark);">SGD 30.00 (Deposit)</strong>
             </div>
           </div>
@@ -440,38 +440,38 @@
         <div class="role-header-meta">
           <div class="role-avatar">👩‍💼</div>
           <div>
-            <div class="pill" style="font-size:11px; padding:3px 10px; margin-bottom:4px;">ROLE: FRONT-DESK / RECEPTIONIST</div>
-            <h2 style="font-size:22px; margin:0;">Reception Desk &amp; Daily Operations</h2>
+            <div class="pill" style="font-size:11px; padding:3px 10px; margin-bottom:4px;" data-i18n="demo.rec.roleBadge">ROLE: FRONT-DESK / RECEPTIONIST</div>
+            <h2 style="font-size:22px; margin:0;" data-i18n="demo.rec.title">Reception Desk &amp; Daily Operations</h2>
             <small style="color:var(--muted); font-size:12px;">Logged in at: 🇸🇬 Paragon Medical Orchard Branch · Morning Shift</small>
           </div>
         </div>
 
         <div style="display:flex; gap:10px;">
-          <button class="btn btn-primary" id="btnOpenWalkInModal">⚡ + Quick Walk-in Patient (&lt;30 Sec)</button>
+          <button class="btn btn-primary" id="btnOpenWalkInModal" data-i18n="demo.rec.quickWalkIn">⚡ + Quick Walk-in Patient (&lt;30 Sec)</button>
         </div>
       </div>
 
       <!-- Receptionist Live Metrics -->
       <div class="metric-grid-4">
         <div class="metric-card-box">
-          <span>Scheduled Patients</span>
+          <span data-i18n="demo.rec.metricScheduled">Scheduled Patients</span>
           <strong>32</strong>
-          <small style="color:var(--muted); font-size:11px;">100% Slots Filled</small>
+          <small style="color:var(--muted); font-size:11px;" data-i18n="demo.rec.metricScheduledSub">100% Slots Filled</small>
         </div>
         <div class="metric-card-box">
-          <span>Arrived &amp; Check-In</span>
+          <span data-i18n="demo.rec.metricArrived">Arrived &amp; Check-In</span>
           <strong style="color:var(--primary-dark);">18</strong>
-          <small style="color:var(--success); font-size:11px;">✓ On-Time</small>
+          <small style="color:var(--success); font-size:11px;" data-i18n="demo.rec.metricArrivedSub">✓ On-Time</small>
         </div>
         <div class="metric-card-box">
-          <span>In Active Therapy</span>
+          <span data-i18n="demo.rec.metricInTherapy">In Active Therapy</span>
           <strong style="color:var(--warning-dark);">6</strong>
-          <small style="color:var(--muted); font-size:11px;">In Room A1, A2, Bed 1-4</small>
+          <small style="color:var(--muted); font-size:11px;" data-i18n="demo.rec.metricInTherapySub">In Room A1, A2, Bed 1-4</small>
         </div>
         <div class="metric-card-box">
-          <span>POS Counter Settlement</span>
+          <span data-i18n="demo.rec.metricPos">POS Counter Settlement</span>
           <strong style="color:var(--success-dark);">SGD 1,980</strong>
-          <small style="color:var(--muted); font-size:11px;">12 Completed Transactions</small>
+          <small style="color:var(--muted); font-size:11px;" data-i18n="demo.rec.metricPosSub">12 Completed Transactions</small>
         </div>
       </div>
 
@@ -479,8 +479,8 @@
       <div class="timeline-matrix">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
           <div>
-            <h3 style="font-size:17px; margin:0;">📅 Master Operations Calendar &amp; Room Utilization</h3>
-            <small style="color:var(--muted);">Real-time visualization of doctor allocation, therapy beds, and automatic 15-minute sterilization buffers.</small>
+            <h3 style="font-size:17px; margin:0;" data-i18n="demo.rec.calendarTitle">📅 Master Operations Calendar &amp; Room Utilization</h3>
+            <small style="color:var(--muted);" data-i18n="demo.rec.calendarSubtitle">Real-time visualization of doctor allocation, therapy beds, and automatic 15-minute sterilization buffers.</small>
           </div>
           <span class="badge-live">LIVE SYNC</span>
         </div>
@@ -506,7 +506,7 @@
             <tr>
               <td class="time-badge">10:00 - 10:15</td>
               <td colspan="4" style="background:#fffbeb; text-align:center; padding:6px;">
-                <span class="schedule-chip chip-buffer" style="justify-content:center; display:inline-flex;">
+                <span class="schedule-chip chip-buffer" style="justify-content:center; display:inline-flex;" data-i18n="demo.rec.sterilizationBuffer">
                   🧹 15-Minute Sterilization &amp; Linen Change Buffer (Zero Double-Booking)
                 </span>
               </td>
@@ -530,7 +530,7 @@
       </div>
 
       <!-- Live Queue Sound Caller Board -->
-      <h3 style="font-size:18px; margin:24px 0 12px;">🔊 Audio Queue Calling Display Board</h3>
+      <h3 style="font-size:18px; margin:24px 0 12px;" data-i18n="demo.rec.callerBoardTitle">🔊 Audio Queue Calling Display Board</h3>
       <div class="queue-card-grid">
         <div class="queue-card">
           <div style="display:flex; justify-content:space-between; align-items:flex-start;">
@@ -573,8 +573,8 @@
       <div style="display:grid; grid-template-columns:1.2fr 0.8fr; gap:24px; margin-top:28px;">
         <div style="background:#fff; border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:var(--shadow-soft);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-            <h4 style="font-size:16px; margin:0;">💳 POS Cashier &amp; Settlement (Balance Payment)</h4>
-            <span class="pill" style="font-size:10px;">AUTO DEDUCT DEPOSIT</span>
+            <h4 style="font-size:16px; margin:0;" data-i18n="demo.rec.posTitle">💳 POS Cashier &amp; Settlement (Balance Payment)</h4>
+            <span class="pill" style="font-size:10px;" data-i18n="demo.rec.posAutoDeduct">AUTO DEDUCT DEPOSIT</span>
           </div>
 
           <table class="timeline-table" style="min-width:auto;">
@@ -595,7 +595,7 @@
                 <td>SGD 120.00</td>
                 <td><span style="color:var(--success-dark); font-weight:800;">SGD 30.00</span></td>
                 <td><strong style="color:var(--primary-dark);">SGD 90.00</strong></td>
-                <td><button class="btn btn-sm btn-primary" onclick="openDemoPOSModal('A-01', 'Amanda Tan', '90.00')">Settle Balance</button></td>
+                <td><button class="btn btn-sm btn-primary" onclick="openDemoPOSModal('A-01', 'Amanda Tan', '90.00')" data-i18n="demo.rec.settleBalance">Settle Balance</button></td>
               </tr>
               <tr>
                 <td><strong>Nur Aisyah</strong> (B-02)</td>
@@ -603,18 +603,18 @@
                 <td>SGD 90.00</td>
                 <td><span style="color:var(--success-dark); font-weight:800;">SGD 30.00</span></td>
                 <td><strong style="color:var(--primary-dark);">SGD 60.00</strong></td>
-                <td><button class="btn btn-sm btn-primary" onclick="openDemoPOSModal('B-02', 'Nur Aisyah', '60.00')">Settle Balance</button></td>
+                <td><button class="btn btn-sm btn-primary" onclick="openDemoPOSModal('B-02', 'Nur Aisyah', '60.00')" data-i18n="demo.rec.settleBalance">Settle Balance</button></td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <div style="background:#fff; border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:var(--shadow-soft);">
-          <h4 style="font-size:16px; margin-bottom:10px;">🔁 SIMRS / EHR Referral Ephemeral Bridge</h4>
-          <p style="font-size:13px; color:var(--muted); line-height:1.5; margin-bottom:16px;">
+          <h4 style="font-size:16px; margin-bottom:10px;" data-i18n="demo.rec.simrsTitle">🔁 SIMRS / EHR Referral Ephemeral Bridge</h4>
+          <p style="font-size:13px; color:var(--muted); line-height:1.5; margin-bottom:16px;" data-i18n="demo.rec.simrsDesc">
             Forward insurance and referral files to partner hospital SIMRS/EHR webhook without storing permanent records (72-hour auto-purge).
           </p>
-          <button class="btn btn-soft full" onclick="openDemoSIMRSInspection()">Inspect SIMRS Webhook Payload (JSON)</button>
+          <button class="btn btn-soft full" onclick="openDemoSIMRSInspection()" data-i18n="demo.rec.simrsBtn">Inspect SIMRS Webhook Payload (JSON)</button>
         </div>
       </div>
     </section>
@@ -627,21 +627,21 @@
         <div class="role-header-meta">
           <div class="role-avatar">👨‍⚕️</div>
           <div>
-            <div class="pill" style="font-size:11px; padding:3px 10px; margin-bottom:4px;">ROLE: PRACTITIONER / DOCTOR / THERAPIST</div>
-            <h2 style="font-size:22px; margin:0;">Practitioner Clinical Dashboard &amp; Therapy Notes</h2>
+            <div class="pill" style="font-size:11px; padding:3px 10px; margin-bottom:4px;" data-i18n="demo.doc.roleBadge">ROLE: PRACTITIONER / DOCTOR / THERAPIST</div>
+            <h2 style="font-size:22px; margin:0;" data-i18n="demo.doc.title">Practitioner Clinical Dashboard &amp; Therapy Notes</h2>
             <small style="color:var(--muted); font-size:12px;">Logged in: Dr. Lim Wei Han (Senior Physiotherapist) · Room A1</small>
           </div>
         </div>
 
         <div style="display:flex; gap:10px;">
-          <span class="badge-live" style="background:#ecfdf5; color:#047857;">STATUS: ACTIVE CONSULTATION</span>
+          <span class="badge-live" style="background:#ecfdf5; color:#047857;" data-i18n="demo.doc.statusActive">STATUS: ACTIVE CONSULTATION</span>
         </div>
       </div>
 
       <div style="display:grid; grid-template-columns:0.9fr 1.1fr; gap:24px;">
         <!-- Left: Doctor's Queue for Today -->
         <div>
-          <h3 style="font-size:17px; margin-bottom:14px;">Today's Patient Queue (3 Patients)</h3>
+          <h3 style="font-size:17px; margin-bottom:14px;" data-i18n="demo.doc.queueTitle">Today's Patient Queue (3 Patients)</h3>
 
           <div class="doctor-patient-card active" data-patient="amanda">
             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -675,20 +675,20 @@
         <div style="background:#fff; border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:var(--shadow-soft);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid var(--line); padding-bottom:12px;">
             <div>
-              <h3 style="font-size:18px; margin:0;">Clinical Assessment: Amanda Tan</h3>
-              <small style="color:var(--muted);">Treatment Plan: <strong>Session 3 of 8 (Scoliosis Plan)</strong></small>
+              <h3 style="font-size:18px; margin:0;" data-i18n="demo.doc.clinicalTitle">Clinical Assessment: Amanda Tan</h3>
+              <small style="color:var(--muted);"><span data-i18n="demo.doc.treatmentPlan">Treatment Plan:</span> <strong data-i18n="demo.doc.planProgress">Session 3 of 8 (Scoliosis Plan)</strong></small>
             </div>
             <span class="pill" style="font-size:11px;">CODE: BK-20260901-0812</span>
           </div>
 
           <!-- Highlighted Pain Map Inspector -->
           <div style="background:#f8fafc; border:1px solid var(--line); border-radius:18px; padding:16px; margin-bottom:18px;">
-            <div style="font-size:12px; font-weight:900; color:#334155; margin-bottom:8px;">
+            <div style="font-size:12px; font-weight:900; color:#334155; margin-bottom:8px;" data-i18n="demo.doc.painMapInput">
               📍 Visual Pain Map (Input from Patient Portal):
             </div>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <span class="pain-spot-tag active" style="font-size:12px;">⚡ Lower Back / Lumbar (L4-L5)</span>
-              <span class="pain-spot-tag active" style="font-size:12px;">🦵 Right Thigh (Sciatica)</span>
+              <span class="pain-spot-tag active" style="font-size:12px;" data-i18n="demo.pain.lowerBack">⚡ Lower Back / Lumbar (L4-L5)</span>
+              <span class="pain-spot-tag active" style="font-size:12px;" data-i18n="demo.pain.sciatica">💥 Pinched Nerve (HNP / Sciatica)</span>
             </div>
             <p style="font-size:12px; color:var(--text-secondary); margin-top:8px; line-height:1.4;">
               <strong>Patient History:</strong> Desk worker &gt;8 hrs/day. Pain worsens upon forward bending. No prior fractures.
@@ -698,20 +698,20 @@
           <!-- Clinical Progress & Pain Scale Slider -->
           <div style="margin-bottom:18px;">
             <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-              <label style="font-size:13px; font-weight:800;">Post-Treatment Pain Severity (VAS Scale 0-10):</label>
+              <label style="font-size:13px; font-weight:800;" data-i18n="demo.doc.vasLabel">Post-Treatment Pain Severity (VAS Scale 0-10):</label>
               <strong id="docPainScaleVal" style="color:var(--success-dark); font-size:15px;">3 / 10 (Mild Discomfort)</strong>
             </div>
             <input type="range" id="docPainScaleSlider" min="0" max="10" value="3" style="width:100%; accent-color:var(--primary); cursor:pointer;">
             <small style="color:var(--muted); font-size:11px; display:flex; justify-content:space-between; margin-top:4px;">
-              <span>0 (Pain Free)</span>
-              <span>Initial: 8/10</span>
-              <span>10 (Severe Pain)</span>
+              <span data-i18n="demo.doc.vasPainFree">0 (Pain Free)</span>
+              <span data-i18n="demo.doc.vasInitial">Initial: 8/10</span>
+              <span data-i18n="demo.doc.vasSevere">10 (Severe Pain)</span>
             </small>
           </div>
 
           <!-- Action Checklist & Package Auto-Deduct -->
           <div class="field" style="margin-bottom:16px;">
-            <label>Clinical Procedures Administered Today:</label>
+            <label data-i18n="demo.doc.proceduresLabel">Clinical Procedures Administered Today:</label>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:12px; margin-top:6px;">
               <label><input type="checkbox" checked> Decompression Spine</label>
               <label><input type="checkbox" checked> Shockwave 2000 Pulses</label>
@@ -720,7 +720,7 @@
             </div>
           </div>
 
-          <button class="btn btn-primary full" id="btnDoctorCompleteSession" style="font-size:14px; padding:12px;">
+          <button class="btn btn-primary full" id="btnDoctorCompleteSession" style="font-size:14px; padding:12px;" data-i18n="demo.doc.completeSessionBtn">
             ✓ Complete Session &amp; Deduct Plan Quota (5 Sessions Remaining) →
           </button>
         </div>
@@ -735,57 +735,57 @@
         <div class="role-header-meta">
           <div class="role-avatar">🏢</div>
           <div>
-            <div class="pill" style="font-size:11px; padding:3px 10px; margin-bottom:4px;">ROLE: BRANCH ADMIN / CLINIC MANAGER</div>
-            <h2 style="font-size:22px; margin:0;">Branch Capacity &amp; Roster Management</h2>
+            <div class="pill" style="font-size:11px; padding:3px 10px; margin-bottom:4px;" data-i18n="demo.branch.roleBadge">ROLE: BRANCH ADMIN / CLINIC MANAGER</div>
+            <h2 style="font-size:22px; margin:0;" data-i18n="demo.branch.title">Branch Capacity &amp; Roster Management</h2>
             <small style="color:var(--muted); font-size:12px;">Selected Branch: 🇸🇬 Paragon Medical Orchard Singapore (6 Rooms, 4 Specialists)</small>
           </div>
         </div>
 
         <div style="display:flex; gap:10px;">
-          <button class="btn btn-primary" onclick="alert('Doctor roster & branch capacity synchronized!')">💾 Save Branch Roster</button>
+          <button class="btn btn-primary" onclick="alert('Doctor roster &amp; branch capacity synchronized!')" data-i18n="demo.branch.saveRoster">💾 Save Branch Roster</button>
         </div>
       </div>
 
       <!-- Branch Metrics -->
       <div class="metric-grid-4">
         <div class="metric-card-box">
-          <span>Tingkat Okupansi Cabang</span>
+          <span data-i18n="demo.branch.metricOccupancy">Branch Occupancy Rate</span>
           <strong style="color:var(--primary-dark);">91.4%</strong>
-          <small style="color:var(--success); font-size:11px;">+8.2% vs bulan lalu</small>
+          <small style="color:var(--success); font-size:11px;" data-i18n="demo.branch.metricOccupancySub">+8.2% vs last month</small>
         </div>
         <div class="metric-card-box">
-          <span>Kesiapan Alat Medis</span>
+          <span data-i18n="demo.branch.metricEquip">Medical Equipment Readiness</span>
           <strong style="color:var(--success-dark);">100%</strong>
-          <small style="color:var(--muted); font-size:11px;">4 Unit Terkalibrasi</small>
+          <small style="color:var(--muted); font-size:11px;" data-i18n="demo.branch.metricEquipSub">4 Units Calibrated</small>
         </div>
         <div class="metric-card-box">
-          <span>Jeda Sterilisasi Kamar</span>
-          <strong>15 Menit</strong>
-          <small style="color:var(--muted); font-size:11px;">Buffer Anti-Bentrok</small>
+          <span data-i18n="demo.branch.metricSterilize">Room Sterilization Buffer</span>
+          <strong data-i18n="demo.branch.metricSterilizeVal">15 Minutes</strong>
+          <small style="color:var(--muted); font-size:11px;" data-i18n="demo.branch.metricSterilizeSub">Anti-Collision Buffer</small>
         </div>
         <div class="metric-card-box">
-          <span>Pendapatan Cabang (Hari Ini)</span>
+          <span data-i18n="demo.branch.metricRevenue">Branch Revenue (Today)</span>
           <strong style="color:var(--primary-dark);">SGD 3,420</strong>
-          <small style="color:var(--muted); font-size:11px;">Deposit: SGD 980</small>
+          <small style="color:var(--muted); font-size:11px;" data-i18n="demo.branch.metricRevenueSub">Deposit: SGD 980</small>
         </div>
       </div>
 
       <!-- Practitioner Roster & Availability Manager -->
       <div class="data-table-card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-          <h3 style="font-size:17px; margin:0;">Branch Practitioner Shift &amp; Schedule Settings</h3>
-          <small style="color:var(--muted);">Enable or disable practitioner schedules instantly.</small>
+          <h3 style="font-size:17px; margin:0;" data-i18n="demo.branch.rosterTitle">Branch Practitioner Shift &amp; Schedule Settings</h3>
+          <small style="color:var(--muted);" data-i18n="demo.branch.rosterSubtitle">Enable or disable practitioner schedules instantly.</small>
         </div>
 
         <table>
           <thead>
             <tr>
-              <th>Practitioner</th>
-              <th>Specialty</th>
-              <th>Default Room</th>
-              <th>Practice Hours</th>
-              <th>Today's Status</th>
-              <th>Action</th>
+              <th data-i18n="demo.branch.thPractitioner">Practitioner</th>
+              <th data-i18n="demo.branch.thSpecialty">Specialty</th>
+              <th data-i18n="demo.branch.thRoom">Default Room</th>
+              <th data-i18n="demo.branch.thHours">Practice Hours</th>
+              <th data-i18n="demo.branch.thStatus">Today's Status</th>
+              <th data-i18n="demo.branch.thAction">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -795,7 +795,7 @@
               <td>Room A1 (Physio)</td>
               <td>09:00 - 18:00</td>
               <td><span class="status-pill confirmed">ON DUTY</span></td>
-              <td><button class="btn btn-sm btn-soft" onclick="alert('Dr. Lim\'s schedule updated.')">Edit Hours</button></td>
+              <td><button class="btn btn-sm btn-soft" onclick="alert('Dr. Lim\'s schedule updated.')" data-i18n="demo.branch.editHours">Edit Hours</button></td>
             </tr>
             <tr>
               <td><strong>Dr. Wong Mei Ling</strong></td>
@@ -803,7 +803,7 @@
               <td>Room A2 (TCM)</td>
               <td>09:00 - 17:00</td>
               <td><span class="status-pill confirmed">ON DUTY</span></td>
-              <td><button class="btn btn-sm btn-soft" onclick="alert('Dr. Wong\'s schedule updated.')">Edit Hours</button></td>
+              <td><button class="btn btn-sm btn-soft" onclick="alert('Dr. Wong\'s schedule updated.')" data-i18n="demo.branch.editHours">Edit Hours</button></td>
             </tr>
             <tr>
               <td><strong>Therapist Sarah Tan</strong></td>
@@ -811,7 +811,7 @@
               <td>Bed 02 (Wellness)</td>
               <td>10:00 - 19:00</td>
               <td><span class="status-pill confirmed">ON DUTY</span></td>
-              <td><button class="btn btn-sm btn-soft" onclick="alert('Sarah\'s schedule updated.')">Edit Hours</button></td>
+              <td><button class="btn btn-sm btn-soft" onclick="alert('Sarah\'s schedule updated.')" data-i18n="demo.branch.editHours">Edit Hours</button></td>
             </tr>
             <tr>
               <td><strong>Sinse Huang Wei</strong></td>
@@ -819,7 +819,7 @@
               <td>Bed 01 (TCM Acupuncture)</td>
               <td>09:00 - 15:00</td>
               <td><span class="status-pill confirmed">ON DUTY</span></td>
-              <td><button class="btn btn-sm btn-soft" onclick="alert('Sinse Huang\'s schedule updated.')">Edit Hours</button></td>
+              <td><button class="btn btn-sm btn-soft" onclick="alert('Sinse Huang\'s schedule updated.')" data-i18n="demo.branch.editHours">Edit Hours</button></td>
             </tr>
           </tbody>
         </table>
@@ -834,58 +834,58 @@
         <div class="role-header-meta">
           <div class="role-avatar">👑</div>
           <div>
-            <div class="pill" style="font-size:11px; padding:3px 10px; margin-bottom:4px;">ROLE: SUPER ADMIN / CLINIC OWNER (HQ)</div>
-            <h2 style="font-size:22px; margin:0;">Multi-Branch Executive &amp; Financial Console</h2>
+            <div class="pill" style="font-size:11px; padding:3px 10px; margin-bottom:4px;" data-i18n="demo.owner.roleBadge">ROLE: SUPER ADMIN / CLINIC OWNER (HQ)</div>
+            <h2 style="font-size:22px; margin:0;" data-i18n="demo.owner.title">Multi-Branch Executive &amp; Financial Console</h2>
             <small style="color:var(--muted); font-size:12px;">Unified Control Center: 3 Active Branches (🇸🇬 Singapore, 🇲🇾 Kuala Lumpur, 🇲🇾 Penang)</small>
           </div>
         </div>
 
         <div style="display:flex; gap:10px;">
-          <button class="btn btn-primary" onclick="alert('Consolidated report across all branches exported (PDF/Excel)!')">📥 Export Financial Report</button>
+          <button class="btn btn-primary" onclick="alert('Consolidated report across all branches exported (PDF/Excel)!')" data-i18n="demo.owner.exportBtn">📥 Export Financial Report</button>
         </div>
       </div>
 
       <!-- Super Admin Global Network Metrics -->
       <div class="metric-grid-4">
         <div class="metric-card-box">
-          <span>Network Revenue (This Month)</span>
+          <span data-i18n="demo.owner.metricNetRev">Network Revenue (This Month)</span>
           <strong style="color:var(--primary-dark);">SGD 54,280</strong>
-          <small style="color:var(--success); font-size:11px;">+14.5% MoM Growth</small>
+          <small style="color:var(--success); font-size:11px;" data-i18n="demo.owner.metricNetRevSub">+14.5% MoM Growth</small>
         </div>
         <div class="metric-card-box">
-          <span>Network No-Show Rate</span>
+          <span data-i18n="demo.owner.metricNoShow">Network No-Show Rate</span>
           <strong style="color:var(--success-dark);">3.1%</strong>
-          <small style="color:var(--muted); font-size:11px;">Down from 24.8% (Anti-No Show)</small>
+          <small style="color:var(--muted); font-size:11px;" data-i18n="demo.owner.metricNoShowSub">Down from 24.8% (Anti-No Show)</small>
         </div>
         <div class="metric-card-box">
-          <span>Total Patients Served</span>
-          <strong>1,420 Patients</strong>
+          <span data-i18n="demo.owner.metricPatients">Total Patients Served</span>
+          <strong data-i18n="demo.owner.metricPatientsSub">1,420 Patients</strong>
           <small style="color:var(--muted); font-size:11px;">3 Regional Branches</small>
         </div>
         <div class="metric-card-box">
-          <span>Therapist Commission Paid</span>
+          <span data-i18n="demo.owner.metricCommission">Therapist Commission Paid</span>
           <strong style="color:var(--warning-dark);">SGD 16,240</strong>
-          <small style="color:var(--muted); font-size:11px;">Auto-calculated per Session</small>
+          <small style="color:var(--muted); font-size:11px;" data-i18n="demo.owner.metricCommissionSub">Auto-calculated per Session</small>
         </div>
       </div>
 
       <!-- Multi-Branch Consolidated Comparison Table -->
       <div class="data-table-card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-          <h3 style="font-size:17px; margin:0;">Branch Financial &amp; Operational Performance</h3>
+          <h3 style="font-size:17px; margin:0;" data-i18n="demo.owner.tableTitle">Branch Financial &amp; Operational Performance</h3>
           <span class="pill" style="font-size:10px;">MULTI-CURRENCY (SGD / MYR)</span>
         </div>
 
         <table>
           <thead>
             <tr>
-              <th>Clinic Branch</th>
-              <th>Country / Currency</th>
-              <th>Total Bookings</th>
-              <th>Occupancy</th>
-              <th>No-Show Rate</th>
-              <th>Monthly Revenue</th>
-              <th>Status</th>
+              <th data-i18n="demo.owner.thBranch">Clinic Branch</th>
+              <th data-i18n="demo.owner.thCountry">Country / Currency</th>
+              <th data-i18n="demo.owner.thBookings">Total Bookings</th>
+              <th data-i18n="demo.owner.thOccupancy">Occupancy</th>
+              <th data-i18n="demo.owner.thNoShow">No-Show Rate</th>
+              <th data-i18n="demo.owner.thRevenue">Monthly Revenue</th>
+              <th data-i18n="demo.owner.thStatus">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -926,9 +926,9 @@
          ========================================================================= -->
     <section class="demo-pane" id="paneWhatsAppSimulator">
       <div style="text-align:center; max-width:680px; margin:0 auto 28px;">
-        <div class="pill" style="margin-bottom:12px;">Anti-No Show Communication</div>
-        <h2 style="font-size:30px; letter-spacing:-1px;">Two-Way WhatsApp Reminder Engine</h2>
-        <p style="color:var(--muted); font-size:15px; margin-top:6px;">
+        <div class="pill" style="margin-bottom:12px;" data-i18n="demo.wa.badge">Anti-No Show Communication</div>
+        <h2 style="font-size:30px; letter-spacing:-1px;" data-i18n="demo.wa.title">Two-Way WhatsApp Reminder Engine</h2>
+        <p style="color:var(--muted); font-size:15px; margin-top:6px;" data-i18n="demo.wa.desc">
           WhatsApp achieves &gt;95% open rates compared to email (&lt;20%). Patients can confirm attendance or reschedule directly via interactive buttons.
         </p>
       </div>
@@ -938,7 +938,7 @@
           <div style="width:36px; height:36px; border-radius:50%; background:#25d366; display:grid; place-items:center; color:#fff; font-size:18px;">🏥</div>
           <div>
             <strong style="display:block; font-size:14px;">Cliniva Healthcare Official</strong>
-            <small style="color:#dcfce7; font-size:11px;">Verified Clinic Gateway · Online</small>
+            <small style="color:#dcfce7; font-size:11px;" data-i18n="demo.wa.headerStatus">Verified Clinic Gateway · Online</small>
           </div>
         </div>
 
@@ -953,9 +953,9 @@
             💰 <strong>Deposit:</strong> SGD 30.00 (Paid)
 
             <div class="wa-actions-box">
-              <button class="wa-action-btn" id="waBtnConfirmAttendance">✅ Confirm Attendance</button>
-              <button class="wa-action-btn" id="waBtnReschedule">🔄 1-Click Reschedule</button>
-              <button class="wa-action-btn" id="waBtnMaps">📍 Google Maps Directions</button>
+              <button class="wa-action-btn" id="waBtnConfirmAttendance" data-i18n="demo.wa.btnConfirm">✅ Confirm Attendance</button>
+              <button class="wa-action-btn" id="waBtnReschedule" data-i18n="demo.wa.btnReschedule">🔄 1-Click Reschedule</button>
+              <button class="wa-action-btn" id="waBtnMaps" data-i18n="demo.wa.btnMaps">📍 Google Maps Directions</button>
             </div>
           </div>
         </div>
@@ -968,23 +968,23 @@
   <div class="demo-modal-backdrop" id="modalWalkIn">
     <div class="demo-modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
-        <h3 style="margin:0; font-size:18px;">⚡ Quick Walk-in Dispatch (&lt;30 Sec)</h3>
+        <h3 style="margin:0; font-size:18px;" data-i18n="demo.walkin.title">⚡ Quick Walk-in Dispatch (&lt;30 Sec)</h3>
         <button type="button" id="btnCloseWalkInModal" style="border:0; background:transparent; font-size:20px; cursor:pointer;">✕</button>
       </div>
 
       <form id="formQuickWalkIn">
         <div class="field">
-          <label>Walk-in Patient Full Name</label>
-          <input type="text" id="walkInName" placeholder="e.g. Robert Tan" required>
+          <label data-i18n="demo.walkin.name">Walk-in Patient Full Name</label>
+          <input type="text" id="walkInName" data-i18n-placeholder="demo.walkin.namePlaceholder" placeholder="e.g. Robert Tan" required>
         </div>
 
         <div class="field">
-          <label>Patient WhatsApp Mobile (For Instant E-Ticket)</label>
+          <label data-i18n="demo.walkin.phone">Patient WhatsApp Mobile (For Instant E-Ticket)</label>
           <input type="tel" id="walkInPhone" placeholder="+65 9123 4567" required>
         </div>
 
         <div class="field">
-          <label>Select Fast-Track Clinical Service</label>
+          <label data-i18n="demo.walkin.service">Select Fast-Track Clinical Service</label>
           <select id="walkInService">
             <option value="Physiotherapy">Physiotherapy &amp; Spine Rehab (Dr. Lim)</option>
             <option value="Acupuncture">TCM Acupuncture (Dr. Wong)</option>
@@ -992,7 +992,7 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-primary full" style="margin-top:14px;">
+        <button type="submit" class="btn btn-primary full" style="margin-top:14px;" data-i18n="demo.walkin.submitBtn">
           Issue Walk-In Queue Ticket →
         </button>
       </form>

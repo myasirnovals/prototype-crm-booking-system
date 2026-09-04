@@ -472,5 +472,32 @@ export const en = {
   // Onboarding
   "onboarding.title": "Clinic Onboarding & Super Admin Setup — Cliniva",
   "onboarding.subtitle": "Create the initial Super Admin account for your clinic. The system will provision an isolated Tenant ID and scheduling portal in minutes.",
-  "onboarding.submitBtn": "🚀 Create Super Admin Account & Launch Tenant →"
+  "onboarding.submitBtn": "🚀 Create Super Admin Account & Launch Tenant →",
+
+  // Business Templates (TCM & Wellness / Spa)
+  "template.tcm.practitionerTitle": "Sinse / TCM Physician",
+  "template.tcm.intakeTitle": "Body Pain & Meridian Assessment",
+  "template.tcm.intakeDesc": "Mark your pain points and indicate symptom duration for your TCM physician.",
+  "template.tcm.serviceAcupuncture": "Electro-Acupuncture Therapy",
+  "template.tcm.serviceAcupunctureDesc": "Meridian stimulation using ultra-fine micro needles with gentle electric pulses to relieve pain and restore Qi flow.",
+  "template.tcm.serviceCupping": "Therapeutic Cupping & Bloodletting",
+  "template.tcm.serviceCuppingDesc": "Vacuum suction therapy along the Bladder Meridian to draw out dampness, detoxify tissues, and boost local micro-circulation.",
+  "template.tcm.serviceHerbal": "TCM Pulse & Herbal Consultation",
+  "template.tcm.serviceHerbalDesc": "Traditional radial pulse examination, tongue inspection, and personalized granule prescription for internal harmony.",
+  "template.tcm.serviceTuina": "Tuina Meridian Manual Therapy",
+  "template.tcm.serviceTuinaDesc": "Acupressure manipulation, joint alignment, and deep myofascial release along Chinese energetic meridians.",
+
+  "template.wellness.practitionerTitle": "Senior Spa Therapist / Masseuse",
+  "template.wellness.intakeTitle": "Aromatherapy & Therapy Preferences",
+  "template.wellness.intakeDesc": "Personalize your bespoke spa experience with preferred aroma essential oils and massage pressure levels.",
+  "template.wellness.serviceBalinese": "Traditional Balinese Aromatherapy Massage",
+  "template.wellness.serviceBalineseDesc": "Full-body rhythmic massage using pure organic botanical oils. Combines gentle acupressure, palm pressure, and skin rolling to melt muscular tension.",
+  "template.wellness.serviceDeepTissue": "Deep Tissue Stress Relief Spa",
+  "template.wellness.serviceDeepTissueDesc": "Targeted slow strokes and firm friction focusing on deep layers of muscle and connective tissue to alleviate chronic neck, shoulder, and lumbar tightness.",
+  "template.wellness.serviceScrub": "Herbal Body Scrub & Floral Bath",
+  "template.wellness.serviceScrubDesc": "Invigorating organic rice and botanical lulur scrub to slough off dead skin cells, followed by a warm essential oil jacuzzi petal bath.",
+  "template.wellness.serviceReflexology": "Foot Reflexology & Acupressure",
+  "template.wellness.serviceReflexologyDesc": "Acupressure mapped to meridian reflex zones on the soles of the feet, restoring organ vitality, easing fluid retention, and soothing tired legs.",
+  "template.wellness.therapistAyuTitle": "Senior Balinese Spa Specialist",
+  "template.wellness.therapistMichaelTitle": "Reflexology & Deep Tissue Practitioner"
 };

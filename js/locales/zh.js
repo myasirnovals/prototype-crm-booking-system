@@ -472,5 +472,32 @@ export const zh = {
   // Onboarding
   "onboarding.title": "诊所入驻与超级管理员开户 — Cliniva",
   "onboarding.subtitle": "为您开设诊所首个超级管理员账号。系统将在数分钟内自动部署专属租户ID与独立预约排班门户。",
-  "onboarding.submitBtn": "🚀 创建超级管理员账号并开启租户系统 →"
+  "onboarding.submitBtn": "🚀 创建超级管理员账号并开启租户系统 →",
+
+  // Business Templates (TCM & Wellness / Spa)
+  "template.tcm.practitionerTitle": "注册中医师 / 针灸师",
+  "template.tcm.intakeTitle": "身体疼痛点与经络评估",
+  "template.tcm.intakeDesc": "请标记您的疼痛部位并告知症状持续时间，供主诊中医师参考。",
+  "template.tcm.serviceAcupuncture": "电针穴位疏通理疗",
+  "template.tcm.serviceAcupunctureDesc": "采用超细无痛微针配合微弱脉冲电刺激经络穴位，通经活络，调理气血并迅速止痛。",
+  "template.tcm.serviceCupping": "中医排湿拔罐理疗",
+  "template.tcm.serviceCuppingDesc": "沿足太阳膀胱经循经拔罐，吸拔体内湿气寒毒，促进局部微循环与深层排毒。",
+  "template.tcm.serviceHerbal": "中医把脉辩证与草药配方",
+  "template.tcm.serviceHerbalDesc": "传统寸关尺把脉问诊、望闻问切看舌苔，定制颗粒中药配方，调和体内阴阳气血。",
+  "template.tcm.serviceTuina": "中医经络推拿正骨理疗",
+  "template.tcm.serviceTuinaDesc": "以按、揉、推、拿等中医手法，理顺经筋，松解筋膜粘连，调整脊柱关节错缝。",
+
+  "template.wellness.practitionerTitle": "高级水疗理疗师 / 按摩师",
+  "template.wellness.intakeTitle": "芳香精油与理疗偏好设置",
+  "template.wellness.intakeDesc": "根据您的喜好定制专属水疗体验，自由选择芳香植物精油香型与按摩手法力度。",
+  "template.wellness.serviceBalinese": "传统巴厘岛芳香精油按摩",
+  "template.wellness.serviceBalineseDesc": "采用纯正有机植物精油进行全身韵律推揉，融合柔和穴位指压与拉伸，彻底溶解身心肌肉压力。",
+  "template.wellness.serviceDeepTissue": "深层组织肌肉解压水疗",
+  "template.wellness.serviceDeepTissueDesc": "针对深层肌群与筋膜层实施缓慢深透的指压与掌推，有效缓解颈肩劳损与腰部酸痛。",
+  "template.wellness.serviceScrub": "草本身体磨砂去角质与花瓣浴",
+  "template.wellness.serviceScrubDesc": "天然有机植物露露配方去除老化角质，随后享受温热精油花瓣水疗浴，令肌肤重现柔嫩丝滑。",
+  "template.wellness.serviceReflexology": "足部全息反射区穴位理疗",
+  "template.wellness.serviceReflexologyDesc": "精准按压足底全息反射区与经络穴位，激活脏腑机能，消除腿部浮肿与疲惫感。",
+  "template.wellness.therapistAyuTitle": "高级巴厘岛传统水疗专家",
+  "template.wellness.therapistMichaelTitle": "足底反射区与深层理疗师"
 };

@@ -472,5 +472,32 @@ export const ms = {
   // Onboarding
   "onboarding.title": "Penyertaan Klinik & Persediaan Pentadbir Utama — Cliniva",
   "onboarding.subtitle": "Cipta akaun Pentadbir Utama awal untuk klinik anda. Sistem akan memperuntukkan ID Penyewa terasing dan portal jadual dalam beberapa minit.",
-  "onboarding.submitBtn": "🚀 Cipta Akaun Pentadbir Utama & Lancarkan Penyewa →"
+  "onboarding.submitBtn": "🚀 Cipta Akaun Pentadbir Utama & Lancarkan Penyewa →",
+
+  // Business Templates (TCM & Wellness / Spa)
+  "template.tcm.practitionerTitle": "Sinse / Pakar Perubatan TCM",
+  "template.tcm.intakeTitle": "Penilaian Sakit Badan & Saluran Meridian",
+  "template.tcm.intakeDesc": "Tandakan titik kesakitan anda dan nyatakan tempoh gejala untuk rujukan doktor TCM.",
+  "template.tcm.serviceAcupuncture": "Terapi Elektro-Akupunktur",
+  "template.tcm.serviceAcupunctureDesc": "Rangsangan titik meridian menggunakan jarum mikro ultra-halus dengan denyutan elektrik lembut untuk melegakan kesakitan dan memulihkan aliran Qi.",
+  "template.tcm.serviceCupping": "Terapi Bekam Terapeutik & Detoks",
+  "template.tcm.serviceCuppingDesc": "Terapi sedutan vakum di sepanjang Meridian Pundi Kencing untuk mengeluarkan angin/kelembapan dan meningkatkan peredaran darah setempat.",
+  "template.tcm.serviceHerbal": "Konsultasi Nadi & Preskripsi Herba TCM",
+  "template.tcm.serviceHerbalDesc": "Pemeriksaan nadi radial tradisional, analisis lidah, dan preskripsi herba tersuai untuk keseimbangan organ dalaman.",
+  "template.tcm.serviceTuina": "Terapi Urutan Manipulasi Tuina",
+  "template.tcm.serviceTuinaDesc": "Tekanan akupresur, penjajaran sendi, dan pelepasan myofascial mendalam mengikut saluran tenaga Cina.",
+
+  "template.wellness.practitionerTitle": "Terapis Kanan Spa / Jururawat Urut",
+  "template.wellness.intakeTitle": "Pilihan Aromaterapi & Keutamaan Rawatan",
+  "template.wellness.intakeDesc": "Sesuaikan pengalaman spa eksklusif anda dengan pilihan minyak pati aroma dan tahap tekanan urutan yang diingini.",
+  "template.wellness.serviceBalinese": "Urutan Aromaterapi Tradisional Bali",
+  "template.wellness.serviceBalineseDesc": "Urutan berirama seluruh badan menggunakan minyak pati botani organik tulen, menggabungkan tekanan akupresur lembut dan regangan untuk melegakan stres otot.",
+  "template.wellness.serviceDeepTissue": "Spa Pelepasan Otot Tisu Dalam",
+  "template.wellness.serviceDeepTissueDesc": "Tekanan perlahan dan geseran padu tertumpu pada lapisan otot dalaman untuk melegakan ketegangan kronik pada leher, bahu, dan pinggang.",
+  "template.wellness.serviceScrub": "Lulur Herba Badan & Mandian Bunga",
+  "template.wellness.serviceScrubDesc": "Pengelupasan sel kulit mati menggunakan lulur herba organik, disusuli mandian jakuzi kelopak bunga beraroma hangat untuk kesegaran menyeluruh.",
+  "template.wellness.serviceReflexology": "Refleksologi Kaki & Akupresur",
+  "template.wellness.serviceReflexologyDesc": "Titik akupresur pada zon refleks tapak kaki untuk memulihkan kecergasan organ, mengurangkan keletihan kaki, dan menggalakkan relaksasi.",
+  "template.wellness.therapistAyuTitle": "Pakar Kanan Spa Tradisional Bali",
+  "template.wellness.therapistMichaelTitle": "Pakar Refleksologi & Terapi Tisu Dalam"
 };

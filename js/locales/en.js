@@ -161,7 +161,7 @@ export const en = {
   "portal.cancel": "Cancel",
   "portal.viewTicket": "View E-Ticket",
 
-  // Admin Operational Panel (admin.html)
+  // Receptionist Operational Panel (receptionist.html)
   "admin.pageTitle": "Reception & Operations Desk — Cliniva",
   "admin.topbar": "Reception & Front Desk Operations",
   "admin.tab.queue": "Live Waiting Queue",

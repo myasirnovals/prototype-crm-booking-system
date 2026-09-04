@@ -161,7 +161,7 @@ export const zh = {
   "portal.cancel": "取消预约",
   "portal.viewTicket": "查看电子门票",
 
-  // Admin Operational Panel (admin.html)
+  // Receptionist Operational Panel (receptionist.html)
   "admin.pageTitle": "前台与日常运营台 — Cliniva",
   "admin.topbar": "前台接待与就诊运营",
   "admin.tab.queue": "候诊大厅队列",

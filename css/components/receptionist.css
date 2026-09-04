@@ -1,15 +1,17 @@
 /* ==========================================================================
-   Cliniva Component — Clinic Operations Dashboard & Admin Center
-   SOLID: Single Responsibility for Admin Panel, Live Queue, SIMRS & POS
+   Cliniva Component — Clinic Operations Dashboard & Receptionist Center
+   SOLID: Single Responsibility for Receptionist Desk, Live Queue, SIMRS & POS
    ========================================================================== */
 
-.admin-layout {
+.admin-layout,
+.receptionist-layout {
   display: flex;
   min-height: 100vh;
   background: var(--bg);
 }
 
-.admin-sidebar {
+.admin-sidebar,
+.receptionist-sidebar {
   width: 280px;
   background: #fff;
   border-right: 1px solid var(--line);
@@ -18,18 +20,21 @@
   flex-direction: column;
 }
 
-.admin-main {
+.admin-main,
+.receptionist-main {
   flex: 1;
   padding: 28px 32px;
   overflow-y: auto;
 }
 
-.admin-tab-pane {
+.admin-tab-pane,
+.receptionist-tab-pane {
   display: none;
   animation: fadeUp 0.25s ease;
 }
 
-.admin-tab-pane.active {
+.admin-tab-pane.active,
+.receptionist-tab-pane.active {
   display: block;
 }
 

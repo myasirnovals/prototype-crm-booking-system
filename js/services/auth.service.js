@@ -231,12 +231,16 @@ class AuthService {
   }
 
   /**
-   * Log out active session
+   * Log out active session (supports both logout and signOut)
    */
   logout() {
     storageService.remove(this.SESSION_KEY);
     window.location.href = "sign-in.html";
     return true;
+  }
+
+  signOut() {
+    return this.logout();
   }
 }
 

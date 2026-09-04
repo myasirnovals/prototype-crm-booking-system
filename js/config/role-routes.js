@@ -27,7 +27,7 @@ export const ROLE_CONFIG = {
   },
   [USER_ROLES.RECEPTIONIST]: {
     name: "Receptionist / Front Desk",
-    homeRoute: "admin.html",
+    homeRoute: "receptionist.html",
     badge: "🛎️ Clinic Receptionist",
     color: "#d97706",
     description: "Live waiting room queue, master calendar, cashier POS & walk-in dispatcher"

@@ -88,11 +88,11 @@ class NavbarService {
     } else if (role === USER_ROLES.OWNER) {
       ticketNav.innerHTML = `
         <a href="owner.html" class="btn btn-sm btn-soft">← Owner Console</a>
-        <a href="admin.html" class="btn btn-sm btn-primary">Operations Panel →</a>
+        <a href="receptionist.html" class="btn btn-sm btn-primary">Operations Panel →</a>
       `;
     } else if (role === USER_ROLES.RECEPTIONIST) {
       ticketNav.innerHTML = `
-        <a href="admin.html" class="btn btn-sm btn-primary">← Operations Panel</a>
+        <a href="receptionist.html" class="btn btn-sm btn-primary">← Operations Panel</a>
       `;
     } else if (role === USER_ROLES.PRACTITIONER) {
       ticketNav.innerHTML = `
@@ -161,7 +161,7 @@ class NavbarService {
             <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
             <div style="font-size:10px; color:#d97706; font-weight:700;">🛎️ Front Desk</div>
           </div>
-          <a href="admin.html" class="btn btn-sm btn-primary">Operations Panel →</a>
+          <a href="receptionist.html" class="btn btn-sm btn-primary">Operations Panel →</a>
           <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
         </div>
       `;
@@ -174,7 +174,7 @@ class NavbarService {
             <div style="font-size:10px; color:#0f766e; font-weight:700;">👑 Owner HQ</div>
           </div>
           <a href="owner.html" class="btn btn-sm btn-primary">Owner Console →</a>
-          <a href="admin.html" class="btn btn-sm btn-soft">Operations</a>
+          <a href="receptionist.html" class="btn btn-sm btn-soft">Operations</a>
           <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
         </div>
       `;
@@ -219,7 +219,7 @@ class NavbarService {
         <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
           🛎️ ${user.name} (Receptionist)
         </div>
-        <a href="admin.html" class="btn btn-primary full">Operations Panel</a>
+        <a href="receptionist.html" class="btn btn-primary full">Operations Panel</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
       `;
     } else if (role === USER_ROLES.OWNER && user) {
@@ -228,7 +228,7 @@ class NavbarService {
           👑 ${user.name} (Owner)
         </div>
         <a href="owner.html" class="btn btn-primary full">Owner HQ Console</a>
-        <a href="admin.html" class="btn btn-soft full" style="margin-top:8px;">Operations Panel</a>
+        <a href="receptionist.html" class="btn btn-soft full" style="margin-top:8px;">Operations Panel</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
       `;
     }

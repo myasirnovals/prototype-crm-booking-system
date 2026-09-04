@@ -161,7 +161,7 @@ export const ms = {
   "portal.cancel": "Batal",
   "portal.viewTicket": "Lihat E-Tiket",
 
-  // Admin Operational Panel (admin.html)
+  // Receptionist Operational Panel (receptionist.html)
   "admin.pageTitle": "Meja Operasi & Kaunter — Cliniva",
   "admin.topbar": "Operasi Kaunter Hadapan & Resepsi",
   "admin.tab.queue": "Giliran Ruang Menunggu",

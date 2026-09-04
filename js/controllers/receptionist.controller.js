@@ -1,6 +1,6 @@
 /**
- * Cliniva — Admin / Receptionist Controller
- * SOLID: Single Responsibility for Clinic Operations Dashboard, Live Queue Calling & POS
+ * Cliniva — Receptionist Controller
+ * SOLID: Single Responsibility for Front Desk Operations, Live Queue Calling & Cashier POS
  */
 
 import { authService, USER_ROLES } from "../services/auth.service.js";
@@ -8,7 +8,7 @@ import { soundService } from "../services/sound.service.js";
 import { i18nService } from "../services/i18n.service.js";
 import { storageService } from "../services/storage.service.js";
 
-export class AdminController {
+export class ReceptionistController {
   constructor() {
     this.tabButtons = document.querySelectorAll(".admin-tab-btn");
     this.tabPanes = document.querySelectorAll(".admin-tab-pane");
@@ -130,9 +130,12 @@ export class AdminController {
   setupSignOut() {
     if (this.signOutBtn) {
       this.signOutBtn.addEventListener("click", () => {
-        authService.signOut();
-        window.location.href = "sign-in.html";
+        soundService.playClickTone();
+        authService.logout();
       });
     }
   }
 }
+
+// Backward compatibility alias
+export { ReceptionistController as AdminController };

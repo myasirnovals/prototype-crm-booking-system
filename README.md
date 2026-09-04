@@ -15,7 +15,7 @@ Desain/
 │   ├── sign-in.html                    # Autentikasi Multi-Role & 1-Click Quick Demo Login
 │   ├── owner.html                      # [NEW] Panel Eksekutif Owner: Analitik Omset & Konfigurasi Klinik
 │   ├── practitioner.html               # [NEW] Workspace Dokter: Timeline Konsultasi & Body Pain Map
-│   ├── admin.html                      # Panel Operasional Resepsionis: Live Queue, Kasir POS & Walk-In
+│   ├── receptionist.html               # [NEW] Panel Operasional Resepsionis: Live Queue, Kasir POS & Walk-In
 │   ├── patient-portal.html             # [NEW] Portal Pasien Mandiri: E-Tiket Digital & Live Antrean Tracker
 │   ├── ticket.html                     # Viewer E-Tiket Digital & Kalender .ics
 │   ├── demo.html                       # Sandbox Demo Interaktif
@@ -32,7 +32,7 @@ Desain/
 │       ├── owner.css                   # [NEW] Style panel owner, analitik omset & live logo uploader
 │       ├── practitioner.css            # [NEW] Style workspace dokter, visualizer Body Pain Map, audio chime
 │       ├── patient-portal.css          # [NEW] Style portal pasien, live queue tracker & riwayat booking
-│       ├── admin.css                   # Live queue card, tabel SIMRS bridging, kasir POS
+│       ├── receptionist.css            # [NEW] Live queue card, tabel SIMRS bridging, kasir POS
 │       ├── ticket.css                  # Kartu digital ticket, perforated divider, QR canvas
 │       ├── hero.css                    # Visual hero, phone mockup, live operations card
 │       ├── onboarding.css              # Form registrasi tenant, spesialisasi, animasi provisioning
@@ -64,7 +64,7 @@ Desain/
     │   ├── owner.controller.js         # [NEW] OwnerController: Analitik multi-cabang, live logo uploader, profil bisnis
     │   ├── practitioner.controller.js  # [NEW] PractitionerController: Timeline dokter, calling chime, body pain map
     │   ├── patient-portal.controller.js# [NEW] PatientPortalController: Active ticket, live queue, reschedule/cancel
-    │   ├── admin.controller.js         # AdminController: Live queue calling, kasir POS & walk-in dispatcher
+    │   ├── receptionist.controller.js  # [NEW] ReceptionistController: Live queue calling, kasir POS & walk-in dispatcher
     │   ├── ui.controller.js            # UIController: Navbar scroll, mobile drawer, toast feedback
     │   ├── onboarding.controller.js    # OnboardingController: Pendaftaran tenant & simulasi provisioning
     │   ├── demo.controller.js          # DemoController: Wizard 5-langkah, Pain Map, WhatsApp 2-way, ROI
@@ -75,7 +75,7 @@ Desain/
         ├── owner.js                    # [NEW] Entry point untuk owner.html
         ├── practitioner.js             # [NEW] Entry point untuk practitioner.html
         ├── patient-portal.js           # [NEW] Entry point untuk patient-portal.html
-        ├── admin.js                    # Entry point untuk admin.html
+        ├── receptionist.js             # [NEW] Entry point untuk receptionist.html
         ├── main.js                     # Entry point untuk index.html
         ├── onboarding.js               # Entry point untuk onboarding.html
         ├── demo.js                     # Entry point untuk demo.html
@@ -93,7 +93,7 @@ Pada halaman [`sign-in.html`](sign-in.html), tersedia tombol **⚡ 1-Click Quick
 |---|---|---|---|---|
 | 👑 **Owner / Super Admin** | `owner@cliniva.com` | `cliniva2026` | [`owner.html`](owner.html) | Analitik omset konsolidasian, ganti nama & logo resmi klinik dengan live preview (FR-CONFIG-01), profil bisnis adaptif (FR-CONFIG-03), audit log |
 | 🧑‍⚕️ **Practitioner / Dokter** | `dr.lim@orchardclinic.sg` | `cliniva2026` | [`practitioner.html`](practitioner.html) | Timeline konsultasi harian dokter, visualizer interaktif Body Pain Map, pemanggil antrean audio chime ke ruang periksa, pembaruan status sesi |
-| 🛎️ **Receptionist / Front Desk** | `reception@orchardclinic.sg` | `cliniva2026` | [`admin.html`](admin.html) | Papan antrean ruang tunggu (*Live Queue*), kasir POS & pelunasan tagihan sesi, bridging dokumen SIMRS, pendaftaran pasien walk-in |
+| 🛎️ **Receptionist / Front Desk** | `reception@orchardclinic.sg` | `cliniva2026` | [`receptionist.html`](receptionist.html) | Papan antrean ruang tunggu (*Live Queue*), kasir POS & pelunasan tagihan sesi, bridging dokumen SIMRS, pendaftaran pasien walk-in |
 | 👤 **User / Pasien** | `+65 8123 4567` / `amanda@tan.sg` | OTP `123456` / `cliniva2026` | [`patient-portal.html`](patient-portal.html) | E-Tiket Digital & barcode QR Check-in kiosk, pelacak nomor antrean live, riwayat reservasi kunjungan, reschedule/batal mandiri |
 
 ---
@@ -101,7 +101,7 @@ Pada halaman [`sign-in.html`](sign-in.html), tersedia tombol **⚡ 1-Click Quick
 ## ⚡ Penerapan Prinsip SOLID
 
 1. **Single Responsibility Principle (SRP)**:
-   - Setiap berkas CSS hanya mengatur 1 komponen visual (`owner.css`, `practitioner.css`, `patient-portal.css`, `admin.css`, `auth.css`).
+   - Setiap berkas CSS hanya mengatur 1 komponen visual (`owner.css`, `practitioner.css`, `patient-portal.css`, `receptionist.css`, `auth.css`).
    - Setiap JavaScript Service hanya melayani 1 domain fungsional (`auth.service.js` untuk otentikasi & proteksi sesi, `soundService` untuk sintesis audio chime, `storageService` untuk persistensi).
    - Setiap Controller hanya bertanggung jawab atas interaksi DOM halaman spesifik tersebut.
 2. **Open/Closed Principle (OCP)**:

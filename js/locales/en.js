@@ -422,6 +422,53 @@ export const en = {
   "demo.walkin.service": "Select Fast-Track Clinical Service",
   "demo.walkin.submitBtn": "Issue Walk-In Queue Ticket →",
 
+  // Services Cards
+  "demo.service.physio.title": "Physiotherapy & Spine Rehab",
+  "demo.service.physio.meta": "60 min · SGD 120 / MYR 280",
+  "demo.service.physio.desc": "Postural assessment, manual decompression therapy.",
+  "demo.service.tcm.title": "Acupuncture & Nerve Stimulator",
+  "demo.service.tcm.meta": "45 min · SGD 90 / MYR 210",
+  "demo.service.tcm.desc": "Pulse diagnosis, electro-acupuncture needle therapy.",
+  "demo.service.wellness.title": "Deep Tissue & Herbal Aroma",
+  "demo.service.wellness.meta": "75 min · SGD 150 / MYR 350",
+  "demo.service.wellness.desc": "Myofascial release with essential herbal oil infusion.",
+  "demo.service.referral.title": "Faskes / Insurance Bridging",
+  "demo.service.referral.meta": "30 min · Ephemeral Proxy",
+  "demo.service.referral.desc": "Forward BPJS/Insurance referral document to SIMRS.",
+
+  // WhatsApp Message Bubble
+  "demo.wa.clinicName": "Orchard Wellness & Therapy Clinic",
+  "demo.wa.hello": "Hello",
+  "demo.wa.msgConfirmed": "your appointment is confirmed! 🎉",
+  "demo.wa.labelSchedule": "Schedule:",
+  "demo.wa.scheduleVal": "Wed, 02 Sep 2026 • 10:30 SGT (UTC+8)",
+  "demo.wa.labelPractitioner": "Practitioner:",
+  "demo.wa.labelLocation": "Location:",
+  "demo.wa.locationVal": "Paragon Medical Orchard #14-02, Singapore",
+  "demo.wa.labelTicketCode": "Ticket Code:",
+  "demo.wa.labelDeposit": "Deposit:",
+  "demo.wa.depositVal": "SGD 30.00 (Paid)",
+  "demo.wa.outgoingReply": "✅ Yes, I confirm I will attend on time.",
+  "demo.wa.incomingBotReply": "Thank you Amanda! Your attendance status has been confirmed at the clinic reception.",
+
+  // Doctor Procedures & Patient Complaints
+  "demo.doc.proc.decompression": "Decompression Spine",
+  "demo.doc.proc.shockwave": "Shockwave 2000 Pulses",
+  "demo.doc.proc.coreStability": "Core Stability Exercise",
+  "demo.doc.proc.homecareGuide": "Homecare Exercise Guide",
+  "demo.doc.historyLabel": "Patient History:",
+  "demo.doc.historyText": "Desk worker >8 hrs/day. Pain worsens upon forward bending. No prior fractures.",
+  "demo.doc.complaint.amanda": "Complaint: Sharp lower back pain (L4-L5) radiating to right thigh.",
+  "demo.doc.complaint.farhan": "Complaint: Post-operative right knee ACL recovery.",
+  "demo.doc.complaint.cynthia": "Complaint: Neck stiffness and tension headache from desk work.",
+
+  // Receptionist Timeline
+  "demo.rec.timeline.time": "TIME",
+  "demo.rec.timeline.statusCheckedIn": "Checked-In",
+  "demo.rec.timeline.statusInTherapy": "In-Therapy",
+  "demo.rec.timeline.statusConfirmed": "Confirmed",
+  "demo.rec.timeline.statusDepositOk": "Deposit OK",
+
   // Onboarding
   "onboarding.title": "Clinic Onboarding & Super Admin Setup — Cliniva",
   "onboarding.subtitle": "Create the initial Super Admin account for your clinic. The system will provision an isolated Tenant ID and scheduling portal in minutes.",

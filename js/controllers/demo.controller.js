@@ -560,13 +560,13 @@ export class DemoController {
         if (chatBody) {
           const reply = document.createElement("div");
           reply.className = "wa-msg wa-outgoing";
-          reply.textContent = "✅ Yes, I confirm I will attend on time.";
+          reply.textContent = i18nService.t("demo.wa.outgoingReply") || "✅ Yes, I confirm I will attend on time.";
           chatBody.appendChild(reply);
 
           setTimeout(() => {
             const botReply = document.createElement("div");
             botReply.className = "wa-msg wa-incoming";
-            botReply.textContent = "Thank you Amanda! Your attendance status has been confirmed at the clinic reception.";
+            botReply.textContent = i18nService.t("demo.wa.incomingBotReply") || "Thank you Amanda! Your attendance status has been confirmed at the clinic reception.";
             chatBody.appendChild(botReply);
           }, 600);
         }

@@ -422,6 +422,53 @@ export const ms = {
   "demo.walkin.service": "Pilih Perkhidmatan Klinikal Pantas",
   "demo.walkin.submitBtn": "Keluarkan Tiket Giliran Walk-In →",
 
+  // Services Cards
+  "demo.service.physio.title": "Fisioterapi & Pemulihan Tulang Belakang",
+  "demo.service.physio.meta": "60 min · SGD 120 / MYR 280",
+  "demo.service.physio.desc": "Penilaian postur, terapi dekompresi manual.",
+  "demo.service.tcm.title": "Akupunktur & Stimulator Saraf",
+  "demo.service.tcm.meta": "45 min · SGD 90 / MYR 210",
+  "demo.service.tcm.desc": "Diagnosis nadi, terapi jarum elektro-akupunktur.",
+  "demo.service.wellness.title": "Tisu Dalam & Aroma Herba",
+  "demo.service.wellness.meta": "75 min · SGD 150 / MYR 350",
+  "demo.service.wellness.desc": "Pelepasan myofascial dengan infusi minyak herba pati.",
+  "demo.service.referral.title": "Integrasi Faskes / Insurans",
+  "demo.service.referral.meta": "30 min · Proksi Ephemeral",
+  "demo.service.referral.desc": "Majukan dokumen rujukan BPJS/Insurans ke SIMRS.",
+
+  // WhatsApp Message Bubble
+  "demo.wa.clinicName": "Klinik Kesejahteraan & Terapi Orchard",
+  "demo.wa.hello": "Helo",
+  "demo.wa.msgConfirmed": "temujanji anda telah disahkan! 🎉",
+  "demo.wa.labelSchedule": "Jadual:",
+  "demo.wa.scheduleVal": "Rabu, 02 Sep 2026 • 10:30 SGT (UTC+8)",
+  "demo.wa.labelPractitioner": "Pengamal:",
+  "demo.wa.labelLocation": "Lokasi:",
+  "demo.wa.locationVal": "Paragon Medical Orchard #14-02, Singapura",
+  "demo.wa.labelTicketCode": "Kod Tiket:",
+  "demo.wa.labelDeposit": "Deposit:",
+  "demo.wa.depositVal": "SGD 30.00 (Dibayar)",
+  "demo.wa.outgoingReply": "✅ Ya, saya sahkan akan hadir tepat pada masanya.",
+  "demo.wa.incomingBotReply": "Terima kasih Amanda! Status kehadiran anda telah disahkan di kaunter penerimaan tetamu klinik.",
+
+  // Doctor Procedures & Patient Complaints
+  "demo.doc.proc.decompression": "Dekompresi Tulang Belakang",
+  "demo.doc.proc.shockwave": "Gelombang Kejutan 2000 Denyutan",
+  "demo.doc.proc.coreStability": "Senaman Kestabilan Teras",
+  "demo.doc.proc.homecareGuide": "Panduan Senaman Rawatan Rumah",
+  "demo.doc.historyLabel": "Sejarah Pesakit:",
+  "demo.doc.historyText": "Pekerja meja >8 jam/hari. Sakit bertambah teruk semasa membongkok ke hadapan. Tiada patah tulang terdahulu.",
+  "demo.doc.complaint.amanda": "Aduan: Sakit tajam bahagian bawah pinggang (L4-L5) merebak ke paha kanan.",
+  "demo.doc.complaint.farhan": "Aduan: Pemulihan ACL lutut kanan selepas pembedahan.",
+  "demo.doc.complaint.cynthia": "Aduan: Kekejangan leher dan sakit kepala ketegangan akibat kerja meja.",
+
+  // Receptionist Timeline
+  "demo.rec.timeline.time": "MASA",
+  "demo.rec.timeline.statusCheckedIn": "Mendaftar Masuk",
+  "demo.rec.timeline.statusInTherapy": "Sedang Terapi",
+  "demo.rec.timeline.statusConfirmed": "Disahkan",
+  "demo.rec.timeline.statusDepositOk": "Deposit OK",
+
   // Onboarding
   "onboarding.title": "Penyertaan Klinik & Persediaan Pentadbir Utama — Cliniva",
   "onboarding.subtitle": "Cipta akaun Pentadbir Utama awal untuk klinik anda. Sistem akan memperuntukkan ID Penyewa terasing dan portal jadual dalam beberapa minit.",

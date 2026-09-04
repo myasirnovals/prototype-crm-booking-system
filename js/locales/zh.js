@@ -422,6 +422,53 @@ export const zh = {
   "demo.walkin.service": "选择加急理疗服务",
   "demo.walkin.submitBtn": "出具现场排队小票 →",
 
+  // Services Cards
+  "demo.service.physio.title": "物理治疗与脊柱康复",
+  "demo.service.physio.meta": "60 分钟 · SGD 120 / MYR 280",
+  "demo.service.physio.desc": "体态评估，手法减压牵引理疗。",
+  "demo.service.tcm.title": "中医针灸与神经电刺激",
+  "demo.service.tcm.meta": "45 分钟 · SGD 90 / MYR 210",
+  "demo.service.tcm.desc": "脉诊辨证，电针穴位神经调理。",
+  "demo.service.wellness.title": "深层组织排酸与本草芳疗",
+  "demo.service.wellness.meta": "75 分钟 · SGD 150 / MYR 350",
+  "demo.service.wellness.desc": "筋膜放松释放，搭配天然本草精油熏蒸渗透。",
+  "demo.service.referral.title": "医保/商业保险转诊网桥",
+  "demo.service.referral.meta": "30 分钟 · 临时代理",
+  "demo.service.referral.desc": "自动对接转诊单据并安全桥接至医院 SIMRS 核心。",
+
+  // WhatsApp Message Bubble
+  "demo.wa.clinicName": "乌节路综合健康理疗诊所",
+  "demo.wa.hello": "您好",
+  "demo.wa.msgConfirmed": "您的就诊预约已成功确认！🎉",
+  "demo.wa.labelSchedule": "就诊时间：",
+  "demo.wa.scheduleVal": "2026年9月2日 周三 • 10:30 SGT (UTC+8)",
+  "demo.wa.labelPractitioner": "主治医师：",
+  "demo.wa.labelLocation": "就诊地址：",
+  "demo.wa.locationVal": "新加坡百丽宫医疗中心 (Paragon Medical) #14-02",
+  "demo.wa.labelTicketCode": "就诊代码：",
+  "demo.wa.labelDeposit": "预付定金：",
+  "demo.wa.depositVal": "SGD 30.00 (已支付)",
+  "demo.wa.outgoingReply": "✅ 收到，我确认将准时前往就诊。",
+  "demo.wa.incomingBotReply": "感谢 Amanda！您的到店确认信息已同步至诊所前台接待系统。",
+
+  // Doctor Procedures & Patient Complaints
+  "demo.doc.proc.decompression": "脊柱减压牵引治疗",
+  "demo.doc.proc.shockwave": "体外冲击波 2000 脉冲",
+  "demo.doc.proc.coreStability": "核心肌群稳定性运动训练",
+  "demo.doc.proc.homecareGuide": "居家日常康复指导手册",
+  "demo.doc.historyLabel": "既往病史：",
+  "demo.doc.historyText": "伏案办公每日超8小时。向前弯腰时腰部疼痛加剧。无既往骨折外伤史。",
+  "demo.doc.complaint.amanda": "主诉：下腰部持续隐痛伴针刺感（L4-L5），向右侧大腿放射。",
+  "demo.doc.complaint.farhan": "主诉：右膝前交叉韧带 (ACL) 重建术后康复期功能障碍。",
+  "demo.doc.complaint.cynthia": "主诉：颈部僵硬不适伴紧张性头痛，伏案时加重。",
+
+  // Receptionist Timeline
+  "demo.rec.timeline.time": "时间",
+  "demo.rec.timeline.statusCheckedIn": "已签到候诊",
+  "demo.rec.timeline.statusInTherapy": "治疗中",
+  "demo.rec.timeline.statusConfirmed": "已确认",
+  "demo.rec.timeline.statusDepositOk": "定金已付",
+
   // Onboarding
   "onboarding.title": "诊所入驻与超级管理员开户 — Cliniva",
   "onboarding.subtitle": "为您开设诊所首个超级管理员账号。系统将在数分钟内自动部署专属租户ID与独立预约排班门户。",

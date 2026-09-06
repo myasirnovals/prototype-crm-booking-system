@@ -47,6 +47,14 @@ export class PatientBookingController {
     const session = authService.requireAuth([USER_ROLES.USER]);
     if (!session) return;
 
+    // Sync active template and draft with initial selected branch
+    bookingService.setActiveTemplate(this.selectedBranch.templateId || "wellness");
+    this.bookingDraft.branchId = this.selectedBranch.id;
+    this.bookingDraft.branchName = this.selectedBranch.name;
+    this.bookingDraft.branchAddress = this.selectedBranch.address;
+    this.bookingDraft.currency = this.selectedBranch.currency;
+    this.bookingDraft.templateType = this.selectedBranch.templateId || "wellness";
+
     this.renderPatientHeader(session.user);
     this.initInteractiveMap();
     this.setupBranchPills();
@@ -106,7 +114,12 @@ export class PatientBookingController {
     ];
 
     const stored = storageService.get(this.BRANCHES_KEY, null);
-    if (!stored || !Array.isArray(stored) || !stored[0]?.lat || stored[1]?.templateId === "tcm") {
+    const isValid = stored && Array.isArray(stored) && stored.length >= 3 &&
+      stored.find(b => b.id === "sg-orchard")?.templateId === "wellness" &&
+      stored.find(b => b.id === "my-kl")?.templateId === "physio" &&
+      stored.find(b => b.id === "my-penang")?.templateId === "nutrition";
+
+    if (!isValid) {
       storageService.set(this.BRANCHES_KEY, defaultBranches);
       return defaultBranches;
     }
@@ -438,6 +451,10 @@ export class PatientBookingController {
       setTimeout(() => {
         this.map.invalidateSize();
       }, 150);
+    }
+
+    if (stepNumber === 3) {
+      this.renderDynamicIntakeForm();
     }
 
     window.scrollTo({ top: 0, behavior: "smooth" });

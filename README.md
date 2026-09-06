@@ -1,4 +1,4 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.2.0
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.3.0-beta.1 [PRE-RELEASE]
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 
@@ -133,6 +133,26 @@ Lalu buka:
 ---
 
 ## 📦 Riwayat Rilis & Semantic Versioning (SemVer)
+
+### 🏷️ V1.3.0-beta.1 (Pre-Release / Beta) ⚠️ *Unstable Release*
+*Rilis pra-rilis (pre-release) arsitektur Dynamic Multi-Template Intake Form, integrasi peta interaktif Leaflet.js, serta adaptasi formulir klinis khusus untuk Fisioterapi, Nutrisi Klinis, dan Wellness Spa.*
+
+> ⚠️ **Status Rilis: PRE-RELEASE / UNSTABLE**  
+> Versi ini belum berstatus *Stable Release*. Versi ini dirilis untuk pengujian fungsional dan validasi alur kerja klinis di lapangan sebelum finalisasi rilis stabil `v1.3.0`.
+
+- **🚀 New Features & Architecture (Minor)**:
+  - **Dynamic Multi-Template Intake System**: Arsitektur modular form asupan klinis adaptif yang memuat komponen form spesifik berdasarkan klinik/cabang yang dipilih:
+    - *Wellness & Luxury Spa* (`wellness`): Pemilihan minyak aromaterapi esensial, level tekanan pijatan, area fokus tubuh, preferensi gender terapis, dan suasana ruangan.
+    - *Physiotherapy & Sports Rehab* (`physio`): Pemetaan titik nyeri muskuloskeletal, durasi gejala (*acute, subacute, chronic*), slider skala nyeri VAS (1–10) interaktif, dan simulasi unggah berkas rujukan/radiologi.
+    - *Clinical Nutrition & Dietetics* (`nutrition`): Pengukuran biometrik, **kalkulator BMI real-time** dengan klasifikasi warna instan, target nutrisi klinis, pola diet, dan filter alergi makanan (*allergy chips*).
+    - *Traditional Chinese Medicine* (`tcm`): Titik meridian interaktif, skala ketidaknyamanan Qi, dan catatan sensitivitas suhu.
+  - **Isolated Dynamic Form Component (`IntakeFormComponent`)**: Komponen mandiri dengan rendering terisolasi, reaktif terhadap input pengguna, dan ekstraksi data cerdas (`getIntakeData()`).
+  - **Interactive Leaflet.js Clinic Map Locator**: Integrasi peta interaktif dengan *custom pins*, kalkulasi jarak GPS real-time, dan sinkronisasi cabang ke formulir reservasi.
+  - **Dynamic Digital E-Ticket & Owner Portal Parity**: Penyesuaian label tiket digital (`ticket.html`) serta katalog profil bisnis pada portal Owner (`owner.html`).
+  - **100% i18n Synchronization**: Pembaruan kamus bahasa EN, MS, dan ZH untuk seluruh spesialisasi template baru.
+- **🩹 Fixes & Hardening (Patch)**:
+  - Pembersihan otomatis data sesi usang pada `localStorage` browser untuk mencegah konflik pemetaan template lama.
+  - Penambahan jaminan re-render form dinamis saat transisi langkah (`goToStep(3)`).
 
 ### 🏷️ V1.2.0 (Minor Release)
 *Rilis pembaruan modular arsitektur SOLID, standarisasi meja kerja Resepsionis, dan penguatan UI multi-peran.*

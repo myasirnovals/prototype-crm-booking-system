@@ -33,21 +33,28 @@ class I18nService {
     return dict[key] || this.locales.en[key] || fallback || key;
   }
 
+  translate(key, fallback = "") {
+    return this.t(key, fallback);
+  }
+
   setLanguage(lang) {
     if (!this.locales[lang]) return;
     this.currentLang = lang;
     storageService.set("cliniva_lang", lang);
-    this.applyTranslations();
-    this.updateSwitcherUI();
+    if (typeof document !== "undefined") {
+      this.applyTranslations();
+      this.updateSwitcherUI();
 
-    document.dispatchEvent(
-      new CustomEvent("cliniva:languageChanged", {
-        detail: { lang, t: (k, f) => this.t(k, f) }
-      })
-    );
+      document.dispatchEvent(
+        new CustomEvent("cliniva:languageChanged", {
+          detail: { lang, t: (k, f) => this.t(k, f) }
+        })
+      );
+    }
   }
 
-  applyTranslations(root = document) {
+  applyTranslations(root = (typeof document !== "undefined" ? document : null)) {
+    if (!root) return;
     // Update text / innerHTML
     const elements = root.querySelectorAll("[data-i18n]");
     elements.forEach((el) => {
@@ -65,6 +72,26 @@ class I18nService {
       const translation = this.t(key);
       if (translation) {
         el.placeholder = translation;
+      }
+    });
+
+    // Update title attributes
+    const titles = root.querySelectorAll("[data-i18n-title]");
+    titles.forEach((el) => {
+      const key = el.dataset.i18nTitle;
+      const translation = this.t(key);
+      if (translation) {
+        el.title = translation;
+      }
+    });
+
+    // Update aria-label attributes
+    const arias = root.querySelectorAll("[data-i18n-aria-label]");
+    arias.forEach((el) => {
+      const key = el.dataset.i18nAriaLabel;
+      const translation = this.t(key);
+      if (translation) {
+        el.setAttribute("aria-label", translation);
       }
     });
 
@@ -96,11 +123,17 @@ class I18nService {
     const selects = document.querySelectorAll(".lang-dropdown, .lang-select");
     selects.forEach((s) => {
       s.value = this.currentLang;
+      const optEn = s.querySelector('option[value="en"]');
+      const optZh = s.querySelector('option[value="zh"]');
+      const optMs = s.querySelector('option[value="ms"]');
+      if (optEn) optEn.textContent = "🇬🇧 English";
+      if (optZh) optZh.textContent = "🇸🇬 华语 (Singapura)";
+      if (optMs) optMs.textContent = "🇲🇾 Bahasa Melayu (Malaysia)";
     });
 
     const activeBadges = document.querySelectorAll(".current-lang-text");
     activeBadges.forEach((b) => {
-      const label = this.currentLang === "zh" ? "🇨🇳 中文" : this.currentLang === "ms" ? "🇲🇾 Melayu" : "🇬🇧 English";
+      const label = this.currentLang === "zh" ? "🇸🇬 华语 (Singapura)" : this.currentLang === "ms" ? "🇲🇾 Bahasa Melayu (Malaysia)" : "🇬🇧 English";
       b.textContent = label;
     });
   }

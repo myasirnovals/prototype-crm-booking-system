@@ -6,6 +6,7 @@
 
 import { getTemplateById } from "../config/templates/index.js";
 import { soundService } from "../services/sound.service.js";
+import { i18nService } from "../services/i18n.service.js";
 
 export class IntakeFormComponent {
   constructor() {
@@ -13,6 +14,20 @@ export class IntakeFormComponent {
     this.currentData = {};
     this.container = null;
     this.onChange = null;
+
+    // Reactively re-render whenever language changes
+    if (typeof document !== "undefined") {
+      document.addEventListener("cliniva:languageChanged", () => {
+        if (this.container) {
+          this.render();
+          this.bindEvents();
+        }
+      });
+    }
+  }
+
+  t(key, fallback = "") {
+    return i18nService.t(key, fallback);
   }
 
   /**
@@ -77,42 +92,42 @@ export class IntakeFormComponent {
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
           <div>
             <div style="display:inline-flex; align-items:center; gap:6px; background:#fef08a; color:#854d0e; font-size:11px; font-weight:800; padding:3px 10px; border-radius:var(--radius-full); text-transform:uppercase; margin-bottom:6px;">
-              🌸 Wellness &amp; Luxury Spa Template
+              ${this.t("intake.wellness.badge", "🌸 Wellness & Luxury Spa Template")}
             </div>
-            <h3 style="margin:0; font-size:18px; color:#854d0e;">Aromatherapy &amp; Therapy Preferences</h3>
-            <p style="margin:4px 0 0; font-size:13px; color:#a16207;">Personalize your bespoke spa experience with preferred essential oils and customized pressure.</p>
+            <h3 style="margin:0; font-size:18px; color:#854d0e;">${this.t("intake.wellness.title", "Aromatherapy & Therapy Preferences")}</h3>
+            <p style="margin:4px 0 0; font-size:13px; color:#a16207;">${this.t("intake.wellness.desc", "Personalize your bespoke spa experience with preferred essential oils and customized pressure.")}</p>
           </div>
-          <span class="pill" style="background:#fff; color:#854d0e; border:1px solid #fef08a; font-size:11px; font-weight:700;">Relaxation Profile</span>
+          <span class="pill" style="background:#fff; color:#854d0e; border:1px solid #fef08a; font-size:11px; font-weight:700;">${this.t("intake.common.clinicalAssessment", "Relaxation Profile")}</span>
         </div>
 
         <div style="display:grid; grid-template-columns:1fr; gap:20px;">
           <!-- Aromatherapy Oil Selection -->
           <div>
             <label style="font-size:12px; font-weight:800; color:#854d0e; text-transform:uppercase; display:block; margin-bottom:10px;">
-              1. Aromatherapy Essential Oil Blend (Select 1 preferred essence)
+              ${this.t("intake.wellness.aromaTitle", "1. Aromatherapy Essential Oil Blend (Select 1 preferred essence)")}
             </label>
             <div class="aroma-oil-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px;">
               <div class="aroma-choice-card selected" data-oil="Balinese Lemongrass" style="border:2px solid var(--primary); background:#fff; border-radius:var(--radius-md); padding:12px 14px; cursor:pointer; transition:all 0.2s;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <strong style="font-size:13px; color:var(--primary-dark);">🌱 Balinese Lemongrass</strong>
+                  <strong style="font-size:13px; color:var(--primary-dark);">${this.t("intake.wellness.oilLemongrass", "🌱 Balinese Lemongrass")}</strong>
                   <span class="pill" style="font-size:9px; background:#f0fdf4; color:#16a34a; font-weight:800;">Popular</span>
                 </div>
-                <small style="font-size:11px; color:var(--muted); line-height:1.4; display:block; margin-top:4px;">Energizing botanical blend for micro-circulation, detox, and fatigue relief.</small>
+                <small style="font-size:11px; color:var(--muted); line-height:1.4; display:block; margin-top:4px;">${this.t("intake.wellness.oilLemongrassDesc", "Energizing botanical blend for micro-circulation, detox, and fatigue relief.")}</small>
               </div>
 
               <div class="aroma-choice-card" data-oil="French Lavender" style="border:1.5px solid #e2e8f0; background:#fff; border-radius:var(--radius-md); padding:12px 14px; cursor:pointer; transition:all 0.2s;">
-                <strong style="font-size:13px; color:var(--text); display:block;">🌿 French Lavender</strong>
-                <small style="font-size:11px; color:var(--muted); line-height:1.4; display:block; margin-top:4px;">Deep nervous system calming, stress reduction, and restful sleep support.</small>
+                <strong style="font-size:13px; color:var(--text); display:block;">${this.t("intake.wellness.oilLavender", "🌿 French Lavender")}</strong>
+                <small style="font-size:11px; color:var(--muted); line-height:1.4; display:block; margin-top:4px;">${this.t("intake.wellness.oilLavenderDesc", "Deep nervous system calming, stress reduction, and restful sleep support.")}</small>
               </div>
 
               <div class="aroma-choice-card" data-oil="Eucalyptus Radiata" style="border:1.5px solid #e2e8f0; background:#fff; border-radius:var(--radius-md); padding:12px 14px; cursor:pointer; transition:all 0.2s;">
-                <strong style="font-size:13px; color:var(--text); display:block;">🍃 Eucalyptus Radiata</strong>
-                <small style="font-size:11px; color:var(--muted); line-height:1.4; display:block; margin-top:4px;">Muscle stiffness easing, joint tension relief &amp; respiratory clarity.</small>
+                <strong style="font-size:13px; color:var(--text); display:block;">${this.t("intake.wellness.oilEucalyptus", "🍃 Eucalyptus Radiata")}</strong>
+                <small style="font-size:11px; color:var(--muted); line-height:1.4; display:block; margin-top:4px;">${this.t("intake.wellness.oilEucalyptusDesc", "Muscle stiffness easing, joint tension relief & respiratory clarity.")}</small>
               </div>
 
               <div class="aroma-choice-card" data-oil="Tropical Frangipani" style="border:1.5px solid #e2e8f0; background:#fff; border-radius:var(--radius-md); padding:12px 14px; cursor:pointer; transition:all 0.2s;">
-                <strong style="font-size:13px; color:var(--text); display:block;">🌸 Tropical Frangipani</strong>
-                <small style="font-size:11px; color:var(--muted); line-height:1.4; display:block; margin-top:4px;">Nourishing floral glow, skin softening, and luxurious exotic indulgence.</small>
+                <strong style="font-size:13px; color:var(--text); display:block;">${this.t("intake.wellness.oilFrangipani", "🌸 Tropical Frangipani")}</strong>
+                <small style="font-size:11px; color:var(--muted); line-height:1.4; display:block; margin-top:4px;">${this.t("intake.wellness.oilFrangipaniDesc", "Nourishing floral glow, skin softening, and luxurious exotic indulgence.")}</small>
               </div>
             </div>
           </div>
@@ -120,20 +135,20 @@ export class IntakeFormComponent {
           <!-- Massage Pressure Level -->
           <div>
             <label style="font-size:12px; font-weight:800; color:#854d0e; text-transform:uppercase; display:block; margin-bottom:8px;">
-              2. Desired Massage Pressure Level
+              ${this.t("intake.wellness.pressureTitle", "2. Desired Massage Pressure Level")}
             </label>
             <div class="pressure-pills-row" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
               <button type="button" class="pressure-pill btn btn-soft" data-pressure="Soft" style="text-align:center; padding:12px 8px; background:#fff; border:1px solid #e2e8f0; border-radius:var(--radius-md);">
-                <div style="font-size:13px; font-weight:700;">Gentle / Soft</div>
-                <div style="font-size:11px; color:var(--muted); margin-top:2px;">Light Swedish strokes</div>
+                <div style="font-size:13px; font-weight:700;">${this.t("intake.wellness.pressureSoft", "Gentle / Soft")}</div>
+                <div style="font-size:11px; color:var(--muted); margin-top:2px;">${this.t("intake.wellness.pressureSoftDesc", "Light Swedish strokes")}</div>
               </button>
               <button type="button" class="pressure-pill btn btn-soft active" data-pressure="Medium" style="text-align:center; padding:12px 8px; background:#fff; border:2px solid var(--primary); border-radius:var(--radius-md); color:var(--primary-dark);">
-                <div style="font-size:13px; font-weight:800;">Medium</div>
-                <div style="font-size:11px; color:var(--primary); margin-top:2px;">Balanced rhythmic tension release</div>
+                <div style="font-size:13px; font-weight:800;">${this.t("intake.wellness.pressureMedium", "Medium")}</div>
+                <div style="font-size:11px; color:var(--primary); margin-top:2px;">${this.t("intake.wellness.pressureMediumDesc", "Balanced rhythmic tension release")}</div>
               </button>
               <button type="button" class="pressure-pill btn btn-soft" data-pressure="Deep" style="text-align:center; padding:12px 8px; background:#fff; border:1px solid #e2e8f0; border-radius:var(--radius-md);">
-                <div style="font-size:13px; font-weight:700;">Deep / Firm</div>
-                <div style="font-size:11px; color:var(--muted); margin-top:2px;">Intensive trigger point work</div>
+                <div style="font-size:13px; font-weight:700;">${this.t("intake.wellness.pressureDeep", "Deep / Firm")}</div>
+                <div style="font-size:11px; color:var(--muted); margin-top:2px;">${this.t("intake.wellness.pressureDeepDesc", "Intensive trigger point work")}</div>
               </button>
             </div>
           </div>
@@ -141,14 +156,14 @@ export class IntakeFormComponent {
           <!-- Focus Areas (Multi-select) -->
           <div>
             <label style="font-size:12px; font-weight:800; color:#854d0e; text-transform:uppercase; display:block; margin-bottom:8px;">
-              3. Target Focus Areas (Tap all that apply)
+              ${this.t("intake.wellness.focusTitle", "3. Target Focus Areas (Tap all that apply)")}
             </label>
             <div class="spa-focus-tags" style="display:flex; flex-wrap:wrap; gap:8px;">
-              <span class="spa-focus-tag active" data-focus="Full Body Balanced" style="padding:7px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--primary); background:var(--primary); color:#fff; cursor:pointer;">✨ Full Body Balanced</span>
-              <span class="spa-focus-tag active" data-focus="Upper Back &amp; Shoulders" style="padding:7px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--primary); background:var(--primary); color:#fff; cursor:pointer;">🧣 Upper Back &amp; Shoulders</span>
-              <span class="spa-focus-tag" data-focus="Lower Back &amp; Lumbar" style="padding:7px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--line); background:#fff; color:var(--text); cursor:pointer;">⚡ Lower Back &amp; Lumbar</span>
-              <span class="spa-focus-tag" data-focus="Legs &amp; Foot Reflex" style="padding:7px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--line); background:#fff; color:var(--text); cursor:pointer;">🦶 Legs &amp; Foot Reflex</span>
-              <span class="spa-focus-tag" data-focus="Head &amp; Scalp Release" style="padding:7px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--line); background:#fff; color:var(--text); cursor:pointer;">💆 Head &amp; Scalp Release</span>
+              <span class="spa-focus-tag active" data-focus="Full Body Balanced" style="padding:7px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--primary); background:var(--primary); color:#fff; cursor:pointer;">${this.t("intake.wellness.focusFullBody", "✨ Full Body Balanced")}</span>
+              <span class="spa-focus-tag active" data-focus="Upper Back & Shoulders" style="padding:7px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--primary); background:var(--primary); color:#fff; cursor:pointer;">${this.t("intake.wellness.focusUpperBack", "🧣 Upper Back & Shoulders")}</span>
+              <span class="spa-focus-tag" data-focus="Lower Back & Lumbar" style="padding:7px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--line); background:#fff; color:var(--text); cursor:pointer;">${this.t("intake.wellness.focusLowerBack", "⚡ Lower Back & Lumbar")}</span>
+              <span class="spa-focus-tag" data-focus="Legs & Foot Reflex" style="padding:7px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--line); background:#fff; color:var(--text); cursor:pointer;">${this.t("intake.wellness.focusLegs", "🦶 Legs & Foot Reflex")}</span>
+              <span class="spa-focus-tag" data-focus="Head & Scalp Release" style="padding:7px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid var(--line); background:#fff; color:var(--text); cursor:pointer;">${this.t("intake.wellness.focusHead", "💆 Head & Scalp Release")}</span>
             </div>
           </div>
 
@@ -156,22 +171,23 @@ export class IntakeFormComponent {
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
             <div>
               <label for="spaTherapistGender" style="font-size:12px; font-weight:800; color:#854d0e; text-transform:uppercase; display:block; margin-bottom:6px;">
-                Therapist Preference
+                ${this.t("intake.wellness.therapistTitle", "Therapist Preference")}
               </label>
               <select id="spaTherapistGender" class="input" style="width:100%; background:#fff;">
-                <option value="No Preference" selected>No Preference (Earliest Available)</option>
-                <option value="Female Therapist">Female Therapist Preferred</option>
-                <option value="Male Therapist">Male Therapist Preferred</option>
+                <option value="No Preference" selected>${this.t("intake.wellness.therapistAny", "Any Qualified Therapist")}</option>
+                <option value="Female Therapist">${this.t("intake.wellness.therapistFemale", "Female Therapist Preferred")}</option>
+                <option value="Male Therapist">${this.t("intake.wellness.therapistMale", "Male Therapist Preferred")}</option>
               </select>
             </div>
             <div>
               <label for="spaRoomAmbiance" style="font-size:12px; font-weight:800; color:#854d0e; text-transform:uppercase; display:block; margin-bottom:6px;">
-                Room Temperature &amp; Ambiance
+                ${this.t("intake.wellness.ambianceTitle", "Room Temperature & Ambiance")}
               </label>
               <select id="spaRoomAmbiance" class="input" style="width:100%; background:#fff;">
-                <option value="Standard Warm" selected>Cozy Warm (Warm Blankets &amp; Soft Light)</option>
-                <option value="Cool & Fresh">Cool &amp; Crisp Air Conditioning</option>
-                <option value="Muted Meditation">Dimmed Serenity &amp; Tibetan Singing Bowls</option>
+                <option value="Standard Warm" selected>${this.t("intake.wellness.ambianceFloral", "Cozy Warm (Warm Blankets & Soft Light)")}</option>
+                <option value="Cool & Fresh">${this.t("intake.wellness.ambianceZen", "Cool & Crisp Air Conditioning")}</option>
+                <option value="Muted Meditation">${this.t("intake.wellness.ambianceDim", "Dimmed Serenity & Singing Bowls")}</option>
+                <option value="Private Couple VIP">${this.t("intake.wellness.ambianceCouple", "Private Couple VIP (Jacuzzi enabled)")}</option>
               </select>
             </div>
           </div>
@@ -179,9 +195,9 @@ export class IntakeFormComponent {
           <!-- Allergies / Special Notes -->
           <div>
             <label for="spaSpecialNotes" style="font-size:12px; font-weight:800; color:#854d0e; text-transform:uppercase; display:block; margin-bottom:6px;">
-              Skin Allergies, Pregnancy or Sensitive Areas
+              ${this.t("intake.wellness.notesTitle", "Skin Allergies, Pregnancy or Sensitive Areas")}
             </label>
-            <textarea id="spaSpecialNotes" rows="3" class="input" style="width:100%; background:#fff;" placeholder="Mention any sensitive skin, nut oil allergies, bruised areas, or pregnancy...">No nut oils please. Extra focus on neck and shoulder knots from long desk hours.</textarea>
+            <textarea id="spaSpecialNotes" rows="3" class="input" style="width:100%; background:#fff;" placeholder="${this.t("intake.wellness.notesPlaceholder", "Mention any allergies, sensitive areas, or room temperature preferences...")}">No nut oils please. Extra focus on neck and shoulder knots from long desk hours.</textarea>
           </div>
         </div>
       </div>
@@ -197,12 +213,12 @@ export class IntakeFormComponent {
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
           <div>
             <div style="display:inline-flex; align-items:center; gap:6px; background:#bae6fd; color:#0369a1; font-size:11px; font-weight:800; padding:3px 10px; border-radius:var(--radius-full); text-transform:uppercase; margin-bottom:6px;">
-              🏃 Physiotherapy &amp; Rehab Template
+              ${this.t("intake.physio.badge", "🏃 Physiotherapy & Rehab Template")}
             </div>
-            <h3 style="margin:0; font-size:18px; color:#0369a1;">Musculoskeletal &amp; Pain Assessment</h3>
-            <p style="margin:4px 0 0; font-size:13px; color:#0284c7;">Locate your pain area, indicate symptom duration, and rate discomfort intensity.</p>
+            <h3 style="margin:0; font-size:18px; color:#0369a1;">${this.t("intake.physio.title", "Musculoskeletal & Pain Assessment")}</h3>
+            <p style="margin:4px 0 0; font-size:13px; color:#0284c7;">${this.t("intake.physio.desc", "Locate your pain area, indicate symptom duration, and rate discomfort intensity.")}</p>
           </div>
-          <span class="pill" style="background:#fff; color:#0284c7; border:1px solid #bae6fd; font-size:11px; font-weight:700;">Clinical Assessment</span>
+          <span class="pill" style="background:#fff; color:#0284c7; border:1px solid #bae6fd; font-size:11px; font-weight:700;">${this.t("intake.common.clinical", "Clinical Assessment")}</span>
         </div>
 
         <div style="display:grid; grid-template-columns:1fr; gap:20px;">
@@ -210,36 +226,36 @@ export class IntakeFormComponent {
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
               <label style="font-size:12px; font-weight:800; color:#0369a1; text-transform:uppercase; margin:0;">
-                1. Primary Pain / Injury Location
+                ${this.t("intake.physio.locTitle", "1. Primary Pain / Injury Location")}
               </label>
               <span id="selectedPhysioLocationBadge" class="pill" style="background:#0284c7; color:#fff; font-size:11px; font-weight:700;">
-                Lower Back (Lumbar)
+                ${this.t("intake.physio.locLumbar", "Lower Back (Lumbar)")}
               </span>
             </div>
             <div class="physio-location-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px;">
               <button type="button" class="physio-loc-btn btn btn-soft" data-loc="Neck (Cervical Spine)" style="padding:12px 10px; background:#fff; border:1px solid #bae6fd; text-align:center; border-radius:var(--radius-md);">
                 <span style="font-size:18px; display:block; margin-bottom:2px;">🦒</span>
-                <strong style="font-size:12px; color:var(--text);">Neck (Cervical)</strong>
+                <strong style="font-size:12px; color:var(--text);">${this.t("intake.physio.locNeck", "Neck (Cervical)")}</strong>
               </button>
               <button type="button" class="physio-loc-btn btn btn-soft" data-loc="Shoulder & Rotator Cuff" style="padding:12px 10px; background:#fff; border:1px solid #bae6fd; text-align:center; border-radius:var(--radius-md);">
                 <span style="font-size:18px; display:block; margin-bottom:2px;">💪</span>
-                <strong style="font-size:12px; color:var(--text);">Shoulder</strong>
+                <strong style="font-size:12px; color:var(--text);">${this.t("intake.physio.locShoulder", "Shoulder")}</strong>
               </button>
               <button type="button" class="physio-loc-btn btn btn-soft active" data-loc="Lower Back (Lumbar)" style="padding:12px 10px; background:#fff; border:2px solid #0284c7; text-align:center; border-radius:var(--radius-md);">
                 <span style="font-size:18px; display:block; margin-bottom:2px;">⚡</span>
-                <strong style="font-size:12px; color:#0284c7;">Lower Back</strong>
+                <strong style="font-size:12px; color:#0284c7;">${this.t("intake.physio.locLumbar", "Lower Back")}</strong>
               </button>
               <button type="button" class="physio-loc-btn btn btn-soft" data-loc="Knee Joint & Ligament" style="padding:12px 10px; background:#fff; border:1px solid #bae6fd; text-align:center; border-radius:var(--radius-md);">
                 <span style="font-size:18px; display:block; margin-bottom:2px;">🦵</span>
-                <strong style="font-size:12px; color:var(--text);">Knee Joint</strong>
+                <strong style="font-size:12px; color:var(--text);">${this.t("intake.physio.locKnee", "Knee Joint")}</strong>
               </button>
               <button type="button" class="physio-loc-btn btn btn-soft" data-loc="Ankle & Foot (Achilles)" style="padding:12px 10px; background:#fff; border:1px solid #bae6fd; text-align:center; border-radius:var(--radius-md);">
                 <span style="font-size:18px; display:block; margin-bottom:2px;">🦶</span>
-                <strong style="font-size:12px; color:var(--text);">Ankle / Foot</strong>
+                <strong style="font-size:12px; color:var(--text);">${this.t("intake.physio.locAnkle", "Ankle / Foot")}</strong>
               </button>
               <button type="button" class="physio-loc-btn btn btn-soft" data-loc="Hip & Pelvis" style="padding:12px 10px; background:#fff; border:1px solid #bae6fd; text-align:center; border-radius:var(--radius-md);">
                 <span style="font-size:18px; display:block; margin-bottom:2px;">🦴</span>
-                <strong style="font-size:12px; color:var(--text);">Hip &amp; Pelvis</strong>
+                <strong style="font-size:12px; color:var(--text);">${this.t("intake.physio.locHip", "Hip & Pelvis")}</strong>
               </button>
             </div>
           </div>
@@ -247,20 +263,20 @@ export class IntakeFormComponent {
           <!-- Symptom Duration (Radio Pills) -->
           <div>
             <label style="font-size:12px; font-weight:800; color:#0369a1; text-transform:uppercase; display:block; margin-bottom:8px;">
-              2. Onset &amp; Duration of Pain
+              ${this.t("intake.physio.onsetTitle", "2. Onset & Duration of Pain")}
             </label>
             <div class="physio-duration-row" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
               <div class="physio-dur-card" data-duration="Acute (< 1 week)" style="border:1.5px solid #bae6fd; background:#fff; border-radius:var(--radius-md); padding:12px; cursor:pointer; text-align:center;">
-                <strong style="font-size:13px; color:var(--text); display:block;">Acute</strong>
-                <small style="font-size:11px; color:var(--muted);">&lt; 1 week (recent onset)</small>
+                <strong style="font-size:13px; color:var(--text); display:block;">${this.t("intake.physio.onsetAcute", "Acute")}</strong>
+                <small style="font-size:11px; color:var(--muted);">${this.t("intake.physio.onsetAcuteDesc", "< 1 week (recent onset)")}</small>
               </div>
               <div class="physio-dur-card selected" data-duration="Subacute (1 - 4 weeks)" style="border:2px solid #0284c7; background:#fff; border-radius:var(--radius-md); padding:12px; cursor:pointer; text-align:center;">
-                <strong style="font-size:13px; color:#0284c7; display:block;">Subacute</strong>
-                <small style="font-size:11px; color:#0284c7;">1 - 4 weeks ongoing</small>
+                <strong style="font-size:13px; color:#0284c7; display:block;">${this.t("intake.physio.onsetSubacute", "Subacute")}</strong>
+                <small style="font-size:11px; color:#0284c7;">${this.t("intake.physio.onsetSubacuteDesc", "1 - 4 weeks ongoing")}</small>
               </div>
               <div class="physio-dur-card" data-duration="Chronic (> 4 weeks)" style="border:1.5px solid #bae6fd; background:#fff; border-radius:var(--radius-md); padding:12px; cursor:pointer; text-align:center;">
-                <strong style="font-size:13px; color:var(--text); display:block;">Chronic</strong>
-                <small style="font-size:11px; color:var(--muted);">&gt; 4 weeks recurring</small>
+                <strong style="font-size:13px; color:var(--text); display:block;">${this.t("intake.physio.onsetChronic", "Chronic")}</strong>
+                <small style="font-size:11px; color:var(--muted);">${this.t("intake.physio.onsetChronicDesc", "> 4 weeks recurring")}</small>
               </div>
             </div>
           </div>
@@ -269,40 +285,40 @@ export class IntakeFormComponent {
           <div style="background:#fff; border:1px solid #bae6fd; border-radius:var(--radius-md); padding:16px 20px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
               <label for="physioPainScaleRange" style="font-size:12px; font-weight:800; color:#0369a1; text-transform:uppercase; margin:0;">
-                3. Pain Severity (VAS 1 - 10 Scale)
+                ${this.t("intake.physio.vasTitle", "3. Pain Severity (VAS 1 - 10 Scale)")}
               </label>
               <div style="display:flex; align-items:center; gap:8px;">
-                <span id="physioPainSeverityLabel" style="font-size:12px; font-weight:700; color:#ef4444;">Moderate - Severe</span>
+                <span id="physioPainSeverityLabel" style="font-size:12px; font-weight:700; color:#ef4444;">${this.t("intake.physio.vasSevere", "Moderate - Severe")}</span>
                 <span id="physioPainScaleDisplay" style="font-size:18px; font-weight:900; color:#ef4444; background:#fef2f2; padding:2px 10px; border-radius:var(--radius-full);">7 / 10</span>
               </div>
             </div>
             <input type="range" id="physioPainScaleRange" min="1" max="10" value="7" style="width:100%; accent-color:#0284c7; cursor:pointer;" />
             <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-top:6px;">
-              <span>1 - 3: Mild Discomfort</span>
-              <span>4 - 6: Moderate Pain</span>
-              <span>7 - 10: Severe / Functional Impairment</span>
+              <span>1 - 3: ${this.t("intake.physio.vasMild", "Mild Discomfort")}</span>
+              <span>4 - 6: ${this.t("intake.physio.vasModerate", "Moderate Pain")}</span>
+              <span>7 - 10: ${this.t("intake.physio.vasSevere", "Severe / Functional Impairment")}</span>
             </div>
           </div>
 
           <!-- Symptoms & Functional Impact -->
           <div>
             <label for="physioSymptomsNotes" style="font-size:12px; font-weight:800; color:#0369a1; text-transform:uppercase; display:block; margin-bottom:6px;">
-              4. Functional Impact &amp; Aggravating Factors
+              ${this.t("intake.physio.impactTitle", "4. Functional Impact & Aggravating Factors")}
             </label>
-            <textarea id="physioSymptomsNotes" rows="3" class="input" style="width:100%; background:#fff;" placeholder="Describe what movements trigger the pain (bending, sitting, walking) and any previous treatments...">Sharp pain in lower lumbar (L4-L5) when bending forward or sitting longer than 20 minutes after half-marathon run. Mild morning stiffness.</textarea>
+            <textarea id="physioSymptomsNotes" rows="3" class="input" style="width:100%; background:#fff;" placeholder="${this.t("intake.physio.impactPlaceholder", "Describe what movements trigger the pain (bending, sitting, walking) and any previous treatments...")}">Sharp pain in lower lumbar (L4-L5) when bending forward or sitting longer than 20 minutes after half-marathon run. Mild morning stiffness.</textarea>
           </div>
 
           <!-- Referral / Imaging Document Simulation -->
           <div style="background:#fff; border:1.5px dashed #bae6fd; border-radius:var(--radius-md); padding:16px; text-align:center;">
             <div style="font-size:24px; margin-bottom:4px;">📎</div>
-            <strong style="font-size:13px; color:#0369a1; display:block;">Upload Medical Referral or MRI / X-Ray (Optional)</strong>
-            <p style="font-size:11px; color:var(--muted); margin:4px 0 10px;">Hospital SIMRS Referral, Specialist Doctor Note, or Imaging Scan (PDF, JPG, PNG up to 10MB)</p>
+            <strong style="font-size:13px; color:#0369a1; display:block;">${this.t("intake.physio.uploadTitle", "Upload Medical Referral or MRI / X-Ray (Optional)")}</strong>
+            <p style="font-size:11px; color:var(--muted); margin:4px 0 10px;">${this.t("intake.physio.uploadDesc", "Hospital SIMRS Referral, Specialist Doctor Note, or Imaging Scan (PDF, JPG, PNG up to 10MB)")}</p>
             <input type="file" id="physioDocInput" style="display:none;" />
             <button type="button" class="btn btn-sm btn-soft" id="btnUploadPhysioDoc" style="background:#f0f9ff; color:#0284c7; border:1px solid #bae6fd; font-weight:700;">
-              📂 Choose File / Hospital Referral
+              ${this.t("intake.physio.uploadBtn", "📂 Choose File / Hospital Referral")}
             </button>
             <div id="physioDocStatus" style="font-size:11px; color:#16a34a; font-weight:700; margin-top:6px; display:none;">
-              ✓ Hospital_Referral_L4L5.pdf attached (Encrypted 72h retention)
+              ${this.t("intake.physio.uploadSuccess", "✓ Hospital_Referral_L4L5.pdf attached (Encrypted 72h retention)")}
             </div>
           </div>
         </div>
@@ -319,38 +335,38 @@ export class IntakeFormComponent {
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
           <div>
             <div style="display:inline-flex; align-items:center; gap:6px; background:#bbf7d0; color:#15803d; font-size:11px; font-weight:800; padding:3px 10px; border-radius:var(--radius-full); text-transform:uppercase; margin-bottom:6px;">
-              🥗 Clinical Nutrition &amp; Dietetics Template
+              ${this.t("intake.nutrition.badge", "🥗 Clinical Nutrition & Dietetics Template")}
             </div>
-            <h3 style="margin:0; font-size:18px; color:#15803d;">Nutritional &amp; Metabolic Profile Assessment</h3>
-            <p style="margin:4px 0 0; font-size:13px; color:#16a34a;">Provide biometric data, primary health goals, and dietary restrictions for clinical consultation.</p>
+            <h3 style="margin:0; font-size:18px; color:#15803d;">${this.t("intake.nutrition.title", "Nutritional & Metabolic Profile Assessment")}</h3>
+            <p style="margin:4px 0 0; font-size:13px; color:#16a34a;">${this.t("intake.nutrition.desc", "Provide biometric data, primary health goals, and dietary restrictions for clinical consultation.")}</p>
           </div>
-          <span class="pill" style="background:#fff; color:#16a34a; border:1px solid #bbf7d0; font-size:11px; font-weight:700;">Dietetics Audit</span>
+          <span class="pill" style="background:#fff; color:#16a34a; border:1px solid #bbf7d0; font-size:11px; font-weight:700;">${this.t("intake.common.clinical", "Dietetics Audit")}</span>
         </div>
 
         <div style="display:grid; grid-template-columns:1fr; gap:20px;">
           <!-- Biometric Basics & Real-time BMI Calculator -->
           <div style="background:#fff; border:1px solid #bbf7d0; border-radius:var(--radius-md); padding:18px;">
             <label style="font-size:12px; font-weight:800; color:#15803d; text-transform:uppercase; display:block; margin-bottom:12px;">
-              1. Biometrics &amp; Real-Time BMI Calculation
+              ${this.t("intake.nutrition.biometricsTitle", "1. Biometrics & Real-Time BMI Calculation")}
             </label>
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:12px; margin-bottom:14px;">
               <div>
-                <label for="nutriHeight" style="font-size:11px; font-weight:700; color:var(--muted); display:block; margin-bottom:4px;">Height (cm)</label>
+                <label for="nutriHeight" style="font-size:11px; font-weight:700; color:var(--muted); display:block; margin-bottom:4px;">${this.t("intake.nutrition.height", "Height (cm)")}</label>
                 <input type="number" id="nutriHeight" class="input" style="width:100%;" value="168" min="100" max="230" />
               </div>
               <div>
-                <label for="nutriWeight" style="font-size:11px; font-weight:700; color:var(--muted); display:block; margin-bottom:4px;">Current Weight (kg)</label>
+                <label for="nutriWeight" style="font-size:11px; font-weight:700; color:var(--muted); display:block; margin-bottom:4px;">${this.t("intake.nutrition.weight", "Current Weight (kg)")}</label>
                 <input type="number" id="nutriWeight" class="input" style="width:100%;" value="68" min="30" max="250" />
               </div>
               <div>
-                <label for="nutriTargetWeight" style="font-size:11px; font-weight:700; color:var(--muted); display:block; margin-bottom:4px;">Target Weight (kg)</label>
+                <label for="nutriTargetWeight" style="font-size:11px; font-weight:700; color:var(--muted); display:block; margin-bottom:4px;">${this.t("intake.nutrition.targetWeight", "Target Weight (kg)")}</label>
                 <input type="number" id="nutriTargetWeight" class="input" style="width:100%;" value="62" min="30" max="250" />
               </div>
               <div>
-                <label for="nutriSex" style="font-size:11px; font-weight:700; color:var(--muted); display:block; margin-bottom:4px;">Biological Sex</label>
+                <label for="nutriSex" style="font-size:11px; font-weight:700; color:var(--muted); display:block; margin-bottom:4px;">${this.t("intake.nutrition.sex", "Biological Sex")}</label>
                 <select id="nutriSex" class="input" style="width:100%;">
-                  <option value="Female" selected>Female</option>
-                  <option value="Male">Male</option>
+                  <option value="Female" selected>${this.t("intake.nutrition.female", "Female")}</option>
+                  <option value="Male">${this.t("intake.nutrition.male", "Male")}</option>
                 </select>
               </div>
             </div>
@@ -359,11 +375,11 @@ export class IntakeFormComponent {
             <div id="nutriBmiBanner" style="display:flex; justify-content:space-between; align-items:center; background:#f0fdf4; border:1px solid #86efac; border-radius:var(--radius-sm); padding:10px 14px;">
               <div style="display:flex; align-items:center; gap:8px;">
                 <span style="font-size:14px;">⚖️</span>
-                <span style="font-size:12px; font-weight:700; color:#15803d;">Calculated BMI:</span>
+                <span style="font-size:12px; font-weight:700; color:#15803d;">${this.t("intake.nutrition.bmiCalculated", "Calculated BMI:")}</span>
                 <strong id="nutriBmiValue" style="font-size:15px; color:#15803d;">24.1 kg/m²</strong>
               </div>
               <span id="nutriBmiCategory" class="pill" style="background:#16a34a; color:#fff; font-size:11px; font-weight:800;">
-                Normal Weight (18.5 - 24.9)
+                ${this.t("intake.nutrition.bmiNormal", "Normal Weight (18.5 - 24.9)")}
               </span>
             </div>
           </div>
@@ -371,24 +387,24 @@ export class IntakeFormComponent {
           <!-- Primary Nutritional Goals -->
           <div>
             <label style="font-size:12px; font-weight:800; color:#15803d; text-transform:uppercase; display:block; margin-bottom:8px;">
-              2. Primary Nutritional &amp; Health Goal
+              ${this.t("intake.nutrition.goalsTitle", "2. Primary Nutritional & Health Goal")}
             </label>
             <div class="nutri-goals-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px;">
               <div class="nutri-goal-card selected" data-goal="Weight Loss & Fat Reduction" style="border:2px solid #16a34a; background:#fff; border-radius:var(--radius-md); padding:12px; cursor:pointer;">
-                <strong style="font-size:13px; color:#15803d; display:block;">🔥 Weight Loss &amp; Fat Reduction</strong>
-                <small style="font-size:11px; color:var(--muted); margin-top:2px; display:block;">Caloric deficit &amp; metabolic boosting</small>
+                <strong style="font-size:13px; color:#15803d; display:block;">${this.t("intake.nutrition.goalLoss", "🔥 Weight Loss & Fat Reduction")}</strong>
+                <small style="font-size:11px; color:var(--muted); margin-top:2px; display:block;">${this.t("intake.nutrition.goalLossDesc", "Caloric deficit & metabolic boosting")}</small>
               </div>
               <div class="nutri-goal-card" data-goal="Muscle Hypertrophy & Strength" style="border:1.5px solid #bbf7d0; background:#fff; border-radius:var(--radius-md); padding:12px; cursor:pointer;">
-                <strong style="font-size:13px; color:var(--text); display:block;">💪 Muscle Gain &amp; Strength</strong>
-                <small style="font-size:11px; color:var(--muted); margin-top:2px; display:block;">High protein &amp; lean mass gain</small>
+                <strong style="font-size:13px; color:var(--text); display:block;">${this.t("intake.nutrition.goalMuscle", "💪 Muscle Gain & Strength")}</strong>
+                <small style="font-size:11px; color:var(--muted); margin-top:2px; display:block;">${this.t("intake.nutrition.goalMuscleDesc", "High protein & lean mass gain")}</small>
               </div>
               <div class="nutri-goal-card" data-goal="Metabolic & Blood Glucose Control" style="border:1.5px solid #bbf7d0; background:#fff; border-radius:var(--radius-md); padding:12px; cursor:pointer;">
-                <strong style="font-size:13px; color:var(--text); display:block;">🩸 Blood Sugar / Pre-diabetes</strong>
-                <small style="font-size:11px; color:var(--muted); margin-top:2px; display:block;">Glycemic control &amp; insulin support</small>
+                <strong style="font-size:13px; color:var(--text); display:block;">${this.t("intake.nutrition.goalMetabolic", "🩸 Blood Sugar / Pre-diabetes")}</strong>
+                <small style="font-size:11px; color:var(--muted); margin-top:2px; display:block;">${this.t("intake.nutrition.goalMetabolicDesc", "Glycemic control & insulin support")}</small>
               </div>
               <div class="nutri-goal-card" data-goal="Gut Health & IBS Relief" style="border:1.5px solid #bbf7d0; background:#fff; border-radius:var(--radius-md); padding:12px; cursor:pointer;">
-                <strong style="font-size:13px; color:var(--text); display:block;">🌿 Gut Health &amp; IBS Relief</strong>
-                <small style="font-size:11px; color:var(--muted); margin-top:2px; display:block;">Microbiome &amp; low-FODMAP diet</small>
+                <strong style="font-size:13px; color:var(--text); display:block;">${this.t("intake.nutrition.goalGut", "🌿 Gut Health & IBS Relief")}</strong>
+                <small style="font-size:11px; color:var(--muted); margin-top:2px; display:block;">${this.t("intake.nutrition.goalGutDesc", "Microbiome & low-FODMAP diet")}</small>
               </div>
             </div>
           </div>
@@ -397,28 +413,28 @@ export class IntakeFormComponent {
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
             <div>
               <label for="nutriDietPattern" style="font-size:12px; font-weight:800; color:#15803d; text-transform:uppercase; display:block; margin-bottom:6px;">
-                Dietary Pattern / Regimen
+                ${this.t("intake.nutrition.dietTitle", "Dietary Pattern / Regimen")}
               </label>
               <select id="nutriDietPattern" class="input" style="width:100%; background:#fff;">
-                <option value="Omnivore / Standard" selected>Standard Omnivore (No restrictions)</option>
-                <option value="Halal Compliance">Halal Compliance</option>
-                <option value="Vegetarian">Vegetarian (Lacto-Ovo)</option>
-                <option value="Strict Vegan">Strict Vegan / Plant-Based</option>
-                <option value="Pescatarian">Pescatarian</option>
-                <option value="Keto / Low-Carb">Keto / Low-Carbohydrate</option>
-                <option value="Gluten-Free">Gluten-Free / Celiac</option>
+                <option value="Omnivore / Standard" selected>${this.t("intake.nutrition.dietOmnivore", "Standard Omnivore (No restrictions)")}</option>
+                <option value="Halal Compliance">${this.t("intake.nutrition.dietHalal", "Halal Compliance")}</option>
+                <option value="Vegetarian">${this.t("intake.nutrition.dietVegetarian", "Vegetarian (Lacto-Ovo)")}</option>
+                <option value="Strict Vegan">${this.t("intake.nutrition.dietVegan", "Strict Vegan / Plant-Based")}</option>
+                <option value="Pescatarian">${this.t("intake.nutrition.dietPescatarian", "Pescatarian")}</option>
+                <option value="Keto / Low-Carb">${this.t("intake.nutrition.dietKeto", "Keto / Low-Carbohydrate")}</option>
+                <option value="Gluten-Free">${this.t("intake.nutrition.dietGlutenFree", "Gluten-Free / Celiac")}</option>
               </select>
             </div>
 
             <div>
               <label for="nutriActivityLevel" style="font-size:12px; font-weight:800; color:#15803d; text-transform:uppercase; display:block; margin-bottom:6px;">
-                Physical Activity Level
+                ${this.t("intake.nutrition.activityTitle", "Physical Activity Level")}
               </label>
               <select id="nutriActivityLevel" class="input" style="width:100%; background:#fff;">
-                <option value="Sedentary (Desk Job)">Sedentary (Desk job, minimal workouts)</option>
-                <option value="Lightly Active (1-3x/week)" selected>Lightly Active (1-3 workouts/week)</option>
-                <option value="Moderately Active (3-5x/week)">Moderately Active (Gym 3-5x/week)</option>
-                <option value="Very Active / Athlete">Very Active / Athlete (Daily intense)</option>
+                <option value="Sedentary (Desk Job)">${this.t("intake.nutrition.activitySedentary", "Sedentary (Desk job, minimal workouts)")}</option>
+                <option value="Lightly Active (1-3x/week)" selected>${this.t("intake.nutrition.activityLight", "Lightly Active (1-3 workouts/week)")}</option>
+                <option value="Moderately Active (3-5x/week)">${this.t("intake.nutrition.activityModerate", "Moderately Active (Gym 3-5x/week)")}</option>
+                <option value="Very Active / Athlete">${this.t("intake.nutrition.activityAthlete", "Very Active / Athlete (Daily intense)")}</option>
               </select>
             </div>
           </div>
@@ -426,24 +442,24 @@ export class IntakeFormComponent {
           <!-- Allergies & Food Sensitivities (Chips) -->
           <div>
             <label style="font-size:12px; font-weight:800; color:#15803d; text-transform:uppercase; display:block; margin-bottom:8px;">
-              Food Allergies &amp; Sensitivities (Select all that apply)
+              ${this.t("intake.nutrition.allergiesTitle", "Food Allergies & Sensitivities (Select all that apply)")}
             </label>
             <div class="nutri-allergy-tags" style="display:flex; flex-wrap:wrap; gap:8px;">
-              <span class="nutri-allergy-tag active" data-allergy="None" style="padding:6px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1.5px solid #16a34a; background:#16a34a; color:#fff; cursor:pointer;">✓ No Known Allergies</span>
-              <span class="nutri-allergy-tag" data-allergy="Dairy / Lactose" style="padding:6px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid #cbd5e1; background:#fff; color:var(--text); cursor:pointer;">🥛 Dairy / Lactose</span>
-              <span class="nutri-allergy-tag" data-allergy="Gluten / Wheat" style="padding:6px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid #cbd5e1; background:#fff; color:var(--text); cursor:pointer;">🌾 Gluten / Wheat</span>
-              <span class="nutri-allergy-tag" data-allergy="Peanuts" style="padding:6px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid #cbd5e1; background:#fff; color:var(--text); cursor:pointer;">🥜 Peanuts</span>
-              <span class="nutri-allergy-tag" data-allergy="Shellfish" style="padding:6px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid #cbd5e1; background:#fff; color:var(--text); cursor:pointer;">🦐 Shellfish</span>
-              <span class="nutri-allergy-tag" data-allergy="Eggs" style="padding:6px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid #cbd5e1; background:#fff; color:var(--text); cursor:pointer;">🥚 Eggs</span>
+              <span class="nutri-allergy-tag active" data-allergy="None" style="padding:6px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1.5px solid #16a34a; background:#16a34a; color:#fff; cursor:pointer;">${this.t("intake.nutrition.allergyNone", "✓ No Known Allergies")}</span>
+              <span class="nutri-allergy-tag" data-allergy="Dairy / Lactose" style="padding:6px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid #cbd5e1; background:#fff; color:var(--text); cursor:pointer;">${this.t("intake.nutrition.allergyDairy", "🥛 Dairy / Lactose")}</span>
+              <span class="nutri-allergy-tag" data-allergy="Gluten / Wheat" style="padding:6px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid #cbd5e1; background:#fff; color:var(--text); cursor:pointer;">${this.t("intake.nutrition.allergyGluten", "🌾 Gluten / Wheat")}</span>
+              <span class="nutri-allergy-tag" data-allergy="Peanuts" style="padding:6px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid #cbd5e1; background:#fff; color:var(--text); cursor:pointer;">${this.t("intake.nutrition.allergyPeanuts", "🥜 Peanuts")}</span>
+              <span class="nutri-allergy-tag" data-allergy="Shellfish" style="padding:6px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid #cbd5e1; background:#fff; color:var(--text); cursor:pointer;">${this.t("intake.nutrition.allergyShellfish", "🦐 Shellfish")}</span>
+              <span class="nutri-allergy-tag" data-allergy="Eggs" style="padding:6px 14px; border-radius:var(--radius-full); font-size:12px; font-weight:700; border:1px solid #cbd5e1; background:#fff; color:var(--text); cursor:pointer;">${this.t("intake.nutrition.allergyEggs", "🥚 Eggs")}</span>
             </div>
           </div>
 
           <!-- Notes / Daily Water & Eating Habits -->
           <div>
             <label for="nutriDietNotes" style="font-size:12px; font-weight:800; color:#15803d; text-transform:uppercase; display:block; margin-bottom:6px;">
-              Current Eating Habits &amp; Notes
+              ${this.t("intake.nutrition.habitsTitle", "Current Eating Habits & Notes")}
             </label>
-            <textarea id="nutriDietNotes" rows="3" class="input" style="width:100%; background:#fff;" placeholder="Mention daily coffee/sugar intake, late-night snacking, hydration levels...">Targeting 6kg weight reduction before December. Usually skip breakfast, average 1.5L water/day. Slight afternoon sugar cravings.</textarea>
+            <textarea id="nutriDietNotes" rows="3" class="input" style="width:100%; background:#fff;" placeholder="${this.t("intake.nutrition.habitsPlaceholder", "Mention daily coffee/sugar intake, late-night snacking, hydration levels...")}">Targeting 6kg weight reduction before December. Usually skip breakfast, average 1.5L water/day. Slight afternoon sugar cravings.</textarea>
           </div>
         </div>
       </div>
@@ -459,12 +475,12 @@ export class IntakeFormComponent {
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
           <div>
             <div style="display:inline-flex; align-items:center; gap:6px; background:#ccfbf1; color:#0f766e; font-size:11px; font-weight:800; padding:3px 10px; border-radius:var(--radius-full); text-transform:uppercase; margin-bottom:6px;">
-              🌿 Traditional Chinese Medicine (TCM)
+              ${this.t("intake.tcm.badge", "🌿 Traditional Chinese Medicine (TCM)")}
             </div>
-            <h3 style="margin:0; font-size:18px; color:#0f766e;">Body Pain Points &amp; Meridian Assessment</h3>
-            <p style="margin:4px 0 0; font-size:13px; color:#115e59;">Indicate meridian discomfort, pulse indicators, and symptom onset for your TCM physician.</p>
+            <h3 style="margin:0; font-size:18px; color:#0f766e;">${this.t("intake.tcm.title", "Body Pain Points & Meridian Assessment")}</h3>
+            <p style="margin:4px 0 0; font-size:13px; color:#115e59;">${this.t("intake.tcm.desc", "Indicate meridian discomfort, pulse indicators, and symptom onset for your TCM physician.")}</p>
           </div>
-          <span class="pill" style="background:#fff; color:#0f766e; border:1px solid #ccfbf1; font-size:11px; font-weight:700;">Meridian Holistic</span>
+          <span class="pill" style="background:#fff; color:#0f766e; border:1px solid #ccfbf1; font-size:11px; font-weight:700;">${this.t("intake.common.clinical", "Meridian Holistic")}</span>
         </div>
 
         <div style="display:grid; grid-template-columns:1fr; gap:20px;">
@@ -489,7 +505,7 @@ export class IntakeFormComponent {
             <div>
               <div class="field" style="margin-bottom:14px;">
                 <label style="display:flex; justify-content:space-between; align-items:center;">
-                  <span style="font-size:12px; font-weight:800; color:#0f766e; text-transform:uppercase;">Meridian Discomfort Scale</span>
+                  <span style="font-size:12px; font-weight:800; color:#0f766e; text-transform:uppercase;">${this.t("intake.tcm.scaleTitle", "Meridian Discomfort Scale")}</span>
                   <strong id="tcmPainScaleDisplay" style="font-size:16px; color:#ef4444;">7 / 10</strong>
                 </label>
                 <input type="range" id="tcmPainScaleRange" min="1" max="10" value="7" style="width:100%; accent-color:#0f766e; margin-top:6px;" />
@@ -497,9 +513,9 @@ export class IntakeFormComponent {
 
               <div class="field">
                 <label for="tcmChiefComplaint" style="font-size:12px; font-weight:800; color:#0f766e; text-transform:uppercase; display:block; margin-bottom:4px;">
-                  Symptom Notes &amp; Cold/Heat Sensitivity
+                  ${this.t("intake.tcm.notesTitle", "Symptom Notes & Cold/Heat Sensitivity")}
                 </label>
-                <textarea id="tcmChiefComplaint" rows="3" class="input" style="width:100%; background:#fff;" placeholder="State whether pain worsens in air-conditioning, cold limbs, or fatigue...">Dull chronic ache in lumbar spine aggravated by rainy weather and prolonged sitting. Cold extremities.</textarea>
+                <textarea id="tcmChiefComplaint" rows="3" class="input" style="width:100%; background:#fff;" placeholder="${this.t("intake.tcm.notesPlaceholder", "State whether pain worsens in air-conditioning, cold limbs, or fatigue...")}">Dull chronic ache in lumbar spine aggravated by rainy weather and prolonged sitting. Cold extremities.</textarea>
               </div>
             </div>
           </div>
@@ -653,21 +669,21 @@ export class IntakeFormComponent {
           display.style.color = "#16a34a";
           display.style.background = "#f0fdf4";
           if (label) {
-            label.textContent = "Mild Discomfort";
+            label.textContent = this.t("intake.physio.vasMild", "Mild Discomfort");
             label.style.color = "#16a34a";
           }
         } else if (val <= 6) {
           display.style.color = "#d97706";
           display.style.background = "#fefce8";
           if (label) {
-            label.textContent = "Moderate Pain";
+            label.textContent = this.t("intake.physio.vasModerate", "Moderate Pain");
             label.style.color = "#d97706";
           }
         } else {
           display.style.color = "#ef4444";
           display.style.background = "#fef2f2";
           if (label) {
-            label.textContent = "Severe / Functional Impairment";
+            label.textContent = this.t("intake.physio.vasSevere", "Severe / Functional Impairment");
             label.style.color = "#ef4444";
           }
         }
@@ -715,16 +731,16 @@ export class IntakeFormComponent {
 
         if (bmiCat) {
           if (bmi < 18.5) {
-            bmiCat.textContent = "Underweight (< 18.5)";
+            bmiCat.textContent = this.t("intake.nutrition.bmiUnderweight", "Underweight (< 18.5)");
             bmiCat.style.background = "#0284c7";
           } else if (bmi <= 24.9) {
-            bmiCat.textContent = "Normal Weight (18.5 - 24.9)";
+            bmiCat.textContent = this.t("intake.nutrition.bmiNormal", "Normal Weight (18.5 - 24.9)");
             bmiCat.style.background = "#16a34a";
           } else if (bmi <= 29.9) {
-            bmiCat.textContent = "Overweight (25 - 29.9)";
+            bmiCat.textContent = this.t("intake.nutrition.bmiOverweight", "Overweight (25 - 29.9)");
             bmiCat.style.background = "#d97706";
           } else {
-            bmiCat.textContent = "Obese Category (≥ 30)";
+            bmiCat.textContent = this.t("intake.nutrition.bmiObese", "Obese Category (≥ 30)");
             bmiCat.style.background = "#ef4444";
           }
         }

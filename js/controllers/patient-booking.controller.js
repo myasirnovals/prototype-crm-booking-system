@@ -8,6 +8,7 @@ import { storageService } from "../services/storage.service.js";
 import { bookingService } from "../services/booking.service.js";
 import { soundService } from "../services/sound.service.js";
 import { intakeFormComponent } from "../components/intake-form.component.js";
+import { i18nService } from "../services/i18n.service.js";
 
 export class PatientBookingController {
   constructor() {
@@ -65,6 +66,16 @@ export class PatientBookingController {
     this.setupStepNavigation();
     this.setupSlotChoices();
     this.setupCheckoutAction(session.user);
+
+    // Reactively re-render components on language change
+    document.addEventListener("cliniva:languageChanged", () => {
+      this.renderServices();
+      this.renderPractitioners();
+      this.renderDynamicIntakeForm();
+      if (this.currentStep === 4) {
+        this.renderSummaryStep();
+      }
+    });
   }
 
   loadBranches() {
@@ -135,7 +146,7 @@ export class PatientBookingController {
     const signOutBtn = document.getElementById("bookingSignOutBtn");
     if (signOutBtn) {
       signOutBtn.addEventListener("click", () => {
-        if (confirm("Apakah Anda yakin ingin keluar?")) {
+        if (confirm(i18nService.t("booking.confirmSignOut", "Are you sure you want to sign out?"))) {
           authService.logout();
         }
       });
@@ -243,9 +254,9 @@ export class PatientBookingController {
     if (titleEl) titleEl.textContent = branch.name;
     if (badgeEl) badgeEl.textContent = branch.badge;
     if (addrEl) addrEl.textContent = `${branch.region} · ${branch.address}`;
-    if (metaEl) metaEl.textContent = `Mata Uang: ${branch.currency} · Jam: ${branch.hours}`;
+    if (metaEl) metaEl.textContent = `Currency: ${branch.currency} · Hours: ${branch.hours}`;
     if (distEl) {
-      distEl.textContent = branch.distance ? `📍 ~${branch.distance} km dari lokasi Anda` : "📍 Terpilih pada Peta";
+      distEl.textContent = branch.distance ? `📍 ~${branch.distance} km` : "📍 Selected on Map";
     }
 
     // Fly map & update active pin styling
@@ -296,12 +307,12 @@ export class PatientBookingController {
     btn.addEventListener("click", () => {
       soundService.playClickTone();
       if (!navigator.geolocation) {
-        alert("Geolocation tidak didukung pada peramban ini.");
+        alert(i18nService.t("booking.geo.unsupported", "Geolocation is not supported by your browser."));
         return;
       }
 
       btn.disabled = true;
-      btn.innerHTML = `<span>⏳</span> <span>Mencari lokasi terdekat...</span>`;
+      btn.innerHTML = `<span>⏳</span> <span>${i18nService.t("booking.geo.searching", "Searching for nearest clinic...")}</span>`;
 
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -321,7 +332,7 @@ export class PatientBookingController {
             }
           });
 
-          btn.innerHTML = `<span>📍</span> <span>Terdekat: ${nearestBranch.name} (~${minDistance} km)</span>`;
+          btn.innerHTML = `<span>📍</span> <span>${i18nService.t("booking.geo.nearest", "Nearest:")} ${nearestBranch.name} (~${minDistance} km)</span>`;
           this.selectBranch(nearestBranch, true);
           soundService.playQueueChime();
         },
@@ -329,7 +340,7 @@ export class PatientBookingController {
           btn.disabled = false;
           btn.innerHTML = `<span>📍</span> <span>Detect Nearest Clinic</span>`;
           console.warn("Geolocation warning:", err);
-          alert("Tidak dapat mendeteksi lokasi GPS Anda secara otomatis. Menampilkan cabang utama Singapore Orchard.");
+          alert(i18nService.t("booking.geo.failed", "Unable to detect your GPS coordinates automatically. Showing Singapore Orchard branch."));
           this.selectBranch(this.branches[0], true);
         },
         { timeout: 8000 }
@@ -469,9 +480,9 @@ export class PatientBookingController {
 
     const earliestSpecialist = {
       id: "earliest",
-      name: "Earliest Available Specialist",
-      title: "First available licensed practitioner",
-      specialty: "Ideal for immediate attention without waiting for a specific physician."
+      name: i18nService.t("booking.doctor.earliestName", "Earliest Available Specialist"),
+      title: i18nService.t("booking.doctor.earliestTitle", "First available licensed practitioner"),
+      specialty: i18nService.t("booking.doctor.earliestDesc", "Ideal for immediate attention without waiting for a specific physician.")
     };
 
     const list = [earliestSpecialist, ...(templatePractitioners || [])];
@@ -513,17 +524,17 @@ export class PatientBookingController {
     const step3Desc = document.getElementById("step3PaneDesc");
 
     if (templateId === "wellness" || templateId === "spa") {
-      if (step3Title) step3Title.textContent = "Spa Preferences & Wellness Intake Assessment";
-      if (step3Desc) step3Desc.textContent = "Customize your aromatherapy essential oil, massage pressure, and target therapy focus areas.";
+      if (step3Title) step3Title.textContent = i18nService.t("booking.step3.titleSpa", "Spa Preferences & Wellness Intake Assessment");
+      if (step3Desc) step3Desc.textContent = i18nService.t("booking.step3.descSpa", "Customize your aromatherapy essential oil, massage pressure, and target therapy focus areas.");
     } else if (templateId === "physio" || templateId === "physiotherapy") {
-      if (step3Title) step3Title.textContent = "Physiotherapy & Musculoskeletal Assessment";
-      if (step3Desc) step3Desc.textContent = "Specify pain points, onset duration, and functional limitations for your physiotherapist.";
+      if (step3Title) step3Title.textContent = i18nService.t("booking.step3.titlePhysio", "Physiotherapy & Musculoskeletal Assessment");
+      if (step3Desc) step3Desc.textContent = i18nService.t("booking.step3.descPhysio", "Specify pain points, onset duration, and functional limitations for your physiotherapist.");
     } else if (templateId === "nutrition") {
-      if (step3Title) step3Title.textContent = "Nutritional & Metabolic Profile Assessment";
-      if (step3Desc) step3Desc.textContent = "Provide biometric data, primary health goals, and dietary restrictions for clinical dietetic consult.";
+      if (step3Title) step3Title.textContent = i18nService.t("booking.step3.titleNutrition", "Nutritional & Metabolic Profile Assessment");
+      if (step3Desc) step3Desc.textContent = i18nService.t("booking.step3.descNutrition", "Provide biometric data, primary health goals, and dietary restrictions for clinical dietetic consult.");
     } else {
-      if (step3Title) step3Title.textContent = "Clinical Intake & Assessment";
-      if (step3Desc) step3Desc.textContent = "Provide your patient details and intake notes to help your practitioner prepare in advance.";
+      if (step3Title) step3Title.textContent = i18nService.t("booking.step3.title", "Clinical Intake & Assessment");
+      if (step3Desc) step3Desc.textContent = i18nService.t("booking.step3.desc", "Provide your patient details and intake notes to help your practitioner prepare in advance.");
     }
 
     intakeFormComponent.mount(container, templateId, this.bookingDraft, (data) => {
@@ -588,7 +599,7 @@ export class PatientBookingController {
 
     confirmBtn.addEventListener("click", () => {
       confirmBtn.disabled = true;
-      confirmBtn.textContent = "Processing Deposit Payment...";
+      confirmBtn.textContent = i18nService.t("booking.processingDeposit", "Processing Deposit Payment...");
 
       setTimeout(() => {
         soundService.playQueueChime();
@@ -632,7 +643,7 @@ export class PatientBookingController {
         existingBookings.unshift(newBooking);
         storageService.set("cliniva_bookings", existingBookings);
 
-        alert(`✓ Appointment ${bookingCode} confirmed! Deposit verified. Redirecting to your digital E-Ticket.`);
+        alert(i18nService.t("booking.confirmedAlert", `✓ Appointment ${bookingCode} confirmed! Deposit verified. Redirecting to your digital E-Ticket.`));
         window.location.href = `ticket.html?code=${encodeURIComponent(bookingCode)}`;
       }, 1000);
     });

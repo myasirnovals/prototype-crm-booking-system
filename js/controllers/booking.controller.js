@@ -31,6 +31,12 @@ export class BookingController {
     this.setupCheckoutButton();
     this.startInitialSlotHold();
     this.updateSummary();
+
+    document.addEventListener("cliniva:languageChanged", () => {
+      this.renderServiceCards();
+      this.renderPractitionerSelect();
+      this.updateSummary();
+    });
   }
 
   /* -------------------------------------------------------------

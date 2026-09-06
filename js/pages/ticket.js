@@ -65,19 +65,30 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Render Intake Notes if available
-  if (activeBooking.intakeData && intakeRow && intakeEl) {
-    intakeRow.style.display = "flex";
-    const labelEl = intakeRow.querySelector(".ticket-label");
-    const tType = activeBooking.templateType || "";
-    if (labelEl) {
-      if (tType === "wellness" || tType === "spa") labelEl.textContent = "Spa & Aroma Preferences:";
-      else if (tType === "physio") labelEl.textContent = "Physio Assessment:";
-      else if (tType === "nutrition") labelEl.textContent = "Nutrition & Diet Profile:";
-      else if (tType === "tcm") labelEl.textContent = "Meridian Assessment:";
-      else labelEl.textContent = "Intake Assessment:";
+  const updateIntakeLabel = () => {
+    if (activeBooking.intakeData && intakeRow && intakeEl) {
+      intakeRow.style.display = "flex";
+      const labelEl = intakeRow.querySelector(".ticket-label");
+      const tType = activeBooking.templateType || "";
+      if (labelEl) {
+        if (tType === "wellness" || tType === "spa") {
+          labelEl.textContent = i18nService.t("ticket.intakeSpa", "Spa & Aroma Preferences:");
+        } else if (tType === "physio") {
+          labelEl.textContent = i18nService.t("ticket.intakePhysio", "Physio Assessment:");
+        } else if (tType === "nutrition") {
+          labelEl.textContent = i18nService.t("ticket.intakeNutrition", "Nutrition & Diet Profile:");
+        } else if (tType === "tcm") {
+          labelEl.textContent = i18nService.t("ticket.intakeTcm", "Meridian Assessment:");
+        } else {
+          labelEl.textContent = i18nService.t("ticket.intakeCommon", "Intake Assessment:");
+        }
+      }
+      intakeEl.textContent = activeBooking.intakeData;
     }
-    intakeEl.textContent = activeBooking.intakeData;
-  }
+  };
+
+  updateIntakeLabel();
+  document.addEventListener("cliniva:languageChanged", updateIntakeLabel);
 
   // 3. Setup WhatsApp Confirmation Link
   const waBtn = document.getElementById("ticketWhatsAppBtn");

@@ -45,6 +45,18 @@ export const WELLNESS_TEMPLATE = {
       { id: "sensitive-skin", label: "Sensitive skin / nut oil allergy" },
       { id: "pregnancy", label: "Pregnancy / prenatal care required" },
       { id: "recent-bruise", label: "Avoid recent sports injury / bruised area" }
+    ],
+
+    therapistGender: [
+      { id: "no-preference", label: "No Preference", default: true },
+      { id: "female", label: "Female Therapist Preferred" },
+      { id: "male", label: "Male Therapist Preferred" }
+    ],
+
+    roomAmbiance: [
+      { id: "warm-cozy", label: "Warm & Cozy Ambiance" },
+      { id: "cool-fresh", label: "Cool & Crisp Air" },
+      { id: "soft-music", label: "Tibetan Singing Bowl Soundscape" }
     ]
   },
 

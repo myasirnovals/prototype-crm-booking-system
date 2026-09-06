@@ -14,7 +14,9 @@ import {
   getTemplatePractitioners,
   getTemplateIntakeSchema,
   TCM_TEMPLATE,
-  WELLNESS_TEMPLATE
+  WELLNESS_TEMPLATE,
+  PHYSIO_TEMPLATE,
+  NUTRITION_TEMPLATE
 } from "./templates/index.js";
 
 // Re-export template registry for universal access
@@ -28,7 +30,9 @@ export {
   getTemplatePractitioners,
   getTemplateIntakeSchema,
   TCM_TEMPLATE,
-  WELLNESS_TEMPLATE
+  WELLNESS_TEMPLATE,
+  PHYSIO_TEMPLATE,
+  NUTRITION_TEMPLATE
 };
 
 /**
@@ -62,67 +66,86 @@ export function getActiveTemplateConfig(templateId = DEFAULT_TEMPLATE_ID) {
 export const CLINIC_BRANCHES = [
   {
     id: "sg-orchard",
-    name: "Orchard Wellness Clinic",
+    name: "Orchard Wellness & Luxury Spa",
     region: "sg",
     country: "Singapore",
     currency: "SGD",
     distance: "1.8 km away",
+    templateId: "wellness",
+    profileType: "SPA_WELLNESS",
+    badge: "🌸 LUXURY WELLNESS SPA",
+    icon: "🌸",
+    lat: 1.3039,
+    lng: 103.8358,
+    hours: "Senin - Sabtu (08:30 - 20:00 SGT)",
     address: "290 Orchard Road, Paragon Medical #14-02, Singapore 238859",
     rooms: [
-      "Room A1 (Consultation)",
-      "Room A2 (Physio)",
-      "Room B1 (TCM Suite)",
-      "Private VIP Spa Suite (with Jacuzzi)",
-      "Bed 01 (Observation)"
+      "Private Couple VIP Suite (Jacuzzi)",
+      "Aroma Relaxation Cabin 01",
+      "Aroma Relaxation Cabin 02",
+      "Foot Reflexology & Herbal Lounge"
     ],
     equipment: [
-      "Shockwave Therapy Unit",
-      "Electro-Acupuncture Stimulator",
-      "Ultrasound Scanner",
       "Hot Stone Basalt Warmer Unit",
-      "Essential Oil Ultrasonic Diffuser"
+      "Essential Oil Ultrasonic Diffuser",
+      "Hydrotherapy Jacuzzi Tub",
+      "Foot Reflexology Herbal Steam Basin"
     ]
   },
   {
     id: "my-kl",
-    name: "Kuala Lumpur Integrated Care",
+    name: "Kuala Lumpur Physiotherapy & Sports Rehab",
     region: "my",
     country: "Malaysia",
     currency: "MYR",
     distance: "City Centre",
+    templateId: "physio",
+    profileType: "PHYSIOTHERAPY",
+    badge: "🏃 PHYSIO & SPORTS REHAB",
+    icon: "🏃",
+    lat: 3.1593,
+    lng: 101.7196,
+    hours: "Senin - Sabtu (09:00 - 18:00 MYT)",
     address: "Pavilion Embassy Tower, Jalan Ampang, 50450 Kuala Lumpur",
     rooms: [
-      "Suite 101",
-      "Suite 102",
-      "Rehab Gym Bed 1",
-      "Aroma Relaxation Cabin 01",
-      "Rehab Gym Bed 2"
+      "Rehab Gym & Motion Analysis Bay",
+      "Spinal Decompression Suite 101",
+      "Manual Therapy Cabin 01",
+      "Observation & Ultrasound Bed 01"
     ],
     equipment: [
+      "Shockwave Therapy Unit",
       "Spinal Decompression Table",
       "Laser Therapy Machine",
-      "Vacuum Cupping Apparatus",
-      "Hydrotherapy Jacuzzi Tub"
+      "Diagnostic Ultrasound Scanner"
     ]
   },
   {
     id: "my-penang",
-    name: "Penang TCM & Physio Center",
+    name: "Penang Clinical Nutrition & Dietetics Care",
     region: "my",
     country: "Malaysia",
     currency: "MYR",
     distance: "Gurney Drive",
+    templateId: "nutrition",
+    profileType: "NUTRITION",
+    badge: "🥗 CLINICAL NUTRITION CARE",
+    icon: "🥗",
+    lat: 5.4332,
+    lng: 100.3106,
+    hours: "Selasa - Minggu (10:00 - 19:00 MYT)",
     address: "Gurney Walk, Persiaran Gurney, 10250 George Town, Penang",
     rooms: [
-      "Herbal Room 1",
-      "Acupuncture Bed 01",
-      "Acupuncture Bed 02",
-      "Foot Reflexology & Herbal Lounge"
+      "Nutritional Consultation Suite 101",
+      "Body Composition Analysis Bay",
+      "Metabolic Diagnostics Corner",
+      "Dietary Education Seminar Room"
     ],
     equipment: [
-      "Infrared Moxibustion Unit",
-      "Vacuum Cupping Apparatus",
-      "Foot Reflexology Herbal Steam Basin"
+      "Body Composition Bio-Impedance Scanner",
+      "Point-of-Care Blood Glucose & Lipid Analyzer",
+      "Metabolic Indirect Calorimetry Unit",
+      "Digital Food Portions Display Scale"
     ]
   }
 ];

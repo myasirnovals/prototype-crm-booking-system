@@ -501,5 +501,36 @@ export const zh = {
   "template.wellness.serviceReflexology": "足部全息反射区穴位理疗",
   "template.wellness.serviceReflexologyDesc": "精准按压足底全息反射区与经络穴位，激活脏腑机能，消除腿部浮肿与疲惫感。",
   "template.wellness.therapistAyuTitle": "高级巴厘岛传统水疗专家",
-  "template.wellness.therapistMichaelTitle": "足底反射区与深层理疗师"
+  "template.wellness.therapistMichaelTitle": "足底反射区与深层理疗师",
+
+  // 业务模板：物理治疗与运动康复
+  "template.physio.practitionerTitle": "高级物理治疗师 / 康复专家",
+  "template.physio.intakeTitle": "肌骨与疼痛状况综合评估",
+  "template.physio.intakeDesc": "请详细说明疼痛部位、发作持续时间与疼痛等级，以便物理治疗师为您量身定制康复计划。",
+  "template.physio.serviceInitial": "物理治疗初诊全面评估与首诊治疗",
+  "template.physio.serviceInitialDesc": "深入进行体态步态、生物力学与关节活动度诊断评估，结合针对性首诊手法治疗。",
+  "template.physio.serviceSpinal": "脊柱减压牵引与腰椎核心康复",
+  "template.physio.serviceSpinalDesc": "非侵入性电动脊椎减压牵引，配合核心肌群稳定性训练，有效缓解椎间盘压迫与坐骨神经痛。",
+  "template.physio.serviceSports": "运动损伤康复与聚焦冲击波理疗",
+  "template.physio.serviceSportsDesc": "高能量发散式体外冲击波理疗，针对慢性肌腱炎、足底筋膜炎及运动损伤实现快速深层修复。",
+  "template.physio.serviceManual": "关节松动术与肌筋膜干针疗法",
+  "template.physio.serviceManualDesc": "被动附属关节松动手法配合激痛点干针技术，迅速松解深层肌筋膜粘连与肌肉痉挛。",
+  "template.physio.drLimTitle": "高级物理治疗师兼临床主任",
+  "template.physio.drMarcusName": "Dr. Marcus Wong（黄医生）, PT, CMP",
+  "template.physio.drMarcusTitle": "认证 Mulligan 动态关节松动术专家",
+  "template.physio.sarahMitchellName": "Sarah Mitchell, B.Physio",
+  "template.physio.sarahMitchellTitle": "首席肌骨康复专家",
+
+  // 业务模板：临床营养与饮食治疗
+  "template.nutrition.practitionerTitle": "注册营养师 / 临床营养专家",
+  "template.nutrition.intakeTitle": "营养与代谢档案综合评估",
+  "template.nutrition.intakeDesc": "提供您的身体测量数据、主要饮食目标、食物过敏史及健康背景，以便为您制定个性化营养咨询。",
+  "template.nutrition.serviceInitial": "临床营养师全面初诊咨询",
+  "template.nutrition.serviceInitialDesc": "全方位饮食审计、静息代谢率估算、人体成分分析及定制个性化初始膳食蓝图。",
+  "template.nutrition.serviceMetabolic": "代谢健康与血糖血脂管理优化",
+  "template.nutrition.serviceMetabolicDesc": "针对胰岛素抵抗、降低糖化血红蛋白（HbA1c）及改善血脂指标的精准临床营养方案。",
+  "template.nutrition.serviceGut": "肠道微生态修复与食物不耐受调理",
+  "template.nutrition.serviceGutDesc": "低FODMAP饮食排除与重新引入协议，修复肠漏，缓解肠易激（IBS）胀气并重建肠道菌群多样性。",
+  "template.nutrition.serviceSports": "运动营养调控与体成分重塑",
+  "template.nutrition.serviceSportsDesc": "宏量营养素周期化摄入、赛前糖原储备负荷、补水策略及运动员专项康复营养补充方案。"
 };

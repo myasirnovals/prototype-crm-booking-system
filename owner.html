@@ -165,7 +165,7 @@
           <div><button class="btn btn-primary" id="addProfileBtn">+ Add Profile</button></div>
         </div>
 
-        <div class="profile-selection-grid">
+        <div class="profile-selection-grid" style="grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));">
           <div class="profile-card" data-profile="SPA_WELLNESS">
             <h3 style="font-size:16px; margin:0 0 6px;" data-i18n="admin.settings.templateWellness">Wellness &amp; Spa Care</h3>
             <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Relaxation therapy, aromatherapy massage, body scrub &amp; reflexology.</p>
@@ -174,31 +174,43 @@
               <li>Therapist gender preference</li>
               <li>Essential oil scent choice (Lavender/Lemongrass)</li>
               <li>Massage pressure calibration (Soft/Med/Deep)</li>
-              <li style="color:#94a3b8;">Medical referral doc (Disabled)</li>
+              <li>Target focus areas &amp; skin sensitivities</li>
             </ul>
           </div>
 
-          <div class="profile-card active" data-profile="TCM_PHYSIO">
-            <h3 style="font-size:16px; margin:0 0 6px;" data-i18n="admin.settings.templateTcm">Traditional Chinese Medicine (TCM)</h3>
-            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Clinical acupuncture, pulse assessment, sports injury rehab &amp; spinal decompression.</p>
+          <div class="profile-card active" data-profile="PHYSIOTHERAPY">
+            <h3 style="font-size:16px; margin:0 0 6px;">Physiotherapy &amp; Rehab</h3>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Musculoskeletal assessment, manual therapy, shockwave &amp; sports recovery.</p>
             <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Active Intake Features:</div>
             <ul class="profile-feature-list">
-              <li><strong>Interactive Body Pain Map</strong></li>
-              <li>Joint &amp; posture injury history</li>
-              <li>Pain severity scale (1 - 10)</li>
-              <li>Symptom onset notes</li>
+              <li>Anatomical joint &amp; pain location picker</li>
+              <li>Symptom duration (Acute/Subacute/Chronic)</li>
+              <li>Interactive VAS Pain Scale (1 - 10)</li>
+              <li>Functional mobility limitation notes</li>
             </ul>
           </div>
 
-          <div class="profile-card" data-profile="MEDICAL_CLINIC">
-            <h3 style="font-size:16px; margin:0 0 6px;">Integrated Medical Clinic</h3>
-            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">General outpatient, specialist consultations, and hospital SIMRS bridging.</p>
+          <div class="profile-card" data-profile="NUTRITION">
+            <h3 style="font-size:16px; margin:0 0 6px;">Clinical Nutrition &amp; Dietetics</h3>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Personalized meal blueprints, metabolic optimization &amp; weight management.</p>
             <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Active Intake Features:</div>
             <ul class="profile-feature-list">
-              <li>Referral document upload (SIMRS Proxy)</li>
-              <li>Private Insurance / Medisave channel</li>
-              <li>Policy verification</li>
-              <li>72-Hour Ephemeral Retention TTL</li>
+              <li>Biometrics with Real-Time BMI Calculator</li>
+              <li>Primary health goals (Fat loss, Muscle, etc.)</li>
+              <li>Dietary regimen &amp; food allergies chips</li>
+              <li>Metabolic condition screening &amp; activity level</li>
+            </ul>
+          </div>
+
+          <div class="profile-card" data-profile="TCM_ACUPUNCTURE">
+            <h3 style="font-size:16px; margin:0 0 6px;" data-i18n="admin.settings.templateTcm">Traditional Chinese Medicine</h3>
+            <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">Meridian acupuncture, radial pulse diagnosis, herbal harmony &amp; cupping.</p>
+            <div style="font-size:11px; font-weight:800; color:var(--primary); text-transform:uppercase;">Active Intake Features:</div>
+            <ul class="profile-feature-list">
+              <li><strong>Interactive Meridian Pain Map</strong></li>
+              <li>Qi deficiency &amp; cold/heat indicators</li>
+              <li>Acupressure &amp; cupping preferences</li>
+              <li>Radial pulse &amp; tongue analysis record</li>
             </ul>
           </div>
         </div>
@@ -365,10 +377,11 @@
         <div class="field">
           <label for="editBranchProfileType">Adaptive Business Profile (Patient Intake Flow)</label>
           <select id="editBranchProfileType" required>
-            <option value="TCM_PHYSIO">Physiotherapy &amp; Postural Recovery (Body Pain Map)</option>
-            <option value="TCM_ACUPUNCTURE">Traditional Chinese Medicine (TCM) &amp; Acupuncture</option>
-            <option value="SPA_WELLNESS">Wellness, Spa &amp; Reflexology</option>
-            <option value="MEDICAL_CLINIC">Integrated Medical Clinic (SIMRS Bridge)</option>
+            <option value="SPA_WELLNESS">Wellness &amp; Luxury Spa Care (Aroma &amp; Pressure Preferences)</option>
+            <option value="PHYSIOTHERAPY">Physiotherapy &amp; Rehabilitation (VAS Scale &amp; Injury Assessment)</option>
+            <option value="NUTRITION">Clinical Nutrition &amp; Dietetics (BMI Calculator &amp; Dietary Audit)</option>
+            <option value="TCM_ACUPUNCTURE">Traditional Chinese Medicine &amp; Acupuncture (Meridian Pain Map)</option>
+            <option value="MEDICAL_CLINIC">Integrated Medical Clinic (Hospital SIMRS Bridge)</option>
           </select>
         </div>
 

@@ -501,5 +501,36 @@ export const ms = {
   "template.wellness.serviceReflexology": "Refleksologi Kaki & Akupresur",
   "template.wellness.serviceReflexologyDesc": "Titik akupresur pada zon refleks tapak kaki untuk memulihkan kecergasan organ, mengurangkan keletihan kaki, dan menggalakkan relaksasi.",
   "template.wellness.therapistAyuTitle": "Pakar Kanan Spa Tradisional Bali",
-  "template.wellness.therapistMichaelTitle": "Pakar Refleksologi & Terapi Tisu Dalam"
+  "template.wellness.therapistMichaelTitle": "Pakar Refleksologi & Terapi Tisu Dalam",
+
+  // Business Template: Fisioterapi & Pemulihan Sukan
+  "template.physio.practitionerTitle": "Fisioterapis Kanan / Pakar Pemulihan",
+  "template.physio.intakeTitle": "Penilaian Muskuloskeletal & Tahap Kesakitan",
+  "template.physio.intakeDesc": "Nyatakan lokasi kesakitan, tempoh mula gejala, dan tahap keparahan untuk membantu fisioterapis merangka pelan pemulihan anda.",
+  "template.physio.serviceInitial": "Penilaian Fisioterapi Awal Komprehensif",
+  "template.physio.serviceInitialDesc": "Penilaian diagnostik postur, biomekanik & julat pergerakan sendi yang mendalam disusuli terapi manual permulaan tersasar.",
+  "template.physio.serviceSpinal": "Dekompresi Tulang Belakang & Pemulihan Pinggang",
+  "template.physio.serviceSpinalDesc": "Pemanjangan tulang belakang bermotor tanpa invasif digabungkan dengan senaman penstabilan teras untuk melegakan tekanan cakera dan skiatika.",
+  "template.physio.serviceSports": "Pemulihan Kecederaan Sukan & Terapi Gelombang Kejutan",
+  "template.physio.serviceSportsDesc": "Terapi gelombang kejutan akustik berkepekatan tinggi untuk tendonitis kronik, plantar fasciitis, dan pemulihan otot yang pantas.",
+  "template.physio.serviceManual": "Mobilisasi Sendi & Jarum Kering (Dry Needling)",
+  "template.physio.serviceManualDesc": "Mobilisasi sendi aksesori pasif digabungkan dengan teknik jarum kering pada titik pencetus untuk melegakan ketegangan myofascial.",
+  "template.physio.drLimTitle": "Fisioterapis Kanan & Ketua Klinikal",
+  "template.physio.drMarcusName": "Dr. Marcus Wong, PT, CMP",
+  "template.physio.drMarcusTitle": "Pengamal Mulligan Bertauliah",
+  "template.physio.sarahMitchellName": "Sarah Mitchell, B.Physio",
+  "template.physio.sarahMitchellTitle": "Pakar Muskuloskeletal Utama",
+
+  // Business Template: Pemakanan Klinikal & Dietetik
+  "template.nutrition.practitionerTitle": "Pakar Diet Berdaftar / Pakar Nutrisi Klinikal",
+  "template.nutrition.intakeTitle": "Profil Pemakanan & Penilaian Metabolik",
+  "template.nutrition.intakeDesc": "Sediakan ukuran biometrik, matlamat diet utama, alahan makanan, dan latar belakang perubatan untuk konsultasi peribadi.",
+  "template.nutrition.serviceInitial": "Konsultasi Dietitian Klinikal Komprehensif",
+  "template.nutrition.serviceInitialDesc": "Audit pemakanan penuh, anggaran kadar metabolik rehat, analisis komposisi badan, dan pelan permulaan hidangan peribadi.",
+  "template.nutrition.serviceMetabolic": "Pengoptimuman Kesihatan Metabolik & Glukosa Darah",
+  "template.nutrition.serviceMetabolicDesc": "Pelan pemakanan klinikal khusus untuk sensitiviti insulin, penurunan HbA1c, dan pengurusan profil lipid berkekalan.",
+  "template.nutrition.serviceGut": "Terapi Mikrobiom Usus & Alahan Makanan",
+  "template.nutrition.serviceGutDesc": "Protokol penyingkiran dan pengenalan semula FODMAP rendah untuk merawat usus bocor, melegakan kembung IBS, dan membina semula kepelbagaian mikrobiom.",
+  "template.nutrition.serviceSports": "Nutrisi Sukan & Pembentukan Semula Komposisi Badan",
+  "template.nutrition.serviceSportsDesc": "Periodisasi makronutrien, pemuatan glikogen pra-pertandingan, strategi hidrasi, dan suplemen pemulihan untuk atlet."
 };

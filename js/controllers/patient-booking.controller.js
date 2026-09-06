@@ -7,6 +7,7 @@ import { authService, USER_ROLES } from "../services/auth.service.js";
 import { storageService } from "../services/storage.service.js";
 import { bookingService } from "../services/booking.service.js";
 import { soundService } from "../services/sound.service.js";
+import { intakeFormComponent } from "../components/intake-form.component.js";
 
 export class PatientBookingController {
   constructor() {
@@ -51,11 +52,10 @@ export class PatientBookingController {
     this.setupBranchPills();
     this.setupLocationDetector();
     this.renderServices();
+    this.renderPractitioners();
+    this.renderDynamicIntakeForm();
     this.setupStepNavigation();
-    this.setupPractitionerChoices();
     this.setupSlotChoices();
-    this.setupPainMapInteractions();
-    this.setupWellnessIntakeInteractions();
     this.setupCheckoutAction(session.user);
   }
 
@@ -63,10 +63,10 @@ export class PatientBookingController {
     const defaultBranches = [
       {
         id: "sg-orchard",
-        name: "Orchard Wellness Clinic",
+        name: "Orchard Wellness & Luxury Spa",
         region: "Singapore",
         address: "Paragon Medical #14-02, Singapore 238859",
-        profileType: "WELLNESS",
+        profileType: "SPA_WELLNESS",
         templateId: "wellness",
         currency: "SGD",
         hours: "Senin - Sabtu (08:30 - 20:00 SGT)",
@@ -77,36 +77,36 @@ export class PatientBookingController {
       },
       {
         id: "my-kl",
-        name: "Kuala Lumpur Integrated Care",
+        name: "Kuala Lumpur Physiotherapy & Sports Rehab",
         region: "Malaysia",
         address: "Pavilion Embassy Tower, Jalan Ampang, Kuala Lumpur",
-        profileType: "MEDICAL_CLINIC",
-        templateId: "tcm",
+        profileType: "PHYSIOTHERAPY",
+        templateId: "physio",
         currency: "MYR",
         hours: "Senin - Sabtu (09:00 - 18:00 MYT)",
         lat: 3.1593,
         lng: 101.7196,
-        badge: "🌿 INTEGRATED PHYSIO & TCM",
-        icon: "🏥"
+        badge: "🏃 PHYSIO & SPORTS REHAB",
+        icon: "🏃"
       },
       {
         id: "my-penang",
-        name: "Penang TCM & Physio Center",
+        name: "Penang Clinical Nutrition & Dietetics Care",
         region: "Malaysia",
         address: "Gurney Walk, Persiaran Gurney, Penang",
-        profileType: "TCM_ACUPUNCTURE",
-        templateId: "tcm",
+        profileType: "NUTRITION",
+        templateId: "nutrition",
         currency: "MYR",
         hours: "Selasa - Minggu (10:00 - 19:00 MYT)",
         lat: 5.4332,
         lng: 100.3106,
-        badge: "🌿 TCM & ACUPUNCTURE",
-        icon: "🌿"
+        badge: "🥗 CLINICAL NUTRITION CARE",
+        icon: "🥗"
       }
     ];
 
     const stored = storageService.get(this.BRANCHES_KEY, null);
-    if (!stored || !Array.isArray(stored) || !stored[0]?.lat) {
+    if (!stored || !Array.isArray(stored) || !stored[0]?.lat || stored[1]?.templateId === "tcm") {
       storageService.set(this.BRANCHES_KEY, defaultBranches);
       return defaultBranches;
     }
@@ -249,27 +249,17 @@ export class PatientBookingController {
       if (activePin) activePin.classList.add("active-pin");
     }
 
-    // Sync active template and re-render services
-    bookingService.setActiveTemplate(branch.templateId || "tcm");
+    // Sync active template and re-render services, practitioners, and specialized intake form
+    bookingService.setActiveTemplate(branch.templateId || "wellness");
+    this.bookingDraft.branchId = branch.id;
+    this.bookingDraft.branchName = branch.name;
+    this.bookingDraft.branchAddress = branch.address;
+    this.bookingDraft.currency = branch.currency;
+    this.bookingDraft.templateType = branch.templateId || "wellness";
+
     this.renderServices();
-
-    // Toggle Step 3 Intake Assessment Panes (TCM Pain Map vs Wellness Spa Preferences)
-    const tcmPane = document.getElementById("intakeTcmContainer");
-    const wellnessPane = document.getElementById("intakeWellnessContainer");
-    const step3Title = document.getElementById("step3PaneTitle");
-    const step3Desc = document.getElementById("step3PaneDesc");
-
-    if (branch.templateId === "wellness") {
-      if (tcmPane) tcmPane.style.display = "none";
-      if (wellnessPane) wellnessPane.style.display = "grid";
-      if (step3Title) step3Title.textContent = "Spa Preferences & Wellness Intake Assessment";
-      if (step3Desc) step3Desc.textContent = "Customize your aromatherapy essential oil, massage pressure, and target therapy focus areas.";
-    } else {
-      if (tcmPane) tcmPane.style.display = "grid";
-      if (wellnessPane) wellnessPane.style.display = "none";
-      if (step3Title) step3Title.textContent = "Patient Information & Pain Map Intake Assessment";
-      if (step3Desc) step3Desc.textContent = "Provide your patient details, discomfort areas, and intake notes to help your doctor prepare in advance.";
-    }
+    this.renderPractitioners();
+    this.renderDynamicIntakeForm();
   }
 
   calculateDistance(lat1, lon1, lat2, lon2) {
@@ -453,15 +443,75 @@ export class PatientBookingController {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  setupPractitionerChoices() {
-    const cards = document.querySelectorAll(".practitioner-choice-card");
+  renderPractitioners() {
+    const container = document.getElementById("bookingPractitionerList");
+    if (!container) return;
+
+    const templateId = this.selectedBranch.templateId || "wellness";
+    const templatePractitioners = bookingService.getPractitioners(this.selectedBranch.id, templateId);
+
+    const earliestSpecialist = {
+      id: "earliest",
+      name: "Earliest Available Specialist",
+      title: "First available licensed practitioner",
+      specialty: "Ideal for immediate attention without waiting for a specific physician."
+    };
+
+    const list = [earliestSpecialist, ...(templatePractitioners || [])];
+
+    container.innerHTML = list
+      .map(
+        (p, idx) => `
+        <div class="practitioner-choice-card ${idx === 0 ? "selected" : ""}" data-practitioner-name="${p.name}">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <strong style="font-size:14px; display:block; color:var(--text);">${p.name}</strong>
+            ${p.avatarEmoji ? `<span style="font-size:18px;">${p.avatarEmoji}</span>` : ""}
+          </div>
+          <span style="font-size:12px; color:var(--primary); font-weight:700;">${p.title}</span>
+          <p style="font-size:11px; color:var(--muted); margin:4px 0 0;">${p.specialty || ""}</p>
+        </div>
+      `
+      )
+      .join("");
+
+    this.bookingDraft.practitionerName = list[0].name;
+
+    const cards = container.querySelectorAll(".practitioner-choice-card");
     cards.forEach((card) => {
       card.addEventListener("click", () => {
         soundService.playClickTone();
         cards.forEach((c) => c.classList.remove("selected"));
         card.classList.add("selected");
-        this.bookingDraft.practitionerName = card.dataset.practitionerName || "Dr. Lim Wei Han";
+        this.bookingDraft.practitionerName = card.dataset.practitionerName || list[0].name;
       });
+    });
+  }
+
+  renderDynamicIntakeForm() {
+    const container = document.getElementById("dynamicIntakeContainer");
+    if (!container) return;
+
+    const templateId = this.selectedBranch.templateId || "wellness";
+    const step3Title = document.getElementById("step3PaneTitle");
+    const step3Desc = document.getElementById("step3PaneDesc");
+
+    if (templateId === "wellness" || templateId === "spa") {
+      if (step3Title) step3Title.textContent = "Spa Preferences & Wellness Intake Assessment";
+      if (step3Desc) step3Desc.textContent = "Customize your aromatherapy essential oil, massage pressure, and target therapy focus areas.";
+    } else if (templateId === "physio" || templateId === "physiotherapy") {
+      if (step3Title) step3Title.textContent = "Physiotherapy & Musculoskeletal Assessment";
+      if (step3Desc) step3Desc.textContent = "Specify pain points, onset duration, and functional limitations for your physiotherapist.";
+    } else if (templateId === "nutrition") {
+      if (step3Title) step3Title.textContent = "Nutritional & Metabolic Profile Assessment";
+      if (step3Desc) step3Desc.textContent = "Provide biometric data, primary health goals, and dietary restrictions for clinical dietetic consult.";
+    } else {
+      if (step3Title) step3Title.textContent = "Clinical Intake & Assessment";
+      if (step3Desc) step3Desc.textContent = "Provide your patient details and intake notes to help your practitioner prepare in advance.";
+    }
+
+    intakeFormComponent.mount(container, templateId, this.bookingDraft, (data) => {
+      this.bookingDraft.intakeData = data.summaryText || "";
+      this.bookingDraft.chiefComplaint = data.chiefComplaint || "";
     });
   }
 
@@ -482,127 +532,14 @@ export class PatientBookingController {
     });
   }
 
-  setupPainMapInteractions() {
-    const markers = document.querySelectorAll(".booking-pain-marker");
-    const activeMarkerText = document.getElementById("selectedPainLocationText");
-
-    markers.forEach((marker) => {
-      marker.addEventListener("click", () => {
-        soundService.playClickTone();
-        markers.forEach((m) => {
-          m.style.background = "#94a3b8";
-          m.classList.remove("selected");
-        });
-
-        marker.style.background = "#ef4444";
-        marker.classList.add("selected");
-
-        const bodyPart = marker.dataset.bodyPart || "Pinggang Bawah (L4-L5 Lumbar)";
-        this.bookingDraft.painMarker = marker.id;
-        this.bookingDraft.painBodyPart = bodyPart;
-
-        if (activeMarkerText) {
-          activeMarkerText.textContent = `Titik Terpilih: ${bodyPart}`;
-        }
-      });
-    });
-
-    // Pain Scale Slider
-    const painRange = document.getElementById("painScaleRange");
-    const painDisplay = document.getElementById("painScaleDisplay");
-
-    if (painRange && painDisplay) {
-      painRange.addEventListener("input", (e) => {
-        const val = e.target.value;
-        this.bookingDraft.painScale = parseInt(val, 10);
-        painDisplay.textContent = `${val} / 10`;
-
-        if (val <= 3) {
-          painDisplay.style.color = "#16a34a";
-        } else if (val <= 6) {
-          painDisplay.style.color = "#d97706";
-        } else {
-          painDisplay.style.color = "#ef4444";
-        }
-      });
-    }
-  }
-
-  setupWellnessIntakeInteractions() {
-    // Aroma Choice Cards
-    const cards = document.querySelectorAll(".aroma-choice-card");
-    cards.forEach((card) => {
-      card.addEventListener("click", () => {
-        soundService.playClickTone();
-        cards.forEach((c) => {
-          c.classList.remove("selected");
-          c.style.borderColor = "#e2e8f0";
-          c.style.background = "#fff";
-        });
-        card.classList.add("selected");
-        card.style.borderColor = "var(--primary)";
-        card.style.background = "#f0fdf4";
-        this.selectedAromaOil = card.dataset.oil || "Lemongrass";
-      });
-    });
-
-    // Pressure Pills
-    const pressurePills = document.querySelectorAll(".pressure-pills-row .pressure-pill");
-    pressurePills.forEach((pill) => {
-      pill.addEventListener("click", () => {
-        soundService.playClickTone();
-        pressurePills.forEach((p) => {
-          p.classList.remove("active");
-          p.style.borderColor = "var(--line)";
-          p.style.color = "var(--text)";
-          p.style.fontWeight = "700";
-        });
-        pill.classList.add("active");
-        pill.style.borderColor = "var(--primary)";
-        pill.style.color = "var(--primary-dark)";
-        pill.style.fontWeight = "800";
-        this.selectedPressure = pill.dataset.pressure || "Medium";
-      });
-    });
-
-    // Focus Tags
-    const tags = document.querySelectorAll(".spa-focus-tags .spa-focus-tag");
-    tags.forEach((tag) => {
-      tag.addEventListener("click", () => {
-        soundService.playClickTone();
-        const focusArea = tag.dataset.focus || tag.textContent.trim();
-        if (this.selectedSpaFocus.has(focusArea)) {
-          this.selectedSpaFocus.delete(focusArea);
-          tag.classList.remove("active");
-          tag.style.borderColor = "var(--line)";
-          tag.style.background = "#fff";
-          tag.style.color = "var(--text)";
-        } else {
-          this.selectedSpaFocus.add(focusArea);
-          tag.classList.add("active");
-          tag.style.borderColor = "var(--primary)";
-          tag.style.background = "var(--primary)";
-          tag.style.color = "#fff";
-        }
-      });
-    });
-  }
-
   captureIntakeFormData() {
-    if (this.selectedBranch.templateId === "wellness") {
-      const notesEl = document.getElementById("inputSpaNotes");
-      const notes = notesEl && notesEl.value.trim() ? notesEl.value.trim() : "Standard luxury relaxation";
-      const focusStr = Array.from(this.selectedSpaFocus).join(", ") || "Full Body Balanced";
-
-      this.bookingDraft.intakeData = `Aroma: ${this.selectedAromaOil} | Pressure: ${this.selectedPressure} | Focus: ${focusStr} | Notes: ${notes}`;
-      this.bookingDraft.chiefComplaint = `Aroma: ${this.selectedAromaOil} (${this.selectedPressure} Pressure) · Focus: ${focusStr}`;
-      this.bookingDraft.painBodyPart = `Spa Aromatherapy (${this.selectedAromaOil})`;
-    } else {
-      const complaintEl = document.getElementById("inputChiefComplaint");
-      const complaint = complaintEl && complaintEl.value.trim() ? complaintEl.value.trim() : "General discomfort";
-
-      this.bookingDraft.chiefComplaint = complaint;
-      this.bookingDraft.intakeData = `Pain Focus: ${this.bookingDraft.painBodyPart} | Scale: ${this.bookingDraft.painScale}/10 | Notes: ${complaint}`;
+    const data = intakeFormComponent.getIntakeData();
+    this.bookingDraft.intakeDetails = data;
+    this.bookingDraft.intakeData = data.summaryText || "Assessment completed";
+    this.bookingDraft.chiefComplaint = data.chiefComplaint || data.summaryText || "Routine Consultation";
+    this.bookingDraft.templateType = this.selectedBranch.templateId || "wellness";
+    if (data.painScale) {
+      this.bookingDraft.painScale = data.painScale;
     }
   }
 
@@ -621,11 +558,7 @@ export class PatientBookingController {
     if (scheduleEl) scheduleEl.textContent = `${this.bookingDraft.scheduleDate} · ${this.bookingDraft.scheduleSlot}`;
 
     if (complaintEl) {
-      if (this.selectedBranch.templateId === "wellness") {
-        complaintEl.textContent = `Preferensi Spa: ${this.bookingDraft.intakeData}`;
-      } else {
-        complaintEl.textContent = `${this.bookingDraft.painBodyPart} (Skala Nyeri: ${this.bookingDraft.painScale}/10) — "${this.bookingDraft.chiefComplaint}"`;
-      }
+      complaintEl.textContent = this.bookingDraft.chiefComplaint || this.bookingDraft.intakeData || "Routine Consultation";
     }
 
     if (priceEl) priceEl.textContent = this.bookingDraft.servicePrice;
@@ -648,7 +581,16 @@ export class PatientBookingController {
         const codeSuffix = Math.floor(1000 + Math.random() * 9000);
         const bookingCode = `BK-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}-${codeSuffix}`;
 
-        const isWellness = this.selectedBranch.templateId === "wellness";
+        const templateId = this.selectedBranch.templateId || "wellness";
+        let defaultRoom = "Room A1 (Consultation)";
+        if (templateId === "wellness" || templateId === "spa") {
+          defaultRoom = "Private Couple VIP Spa Suite (Jacuzzi)";
+        } else if (templateId === "physio") {
+          defaultRoom = "Rehab Gym Bed 01 (Physio Suite)";
+        } else if (templateId === "nutrition") {
+          defaultRoom = "Nutritional Consultation Suite 101";
+        }
+
         const newBooking = {
           code: bookingCode,
           patientName: user.name || "Amanda Tan",
@@ -658,13 +600,13 @@ export class PatientBookingController {
           serviceName: this.bookingDraft.serviceName,
           practitionerName: this.bookingDraft.practitionerName,
           schedule: this.bookingDraft.scheduleSlot,
-          room: isWellness ? "Private Spa Suite 01" : "Room A2 (TCM/Physio)",
+          room: defaultRoom,
           depositPaid: this.bookingDraft.depositAmount,
           paymentStatus: `DEPOSIT PAID (${this.bookingDraft.depositAmount})`,
           complaint: this.bookingDraft.chiefComplaint,
-          templateType: this.selectedBranch.templateId || "tcm",
+          templateType: templateId,
           intakeData: this.bookingDraft.intakeData,
-          painScale: isWellness ? "N/A (Spa Relaxation)" : `${this.bookingDraft.painScale} / 10`,
+          painScale: this.bookingDraft.painScale || "N/A",
           createdAt: now.toISOString()
         };
 

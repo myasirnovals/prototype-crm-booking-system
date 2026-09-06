@@ -6,17 +6,23 @@
 
 import { TCM_TEMPLATE } from "./tcm.template.js";
 import { WELLNESS_TEMPLATE } from "./wellness.template.js";
+import { PHYSIO_TEMPLATE } from "./physio.template.js";
+import { NUTRITION_TEMPLATE } from "./nutrition.template.js";
 
-export const DEFAULT_TEMPLATE_ID = "tcm";
+export const DEFAULT_TEMPLATE_ID = "wellness";
 
 export const CLINIC_TEMPLATES = {
-  tcm: TCM_TEMPLATE,
-  wellness: WELLNESS_TEMPLATE
+  wellness: WELLNESS_TEMPLATE,
+  spa: WELLNESS_TEMPLATE,
+  physio: PHYSIO_TEMPLATE,
+  physiotherapy: PHYSIO_TEMPLATE,
+  nutrition: NUTRITION_TEMPLATE,
+  tcm: TCM_TEMPLATE
 };
 
 /**
  * Get a specific template by ID with safe fallback to DEFAULT_TEMPLATE_ID
- * @param {string} templateId - "tcm" | "wellness"
+ * @param {string} templateId - "wellness" | "physio" | "nutrition" | "tcm"
  * @returns {object} Template configuration object
  */
 export function getTemplateById(templateId = DEFAULT_TEMPLATE_ID) {
@@ -30,7 +36,7 @@ export function getTemplateById(templateId = DEFAULT_TEMPLATE_ID) {
  * @returns {Array<object>}
  */
 export function getAllTemplates() {
-  return Object.values(CLINIC_TEMPLATES);
+  return [WELLNESS_TEMPLATE, PHYSIO_TEMPLATE, NUTRITION_TEMPLATE, TCM_TEMPLATE];
 }
 
 /**
@@ -77,4 +83,4 @@ export function getTemplateIntakeSchema(templateId = DEFAULT_TEMPLATE_ID) {
   return template ? template.intakeSchema : null;
 }
 
-export { TCM_TEMPLATE, WELLNESS_TEMPLATE };
+export { TCM_TEMPLATE, WELLNESS_TEMPLATE, PHYSIO_TEMPLATE, NUTRITION_TEMPLATE };

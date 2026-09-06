@@ -67,6 +67,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // Render Intake Notes if available
   if (activeBooking.intakeData && intakeRow && intakeEl) {
     intakeRow.style.display = "flex";
+    const labelEl = intakeRow.querySelector(".ticket-label");
+    const tType = activeBooking.templateType || "";
+    if (labelEl) {
+      if (tType === "wellness" || tType === "spa") labelEl.textContent = "Spa & Aroma Preferences:";
+      else if (tType === "physio") labelEl.textContent = "Physio Assessment:";
+      else if (tType === "nutrition") labelEl.textContent = "Nutrition & Diet Profile:";
+      else if (tType === "tcm") labelEl.textContent = "Meridian Assessment:";
+      else labelEl.textContent = "Intake Assessment:";
+    }
     intakeEl.textContent = activeBooking.intakeData;
   }
 

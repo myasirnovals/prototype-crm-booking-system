@@ -70,14 +70,15 @@ export class OwnerController {
     const defaultBranches = [
       {
         id: "sg-orchard",
-        name: "Orchard Wellness Clinic",
+        name: "Orchard Wellness & Luxury Spa",
         region: "Singapore",
         address: "Paragon Medical #14-02, Singapore 238859",
-        profileType: "TCM_PHYSIO",
+        profileType: "SPA_WELLNESS",
+        templateId: "wellness",
         currency: "SGD",
         revenue: "SGD 84,500.00",
         occupancy: "92.1%",
-        practitioners: "3 On-Duty Practitioners",
+        practitioners: "3 Spa Therapists",
         phone: "+65 8123 4567",
         hours: "Mon - Sat (08:30 - 20:00 SGT)",
         status: "ACTIVE",
@@ -85,14 +86,15 @@ export class OwnerController {
       },
       {
         id: "my-kl",
-        name: "Kuala Lumpur Integrated Care",
+        name: "Kuala Lumpur Physiotherapy & Sports Rehab",
         region: "Malaysia",
         address: "Pavilion Embassy Tower, Jalan Ampang, Kuala Lumpur",
-        profileType: "MEDICAL_CLINIC",
+        profileType: "PHYSIOTHERAPY",
+        templateId: "physio",
         currency: "MYR",
         revenue: "MYR 142,200.00",
         occupancy: "86.5%",
-        practitioners: "2 Specialist Physicians",
+        practitioners: "2 Senior Physiotherapists",
         phone: "+60 12 345 6789",
         hours: "Mon - Sat (09:00 - 18:00 MYT)",
         status: "ACTIVE",
@@ -100,18 +102,19 @@ export class OwnerController {
       },
       {
         id: "my-penang",
-        name: "Penang TCM & Physio Center",
+        name: "Penang Clinical Nutrition & Dietetics Care",
         region: "Malaysia",
         address: "Gurney Walk, Persiaran Gurney, Penang",
-        profileType: "TCM_ACUPUNCTURE",
+        profileType: "NUTRITION",
+        templateId: "nutrition",
         currency: "MYR",
         revenue: "MYR 78,800.00",
         occupancy: "81.0%",
-        practitioners: "2 TCM Physicians",
+        practitioners: "2 Registered Dietitians",
         phone: "+60 17 888 9922",
         hours: "Tue - Sun (10:00 - 19:00 MYT)",
         status: "ACTIVE",
-        logoUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23d97706'/%3E%3Ctext x='50' y='64' font-size='42' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E✦%3C/text%3E%3C/svg%3E"
+        logoUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2316a34a'/%3E%3Ctext x='50' y='64' font-size='42' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E✦%3C/text%3E%3C/svg%3E"
       }
     ];
 
@@ -124,14 +127,16 @@ export class OwnerController {
 
   getProfileTypeLabel(type) {
     switch (type) {
-      case "TCM_PHYSIO":
-        return "Physiotherapy & Posture (Body Pain Map)";
+      case "SPA_WELLNESS":
+        return "Spa & Luxury Wellness";
+      case "PHYSIOTHERAPY":
+        return "Physiotherapy & Rehab";
+      case "NUTRITION":
+        return "Clinical Nutrition & Dietetics";
       case "TCM_ACUPUNCTURE":
         return "Traditional Chinese Medicine (TCM)";
-      case "SPA_WELLNESS":
-        return "Spa & Wellness";
       case "MEDICAL_CLINIC":
-        return "Medical Clinic & Practice";
+        return "Medical Clinic (SIMRS)";
       default:
         return "Integrated Care";
     }
@@ -256,6 +261,10 @@ export class OwnerController {
         branch.name = document.getElementById("editBranchName").value.trim();
         branch.region = document.getElementById("editBranchRegion").value.trim();
         branch.profileType = document.getElementById("editBranchProfileType").value;
+        if (branch.profileType === "SPA_WELLNESS") branch.templateId = "wellness";
+        else if (branch.profileType === "PHYSIOTHERAPY") branch.templateId = "physio";
+        else if (branch.profileType === "NUTRITION") branch.templateId = "nutrition";
+        else if (branch.profileType === "TCM_ACUPUNCTURE") branch.templateId = "tcm";
         branch.address = document.getElementById("editBranchAddress").value.trim();
         branch.phone = document.getElementById("editBranchPhone").value.trim();
         branch.hours = document.getElementById("editBranchHours").value.trim();

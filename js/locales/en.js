@@ -501,5 +501,36 @@ export const en = {
   "template.wellness.serviceReflexology": "Foot Reflexology & Acupressure",
   "template.wellness.serviceReflexologyDesc": "Acupressure mapped to meridian reflex zones on the soles of the feet, restoring organ vitality, easing fluid retention, and soothing tired legs.",
   "template.wellness.therapistAyuTitle": "Senior Balinese Spa Specialist",
-  "template.wellness.therapistMichaelTitle": "Reflexology & Deep Tissue Practitioner"
+  "template.wellness.therapistMichaelTitle": "Reflexology & Deep Tissue Practitioner",
+
+  // Business Template: Physiotherapy & Sports Rehabilitation
+  "template.physio.practitionerTitle": "Senior Physiotherapist / Rehab Specialist",
+  "template.physio.intakeTitle": "Musculoskeletal & Pain Assessment",
+  "template.physio.intakeDesc": "Specify your pain location, onset duration, and severity to help your physiotherapist tailor your rehabilitation plan.",
+  "template.physio.serviceInitial": "Comprehensive Initial Physio Assessment",
+  "template.physio.serviceInitialDesc": "In-depth postural, biomechanical & range-of-motion diagnostic assessment followed by targeted initial manual therapy.",
+  "template.physio.serviceSpinal": "Spinal Decompression & Lumbar Rehab",
+  "template.physio.serviceSpinalDesc": "Non-invasive motorized spinal elongation combined with core stabilization exercises to relieve disc pressure and sciatica.",
+  "template.physio.serviceSports": "Sports Injury & Shockwave Recovery",
+  "template.physio.serviceSportsDesc": "High-energy acoustic radial shockwave therapy for chronic tendonitis, plantar fasciitis, and rapid muscle recovery.",
+  "template.physio.serviceManual": "Joint Mobilization & Dry Needling",
+  "template.physio.serviceManualDesc": "Passive accessory joint mobilization coupled with trigger point dry needling for rapid myofascial tension release.",
+  "template.physio.drLimTitle": "Senior Physiotherapist & Clinical Lead",
+  "template.physio.drMarcusName": "Dr. Marcus Wong, PT, CMP",
+  "template.physio.drMarcusTitle": "Certified Mulligan Practitioner",
+  "template.physio.sarahMitchellName": "Sarah Mitchell, B.Physio",
+  "template.physio.sarahMitchellTitle": "Lead Musculoskeletal Specialist",
+
+  // Business Template: Clinical Nutrition & Dietetics
+  "template.nutrition.practitionerTitle": "Registered Dietitian / Clinical Nutritionist",
+  "template.nutrition.intakeTitle": "Nutritional & Metabolic Profile Assessment",
+  "template.nutrition.intakeDesc": "Provide your biometric measurements, primary dietary goals, food sensitivities, and medical background for a personalized consultation.",
+  "template.nutrition.serviceInitial": "Comprehensive Clinical Dietitian Consultation",
+  "template.nutrition.serviceInitialDesc": "Full nutritional audit, resting metabolic rate estimation, body composition analysis, and personalized starter meal blueprint.",
+  "template.nutrition.serviceMetabolic": "Metabolic & Blood Glucose Optimization",
+  "template.nutrition.serviceMetabolicDesc": "Targeted clinical nutrition plan for insulin sensitivity, HbA1c lowering, and sustainable lipid profile management.",
+  "template.nutrition.serviceGut": "Gut Microbiome & Food Intolerance Therapy",
+  "template.nutrition.serviceGutDesc": "Low-FODMAP elimination and reintroduction protocol to heal leaky gut, relieve IBS bloating, and rebuild microbiome diversity.",
+  "template.nutrition.serviceSports": "Sports Nutrition & Body Recomposition",
+  "template.nutrition.serviceSportsDesc": "Macronutrient periodization, race-day glycogen loading, hydration strategies, and recovery supplementation for athletes."
 };

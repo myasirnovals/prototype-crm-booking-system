@@ -234,8 +234,8 @@ class NavbarService {
     }
 
     return `
-      <a href="sign-in.html" class="btn btn-soft full">Sign In</a>
-      <a href="onboarding.html" class="btn btn-primary full">Get Started</a>
+      <a href="sign-in.html" class="btn btn-soft full" data-i18n="nav.signIn">Sign In</a>
+      <a href="onboarding.html" class="btn btn-primary full" data-i18n="nav.getStarted">Get Started</a>
     `;
   }
 }

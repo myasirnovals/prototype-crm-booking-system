@@ -4,6 +4,7 @@
  */
 
 import { navbarService } from "../services/navbar.service.js";
+import { i18nService } from "../services/i18n.service.js";
 
 export class UIController {
   constructor() {
@@ -51,10 +52,10 @@ export class UIController {
           <button class="btn btn-sm btn-soft close-drawer" style="padding:4px 10px;">✕</button>
         </div>
         <div class="drawer-links">
-          <a href="#features">Features</a>
-          <a href="#app">Katalog Layanan</a>
-          <a href="#markets">Cabang &amp; Regional</a>
-          <a href="demo.html">Demo</a>
+          <a href="#features" data-i18n="nav.features">Features</a>
+          <a href="#app" data-i18n="nav.product">Product</a>
+          <a href="#markets" data-i18n="nav.market">Market</a>
+          <a href="demo.html" data-i18n="nav.demo">Demo</a>
           <hr style="border:0;border-top:1px solid var(--line);margin:12px 0;">
           <div class="drawer-auth-slot">
             ${navbarService.getMobileDrawerAuthLinks()}
@@ -62,6 +63,13 @@ export class UIController {
         </div>
       `;
       document.body.appendChild(drawer);
+      i18nService.applyTranslations(drawer);
+
+      document.addEventListener("cliniva:languageChanged", () => {
+        if (drawer) {
+          i18nService.applyTranslations(drawer);
+        }
+      });
 
       const closeBtn = drawer.querySelector(".close-drawer");
       const close = () => {

@@ -6,6 +6,7 @@
 import { CLINIC_BRANCHES, CLINIC_SERVICES, PRACTITIONERS } from "../config/clinic-data.js";
 import { bookingService } from "../services/booking.service.js";
 import { soundService } from "../services/sound.service.js";
+import { i18nService } from "../services/i18n.service.js";
 
 export class BookingController {
   constructor(uiController) {
@@ -90,8 +91,9 @@ export class BookingController {
     const isMY = branch.region === "my";
 
     container.innerHTML = services.map((s, idx) => {
+      const depositLabel = i18nService.t("booking.sumDepositPrefix", "Deposit");
       const priceStr = isMY ? `MYR ${s.priceMYR}` : `SGD ${s.priceSGD}`;
-      const depositStr = isMY ? `Deposit MYR ${s.depositMYR}` : `Deposit SGD ${s.depositSGD}`;
+      const depositStr = isMY ? `${depositLabel} MYR ${s.depositMYR}` : `${depositLabel} SGD ${s.depositSGD}`;
       const activeClass = idx === 0 ? "active" : "";
       const badgeHtml = s.badge ? `<span class="pill" style="font-size:10px; padding:2px 8px; float:right; background:rgba(15,118,110,0.1); color:var(--primary); font-weight:800;">${s.badge}</span>` : "";
 
@@ -231,7 +233,8 @@ export class BookingController {
       { slot: this.selectedSlot },
       (timeFormatted) => {
         if (holdDisplay) {
-          holdDisplay.textContent = `${timeFormatted} left`;
+          const leftText = i18nService.t("common.timeLeft", "left");
+          holdDisplay.textContent = `${timeFormatted} ${leftText}`;
         }
       },
       () => {
@@ -269,7 +272,10 @@ export class BookingController {
     if (elBranch) elBranch.textContent = branch.name;
     if (elService && this.selectedService) elService.textContent = this.selectedService.name;
     if (elPrac) elPrac.textContent = this.selectedPractitioner;
-    if (elSchedule) elSchedule.textContent = `Today, ${this.selectedSlot} SGT`;
+    if (elSchedule) {
+      const todayText = i18nService.t("common.today", "Today");
+      elSchedule.textContent = `${todayText}, ${this.selectedSlot} SGT`;
+    }
     if (elDeposit) elDeposit.textContent = depositText;
   }
 

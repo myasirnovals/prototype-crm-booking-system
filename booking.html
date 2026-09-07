@@ -1,34 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-i18n="booking.pageTitle">Book Appointment — Cliniva Patient Portal</title>
-  <meta name="description" content="Multi-branch clinical appointment booking portal for patients: branch selection, clinical services, specialists, time slots, and intake assessment." />
+  <meta name="description"
+    content="Multi-branch clinical appointment booking portal for patients: branch selection, clinical services, specialists, time slots, and intake assessment." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
 
   <!-- Modular Design System Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 
   <!-- Leaflet Interactive Map CSS & JS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 
 <body style="background:var(--bg); min-height:100vh; display:flex; flex-direction:column;">
   <!-- Header Topbar -->
-  <header style="background:#fff; border-bottom:1px solid var(--line); padding:16px 28px; position:sticky; top:0; z-index:100;">
+  <header
+    style="background:#fff; border-bottom:1px solid var(--line); padding:16px 28px; position:sticky; top:0; z-index:100;">
     <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
       <div style="display:flex; align-items:center; gap:16px;">
         <a href="index.html" class="logo">
           <span class="logo-mark">✦</span>
           <span data-i18n="booking.headerTitle">Cliniva Patient Portal</span>
         </a>
-        <span class="pill" style="font-size:11px; padding:4px 10px; background:#f0fdf4; color:#16a34a; font-weight:800;" data-i18n="nav.verifiedPdpa">
+        <span class="pill" style="font-size:11px; padding:4px 10px; background:#f0fdf4; color:#16a34a; font-weight:800;"
+          data-i18n="nav.verifiedPdpa">
           ● PDPA Compliant
         </span>
       </div>
@@ -36,7 +43,8 @@
       <div style="display:flex; gap:14px; align-items:center;">
         <!-- Language Switcher -->
         <div class="lang-switcher-wrap">
-          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+          <select class="lang-select" aria-label="Select Language"
+            style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
             <option value="en">🇬🇧 English</option>
             <option value="zh">🇸🇬 华语 (Singapura)</option>
             <option value="ms">🇲🇾 Bahasa Melayu (Malaysia)</option>
@@ -48,44 +56,14 @@
           <div id="bookingPatientContact" style="font-size:11px; color:var(--muted);">+65 8123 4567</div>
         </div>
         <a href="patient-portal.html" class="btn btn-sm btn-soft" data-i18n="nav.patientPortal">← Patient Portal</a>
-        <button type="button" class="btn btn-sm btn-soft" id="bookingSignOutBtn" data-i18n="nav.signOut">Sign Out</button>
+        <button type="button" class="btn btn-sm btn-soft" id="bookingSignOutBtn" data-i18n="nav.signOut">Sign
+          Out</button>
       </div>
     </div>
   </header>
 
   <!-- Main Booking Wizard Container -->
   <main class="booking-page-container" style="flex:1;">
-
-    <!-- Super Admin Business Template Switcher Bar -->
-    <div class="admin-template-switcher-bar" id="adminTemplateSwitcherBar">
-      <div class="admin-bar-info">
-        <span class="admin-pill-badge">👑 Super Admin</span>
-        <div style="display:flex; flex-direction:column;">
-          <span class="admin-bar-title">Active Clinic Business Template</span>
-          <span class="admin-bar-subtitle">Change template to preview how patient booking adapts to each clinic model</span>
-        </div>
-      </div>
-
-      <div class="admin-template-pills" id="adminTemplatePills">
-        <button type="button" class="admin-tmpl-pill active" data-template="wellness">
-          🌸 Wellness &amp; Luxury Spa
-        </button>
-        <button type="button" class="admin-tmpl-pill" data-template="physio">
-          🏃 Physiotherapy &amp; Rehab
-        </button>
-        <button type="button" class="admin-tmpl-pill" data-template="tcm">
-          🌿 TCM &amp; Acupuncture
-        </button>
-        <button type="button" class="admin-tmpl-pill" data-template="nutrition">
-          🥗 NutriFlow Nutrition
-        </button>
-      </div>
-
-      <div class="admin-badge-status">
-        <span class="admin-live-pulse"></span>
-        <span id="adminActiveTemplateBadgeText">Live Template: Wellness &amp; Spa</span>
-      </div>
-    </div>
 
     <!-- Wizard Step Progress Indicator -->
     <div class="booking-wizard-steps">
@@ -111,29 +89,22 @@
     <section class="wizard-step-pane active" id="bookingStepPane1">
       <div class="wizard-pane-header">
         <h2 id="step1PaneTitle" data-i18n="booking.step1.title">Select Clinic Branch Location</h2>
-        <p id="step1PaneDesc" data-i18n="booking.step1.desc">Choose your nearest healthcare facility. The consultation session, treatment protocol, and clinical intake are pre-configured by the clinic's active business template.</p>
+        <p id="step1PaneDesc" data-i18n="booking.step1.desc">Choose your nearest healthcare facility. The consultation
+          session, treatment protocol, and clinical intake are pre-configured by the clinic's active business template.
+        </p>
       </div>
 
       <div style="margin-bottom:24px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
-          <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; margin:0;" data-i18n="booking.step1.branchLabel">
+        <div
+          style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+          <label
+            style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; margin:0;"
+            data-i18n="booking.step1.branchLabel">
             1. Select Nearest Location (Interactive Map)
           </label>
-          <button type="button" class="btn btn-sm btn-soft" id="btnDetectLocation" style="font-size:11px; padding:5px 12px; display:inline-flex; align-items:center; gap:6px; font-weight:700;">
+          <button type="button" class="btn btn-sm btn-soft" id="btnDetectLocation"
+            style="font-size:11px; padding:5px 12px; display:inline-flex; align-items:center; gap:6px; font-weight:700;">
             <span>📍</span> <span>Detect Nearest Clinic</span>
-          </button>
-        </div>
-
-        <!-- Quick Switcher Pills for Branches -->
-        <div class="clinic-map-pills" id="clinicMapPills">
-          <button type="button" class="clinic-pill active" data-branch-id="sg-orchard">
-            🇸🇬 Singapore (Orchard Paragon)
-          </button>
-          <button type="button" class="clinic-pill" data-branch-id="my-kl">
-            🇲🇾 Kuala Lumpur (Pavilion Embassy)
-          </button>
-          <button type="button" class="clinic-pill" data-branch-id="my-penang">
-            🇲🇾 Penang (Gurney Walk)
           </button>
         </div>
 
@@ -145,36 +116,28 @@
           <div>
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
               <strong id="activeClinicTitle" style="font-size:15px; color:var(--text);">Orchard Wellness Clinic</strong>
-              <span id="activeClinicBadge" class="pill" style="font-size:10px; padding:2px 8px; background:rgba(15,118,110,0.1); color:var(--primary); font-weight:800;">🌸 LUXURY WELLNESS SPA</span>
+              <span id="activeClinicBadge" class="pill"
+                style="font-size:10px; padding:2px 8px; background:rgba(15,118,110,0.1); color:var(--primary); font-weight:800;">🌸
+                LUXURY WELLNESS SPA</span>
             </div>
-            <div id="activeClinicAddress" style="font-size:12px; color:var(--muted); margin-top:4px;">Paragon Medical #14-02, Singapore 238859</div>
-            <div id="activeClinicMeta" style="font-size:11px; color:var(--primary-dark); font-weight:700; margin-top:4px;">Currency: SGD · Hours: Mon - Sat (08:30 - 20:00 SGT)</div>
+            <div id="activeClinicAddress" style="font-size:12px; color:var(--muted); margin-top:4px;">Paragon Medical
+              #14-02, Singapore 238859</div>
+            <div id="activeClinicMeta"
+              style="font-size:11px; color:var(--primary-dark); font-weight:700; margin-top:4px;">Currency: SGD · Hours:
+              Mon - Sat (08:30 - 20:00 SGT)</div>
           </div>
           <div style="text-align:right;">
-            <span id="activeClinicDistanceBadge" class="pill" style="font-size:11px; padding:4px 10px; background:#f0fdf4; color:#16a34a; font-weight:800;">📍 Selected on Map</span>
+            <span id="activeClinicDistanceBadge" class="pill"
+              style="font-size:11px; padding:4px 10px; background:#f0fdf4; color:#16a34a; font-weight:800;">📍 Selected
+              on Map</span>
           </div>
-        </div>
-      </div>
-
-      <!-- Template-Configured Consultation Session Overview (Replaces manual treatment selection) -->
-      <div id="templateConsultationContainer" style="margin-top:20px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
-          <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; margin:0;" id="templateConsultationLabel">
-            2. Standard Consultation Session (Pre-configured by Super Admin)
-          </label>
-          <span class="pill" id="templatePresetBadge" style="font-size:11px; padding:3px 10px; background:rgba(15,118,110,0.08); color:var(--primary); font-weight:800;">
-            ● Active Template Standard
-          </span>
-        </div>
-
-        <div id="templateConsultationBanner" class="template-consultation-banner">
-          <!-- Dynamically populated by PatientBookingController -->
         </div>
       </div>
 
       <div class="wizard-footer-nav">
         <a href="patient-portal.html" class="btn btn-soft" data-i18n="booking.step1.cancelBtn">← Cancel &amp; Return</a>
-        <button type="button" class="btn btn-primary" id="toStep2Btn" data-i18n="booking.step1.nextBtn">Continue to Specialist &amp; Schedule →</button>
+        <button type="button" class="btn btn-primary" id="toStep2Btn" data-i18n="booking.step1.nextBtn">Continue to
+          Specialist &amp; Schedule →</button>
       </div>
     </section>
 
@@ -182,11 +145,14 @@
     <section class="wizard-step-pane" id="bookingStepPane2">
       <div class="wizard-pane-header">
         <h2 id="step2PaneTitle" data-i18n="booking.step2.title">Select Attending Specialist &amp; Time Slot</h2>
-        <p id="step2PaneDesc" data-i18n="booking.step2.desc">Choose your preferred doctor, therapist, or practitioner filtered for this clinic template, or select the earliest available slot.</p>
+        <p id="step2PaneDesc" data-i18n="booking.step2.desc">Choose your preferred doctor, therapist, or practitioner
+          filtered for this clinic template, or select the earliest available slot.</p>
       </div>
 
       <div style="margin-bottom:24px;">
-        <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; display:block; margin-bottom:10px;" id="bookingSpecialistLabel" data-i18n="booking.step2.practitionerLabel">
+        <label
+          style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; display:block; margin-bottom:10px;"
+          id="bookingSpecialistLabel" data-i18n="booking.step2.practitionerLabel">
           1. Select Attending Specialist / Practitioner
         </label>
         <div class="practitioner-choice-grid" id="bookingPractitionerList">
@@ -196,10 +162,13 @@
 
       <div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <label style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; margin:0;" data-i18n="booking.step2.slotLabel">
+          <label
+            style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; margin:0;"
+            data-i18n="booking.step2.slotLabel">
             2. Available Time Slots (10-Minute Hold)
           </label>
-          <span id="slotHoldAlert" style="display:none; font-size:11px; font-weight:800; color:var(--primary); background:#ccfbf1; padding:2px 8px; border-radius:var(--radius-full);">
+          <span id="slotHoldAlert"
+            style="display:none; font-size:11px; font-weight:800; color:var(--primary); background:#ccfbf1; padding:2px 8px; border-radius:var(--radius-full);">
             Slot temporarily held for 10 minutes
           </span>
         </div>
@@ -217,8 +186,10 @@
       </div>
 
       <div class="wizard-footer-nav">
-        <button type="button" class="btn btn-soft" id="backToStep1Btn" data-i18n="booking.step2.prevBtn">← Back to Branch Location</button>
-        <button type="button" class="btn btn-primary" id="toStep3Btn" data-i18n="booking.step2.nextBtn">Continue to Intake Assessment →</button>
+        <button type="button" class="btn btn-soft" id="backToStep1Btn" data-i18n="booking.step2.prevBtn">← Back to
+          Branch Location</button>
+        <button type="button" class="btn btn-primary" id="toStep3Btn" data-i18n="booking.step2.nextBtn">Continue to
+          Intake Assessment →</button>
       </div>
     </section>
 
@@ -226,7 +197,8 @@
     <section class="wizard-step-pane" id="bookingStepPane3">
       <div class="wizard-pane-header">
         <h2 id="step3PaneTitle" data-i18n="booking.step3.title">Patient Information &amp; Intake Assessment</h2>
-        <p id="step3PaneDesc" data-i18n="booking.step3.desc">Provide your patient details and intake notes to help your practitioner prepare in advance.</p>
+        <p id="step3PaneDesc" data-i18n="booking.step3.desc">Provide your patient details and intake notes to help your
+          practitioner prepare in advance.</p>
       </div>
 
       <!-- DYNAMIC SPECIALIZED INTAKE FORM CONTAINER -->
@@ -238,14 +210,17 @@
         <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer;">
           <input type="checkbox" checked required style="margin-top:3px;" id="intakePdpaConsent" />
           <span style="font-size:12px; color:var(--text-secondary); line-height:1.4;">
-            I consent to the collection and processing of my specialized health / wellness intake data in accordance with the clinic privacy standard and Singapore / Malaysia Personal Data Protection Act (PDPA).
+            I consent to the collection and processing of my specialized health / wellness intake data in accordance
+            with the clinic privacy standard and Singapore / Malaysia Personal Data Protection Act (PDPA).
           </span>
         </label>
       </div>
 
       <div class="wizard-footer-nav">
-        <button type="button" class="btn btn-soft" id="backToStep2Btn" data-i18n="booking.step3.prevBtn">← Back to Schedule</button>
-        <button type="button" class="btn btn-primary" id="toStep4Btn" data-i18n="booking.step3.nextBtn">Review &amp; Confirm Booking →</button>
+        <button type="button" class="btn btn-soft" id="backToStep2Btn" data-i18n="booking.step3.prevBtn">← Back to
+          Schedule</button>
+        <button type="button" class="btn btn-primary" id="toStep4Btn" data-i18n="booking.step3.nextBtn">Review &amp;
+          Confirm Booking →</button>
       </div>
     </section>
 
@@ -253,7 +228,8 @@
     <section class="wizard-step-pane" id="bookingStepPane4">
       <div class="wizard-pane-header">
         <h2 data-i18n="booking.step4.title">Review Appointment &amp; Deposit Payment</h2>
-        <p data-i18n="booking.step4.desc">Review your appointment details and complete deposit payment to secure your reservation.</p>
+        <p data-i18n="booking.step4.desc">Review your appointment details and complete deposit payment to secure your
+          reservation.</p>
       </div>
 
       <div class="booking-summary-card">
@@ -267,7 +243,8 @@
         </div>
         <div class="booking-summary-row">
           <span style="color:var(--muted);" data-i18n="booking.step4.service">Consultation Session:</span>
-          <strong id="summaryServiceVal" style="color:var(--text);">Traditional Balinese Aromatherapy Massage (75 min)</strong>
+          <strong id="summaryServiceVal" style="color:var(--text);">Traditional Balinese Aromatherapy Massage (75
+            min)</strong>
         </div>
         <div class="booking-summary-row">
           <span style="color:var(--muted);" data-i18n="booking.step4.practitioner">Attending Specialist:</span>
@@ -283,22 +260,29 @@
         </div>
         <div class="booking-summary-row">
           <span style="color:var(--muted);">Intake Assessment Summary:</span>
-          <span id="summaryComplaintVal" style="font-size:12px; max-width:60%; text-align:right; color:var(--text-secondary);">Aromatherapy: Lavender · Pressure: Medium</span>
+          <span id="summaryComplaintVal"
+            style="font-size:12px; max-width:60%; text-align:right; color:var(--text-secondary);">Aromatherapy: Lavender
+            · Pressure: Medium</span>
         </div>
         <div class="booking-summary-row">
           <span style="color:var(--muted);">Standard Consultation Fee:</span>
           <strong id="summaryPriceVal" style="font-size:15px; color:var(--text);">SGD 130.00</strong>
         </div>
-        <div class="booking-summary-row" style="background:#f0fdf4; padding:12px; border-radius:var(--radius-sm); margin-top:8px;">
-          <span style="color:#16a34a; font-weight:800;" data-i18n="booking.step4.depositFee">Deposit Commitment Fee (Hold Slot):</span>
+        <div class="booking-summary-row"
+          style="background:#f0fdf4; padding:12px; border-radius:var(--radius-sm); margin-top:8px;">
+          <span style="color:#16a34a; font-weight:800;" data-i18n="booking.step4.depositFee">Deposit Commitment Fee
+            (Hold Slot):</span>
           <strong id="summaryDepositVal" class="booking-deposit-total">SGD 35.00</strong>
         </div>
       </div>
 
-      <div style="background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-sm); padding:16px; margin-bottom:24px;">
-        <div style="font-size:12px; font-weight:800; color:var(--text); margin-bottom:4px;" data-i18n="booking.step4.paymentMethod">SELECT PAYMENT METHOD:</div>
+      <div
+        style="background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-sm); padding:16px; margin-bottom:24px;">
+        <div style="font-size:12px; font-weight:800; color:var(--text); margin-bottom:4px;"
+          data-i18n="booking.step4.paymentMethod">SELECT PAYMENT METHOD:</div>
         <p style="font-size:12px; color:var(--muted); margin:0 0 10px;">
-          The remaining balance will be settled at the clinic cashier after your session. The deposit instantly guarantees your reserved time slot.
+          The remaining balance will be settled at the clinic cashier after your session. The deposit instantly
+          guarantees your reserved time slot.
         </p>
         <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
           <span class="pill" style="font-size:12px; background:#fff; border:1px solid var(--line); color:var(--text);">
@@ -314,8 +298,10 @@
       </div>
 
       <div class="wizard-footer-nav">
-        <button type="button" class="btn btn-soft" id="backToStep3Btn" data-i18n="booking.step4.prevBtn">← Edit Information</button>
-        <button type="button" class="btn btn-primary" id="confirmBookingCheckoutBtn" style="font-size:15px; padding:12px 24px;" data-i18n="booking.step4.confirmBtn">
+        <button type="button" class="btn btn-soft" id="backToStep3Btn" data-i18n="booking.step4.prevBtn">← Edit
+          Information</button>
+        <button type="button" class="btn btn-primary" id="confirmBookingCheckoutBtn"
+          style="font-size:15px; padding:12px 24px;" data-i18n="booking.step4.confirmBtn">
           Confirm &amp; Issue Digital E-Ticket 🎟️
         </button>
       </div>
@@ -336,4 +322,5 @@
   <!-- Modular Bootstrap Script -->
   <script type="module" src="js/pages/booking.js"></script>
 </body>
+
 </html>

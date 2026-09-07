@@ -1,4 +1,4 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.3.0 [STABLE RELEASE]
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.3.1 [STABLE RELEASE]
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 
@@ -127,6 +127,14 @@ Lalu buka:
 ---
 
 ## 📦 Riwayat Rilis & Semantic Versioning (SemVer)
+
+### 🏷️ V1.3.1 (Patch Release) ✅ *Stable Release*
+*Rilis pembaruan perbaikan (patch release) untuk menangani visibilitas inisial modal dialog profil pengguna, memastikan tombol exit/cancel/save merespons dengan benar, serta menjamin pre-fill data staf yang andal.*
+
+- **🩹 Bug Fixes & UI Hardening (Patch)**:
+  - **Modal Initial Visibility**: Menetapkan `display: none;` secara baku pada `.auth-modal-backdrop` dan inisialisasi markup modal profil agar modal tidak langsung muncul otomatis saat halaman pertama kali dibuka.
+  - **Button Handlers Resilience**: Memperkuat penanganan klik pada tombol Exit (`#closeProfileModalBtn`), Batal (`#cancelProfileBtn`), dan Simpan (`#saveProfileBtn`) dengan handler ganda (`onclick` + `addEventListener`) dan pencegahan *event bubbling*.
+  - **Role-Based Demo Pre-fill**: Menambahkan fallback cerdas otomatis berbasis URL role jika pengguna mengakses halaman operasional secara langsung tanpa proses sign-in sebelumnya.
 
 ### 🏷️ V1.3.0 (Minor Release) ✅ *Stable Release*
 *Rilis resmi stabil V1.3.0 yang merangkum seluruh modernisasi fungsionalitas operasional CRM klinik: formulir asupan dinamis (TCM/Spa/Rehab), modul reset kata sandi in-app tanpa SMTP eksternal, manajemen antrean & rekam medis praktisi dengan audio chime, bilah notifikasi aktivitas terpadu, pembaruan profil staf tekstual, serta pencapaian target operasionalitas CRM 100%.*

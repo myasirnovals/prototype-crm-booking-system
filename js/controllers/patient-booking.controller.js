@@ -153,6 +153,7 @@ export class PatientBookingController {
    * ------------------------------------------------------------------ */
   setupAdminTemplateSwitcher() {
     const pills = document.querySelectorAll("#adminTemplatePills .admin-tmpl-pill");
+    if (!pills || pills.length === 0) return;
     pills.forEach((pill) => {
       pill.addEventListener("click", () => {
         const targetTemplate = pill.dataset.template;
@@ -173,13 +174,13 @@ export class PatientBookingController {
     this.activeTemplateId = String(templateId).trim().toLowerCase();
     this.bookingDraft.templateType = this.activeTemplateId;
 
-    // Update switcher pills active state
+    // Update switcher pills active state if present
     const pills = document.querySelectorAll("#adminTemplatePills .admin-tmpl-pill");
     pills.forEach((p) => {
       p.classList.toggle("active", p.dataset.template === this.activeTemplateId);
     });
 
-    // Update active badge text in admin banner
+    // Update active badge text in admin banner if present
     const badgeTextEl = document.getElementById("adminActiveTemplateBadgeText");
     if (badgeTextEl) {
       badgeTextEl.textContent = `Live Template: ${this.getTemplateDisplayName(this.activeTemplateId)}`;
@@ -210,13 +211,13 @@ export class PatientBookingController {
       case "physiotherapy":
         return "🏃 Physiotherapy & Rehab";
       case "nutrition":
-        return "🥗 NutriFlow Nutrition & Dietetics";
+        return "🥗 Clinical Nutrition & Dietetics";
       case "tcm":
         return "🌿 Traditional Chinese Medicine (TCM)";
       case "wellness":
       case "spa":
       default:
-        return "🌸 Wellness & Luxury Spa";
+        return "🌸 Wellness & Spa Care";
     }
   }
 
@@ -286,6 +287,7 @@ export class PatientBookingController {
 
   setupBranchPills() {
     const pills = document.querySelectorAll("#clinicMapPills .clinic-pill");
+    if (!pills || pills.length === 0) return;
     pills.forEach((pill) => {
       pill.addEventListener("click", () => {
         soundService.playClickTone();
@@ -412,9 +414,6 @@ export class PatientBookingController {
    * (Replaces manual service picking — configured directly by Super Admin)
    * ------------------------------------------------------------------ */
   renderTemplateConsultationInfo() {
-    const container = document.getElementById("templateConsultationBanner");
-    if (!container) return;
-
     const consultation = bookingService.getTemplateConsultation(this.activeTemplateId, this.selectedBranch.currency);
     if (!consultation) return;
 
@@ -426,95 +425,113 @@ export class PatientBookingController {
     this.bookingDraft.room = consultation.defaultRoom;
     this.bookingDraft.templateType = this.activeTemplateId;
 
-    // Apply accent color to banner
-    container.style.setProperty("--tmpl-accent", consultation.accentColor);
-
     let badgeIcon = "🌸";
-    let badgeText = "Wellness & Spa Protocol";
-    let badgeBg = "#fefce8";
-    let badgeColor = "#854d0e";
+    let badgeText = "WELLNESS & SPA CARE";
+    let badgeBg = "rgba(15,118,110,0.1)";
+    let badgeColor = "var(--primary)";
     let badgeBorder = "#fef08a";
 
-    if (this.activeTemplateId === "physio") {
+    if (this.activeTemplateId === "physio" || this.activeTemplateId === "physiotherapy") {
       badgeIcon = "🏃";
-      badgeText = "Physiotherapy & Rehab Protocol";
-      badgeBg = "#f0f9ff";
-      badgeColor = "#0369a1";
+      badgeText = "PHYSIOTHERAPY & REHAB";
+      badgeBg = "rgba(2,132,199,0.1)";
+      badgeColor = "#0284c7";
       badgeBorder = "#bae6fd";
     } else if (this.activeTemplateId === "tcm") {
       badgeIcon = "🌿";
-      badgeText = "TCM Meridian & Acupressure Protocol";
-      badgeBg = "#f0fdfa";
-      badgeColor = "#0f766e";
+      badgeText = "TRADITIONAL CHINESE MEDICINE";
+      badgeBg = "rgba(180,83,9,0.1)";
+      badgeColor = "#b45309";
       badgeBorder = "#99f6e4";
     } else if (this.activeTemplateId === "nutrition") {
       badgeIcon = "🥗";
-      badgeText = "Clinical Nutrition & Dietetics Protocol";
-      badgeBg = "#f0fdf4";
-      badgeColor = "#15803d";
+      badgeText = "CLINICAL NUTRITION & DIETETICS";
+      badgeBg = "rgba(22,163,74,0.1)";
+      badgeColor = "#16a34a";
       badgeBorder = "#bbf7d0";
     }
 
     // Update active clinic badge in info bar
     const clinicBadgeEl = document.getElementById("activeClinicBadge");
     if (clinicBadgeEl) {
-      clinicBadgeEl.textContent = `${badgeIcon} ${consultation.templateName.toUpperCase()}`;
+      clinicBadgeEl.textContent = `${badgeIcon} ${badgeText}`;
       clinicBadgeEl.style.background = badgeBg;
       clinicBadgeEl.style.color = badgeColor;
     }
 
-    container.innerHTML = `
-      <div class="consultation-header-row">
-        <div>
-          <div class="consultation-badge-pill" style="background:${badgeBg}; color:${badgeColor}; border:1px solid ${badgeBorder};">
-            <span>${badgeIcon}</span> <span>${badgeText}</span>
+    // Update active consultation session box in selected clinic info bar
+    const sessionTitleEl = document.getElementById("activeClinicSessionTitle");
+    const sessionPriceEl = document.getElementById("activeClinicSessionPrice");
+    const sessionDepositEl = document.getElementById("activeClinicSessionDeposit");
+    if (sessionTitleEl) {
+      sessionTitleEl.textContent = `${consultation.serviceName} (${consultation.duration})`;
+    }
+    if (sessionPriceEl) {
+      sessionPriceEl.textContent = consultation.price;
+    }
+    if (sessionDepositEl) {
+      sessionDepositEl.textContent = `Deposit: ${consultation.deposit}`;
+    }
+
+    // Optional legacy consultation banner support if present in DOM
+    const container = document.getElementById("templateConsultationBanner");
+    if (container) {
+      if (container.style && typeof container.style.setProperty === "function") {
+        container.style.setProperty("--tmpl-accent", consultation.accentColor);
+      }
+      container.innerHTML = `
+        <div class="consultation-header-row">
+          <div>
+            <div class="consultation-badge-pill" style="background:${badgeBg}; color:${badgeColor}; border:1px solid ${badgeBorder};">
+              <span>${badgeIcon}</span> <span>${badgeText}</span>
+            </div>
+            <h3 class="consultation-title">${consultation.serviceName} (${consultation.duration})</h3>
+            <p class="consultation-desc">${consultation.description}</p>
           </div>
-          <h3 class="consultation-title">${consultation.serviceName} (${consultation.duration})</h3>
-          <p class="consultation-desc">${consultation.description}</p>
-        </div>
 
-        <div class="consultation-pricing-box">
-          <div class="consultation-price-label">Standard Session Fee</div>
-          <div class="consultation-price-val">${consultation.price}</div>
-          <div class="consultation-deposit-val">Slot Deposit: ${consultation.deposit}</div>
-        </div>
-      </div>
-
-      <div class="consultation-inclusions-grid">
-        <div class="inclusion-card">
-          <div class="inclusion-icon-title">
-            <span>👨‍⚕️</span> <span>Attending Specialist</span>
+          <div class="consultation-pricing-box">
+            <div class="consultation-price-label">Standard Session Fee</div>
+            <div class="consultation-price-val">${consultation.price}</div>
+            <div class="consultation-deposit-val">Slot Deposit: ${consultation.deposit}</div>
           </div>
-          <div class="inclusion-desc">${consultation.practitionerTitle} dedicated to your session</div>
         </div>
 
-        <div class="inclusion-card">
-          <div class="inclusion-icon-title">
-            <span>📋</span> <span>Clinical Intake</span>
+        <div class="consultation-inclusions-grid">
+          <div class="inclusion-card">
+            <div class="inclusion-icon-title">
+              <span>👨‍⚕️</span> <span>Attending Specialist</span>
+            </div>
+            <div class="inclusion-desc">${consultation.practitionerTitle} dedicated to your session</div>
           </div>
-          <div class="inclusion-desc">Specialized intake assessment form tailored for this clinic model</div>
-        </div>
 
-        <div class="inclusion-card">
-          <div class="inclusion-icon-title">
-            <span>🛋️</span> <span>Private Suite / Bed</span>
+          <div class="inclusion-card">
+            <div class="inclusion-icon-title">
+              <span>📋</span> <span>Clinical Intake</span>
+            </div>
+            <div class="inclusion-desc">Specialized intake assessment form tailored for this clinic model</div>
           </div>
-          <div class="inclusion-desc">${consultation.defaultRoom} reserved for your scheduled time</div>
-        </div>
 
-        <div class="inclusion-card">
-          <div class="inclusion-icon-title">
-            <span>🛡️</span> <span>PDPA &amp; Verified Ticket</span>
+          <div class="inclusion-card">
+            <div class="inclusion-icon-title">
+              <span>🛋️</span> <span>Private Suite / Bed</span>
+            </div>
+            <div class="inclusion-desc">${consultation.defaultRoom} reserved for your scheduled time</div>
           </div>
-          <div class="inclusion-desc">Instant digital e-ticket issued with official queue verification</div>
-        </div>
-      </div>
 
-      <div class="consultation-footer-note">
-        <span style="color:#16a34a;">●</span>
-        <span>Pre-configured by Super Admin: Patients do not need to manually choose treatment items. Proceed directly to choose your attending specialist &amp; time slot.</span>
-      </div>
-    `;
+          <div class="inclusion-card">
+            <div class="inclusion-icon-title">
+              <span>🛡️</span> <span>PDPA &amp; Verified Ticket</span>
+            </div>
+            <div class="inclusion-desc">Instant digital e-ticket issued with official queue verification</div>
+          </div>
+        </div>
+
+        <div class="consultation-footer-note">
+          <span style="color:#16a34a;">●</span>
+          <span>Pre-configured by Super Admin: Patients do not need to manually choose treatment items. Proceed directly to choose your attending specialist &amp; time slot.</span>
+        </div>
+      `;
+    }
   }
 
   /* ------------------------------------------------------------------

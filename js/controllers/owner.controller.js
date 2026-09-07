@@ -129,7 +129,7 @@ export class OwnerController {
   getProfileTypeLabel(type) {
     switch (type) {
       case "SPA_WELLNESS":
-        return "Spa & Luxury Wellness";
+        return "Wellness & Spa Care";
       case "PHYSIOTHERAPY":
         return "Physiotherapy & Rehab";
       case "NUTRITION":
@@ -350,29 +350,57 @@ export class OwnerController {
   }
 
   setupAdaptiveProfileCatalog() {
-    const activeTemplate = bookingService.getActiveTemplateId();
+    const activeTemplate = bookingService.getActiveTemplateId() || "physio";
     const activeProfile = storageService.get(this.PROFILE_KEY, null);
 
-    // Initial highlight based on active template or profile
-    this.profileCards.forEach((card) => {
-      const p = card.dataset.profile;
-      const matches =
-        (p === "SPA_WELLNESS" && activeTemplate === "wellness") ||
-        (p === "PHYSIOTHERAPY" && activeTemplate === "physio") ||
-        (p === "NUTRITION" && activeTemplate === "nutrition") ||
-        (p === "TCM_ACUPUNCTURE" && activeTemplate === "tcm") ||
-        (activeProfile && p === activeProfile);
-      card.classList.toggle("active", Boolean(matches));
-    });
+    const updateProfileUI = (activeP) => {
+      const badgeTextEl = document.getElementById("activeProfileBadgeText");
+      if (badgeTextEl) {
+        badgeTextEl.textContent = this.getProfileTypeLabel(activeP);
+      }
+
+      this.profileCards.forEach((card) => {
+        const p = card.dataset.profile;
+        const isCurrent = p === activeP;
+        card.classList.toggle("active", isCurrent);
+
+        const btn = card.querySelector(".activate-profile-btn");
+        if (btn) {
+          if (isCurrent) {
+            btn.className = "btn btn-sm btn-primary activate-profile-btn";
+            btn.textContent = "✓ Currently Active";
+            btn.style.fontWeight = "800";
+          } else {
+            btn.className = "btn btn-sm btn-soft activate-profile-btn";
+            btn.textContent = "Set as Active Template";
+            btn.style.fontWeight = "700";
+          }
+        }
+      });
+    };
+
+    // Determine initial active profile
+    let currentProfile = "PHYSIOTHERAPY";
+    if (activeProfile) {
+      currentProfile = activeProfile;
+    } else if (activeTemplate === "wellness") {
+      currentProfile = "SPA_WELLNESS";
+    } else if (activeTemplate === "physio") {
+      currentProfile = "PHYSIOTHERAPY";
+    } else if (activeTemplate === "nutrition") {
+      currentProfile = "NUTRITION";
+    } else if (activeTemplate === "tcm") {
+      currentProfile = "TCM_ACUPUNCTURE";
+    }
+
+    updateProfileUI(currentProfile);
 
     this.profileCards.forEach((card) => {
       card.addEventListener("click", () => {
         const profile = card.dataset.profile;
-        soundService.playClickTone();
+        soundService.playQueueChime();
 
-        this.profileCards.forEach((c) => c.classList.remove("active"));
-        card.classList.add("active");
-
+        updateProfileUI(profile);
         storageService.set(this.PROFILE_KEY, profile);
 
         let templateId = "wellness";
@@ -382,7 +410,28 @@ export class OwnerController {
         else if (profile === "SPA_WELLNESS") templateId = "wellness";
 
         bookingService.setActiveTemplate(templateId);
+
+        // Synchronize primary branch template
+        if (this.branches && this.branches.length > 0) {
+          this.branches[0].profileType = profile;
+          this.branches[0].templateId = templateId;
+          this.saveBranches();
+          this.renderBranchCards();
+        }
+
+        const label = this.getProfileTypeLabel(profile);
         this.addAuditEntry("Dr. Hendra Wijaya", "Set Default Clinic Template", "TEMPLATE", `Type: ${profile} (${templateId})`);
+
+        // Display confirmation feedback toast
+        const alertEl = document.getElementById("activeProfileStatusBanner");
+        if (alertEl) {
+          alertEl.style.transition = "background-color 0.3s ease";
+          const origBg = alertEl.style.background;
+          alertEl.style.background = "#dcfce7";
+          setTimeout(() => {
+            alertEl.style.background = origBg || "#f0fdfa";
+          }, 1000);
+        }
       });
     });
   }

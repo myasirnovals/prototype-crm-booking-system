@@ -113,7 +113,7 @@
 
         <!-- Active Selected Clinic Info Bar -->
         <div id="selectedClinicInfoBar" class="selected-clinic-card">
-          <div>
+          <div style="flex:1;">
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
               <strong id="activeClinicTitle" style="font-size:15px; color:var(--text);">Orchard Wellness Clinic</strong>
               <span id="activeClinicBadge" class="pill"
@@ -125,8 +125,21 @@
             <div id="activeClinicMeta"
               style="font-size:11px; color:var(--primary-dark); font-weight:700; margin-top:4px;">Currency: SGD · Hours:
               Mon - Sat (08:30 - 20:00 SGT)</div>
+
+            <!-- Active Consultation Session Pre-configured by Super Admin -->
+            <div id="activeClinicSessionBox"
+              style="margin-top:12px; padding:10px 14px; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-sm); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div>
+                <span style="font-size:10px; font-weight:800; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px;">Active Consultation Session:</span>
+                <div id="activeClinicSessionTitle" style="font-size:13px; font-weight:800; color:var(--text); margin-top:2px;">Traditional Balinese Aromatherapy Massage (75 min)</div>
+              </div>
+              <div style="text-align:right;">
+                <span id="activeClinicSessionPrice" style="font-size:13px; font-weight:800; color:var(--text);">SGD 130.00</span>
+                <span id="activeClinicSessionDeposit" class="pill" style="font-size:10px; padding:2px 8px; background:#f0fdf4; color:#16a34a; font-weight:800; margin-left:6px;">Deposit: SGD 35.00</span>
+              </div>
+            </div>
           </div>
-          <div style="text-align:right;">
+          <div style="text-align:right; margin-left:14px;">
             <span id="activeClinicDistanceBadge" class="pill"
               style="font-size:11px; padding:4px 10px; background:#f0fdf4; color:#16a34a; font-weight:800;">📍 Selected
               on Map</span>

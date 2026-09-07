@@ -1,4 +1,4 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.4.0 [STABLE RELEASE]
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.5.0 [STABLE RELEASE]
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 
@@ -127,6 +127,24 @@ Lalu buka:
 ---
 
 ## 📦 Riwayat Rilis & Semantic Versioning (SemVer)
+
+### 🏷️ V1.5.0 (Minor Release) ✅ *Stable Release*
+*Rilis resmi stabil V1.5.0: Menghubungkan secara penuh seleksi profil bisnis adaptif Super Admin pada panel eksekutif (`owner.html` & `owner.controller.js`) dengan alur reservasi pasien pada `booking.html`. Tampilan portal pasien terjaga bersih tanpa bilah switcher admin, dengan data sesi konsultasi, praktisi spesialis, instrumen form intake khusus, dan E-Tiket yang beradaptasi secara dinamis dan presisi sesuai profil yang diaktifkan oleh Super Admin.*
+
+- **🚀 New Features & Architecture (Minor)**:
+  - **Super Admin Adaptive Business Profile Activation (`owner.html` & `owner.controller.js`)**:
+    - Bilah status blueprint aktif real-time (`#activeProfileStatusBanner`) dengan indikator status `● LIVE ON PATIENT PORTAL` dan tautan pratinjau langsung ke portal pasien (`Preview Patient Booking ↗`).
+    - Tombol aksi aktivasi terintegrasi pada masing-masing kartu profil (`Set as Active Template` / `✓ Currently Active`).
+    - Penyimpanan instan ke `storageService` (`cliniva_intake_profile` dan `cliniva_active_template`) dengan audio chime konfirmasi (`soundService.playQueueChime()`), feedback visual toast hijau, dan pencatatan audit trail otomatis.
+    - Sinkronisasi template pada profil cabang utama (`cliniva_branches`).
+  - **Clean Patient Portal Data Adaptation (`booking.html` & `patient-booking.controller.js`)**:
+    - **Pembersihan Layout Portal Pasien**: Menghapus bilah switcher admin dari `booking.html` sesuai tata letak yang diinginkan pengguna, menjaga fokus dan privasi pengalaman reservasi pasien.
+    - **Kotak Sesi Konsultasi Terkonfigurasi (`#activeClinicSessionBox`)**: Ditampilkan terintegrasi di dalam `#selectedClinicInfoBar` pada Langkah 1, menyajikan nama sesi konsultasi, durasi, harga baku, dan komitmen deposit slot.
+    - **Lencana Klinik Adaptif (`#activeClinicBadge`)**: Otomatis menyesuaikan warna aksen, ikon, dan label (🌸 Wellness & Spa Care, 🏃 Physiotherapy & Rehab, 🥗 Clinical Nutrition & Dietetics, 🌿 Traditional Chinese Medicine).
+    - **Filter Praktisi & Form Asesmen Asupan Dinamis**: Langkah 2 menampilkan spesialis sesuai template aktif; Langkah 3 memuat form asesmen khusus (skala nyeri VAS & pemilih sendi untuk fisioterapi; minyak esensial & tekanan pijat untuk spa; kalkulator BMI & target diet untuk nutrisi; peta meridian & diagnosis lidah/nadi untuk TCM).
+    - **Ringkasan Langkah 4 & E-Tiket**: Persistensi penuh seluruh rincian konsultasi dan deposit pada E-Tiket digital resmi.
+  - **Automated Verification Matrix (`test_owner_booking_sync.mjs`)**:
+    - Pengujian otomatis end-to-end memvalidasi siklus peralihan ke-4 profil dan sinkronisasinya ke draf booking serta UI pasien dengan kelolosan 100%.
 
 ### 🏷️ V1.4.0 (Minor Release) ✅ *Stable Release*
 *Rilis resmi stabil V1.4.0 menindaklanjuti feedback langsung dari mentor/pembimbing kerja praktik: Transformasi menyeluruh halaman reservasi pasien (`booking.html`) agar seluruh tampilan, alur, sesi konsultasi baku, estimasi biaya, deposit, dan formulir intake asupan diatur penuh dari template Super Admin (`wellness`, `physio`, `tcm`, `nutrition`), tanpa mengharuskan pasien memilih menu treatment manual.*

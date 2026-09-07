@@ -1,4 +1,4 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.3.1 [STABLE RELEASE]
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.4.0 [STABLE RELEASE]
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 
@@ -127,6 +127,28 @@ Lalu buka:
 ---
 
 ## 📦 Riwayat Rilis & Semantic Versioning (SemVer)
+
+### 🏷️ V1.4.0 (Minor Release) ✅ *Stable Release*
+*Rilis resmi stabil V1.4.0 menindaklanjuti feedback langsung dari mentor/pembimbing kerja praktik: Transformasi menyeluruh halaman reservasi pasien (`booking.html`) agar seluruh tampilan, alur, sesi konsultasi baku, estimasi biaya, deposit, dan formulir intake asupan diatur penuh dari template Super Admin (`wellness`, `physio`, `tcm`, `nutrition`), tanpa mengharuskan pasien memilih menu treatment manual.*
+
+- **🚀 New Features & Architecture (Minor)**:
+  - **Super Admin Dynamic Template Governance**: Halaman pemesanan pasien (`booking.html`) sepenuhnya beradaptasi dengan model bisnis klinik aktif yang ditentukan Super Admin:
+    - *🌸 Wellness & Luxury Spa*: Sesi konsultasi & aromaterapi spa 75 min (SGD 130 / MYR 290, deposit SGD 35), dokter/terapis spa (Therapist Sarah Tan / Ayu Dewi), form intake preferensi minyak esensial, tekanan pijatan, dan area tubuh.
+    - *🏃 Physiotherapy & Rehab*: Sesi pemeriksaan muskuloskeletal 60 min (SGD 120 / MYR 260, deposit SGD 30), dokter/praktisi fisioterapi (Dr. Lim Wei Han / Dr. Marcus Wong / Sarah Mitchell), form intake peta nyeri anatomi, skala VAS 1–10, dan durasi onset.
+    - *🌿 Traditional Chinese Medicine (TCM)*: Sesi diagnosis meridian & nadi 45 min (SGD 90 / MYR 210, deposit SGD 25), sinse/dokter TCM (Dr. Wong Mei Ling / Sinse Huang Wei), form intake meridian, akupresur, dan sensitivitas suhu.
+    - *🥗 NutriFlow Clinical Nutrition*: Sesi dietetika klinis & metabolik 60 min (SGD 110 / MYR 250, deposit SGD 25), dokter/dietisien klinis (Elena Lopez, RD / Dr. Kevin Tan / Amirah binti Razak), form intake biometrik, kalkulator BMI real-time, dan pola makan.
+  - **Streamlined 4-Step Patient Journey (Penghapusan Pemilihan Treatment Manual)**:
+    - Pasien tidak perlu lagi memilih-milih menu treatment secara manual di Langkah 1.
+    - Menggantikan grid layanan lama dengan kartu *Standard Consultation Overview* (`#templateConsultationBanner`) yang menampilkan spesifikasi sesi, rincian biaya, deposit hold slot, dan 4 pilar fasilitas klinis (Spesialis, Intake, Kamar/Suite privat, PDPA).
+    - Alur reservasi menjadi: **Langkah 1 (Lokasi Cabang)** ➔ **Langkah 2 (Praktisi & Jadwal 10-Min Hold)** ➔ **Langkah 3 (Asesmen Intake Khusus Template)** ➔ **Langkah 4 (Konfirmasi & Tiket E-Ticket Digital)**.
+  - **Executive Super Admin Template Switcher Bar (`#adminTemplateSwitcherBar`)**:
+    - Menyediakan bilah kontrol interaktif di bagian paling atas `booking.html` dengan 4 pill template untuk pengujian dan evaluasi langsung seluruh mode klinik.
+    - Indikator status lencana template aktif dengan animasi pulsa hijau (*live status indicator*).
+  - **Two-Way Synchronization with Super Admin Owner Portal (`owner.controller.js` & `booking.service.js`)**:
+    - Sinkronisasi instan saat Super Admin memilih profil pada *Adaptive Business Profiles Catalog* di `owner.html`, otomatis memperbarui `cliniva_active_template` dan menyiarkan event `cliniva:templateChanged`.
+    - Pilihan template pada `booking.html` juga tersinkronisasi kembali ke `cliniva_intake_profile`.
+  - **Automated Test Suite (`test_dynamic_template_booking.mjs`)**:
+    - Skrip pengujian terotomatisasi 6 fase memvalidasi integritas DOM, API template `bookingService`, rendering multi-template `IntakeFormComponent`, alur controller 4 langkah, dan persistensi E-Ticket.
 
 ### 🏷️ V1.3.1 (Patch Release) ✅ *Stable Release*
 *Rilis pembaruan perbaikan (patch release) untuk menangani visibilitas inisial modal dialog profil pengguna, memastikan tombol exit/cancel/save merespons dengan benar, serta menjamin pre-fill data staf yang andal.*

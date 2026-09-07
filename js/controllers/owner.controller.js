@@ -6,6 +6,7 @@
 import { authService, USER_ROLES } from "../services/auth.service.js";
 import { storageService } from "../services/storage.service.js";
 import { soundService } from "../services/sound.service.js";
+import { bookingService } from "../services/booking.service.js";
 
 export class OwnerController {
   constructor() {
@@ -349,6 +350,21 @@ export class OwnerController {
   }
 
   setupAdaptiveProfileCatalog() {
+    const activeTemplate = bookingService.getActiveTemplateId();
+    const activeProfile = storageService.get(this.PROFILE_KEY, null);
+
+    // Initial highlight based on active template or profile
+    this.profileCards.forEach((card) => {
+      const p = card.dataset.profile;
+      const matches =
+        (p === "SPA_WELLNESS" && activeTemplate === "wellness") ||
+        (p === "PHYSIOTHERAPY" && activeTemplate === "physio") ||
+        (p === "NUTRITION" && activeTemplate === "nutrition") ||
+        (p === "TCM_ACUPUNCTURE" && activeTemplate === "tcm") ||
+        (activeProfile && p === activeProfile);
+      card.classList.toggle("active", Boolean(matches));
+    });
+
     this.profileCards.forEach((card) => {
       card.addEventListener("click", () => {
         const profile = card.dataset.profile;
@@ -358,7 +374,15 @@ export class OwnerController {
         card.classList.add("active");
 
         storageService.set(this.PROFILE_KEY, profile);
-        this.addAuditEntry("Dr. Hendra Wijaya", "Set Default Intake Blueprint", "BLUEPRINT", `Type: ${profile}`);
+
+        let templateId = "wellness";
+        if (profile === "PHYSIOTHERAPY") templateId = "physio";
+        else if (profile === "NUTRITION") templateId = "nutrition";
+        else if (profile === "TCM_ACUPUNCTURE") templateId = "tcm";
+        else if (profile === "SPA_WELLNESS") templateId = "wellness";
+
+        bookingService.setActiveTemplate(templateId);
+        this.addAuditEntry("Dr. Hendra Wijaya", "Set Default Clinic Template", "TEMPLATE", `Type: ${profile} (${templateId})`);
       });
     });
   }

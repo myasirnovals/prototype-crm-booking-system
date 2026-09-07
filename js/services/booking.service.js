@@ -29,20 +29,47 @@ class BookingService {
 
   /**
    * Get ID of the currently active business template
-   * @returns {string} e.g. "tcm" | "wellness"
+   * Supports fallback to Super Admin intake blueprint profile if template key is unset
+   * @returns {string} "wellness" | "physio" | "nutrition" | "tcm"
    */
   getActiveTemplateId() {
-    return storageService.get(this.TEMPLATE_KEY, DEFAULT_TEMPLATE_ID);
+    const direct = storageService.get(this.TEMPLATE_KEY, null);
+    if (direct && isValidTemplateId(direct)) {
+      return String(direct).trim().toLowerCase();
+    }
+    const profile = storageService.get("cliniva_intake_profile", null);
+    if (profile === "PHYSIOTHERAPY") return "physio";
+    if (profile === "NUTRITION") return "nutrition";
+    if (profile === "TCM_ACUPUNCTURE") return "tcm";
+    if (profile === "SPA_WELLNESS") return "wellness";
+    return DEFAULT_TEMPLATE_ID;
   }
 
   /**
    * Set active business template
-   * @param {string} templateId - "tcm" | "wellness"
+   * Also synchronizes Super Admin cliniva_intake_profile and dispatches event
+   * @param {string} templateId - "wellness" | "physio" | "nutrition" | "tcm"
    * @returns {boolean}
    */
   setActiveTemplate(templateId) {
     if (!isValidTemplateId(templateId)) return false;
-    storageService.set(this.TEMPLATE_KEY, String(templateId).trim().toLowerCase());
+    const normalized = String(templateId).trim().toLowerCase();
+    storageService.set(this.TEMPLATE_KEY, normalized);
+
+    // Synchronize corresponding intake profile blueprint
+    let profileType = "SPA_WELLNESS";
+    if (normalized === "physio" || normalized === "physiotherapy") profileType = "PHYSIOTHERAPY";
+    else if (normalized === "nutrition") profileType = "NUTRITION";
+    else if (normalized === "tcm") profileType = "TCM_ACUPUNCTURE";
+    storageService.set("cliniva_intake_profile", profileType);
+
+    if (typeof document !== "undefined") {
+      document.dispatchEvent(
+        new CustomEvent("cliniva:templateChanged", {
+          detail: { templateId: normalized, template: this.getActiveTemplate() }
+        })
+      );
+    }
     return true;
   }
 
@@ -53,6 +80,54 @@ class BookingService {
   getActiveTemplate() {
     const id = this.getActiveTemplateId();
     return getTemplateById(id);
+  }
+
+  /**
+   * Get standardized template consultation session info
+   * Pre-configured by Super Admin so patients do not need to manually choose treatment items
+   * @param {string|null} templateId
+   * @param {string} currency - "SGD" | "MYR"
+   * @returns {object|null}
+   */
+  getTemplateConsultation(templateId = null, currency = "SGD") {
+    const targetId = templateId || this.getActiveTemplateId();
+    const template = getTemplateById(targetId);
+    if (!template) return null;
+
+    const primaryService = template.services && template.services.length > 0 ? template.services[0] : null;
+    const isSGD = currency === "SGD";
+
+    const priceSGD = primaryService ? primaryService.priceSGD : 120;
+    const priceMYR = primaryService ? primaryService.priceMYR : 260;
+    const depositSGD = primaryService ? primaryService.depositSGD : 30;
+    const depositMYR = primaryService ? primaryService.depositMYR : 60;
+
+    let defaultRoom = "Consultation Suite 01";
+    if (template.rooms && template.rooms.length > 0) {
+      defaultRoom = template.rooms[0];
+    }
+
+    return {
+      templateId: template.id,
+      templateName: template.name,
+      shortName: template.shortName,
+      category: template.category,
+      tagline: template.tagline,
+      accentColor: template.accentColor || "#0f766e",
+      practitionerTitle: template.practitionerTitle,
+      serviceName: primaryService ? primaryService.name : `${template.name} Consultation Session`,
+      serviceNameI18n: primaryService ? primaryService.nameI18n : null,
+      serviceCode: primaryService ? primaryService.code : "CLN-01",
+      duration: primaryService ? `${primaryService.durationMinutes} min` : "60 min",
+      durationMinutes: primaryService ? primaryService.durationMinutes : 60,
+      price: isSGD ? `SGD ${priceSGD}.00` : `MYR ${priceMYR}.00`,
+      priceNumber: isSGD ? priceSGD : priceMYR,
+      deposit: isSGD ? `SGD ${depositSGD}.00` : `MYR ${depositMYR}.00`,
+      depositNumber: isSGD ? depositSGD : depositMYR,
+      description: primaryService ? primaryService.description : template.tagline,
+      requiresEquipment: primaryService ? primaryService.requiresEquipment : null,
+      defaultRoom
+    };
   }
 
   /**
@@ -96,6 +171,7 @@ class BookingService {
 
   /**
    * Get practitioners filtered by branch and/or template
+   * Falls back to all practitioners of that template if branch-filtered list is empty
    * @param {string|null} branchId
    * @param {string|null} templateId
    * @returns {Array<object>}
@@ -103,9 +179,13 @@ class BookingService {
   getPractitioners(branchId = null, templateId = null) {
     const targetTemplateId = templateId || this.getActiveTemplateId();
     if (targetTemplateId && isValidTemplateId(targetTemplateId)) {
-      const practitioners = getTemplatePractitioners(targetTemplateId, branchId);
-      if (practitioners && practitioners.length > 0) {
-        return practitioners;
+      const branchPractitioners = getTemplatePractitioners(targetTemplateId, branchId);
+      if (branchPractitioners && branchPractitioners.length > 0) {
+        return branchPractitioners;
+      }
+      const allForTemplate = getTemplatePractitioners(targetTemplateId, null);
+      if (allForTemplate && allForTemplate.length > 0) {
+        return allForTemplate;
       }
     }
 

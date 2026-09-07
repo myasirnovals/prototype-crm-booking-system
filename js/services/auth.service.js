@@ -9,8 +9,28 @@ import { storageService } from "./storage.service.js";
 class AuthService {
   constructor() {
     this.SESSION_KEY = "cliniva_auth_session";
-    this.USERS = REGISTERED_USERS;
+    this.USERS_STORAGE_KEY = "cliniva_users_registry";
     this.DEFAULT_OTP = "123456";
+  }
+
+  /**
+   * Get all registered users from storage with fallback to initial default
+   */
+  getUsers() {
+    const stored = storageService.get(this.USERS_STORAGE_KEY, null);
+    if (stored && Array.isArray(stored) && stored.length > 0) {
+      return stored;
+    }
+    storageService.set(this.USERS_STORAGE_KEY, REGISTERED_USERS);
+    return [...REGISTERED_USERS];
+  }
+
+  /**
+   * Save user registry to local storage
+   */
+  saveUsers(users) {
+    storageService.set(this.USERS_STORAGE_KEY, users);
+    return users;
   }
 
   /**
@@ -60,23 +80,24 @@ class AuthService {
     }
 
     const cleanIdentifier = identifier.trim().toLowerCase();
+    const users = this.getUsers();
 
-    // Find registered demo user
-    let user = this.USERS.find((u) => 
+    // Find registered user in dynamic registry
+    let user = users.find((u) => 
       u.email.toLowerCase() === cleanIdentifier || 
       u.phone.replace(/\s+/g, "") === cleanIdentifier.replace(/\s+/g, "")
     );
 
     // Fallback: If not found by email, match by preferredRole if provided
     if (!user && preferredRole) {
-      user = this.USERS.find((u) => u.role === preferredRole);
+      user = users.find((u) => u.role === preferredRole);
     }
 
-    // Verify password (demo accepts "cliniva2026" or user's password)
+    // Verify password (demo accepts "cliniva2026" or user's custom updated password)
     if (!user || (password !== user.password && password !== "cliniva2026")) {
       return { 
         success: false, 
-        error: "Invalid credentials. Please use demo account or password: cliniva2026" 
+        error: "Invalid credentials. Please use your updated password, demo account, or password: cliniva2026" 
       };
     }
 
@@ -111,7 +132,8 @@ class AuthService {
    * Fast 1-Click Demo Login by Role Key (OWNER, PRACTITIONER, RECEPTIONIST, USER)
    */
   loginByRoleKey(roleKey) {
-    const user = this.USERS.find((u) => u.role === roleKey);
+    const users = this.getUsers();
+    const user = users.find((u) => u.role === roleKey);
     if (!user) {
       return { success: false, error: `Demo account for role ${roleKey} not found.` };
     }
@@ -141,6 +163,99 @@ class AuthService {
 
     storageService.set(this.SESSION_KEY, session);
     return { success: true, session, targetRoute };
+  }
+
+  /**
+   * Reset / Change user password directly in-app without external SMTP email
+   */
+  resetPassword(identifier, newPassword, confirmPassword) {
+    if (!identifier || !identifier.trim()) {
+      return { success: false, error: "Please enter your registered work email or phone number." };
+    }
+
+    if (!newPassword || newPassword.length < 6) {
+      return { success: false, error: "New password must be at least 6 characters long." };
+    }
+
+    if (newPassword !== confirmPassword) {
+      return { success: false, error: "Password confirmation does not match the new password." };
+    }
+
+    const cleanIdentifier = identifier.trim().toLowerCase();
+    const users = this.getUsers();
+
+    const userIndex = users.findIndex((u) =>
+      u.email.toLowerCase() === cleanIdentifier ||
+      u.phone.replace(/\s+/g, "") === cleanIdentifier.replace(/\s+/g, "") ||
+      u.id.toLowerCase() === cleanIdentifier
+    );
+
+    if (userIndex === -1) {
+      return {
+        success: false,
+        error: `Account for "${identifier}" not found. Please verify your email or use a registered staff account (e.g. owner@cliniva.com, dr.lim@orchardclinic.sg, reception@orchardclinic.sg).`
+      };
+    }
+
+    // Update password in registry
+    users[userIndex].password = newPassword;
+    users[userIndex].passwordUpdatedAt = new Date().toISOString();
+    this.saveUsers(users);
+
+    // If currently logged in as this user, update active session
+    const currentSession = this.getCurrentSession();
+    if (currentSession && currentSession.user && currentSession.user.id === users[userIndex].id) {
+      currentSession.user.passwordUpdatedAt = users[userIndex].passwordUpdatedAt;
+      storageService.set(this.SESSION_KEY, currentSession);
+    }
+
+    return {
+      success: true,
+      user: users[userIndex],
+      message: `Password for ${users[userIndex].name} (${users[userIndex].email}) has been successfully updated! You can now sign in with your new password.`
+    };
+  }
+
+  /**
+   * Update user textual profile information (name, phone, title, specialty, room)
+   */
+  updateUserProfile(userId, profileData) {
+    if (!userId) {
+      return { success: false, error: "User ID is required." };
+    }
+
+    const users = this.getUsers();
+    const userIndex = users.findIndex((u) => u.id === userId);
+
+    if (userIndex === -1) {
+      return { success: false, error: "User not found in registry." };
+    }
+
+    // Update allowed fields (strictly textual, no photo upload)
+    if (profileData.name) users[userIndex].name = profileData.name.trim();
+    if (profileData.phone) users[userIndex].phone = profileData.phone.trim();
+    if (profileData.title) users[userIndex].title = profileData.title.trim();
+    if (profileData.specialty !== undefined) users[userIndex].specialty = profileData.specialty?.trim() || null;
+    if (profileData.room !== undefined) users[userIndex].room = profileData.room?.trim() || null;
+    if (profileData.branchName) users[userIndex].branchName = profileData.branchName.trim();
+
+    this.saveUsers(users);
+
+    // Synchronize current active session if updating self
+    const currentSession = this.getCurrentSession();
+    if (currentSession && currentSession.user && currentSession.user.id === userId) {
+      currentSession.user = {
+        ...currentSession.user,
+        ...users[userIndex]
+      };
+      storageService.set(this.SESSION_KEY, currentSession);
+    }
+
+    return {
+      success: true,
+      user: users[userIndex],
+      message: "Profile information updated successfully."
+    };
   }
 
   /**

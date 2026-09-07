@@ -22,6 +22,18 @@ export class AuthController {
     this.otpInputs = document.querySelectorAll(".otp-input");
     this.quickRoleCards = document.querySelectorAll(".demo-role-card");
     this.selectedRegion = "sg";
+
+    // Reset Password Modal Elements
+    this.forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
+    this.resetModal = document.getElementById("resetPasswordModal");
+    this.closeResetModalBtn = document.getElementById("closeResetModalBtn");
+    this.cancelResetBtn = document.getElementById("cancelResetBtn");
+    this.resetForm = document.getElementById("resetPasswordForm");
+    this.resetIdentifier = document.getElementById("resetIdentifier");
+    this.resetNewPassword = document.getElementById("resetNewPassword");
+    this.resetConfirmPassword = document.getElementById("resetConfirmPassword");
+    this.toggleResetPasswordBtn = document.getElementById("toggleResetPassword");
+    this.resetStatusBox = document.getElementById("resetPasswordStatus");
   }
 
   init() {
@@ -29,6 +41,7 @@ export class AuthController {
     this.setupRegionSelection();
     this.setupPasswordToggle();
     this.setupStaffForm();
+    this.setupForgotPasswordModal();
     this.setupOtpWorkflow();
     this.setupQuickDemoLogin();
   }
@@ -136,6 +149,107 @@ export class AuthController {
         window.location.href = result.targetRoute;
       }, 900);
     });
+  }
+
+  /**
+   * In-App Reset Password Workflow (Direct without external SMTP email)
+   */
+  setupForgotPasswordModal() {
+    if (!this.forgotPasswordBtn || !this.resetModal) return;
+
+    const openModal = () => {
+      soundService.playClickTone();
+      const currentEmail = document.getElementById("staffEmail")?.value.trim() || "";
+      if (this.resetIdentifier && currentEmail) {
+        this.resetIdentifier.value = currentEmail;
+      }
+      if (this.resetNewPassword) this.resetNewPassword.value = "";
+      if (this.resetConfirmPassword) this.resetConfirmPassword.value = "";
+      this.resetStatus(this.resetStatusBox);
+
+      this.resetModal.style.display = "flex";
+      this.resetModal.setAttribute("aria-hidden", "false");
+      if (this.resetNewPassword) {
+        setTimeout(() => this.resetNewPassword.focus(), 60);
+      }
+    };
+
+    const closeModal = () => {
+      soundService.playClickTone();
+      this.resetModal.style.display = "none";
+      this.resetModal.setAttribute("aria-hidden", "true");
+    };
+
+    this.forgotPasswordBtn.addEventListener("click", openModal);
+    this.closeResetModalBtn?.addEventListener("click", closeModal);
+    this.cancelResetBtn?.addEventListener("click", closeModal);
+
+    // Close when clicking outside modal card
+    this.resetModal.addEventListener("click", (e) => {
+      if (e.target === this.resetModal) {
+        closeModal();
+      }
+    });
+
+    // Close on ESC key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && this.resetModal.style.display === "flex") {
+        closeModal();
+      }
+    });
+
+    // Toggle reset password visibility
+    if (this.toggleResetPasswordBtn && this.resetNewPassword) {
+      this.toggleResetPasswordBtn.addEventListener("click", () => {
+        const isPassword = this.resetNewPassword.type === "password";
+        this.resetNewPassword.type = isPassword ? "text" : "password";
+        if (this.resetConfirmPassword) {
+          this.resetConfirmPassword.type = isPassword ? "text" : "password";
+        }
+        this.toggleResetPasswordBtn.textContent = isPassword ? "HIDE" : "SHOW";
+      });
+    }
+
+    // Submit reset password form
+    if (this.resetForm) {
+      this.resetForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const identifier = this.resetIdentifier?.value.trim() || "";
+        const newPassword = this.resetNewPassword?.value.trim() || "";
+        const confirmPassword = this.resetConfirmPassword?.value.trim() || "";
+
+        this.resetStatus(this.resetStatusBox);
+
+        const result = authService.resetPassword(identifier, newPassword, confirmPassword);
+
+        if (!result.success) {
+          this.showError(this.resetStatusBox, result.error);
+          return;
+        }
+
+        soundService.playQueueChime();
+        this.showSuccess(
+          this.resetStatusBox,
+          `✓ ${result.message}`
+        );
+
+        // Auto-update staff password input on main sign-in form
+        if (this.staffPassword) {
+          this.staffPassword.value = newPassword;
+        }
+
+        // Close modal after brief feedback and update main form status
+        setTimeout(() => {
+          this.resetModal.style.display = "none";
+          this.resetModal.setAttribute("aria-hidden", "true");
+          this.showSuccess(
+            this.staffStatus,
+            `🔑 Password untuk <strong>${result.user.name}</strong> berhasil diperbarui. Silakan klik <strong>Sign In to Dashboard →</strong>.`
+          );
+        }, 1300);
+      });
+    }
   }
 
   setupOtpWorkflow() {

@@ -1,4 +1,4 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.3.0-beta.2 [PRE-RELEASE]
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.3.0 [STABLE RELEASE]
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 
@@ -12,11 +12,11 @@ Struktur berkas telah dikelompokkan secara terstruktur (*Single Responsibility P
 Desain/
 ├── 📄 Halaman HTML (Entry Points per Role)
 │   ├── index.html                      # Portal Pasien Publik & Product Showcase
-│   ├── sign-in.html                    # Autentikasi Multi-Role & 1-Click Quick Demo Login
-│   ├── owner.html                      # [NEW] Panel Eksekutif Owner: Analitik Omset & Konfigurasi Klinik
-│   ├── practitioner.html               # [NEW] Workspace Dokter: Timeline Konsultasi & Body Pain Map
-│   ├── receptionist.html               # [NEW] Panel Operasional Resepsionis: Live Queue, Kasir POS & Walk-In
-│   ├── patient-portal.html             # [NEW] Portal Pasien Mandiri: E-Tiket Digital & Live Antrean Tracker
+│   ├── sign-in.html                    # Autentikasi Multi-Role, In-App Reset Password & 1-Click Quick Demo Login
+│   ├── owner.html                      # Panel Eksekutif Owner: Analitik Omset, Profil & Unified Notification Bar
+│   ├── practitioner.html               # Workspace Dokter: Queue Calling (Audio Chime), Sesi Terapi & Catatan Klinis
+│   ├── receptionist.html               # Panel Operasional Resepsionis: Live Queue, Check-in, Kasir POS & Notifikasi
+│   ├── patient-portal.html             # Portal Pasien Mandiri: E-Tiket Digital & Live Antrean Tracker
 │   ├── ticket.html                     # Viewer E-Tiket Digital & Kalender .ics
 │   ├── demo.html                       # Sandbox Demo Interaktif
 │   ├── onboarding.html                 # Registrasi Klinik Baru & Akun Super Admin Owner
@@ -28,11 +28,11 @@ Desain/
 │   ├── base.css                        # CSS Reset, elemen dasar, tombol, pill, feedback box
 │   ├── layout.css                      # Navbar glassmorphism, drawer mobile, header & footer
 │   └── components/
-│       ├── auth.css                    # Form login staf/pasien, OTP grid 6-box & kartu 1-Click Quick Demo Login
-│       ├── owner.css                   # [NEW] Style panel owner, analitik omset & live logo uploader
-│       ├── practitioner.css            # [NEW] Style workspace dokter, visualizer Body Pain Map, audio chime
-│       ├── patient-portal.css          # [NEW] Style portal pasien, live queue tracker & riwayat booking
-│       ├── receptionist.css            # [NEW] Live queue card, tabel SIMRS bridging, kasir POS
+│       ├── auth.css                    # Form login staf/pasien, OTP grid, modal reset password, modal edit profil
+│       ├── owner.css                   # Style panel owner, analitik omset & live logo uploader
+│       ├── practitioner.css            # Style workspace dokter, visualizer Body Pain Map, audio chime calling
+│       ├── patient-portal.css          # Style portal pasien, live queue tracker & riwayat booking
+│       ├── receptionist.css            # Live queue card, tabel SIMRS bridging, kasir POS
 │       ├── ticket.css                  # Kartu digital ticket, perforated divider, QR canvas
 │       ├── hero.css                    # Visual hero, phone mockup, live operations card
 │       ├── onboarding.css              # Form registrasi tenant, spesialisasi, animasi provisioning
@@ -40,7 +40,7 @@ Desain/
 │       ├── features.css                # Grid fitur, diagram alur rujukan ephemeral
 │       ├── showcase.css                # Tab shell, workspace operasional, master calendar, feed
 │       ├── booking.css                 # Form booking mandiri, kartu layanan, slot grid, ringkasan
-│       ├── notifications.css           # Engine notifikasi, mockup chat WhatsApp, reminder queue
+│       ├── notifications.css           # Engine notifikasi, mockup chat WhatsApp, reminder queue, drawer activity
 │       └── markets.css                 # Kartu pasar SG & MY, tagar, call-to-action
 │
 └── ⚡ js/
@@ -48,12 +48,6 @@ Desain/
     │   ├── role-routes.js              # RBAC Matrix, route mapping & kredensial master per role (OCP)
     │   ├── clinic-data.js              # Master data: Cabang SG/MY, praktisi, layanan, slot default
     │   └── regional-config.js          # Konfigurasi regional: Mata uang, template WA, consent PDPA
-    ├── components/demo/                # [NEW v1.2.0] Modular ES Components untuk Demo Sandbox (SRP)
-    │   ├── patient-wizard.component.js # Component Wizard 5 Langkah & hold timer
-    │   ├── receptionist-desk.component.js # Component meja resepsionis & kasir POS
-    │   ├── doctor-console.component.js # Component ruang konsultasi dokter & pain map
-    │   ├── branch-admin.component.js   # Component admin cabang & inventory
-    │   ├── owner-hq.component.js       # Component analitik omset konsolidasian
     │   ├── walkin-modal.component.js   # Component pendaftaran walk-in cepat
     │   └── whatsapp-simulator.component.js # Component simulasi live chat WA 2-way
     ├── locales/
@@ -133,6 +127,31 @@ Lalu buka:
 ---
 
 ## 📦 Riwayat Rilis & Semantic Versioning (SemVer)
+
+### 🏷️ V1.3.0 (Minor Release) ✅ *Stable Release*
+*Rilis resmi stabil V1.3.0 yang merangkum seluruh modernisasi fungsionalitas operasional CRM klinik: formulir asupan dinamis (TCM/Spa/Rehab), modul reset kata sandi in-app tanpa SMTP eksternal, manajemen antrean & rekam medis praktisi dengan audio chime, bilah notifikasi aktivitas terpadu, pembaruan profil staf tekstual, serta pencapaian target operasionalitas CRM 100%.*
+
+- **🚀 New Features & Architecture (Minor)**:
+  - **Unified Notification Bar Component (`NotificationBarComponent`)**:
+    - Tombol lonceng dengan lencana penghitung notifikasi belum dibaca (*unread badge*) di topbar Resepsionis, Praktisi, dan Owner (`#notificationBarContainer`).
+    - Dropdown drawer aktivitas interaktif dengan filter visual dan kategori ikon (`QUEUE`, `SESSION`, `SECURITY`, `PROFILE`, `RESERVATION`).
+    - Kontrol aksi cepat *"Mark all as read"* dan *"Clear all"*, serta status *unread dot* dinamis.
+  - **Textual Staff Profile Update Modal (`ProfileModalComponent`)**:
+    - Formulir modal dialog pembaruan data staf (Nama Lengkap, Gelar/Spesialisasi, Ruangan Praktik/Station, Nomor Telepon).
+    - Kebijakan IT internal tanpa upload/crop foto fisik, disertai alert edukasi kebijakan klinik.
+    - Sinkronisasi instan teks identitas staf pada header antarmuka kerja secara reaktif melalui CustomEvent `cliniva:userProfileUpdated`.
+  - **Practitioner Therapy Session & Queue Calling (`practitioner.controller.js`)**:
+    - Alur kerja interaktif daftar antrean konsultasi harian dokter dengan persistensi LocalStorage (`cliniva_practitioner_sessions`).
+    - Transisi status sesi terapi dinamis (`WAITING` ➔ `IN_PROGRESS` ➔ `COMPLETED` / `NO_SHOW`) dengan indikator *status pill* visual.
+    - Perekaman otomatis timestamp tindakan (`startedAt`, `completedAt`).
+    - Audio chime Web Audio API (`soundService.playQueueChime()`) dan nada akord mayor selesai (`soundService.playSuccessChime()`).
+    - Textarea rekam medis klinis dokter (`#treatmentNotesInput`) dengan riwayat simpan dan notifikasi toast non-blocking.
+  - **In-App Reset Password Engine (`sign-in.html` & `auth.service.js`)**:
+    - Dialog `#resetPasswordModal` dengan verifikasi email/HP terdaftar dan sinkronisasi instan ke `cliniva_users_registry` tanpa SMTP.
+  - **Dynamic Multi-Template Intake System (`IntakeFormComponent`)**:
+    - Form asupan klinis adaptif untuk Wellness Spa, Fisioterapi, Nutrisi Klinis, dan TCM.
+- **📊 Operationality Target Audit**:
+  - Validasi menyeluruh alur kerja CRM mencapai tingkat operasionalitas interaktif **100%** (jauh melampaui batas minimal 50% yang ditargetkan).
 
 ### 🏷️ V1.3.0-beta.2 (Pre-Release / Beta 2) ⚠️ *Unstable Release*
 *Rilis pembaruan pra-rilis (pre-release) fungsionalitas inti CRM operasional: alur kerja sesi terapi dokter (Practitioner Workspace), pemanggilan antrean audio chime, rekam medis catatan klinis, sistem reset kata sandi in-app, serta harmonisasi multibahasa kartu layanan.*

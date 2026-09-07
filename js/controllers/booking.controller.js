@@ -84,25 +84,42 @@ export class BookingController {
     const services = bookingService.getServices(this.activeTemplate);
     if (!services || services.length === 0) return;
 
-    // Set first service as active by default
-    this.selectedService = services[0];
+    // Retain selected service if it belongs to current template, otherwise default to first
+    const prevSelectedId = this.selectedService ? this.selectedService.id : null;
+    this.selectedService = services.find((s) => s.id === prevSelectedId) || services[0];
 
     const branch = CLINIC_BRANCHES.find((b) => b.id === this.selectedBranch) || CLINIC_BRANCHES[0];
     const isMY = branch.region === "my";
 
-    container.innerHTML = services.map((s, idx) => {
+    const badgeMap = {
+      "Best Seller": "badge.bestSeller",
+      "Recommended": "badge.recommended",
+      "Luxury": "badge.luxury",
+      "Most Popular": "badge.mostPopular",
+      "Popular": "badge.mostPopular",
+      "Essential": "badge.essential",
+      "Signature": "badge.signature"
+    };
+
+    container.innerHTML = services.map((s) => {
       const depositLabel = i18nService.t("booking.sumDepositPrefix", "Deposit");
+      const serviceName = s.nameI18n ? i18nService.t(s.nameI18n, s.name) : s.name;
+      const serviceDesc = s.descriptionI18n ? i18nService.t(s.descriptionI18n, s.description) : s.description;
+      const minLabel = i18nService.t("common.min", "min");
+      const badgeKey = s.badge ? badgeMap[s.badge] : null;
+      const translatedBadge = badgeKey ? i18nService.t(badgeKey, s.badge) : (s.badge || "");
+
       const priceStr = isMY ? `MYR ${s.priceMYR}` : `SGD ${s.priceSGD}`;
       const depositStr = isMY ? `${depositLabel} MYR ${s.depositMYR}` : `${depositLabel} SGD ${s.depositSGD}`;
-      const activeClass = idx === 0 ? "active" : "";
-      const badgeHtml = s.badge ? `<span class="pill" style="font-size:10px; padding:2px 8px; float:right; background:rgba(15,118,110,0.1); color:var(--primary); font-weight:800;">${s.badge}</span>` : "";
+      const activeClass = s.id === this.selectedService.id ? "active" : "";
+      const badgeHtml = s.badge ? `<span class="pill" style="font-size:10px; padding:2px 8px; float:right; background:rgba(15,118,110,0.1); color:var(--primary); font-weight:800;">${translatedBadge}</span>` : "";
 
       return `
         <div class="service-card ${activeClass}" data-service-id="${s.id}" style="cursor:pointer;">
           ${badgeHtml}
-          <h4 style="margin-top:2px;">${s.name}</h4>
-          <small style="color:var(--primary-dark); font-weight:700;">${s.durationMinutes} min · ${priceStr}</small>
-          <p style="font-size:11px; color:var(--muted); margin-top:6px; line-height:1.4;">${s.description}</p>
+          <h4 style="margin-top:2px;">${serviceName}</h4>
+          <small style="color:var(--primary-dark); font-weight:700;">${s.durationMinutes} ${minLabel} · ${priceStr}</small>
+          <p style="font-size:11px; color:var(--muted); margin-top:6px; line-height:1.4;">${serviceDesc}</p>
           <div style="font-size:11px; font-weight:700; color:var(--text); margin-top:8px;">${depositStr}</div>
         </div>
       `;
@@ -133,12 +150,15 @@ export class BookingController {
     const practitioners = bookingService.getPractitioners(this.selectedBranch, this.activeTemplate);
     if (!practitioners || practitioners.length === 0) return;
 
-    select.innerHTML = practitioners.map((p, idx) => {
-      const selected = idx === 0 ? "selected" : "";
-      return `<option value="${p.name}" ${selected}>${p.name} — ${p.title} (${p.specialty})</option>`;
-    }).join("");
+    const prevSelectedName = this.selectedPractitioner;
+    const activePrac = practitioners.find((p) => p.name === prevSelectedName) || practitioners[0];
+    this.selectedPractitioner = activePrac.name;
 
-    this.selectedPractitioner = practitioners[0].name;
+    select.innerHTML = practitioners.map((p) => {
+      const selected = p.name === this.selectedPractitioner ? "selected" : "";
+      const pTitle = p.titleI18n ? i18nService.t(p.titleI18n, p.title) : p.title;
+      return `<option value="${p.name}" ${selected}>${p.name} — ${pTitle} (${p.specialty})</option>`;
+    }).join("");
 
     select.addEventListener("change", (e) => {
       this.selectedPractitioner = e.target.value;
@@ -270,7 +290,12 @@ export class BookingController {
 
     if (elPatient) elPatient.textContent = this.patientName;
     if (elBranch) elBranch.textContent = branch.name;
-    if (elService && this.selectedService) elService.textContent = this.selectedService.name;
+    if (elService && this.selectedService) {
+      const serviceName = this.selectedService.nameI18n
+        ? i18nService.t(this.selectedService.nameI18n, this.selectedService.name)
+        : this.selectedService.name;
+      elService.textContent = serviceName;
+    }
     if (elPrac) elPrac.textContent = this.selectedPractitioner;
     if (elSchedule) {
       const todayText = i18nService.t("common.today", "Today");

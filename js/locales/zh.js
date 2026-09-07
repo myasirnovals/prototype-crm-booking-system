@@ -852,6 +852,13 @@ export const zh = {
   "booking.sumHold": "锁号保留",
   "booking.submitBtn": "✓ 确认预约并生成电子门票 →",
   "booking.sumDepositPrefix": "定金",
+  "common.min": "分钟",
+  "badge.bestSeller": "畅销精选",
+  "badge.recommended": "精选推荐",
+  "badge.luxury": "尊享奢华",
+  "badge.mostPopular": "最受欢迎",
+  "badge.essential": "基础必备",
+  "badge.signature": "招牌特色",
 
   // 首页区域市场
   "market.pill": "深耕东南亚区域市场",

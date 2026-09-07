@@ -356,17 +356,35 @@ export class PatientBookingController {
     const templateId = this.selectedBranch.templateId || "tcm";
     const templateServices = bookingService.getServices(templateId);
 
+    const badgeMap = {
+      "Best Seller": "badge.bestSeller",
+      "Recommended": "badge.recommended",
+      "Luxury": "badge.luxury",
+      "Most Popular": "badge.mostPopular",
+      "Popular": "badge.mostPopular",
+      "Essential": "badge.essential",
+      "Signature": "badge.signature"
+    };
+
+    const depositPrefix = i18nService.t("booking.sumDepositPrefix", "Deposit");
+    const minLabel = i18nService.t("common.min", "min");
+
     const services = templateServices.map((s) => {
       const priceStr = isSGD ? `SGD ${s.priceSGD}.00` : `MYR ${s.priceMYR}.00`;
       const depositStr = isSGD ? `SGD ${s.depositSGD}.00` : `MYR ${s.depositMYR}.00`;
+      const title = s.nameI18n ? i18nService.t(s.nameI18n, s.name) : s.name;
+      const desc = s.descriptionI18n ? i18nService.t(s.descriptionI18n, s.description) : s.description;
+      const badgeKey = s.badge ? badgeMap[s.badge] : null;
+      const translatedBadge = badgeKey ? i18nService.t(badgeKey, s.badge) : (s.badge || "");
+
       return {
         id: s.id,
-        title: s.name,
-        duration: `${s.durationMinutes} mins`,
+        title,
+        duration: `${s.durationMinutes} ${minLabel}`,
         price: priceStr,
         deposit: depositStr,
-        desc: s.description,
-        badge: s.badge
+        desc,
+        badge: translatedBadge
       };
     });
 
@@ -388,7 +406,7 @@ export class PatientBookingController {
           <p style="font-size:12px; color:var(--text-secondary); margin:0 0 12px; line-height:1.4;">${s.desc}</p>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:8px; border-top:1px dashed var(--line);">
             <div class="service-card-price" style="font-size:14px; font-weight:800; color:var(--primary);">${s.price}</div>
-            <small style="font-size:11px; color:var(--muted); font-weight:700;">Deposit: ${s.deposit}</small>
+            <small style="font-size:11px; color:var(--muted); font-weight:700;">${depositPrefix}: ${s.deposit}</small>
           </div>
         </div>
       `

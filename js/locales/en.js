@@ -852,6 +852,13 @@ export const en = {
   "booking.sumHold": "Slot Hold",
   "booking.submitBtn": "✓ Confirm Appointment & Issue E-Ticket →",
   "booking.sumDepositPrefix": "Deposit",
+  "common.min": "min",
+  "badge.bestSeller": "Best Seller",
+  "badge.recommended": "Recommended",
+  "badge.luxury": "Luxury",
+  "badge.mostPopular": "Most Popular",
+  "badge.essential": "Essential",
+  "badge.signature": "Signature",
 
   // Index Regional Markets
   "market.pill": "Regional-Ready Design",

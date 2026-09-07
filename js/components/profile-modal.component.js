@@ -25,12 +25,15 @@ export class ProfileModalComponent {
   injectModalMarkup() {
     if (document.getElementById(this.modalId)) {
       this.modal = document.getElementById(this.modalId);
+      this.modal.style.display = "none";
+      this.modal.classList.remove("open");
       return;
     }
 
     const modalEl = document.createElement("div");
     modalEl.id = this.modalId;
     modalEl.className = "auth-modal-backdrop";
+    modalEl.style.display = "none";
     modalEl.setAttribute("aria-hidden", "true");
 
     modalEl.innerHTML = `
@@ -43,7 +46,7 @@ export class ProfileModalComponent {
               <p style="margin:2px 0 0; font-size:12px; color:var(--muted);">Update textual profile & operational station info</p>
             </div>
           </div>
-          <button type="button" class="auth-modal-close" id="closeProfileModalBtn" aria-label="Close">&times;</button>
+          <button type="button" class="auth-modal-close" id="closeProfileModalBtn" aria-label="Close" style="cursor:pointer; position:relative; z-index:10;">&times;</button>
         </div>
 
         <!-- Policy Alert: Strictly textual, no photo upload as instructed by Mentor -->
@@ -90,8 +93,8 @@ export class ProfileModalComponent {
           <div id="editProfileStatus" style="display:none; padding:10px 12px; border-radius:var(--radius-sm); font-size:12px; font-weight:700;"></div>
 
           <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
-            <button type="button" class="btn btn-sm btn-white" id="cancelProfileBtn" style="font-weight:700;">Cancel</button>
-            <button type="button" class="btn btn-sm btn-primary" id="saveProfileBtn" style="font-weight:800;">
+            <button type="button" class="btn btn-sm btn-white" id="cancelProfileBtn" style="font-weight:700; cursor:pointer; position:relative; z-index:10;">Cancel</button>
+            <button type="button" class="btn btn-sm btn-primary" id="saveProfileBtn" style="font-weight:800; cursor:pointer; position:relative; z-index:10;">
               💾 Save Changes
             </button>
           </div>
@@ -108,18 +111,53 @@ export class ProfileModalComponent {
     const cancelBtn = document.getElementById("cancelProfileBtn");
     const saveBtn = document.getElementById("saveProfileBtn");
 
-    if (closeBtn) closeBtn.addEventListener("click", () => this.close());
-    if (cancelBtn) cancelBtn.addEventListener("click", () => this.close());
-    if (saveBtn) saveBtn.addEventListener("click", () => this.save());
+    if (closeBtn) {
+      closeBtn.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.close();
+      };
+      closeBtn.addEventListener("click", () => this.close());
+    }
 
-    // Connect trigger buttons in header
+    if (cancelBtn) {
+      cancelBtn.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.close();
+      };
+      cancelBtn.addEventListener("click", () => this.close());
+    }
+
+    if (saveBtn) {
+      saveBtn.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.save();
+      };
+      saveBtn.addEventListener("click", () => this.save());
+    }
+
+    // Connect trigger buttons in header directly
     const triggers = document.querySelectorAll(".profile-edit-trigger, #editProfileBtn");
     triggers.forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.preventDefault();
+        e.stopPropagation();
         soundService.playClickTone();
         this.open();
       });
+    });
+
+    // Global document event delegation for any edit button
+    document.addEventListener("click", (e) => {
+      const trigger = e.target.closest && e.target.closest(".profile-edit-trigger, #editProfileBtn");
+      if (trigger) {
+        e.preventDefault();
+        e.stopPropagation();
+        soundService.playClickTone();
+        this.open();
+      }
     });
 
     // Close on outside backdrop click
@@ -130,9 +168,23 @@ export class ProfileModalComponent {
   }
 
   open(customUser = null) {
-    const session = authService.getCurrentSession();
-    this.currentUser = customUser || (session ? session.user : null);
+    let user = customUser;
+    if (!user) {
+      const session = authService.getCurrentSession();
+      if (session && session.user) {
+        user = session.user;
+      } else {
+        const path = (typeof window !== "undefined" && window.location ? window.location.pathname : "").toLowerCase();
+        let role = "PRACTITIONER";
+        if (path.includes("owner")) role = "OWNER";
+        else if (path.includes("receptionist")) role = "RECEPTIONIST";
 
+        const users = authService.getUsers();
+        user = users.find((u) => u.role === role) || users[0];
+      }
+    }
+
+    this.currentUser = user;
     if (!this.currentUser) {
       console.warn("[ProfileModalComponent] No active user session found.");
       return;
@@ -141,20 +193,25 @@ export class ProfileModalComponent {
     this.populateFields(this.currentUser);
 
     const statusEl = document.getElementById("editProfileStatus");
-    if (statusEl) statusEl.style.display = "none";
+    if (statusEl) {
+      statusEl.style.display = "none";
+      statusEl.textContent = "";
+    }
 
     if (this.modal) {
+      this.modal.style.display = "flex";
       this.modal.classList.add("open");
       this.modal.setAttribute("aria-hidden", "false");
     }
 
     const nameInput = document.getElementById("editProfileName");
     if (nameInput) {
-      setTimeout(() => nameInput.focus(), 100);
+      setTimeout(() => nameInput.focus(), 80);
     }
   }
 
   populateFields(user) {
+    if (!user) return;
     const nameEl = document.getElementById("editProfileName");
     const titleEl = document.getElementById("editProfileTitle");
     const specialtyEl = document.getElementById("editProfileSpecialty");
@@ -171,9 +228,16 @@ export class ProfileModalComponent {
   }
 
   close() {
+    soundService.playClickTone();
     if (this.modal) {
+      this.modal.style.display = "none";
       this.modal.classList.remove("open");
       this.modal.setAttribute("aria-hidden", "true");
+    }
+    const statusEl = document.getElementById("editProfileStatus");
+    if (statusEl) {
+      statusEl.style.display = "none";
+      statusEl.textContent = "";
     }
   }
 
@@ -184,12 +248,27 @@ export class ProfileModalComponent {
   }
 
   handleKeyDown(e) {
-    if (e.key === "Escape" && this.modal && this.modal.classList.contains("open")) {
+    if (e.key === "Escape" && this.modal && (this.modal.classList.contains("open") || this.modal.style.display === "flex")) {
       this.close();
     }
   }
 
   save() {
+    if (!this.currentUser) {
+      const session = authService.getCurrentSession();
+      if (session && session.user) {
+        this.currentUser = session.user;
+      } else {
+        const path = (typeof window !== "undefined" && window.location ? window.location.pathname : "").toLowerCase();
+        let role = "PRACTITIONER";
+        if (path.includes("owner")) role = "OWNER";
+        else if (path.includes("receptionist")) role = "RECEPTIONIST";
+
+        const users = authService.getUsers();
+        this.currentUser = users.find((u) => u.role === role) || users[0];
+      }
+    }
+
     if (!this.currentUser) return;
 
     const nameInput = document.getElementById("editProfileName");
@@ -221,7 +300,8 @@ export class ProfileModalComponent {
     const res = authService.updateUserProfile(this.currentUser.id, profileData);
 
     if (res.success) {
-      soundService.playClickTone();
+      soundService.playSuccessChime();
+      this.currentUser = res.user;
 
       // Live update DOM topbar elements across pages
       this.updateHeaderUI(res.user);
@@ -242,7 +322,7 @@ export class ProfileModalComponent {
 
       setTimeout(() => {
         this.close();
-      }, 900);
+      }, 700);
     } else {
       if (statusEl) {
         statusEl.style.display = "block";

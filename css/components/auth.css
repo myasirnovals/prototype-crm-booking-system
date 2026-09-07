@@ -951,4 +951,45 @@
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
+/* ==========================================================================
+   Cliniva Component — Staff Profile Edit Trigger & Modal Styling (Fase 5)
+   ========================================================================== */
+
+.profile-edit-trigger {
+  background: #f1f5f9;
+  border: 1px solid var(--line);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  margin-left: 6px;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.profile-edit-trigger:hover {
+  background: #f0fdfa;
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: scale(1.08);
+  box-shadow: 0 2px 8px rgba(15, 118, 110, 0.15);
+}
+
+.profile-modal-card {
+  max-width: 520px;
+}
+
+.profile-policy-alert {
+  background: #f0fdfa;
+  border: 1px solid #ccfbf1;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+
+
 

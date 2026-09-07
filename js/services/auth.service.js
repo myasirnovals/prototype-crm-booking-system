@@ -234,7 +234,20 @@ class AuthService {
     }
 
     const users = this.getUsers();
-    const userIndex = users.findIndex((u) => u.id === userId);
+    let userIndex = users.findIndex((u) => u.id === userId);
+
+    if (userIndex === -1) {
+      const currentSession = this.getCurrentSession();
+      if (currentSession && currentSession.user) {
+        if (currentSession.user.email) {
+          userIndex = users.findIndex((u) => u.email.toLowerCase() === currentSession.user.email.toLowerCase());
+        }
+        if (userIndex === -1 && currentSession.user.id === userId) {
+          users.push({ ...currentSession.user });
+          userIndex = users.length - 1;
+        }
+      }
+    }
 
     if (userIndex === -1) {
       return { success: false, error: "User not found in registry." };

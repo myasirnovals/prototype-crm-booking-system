@@ -5,6 +5,7 @@
 
 import { PractitionerController } from "../controllers/practitioner.controller.js";
 import { NotificationBarComponent } from "../components/notification-bar.component.js";
+import { ProfileModalComponent } from "../components/profile-modal.component.js";
 import { i18nService } from "../services/i18n.service.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -13,8 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const notifBar = new NotificationBarComponent("notificationBarContainer");
   notifBar.mount();
 
+  const profileModal = new ProfileModalComponent();
+  profileModal.mount();
+
   const practitioner = new PractitionerController();
   practitioner.init();
 
-  console.log("Cliniva Practitioner Controller & Notification Bar initialized.");
+  console.log("Cliniva Practitioner Controller, Notification Bar & Profile Modal initialized.");
 });

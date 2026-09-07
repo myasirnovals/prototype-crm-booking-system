@@ -128,6 +128,28 @@ Lalu buka:
 
 ## 📦 Riwayat Rilis & Semantic Versioning (SemVer)
 
+### 🏷️ V1.6.0 (Minor Release) ✅ *Stable Release*
+*Rilis resmi stabil V1.6.0: Peningkatan densitas jaringan klinik interaktif pada peta Leaflet (`#clinicInteractiveMap`) menjadi 9 cabang strategis (5 di Singapura dan 4 di Malaysia), serta adaptasi dinamis seluruh pin peta, ikon emoji, popup detail klinik, dan filter regional secara real-time mengikuti template bisnis yang diatur oleh Owner/Super Admin.*
+
+- **🚀 New Features & Architecture (Minor)**:
+  - **Ekspansi 9 Cabang Jaringan Klinik Multi-Disiplin (`clinic-data.js` & `CLINIC_LOCATIONS`)**:
+    - **Singapura (5 Cabang Strategis)**: Orchard (Paragon Medical), Novena (Novena Specialist Center), Marina Bay (MBFC Tower 1), Jurong West (Vision Exchange Medical Suites), dan Tampines (CPF Tampines Building).
+    - **Malaysia (4 Cabang Strategis)**: Kuala Lumpur (Pavilion Embassy Tower), Petaling Jaya (The Pinnacle Sunway), Penang (Gurney Walk Persiaran Gurney), dan Johor Bahru (The Mall Mid Valley Southkey).
+    - Memastikan saat pasien membuka area Singapura, peta menampilkan sebaran 5 pin klinik lengkap yang merata di area Central, North, South/Downtown, West, dan East.
+  - **Adaptasi Dinamis Pin & Popup Peta Mengikuti Template Super Admin (`patient-booking.controller.js`)**:
+    - Seluruh pin klinik pada peta Leaflet otomatis berubah ikon emoji (`🌸` untuk Wellness, `🏃` untuk Fisioterapi, `🥗` untuk Nutrisi, `🌿` untuk TCM) dan badge klinik yang relevan saat template diganti.
+    - Popup peta Leaflet menampilkan nama spesialisasi cabang, alamat suite medis, dan lencana akreditasi yang disesuaikan secara real-time.
+    - Fungsi `renderMapMarkers()` membersihkan layer lama dan me-render ulang marker secara reaktif saat `cliniva:templateChanged` terpicu.
+  - **Filter Cepat Tampilan Wilayah Peta (`#clinicRegionFilters`)**:
+    - Menyediakan tombol filter chip di atas peta: `🇸🇬 Singapore (5 Branches)`, `🇲🇾 Malaysia (4 Branches)`, dan `🌐 All Locations (9)`.
+    - Navigasi halus (`map.flyTo()` dan `map.fitBounds()`) yang secara instan memfokuskan peta ke wilayah yang dipilih pengguna.
+  - **Pendeteksi Lokasi GPS Terdekat (Haversine Algorithm)**:
+    - Menghitung jarak dari koordinat pengguna ke seluruh 9 lokasi cabang klinik dan memilih cabang terdekat secara presisi.
+  - **Sinkronisasi Panel Eksekutif Owner (`owner.controller.js`)**:
+    - Seluruh 9 cabang klinik terintegrasi ke dalam tab "Multi-Branch Network" konsol Owner dengan metrik pendapatan bulanan, rasio okupansi jadwal, dan jumlah tenaga medis yang adaptif.
+  - **Automated Verification Matrix (`test_map_template_sync.mjs`)**:
+    - Menjalankan uji validasi otomatis untuk densitas 9 cabang, validitas koordinat geografis, adaptasi pin & popup pada 4 disiplin klinik, integrasi `BookingService`, dan kalkulasi jarak terdekat dengan kelulusan 100%.
+
 ### 🏷️ V1.5.0 (Minor Release) ✅ *Stable Release*
 *Rilis resmi stabil V1.5.0: Menghubungkan secara penuh seleksi profil bisnis adaptif Super Admin pada panel eksekutif (`owner.html` & `owner.controller.js`) dengan alur reservasi pasien pada `booking.html`. Tampilan portal pasien terjaga bersih tanpa bilah switcher admin, dengan data sesi konsultasi, praktisi spesialis, instrumen form intake khusus, dan E-Tiket yang beradaptasi secara dinamis dan presisi sesuai profil yang diaktifkan oleh Super Admin.*
 

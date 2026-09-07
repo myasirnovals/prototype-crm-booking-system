@@ -18,8 +18,19 @@ export class PatientBookingController {
     // Read active template configured by Super Admin (default: wellness)
     this.activeTemplateId = bookingService.getActiveTemplateId() || "wellness";
 
-    this.branches = this.loadBranches();
-    this.selectedBranch = this.branches[0];
+    this.branches = this.loadBranches(this.activeTemplateId);
+    this.selectedBranch = this.branches[0] || {
+      id: "sg-orchard",
+      name: "Orchard Wellness & Luxury Spa",
+      region: "Singapore",
+      regionCode: "sg",
+      address: "290 Orchard Road, Paragon Medical #14-02, Singapore 238859",
+      currency: "SGD",
+      badge: "🌸 LUXURY WELLNESS SPA",
+      icon: "🌸",
+      lat: 1.3039,
+      lng: 103.8358
+    };
 
     this.bookingDraft = {
       branchId: this.selectedBranch.id,
@@ -52,9 +63,20 @@ export class PatientBookingController {
     this.activeTemplateId = bookingService.getActiveTemplateId() || "wellness";
     this.bookingDraft.templateType = this.activeTemplateId;
 
+    this.branches = this.loadBranches(this.activeTemplateId);
+    if (!this.selectedBranch || !this.branches.find((b) => b.id === this.selectedBranch.id)) {
+      this.selectedBranch = this.branches[0];
+    }
+    this.bookingDraft.branchId = this.selectedBranch.id;
+    this.bookingDraft.branchName = this.selectedBranch.name;
+    this.bookingDraft.branchAddress = this.selectedBranch.address;
+    this.bookingDraft.currency = this.selectedBranch.currency;
+
     this.renderPatientHeader(session.user);
+    this.renderBranchPills();
     this.initInteractiveMap();
     this.setupBranchPills();
+    this.setupRegionFilters();
     this.setupLocationDetector();
     this.setupAdminTemplateSwitcher();
 
@@ -84,52 +106,10 @@ export class PatientBookingController {
     });
   }
 
-  loadBranches() {
-    const defaultBranches = [
-      {
-        id: "sg-orchard",
-        name: "Orchard Wellness & Medical Center",
-        region: "Singapore",
-        address: "Paragon Medical #14-02, Singapore 238859",
-        currency: "SGD",
-        hours: "Mon - Sat (08:30 - 20:00 SGT)",
-        lat: 1.3039,
-        lng: 103.8358,
-        badge: "🇸🇬 SINGAPORE FLAGSHIP",
-        icon: "🇸🇬"
-      },
-      {
-        id: "my-kl",
-        name: "Kuala Lumpur Healthcare Pavilion",
-        region: "Malaysia",
-        address: "Pavilion Embassy Tower, Jalan Ampang, Kuala Lumpur",
-        currency: "MYR",
-        hours: "Mon - Sat (09:00 - 18:00 MYT)",
-        lat: 3.1593,
-        lng: 101.7196,
-        badge: "🇲🇾 KUALA LUMPUR SUITE",
-        icon: "🇲🇾"
-      },
-      {
-        id: "my-penang",
-        name: "Penang Wellness & Care Center",
-        region: "Malaysia",
-        address: "Gurney Walk, Persiaran Gurney, Penang",
-        currency: "MYR",
-        hours: "Tue - Sun (10:00 - 19:00 MYT)",
-        lat: 5.4332,
-        lng: 100.3106,
-        badge: "🇲🇾 PENANG BRANCH",
-        icon: "🇲🇾"
-      }
-    ];
-
-    const stored = storageService.get(this.BRANCHES_KEY, null);
-    if (!stored || !Array.isArray(stored) || stored.length < 3) {
-      storageService.set(this.BRANCHES_KEY, defaultBranches);
-      return defaultBranches;
-    }
-    return stored;
+  loadBranches(templateId = null) {
+    const target = templateId || this.activeTemplateId || bookingService.getActiveTemplateId();
+    const branches = bookingService.getBranches(target);
+    return branches && branches.length > 0 ? branches : [];
   }
 
   renderPatientHeader(user) {
@@ -186,6 +166,28 @@ export class PatientBookingController {
       badgeTextEl.textContent = `Live Template: ${this.getTemplateDisplayName(this.activeTemplateId)}`;
     }
 
+    // Refresh branches for this template so names, badges & icons adapt
+    const currentBranchId = this.selectedBranch?.id || "sg-orchard";
+    this.branches = this.loadBranches(this.activeTemplateId);
+    this.selectedBranch = this.branches.find((b) => b.id === currentBranchId) || this.branches[0];
+
+    this.bookingDraft.branchId = this.selectedBranch.id;
+    this.bookingDraft.branchName = this.selectedBranch.name;
+    this.bookingDraft.branchAddress = this.selectedBranch.address;
+    this.bookingDraft.currency = this.selectedBranch.currency;
+
+    // Re-render branch pills with new template-specific branch names
+    this.renderBranchPills();
+
+    // Defer map marker re-render one animation frame so the initial popup has settled
+    // This prevents the race condition where old wellness popup flickers over new physio markers
+    requestAnimationFrame(() => {
+      this.renderMapMarkers();
+    });
+
+    // Update active clinic info card
+    this.updateActiveClinicCard();
+
     // Render step 1 consultation overview
     this.renderTemplateConsultationInfo();
 
@@ -228,13 +230,12 @@ export class PatientBookingController {
     const mapContainer = document.getElementById("clinicInteractiveMap");
     if (!mapContainer) return;
 
-    const defaultCoords = [this.selectedBranch.lat, this.selectedBranch.lng];
-
     if (typeof window !== "undefined" && typeof window.L !== "undefined") {
       try {
+        // Start centered on Singapore; fitBounds called after markers are placed
         this.map = window.L.map("clinicInteractiveMap", {
-          center: defaultCoords,
-          zoom: 13,
+          center: [1.3200, 103.8400],
+          zoom: 11,
           scrollWheelZoom: false
         });
 
@@ -243,46 +244,160 @@ export class PatientBookingController {
           maxZoom: 18
         }).addTo(this.map);
 
-        this.markers = {};
+        // Render markers FIRST so we can fitBounds on SG branches
+        this.renderMapMarkers();
 
-        this.branches.forEach((b) => {
-          const pinHtml = `<div class="custom-map-pin ${b.id === this.selectedBranch.id ? "active-pin" : ""}" id="pin-${b.id}">${b.icon || "📍"}</div>`;
-          const customIcon = window.L.divIcon({
-            html: pinHtml,
-            className: "custom-div-icon",
-            iconSize: [38, 38],
-            iconAnchor: [19, 19],
-            popupAnchor: [0, -20]
-          });
-
-          const marker = window.L.marker([b.lat, b.lng], { icon: customIcon }).addTo(this.map);
-
-          const popupContent = `
-            <div style="font-family:inherit; min-width:190px;">
-              <strong style="font-size:13px; color:var(--text); display:block; margin-bottom:2px;">${b.name}</strong>
-              <div style="font-size:11px; color:var(--muted); line-height:1.3;">${b.address}</div>
-              <div style="margin-top:6px; font-size:10px; font-weight:800; color:var(--primary);">${b.badge}</div>
-            </div>
-          `;
-
-          marker.bindPopup(popupContent, { className: "cliniva-map-popup" });
-
-          marker.on("click", () => {
-            soundService.playClickTone();
-            this.selectBranch(b, false);
-          });
-
-          this.markers[b.id] = marker;
-        });
-
-        // Open initial popup
-        if (this.markers[this.selectedBranch.id]) {
-          this.markers[this.selectedBranch.id].openPopup();
+        // Fit all Singapore branches in view so all 5 SG pins are visible
+        const sgBranches = this.branches.filter((b) => b.regionCode === "sg");
+        if (sgBranches.length > 0 && window.L) {
+          const bounds = window.L.latLngBounds(sgBranches.map((b) => [b.lat, b.lng]));
+          this.map.fitBounds(bounds, { padding: [48, 48] });
         }
       } catch (e) {
         console.warn("Leaflet map initialization warning:", e);
       }
     }
+  }
+
+  renderMapMarkers() {
+    if (!this.map || typeof window === "undefined" || !window.L) return;
+
+    // Close any open popup before removing layers to prevent stale tooltip flicker
+    this.map.closePopup();
+
+    if (this.markers) {
+      Object.values(this.markers).forEach((marker) => {
+        try {
+          this.map.removeLayer(marker);
+        } catch (e) {}
+      });
+    }
+    this.markers = {};
+
+    // Snapshot branches for closure (ensures popup content uses the correct template data)
+    const branches = Array.isArray(this.branches) ? [...this.branches] : [];
+    const activeBranchId = this.selectedBranch?.id;
+
+    branches.forEach((b) => {
+      const isActive = b.id === activeBranchId;
+      const pinHtml = `<div class="custom-map-pin ${isActive ? "active-pin" : ""}" id="pin-${b.id}">${b.icon || "📍"}</div>`;
+      const customIcon = window.L.divIcon({
+        html: pinHtml,
+        className: "custom-div-icon",
+        iconSize: [38, 38],
+        iconAnchor: [19, 19],
+        popupAnchor: [0, -20]
+      });
+
+      const marker = window.L.marker([b.lat, b.lng], { icon: customIcon }).addTo(this.map);
+
+      // Popup content fully derived from the CURRENT branch data (b is from the snapshot)
+      const popupContent = `
+        <div style="font-family:inherit; min-width:200px;">
+          <strong style="font-size:13px; color:var(--text); display:block; margin-bottom:2px;">${b.name}</strong>
+          <div style="font-size:11px; color:var(--muted); line-height:1.3;">${b.address}</div>
+          <div style="margin-top:6px; font-size:10px; font-weight:800; color:var(--primary);">${b.badge}</div>
+        </div>
+      `;
+
+      marker.bindPopup(popupContent, { className: "cliniva-map-popup" });
+
+      marker.on("click", () => {
+        soundService.playClickTone();
+        this.selectBranch(b, false);
+      });
+
+      this.markers[b.id] = marker;
+    });
+
+    // Open popup for the active branch
+    if (activeBranchId && this.markers[activeBranchId]) {
+      this.markers[activeBranchId].openPopup();
+    }
+  }
+
+  /* ------------------------------------------------------------------
+   * DYNAMIC BRANCH PILLS (rendered from live template branch list)
+   * ------------------------------------------------------------------ */
+  renderBranchPills() {
+    const container = document.getElementById("clinicMapPills");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    const sgBranches = this.branches.filter((b) => b.regionCode === "sg");
+    const myBranches = this.branches.filter((b) => b.regionCode === "my");
+
+    const renderGroup = (branches, groupLabel) => {
+      if (branches.length === 0) return;
+      const groupEl = document.createElement("div");
+      groupEl.style.cssText = "display:flex; flex-wrap:wrap; gap:6px; width:100%; align-items:center;";
+
+      const label = document.createElement("span");
+      label.textContent = groupLabel;
+      label.style.cssText = "font-size:10px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; min-width:60px;";
+      groupEl.appendChild(label);
+
+      branches.forEach((b) => {
+        const pill = document.createElement("button");
+        pill.type = "button";
+        pill.dataset.branchId = b.id;
+        pill.className = "clinic-pill" + (b.id === this.selectedBranch?.id ? " active" : "");
+        pill.textContent = `${b.icon || "📍"} ${b.name.split(" ").slice(0, 3).join(" ")}`;
+        pill.title = b.name + " · " + b.address;
+        pill.addEventListener("click", () => {
+          soundService.playClickTone();
+          this.selectBranch(b, true);
+        });
+        groupEl.appendChild(pill);
+      });
+
+      container.appendChild(groupEl);
+    };
+
+    renderGroup(sgBranches, "🇸🇬 SG");
+    if (myBranches.length > 0 && sgBranches.length > 0) {
+      const divider = document.createElement("div");
+      divider.style.cssText = "width:100%; height:1px; background:var(--line); margin:4px 0;";
+      container.appendChild(divider);
+    }
+    renderGroup(myBranches, "🇲🇾 MY");
+  }
+
+  setupRegionFilters() {
+    const chips = document.querySelectorAll("#clinicRegionFilters .clinic-filter-chip");
+    if (!chips || chips.length === 0) return;
+
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        soundService.playClickTone();
+        chips.forEach((c) => c.classList.remove("active"));
+        chip.classList.add("active");
+
+        const region = chip.dataset.region;
+        if (!this.map) return;
+
+        if (region === "sg") {
+          this.map.flyTo([1.3200, 103.8400], 12, { duration: 1.0 });
+          if (this.selectedBranch.regionCode !== "sg") {
+            const sgBranch = this.branches.find((b) => b.regionCode === "sg") || this.branches[0];
+            this.selectBranch(sgBranch, false);
+          }
+        } else if (region === "my") {
+          this.map.flyTo([3.5000, 101.9000], 7, { duration: 1.2 });
+          if (this.selectedBranch.regionCode !== "my") {
+            const myBranch = this.branches.find((b) => b.regionCode === "my") || this.branches[5];
+            this.selectBranch(myBranch, false);
+          }
+        } else if (region === "all") {
+          if (typeof window.L !== "undefined" && this.branches.length > 0) {
+            const latLngs = this.branches.map((b) => [b.lat, b.lng]);
+            const bounds = window.L.latLngBounds(latLngs);
+            this.map.fitBounds(bounds, { padding: [35, 35], duration: 1.2 });
+          }
+        }
+      });
+    });
   }
 
   setupBranchPills() {
@@ -300,20 +415,10 @@ export class PatientBookingController {
     });
   }
 
-  selectBranch(branch, flyTo = true) {
-    this.selectedBranch = branch;
-    this.bookingDraft.branchId = branch.id;
-    this.bookingDraft.branchName = branch.name;
-    this.bookingDraft.branchAddress = branch.address;
-    this.bookingDraft.currency = branch.currency;
+  updateActiveClinicCard() {
+    const branch = this.selectedBranch;
+    if (!branch) return;
 
-    // Update active state on pills
-    const pills = document.querySelectorAll("#clinicMapPills .clinic-pill");
-    pills.forEach((p) => {
-      p.classList.toggle("active", p.dataset.branchId === branch.id);
-    });
-
-    // Update Info Bar Card
     const titleEl = document.getElementById("activeClinicTitle");
     const badgeEl = document.getElementById("activeClinicBadge");
     const addrEl = document.getElementById("activeClinicAddress");
@@ -327,11 +432,29 @@ export class PatientBookingController {
     if (distEl) {
       distEl.textContent = branch.distance ? `📍 ~${branch.distance} km` : "📍 Selected on Map";
     }
+  }
+
+  selectBranch(branch, flyTo = true) {
+    this.selectedBranch = branch;
+    this.bookingDraft.branchId = branch.id;
+    this.bookingDraft.branchName = branch.name;
+    this.bookingDraft.branchAddress = branch.address;
+    this.bookingDraft.currency = branch.currency;
+
+    // Update active state on all pills (dynamically rendered)
+    const pills = document.querySelectorAll("#clinicMapPills .clinic-pill");
+    pills.forEach((p) => {
+      p.classList.toggle("active", p.dataset.branchId === branch.id);
+    });
+
+    // Update Info Bar Card
+    this.updateActiveClinicCard();
 
     // Fly map & update active pin styling
     if (this.map && branch.lat && branch.lng) {
       if (flyTo) {
-        this.map.flyTo([branch.lat, branch.lng], 13, { duration: 1.2 });
+        // Use zoom 12 so adjacent branches remain visible in the viewport
+        this.map.flyTo([branch.lat, branch.lng], 12, { duration: 0.8 });
       }
       if (this.markers && this.markers[branch.id]) {
         this.markers[branch.id].openPopup();

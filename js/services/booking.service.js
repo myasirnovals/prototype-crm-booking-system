@@ -5,6 +5,8 @@
 
 import {
   CLINIC_BRANCHES,
+  CLINIC_LOCATIONS,
+  getBranchesForTemplate,
   CLINIC_SERVICES,
   PRACTITIONERS,
   DEFAULT_TEMPLATE_ID,
@@ -148,8 +150,14 @@ class BookingService {
     return getTemplateIntakeSchema(id);
   }
 
-  getBranches() {
-    return CLINIC_BRANCHES;
+  /**
+   * Get clinic branches adapted to a specific or currently active business template
+   * @param {string|null} templateId
+   * @returns {Array<object>}
+   */
+  getBranches(templateId = null) {
+    const targetId = templateId || this.getActiveTemplateId();
+    return getBranchesForTemplate(targetId);
   }
 
   /**
@@ -201,7 +209,8 @@ class BookingService {
    * 3. Specialized Medical Equipment
    */
   validateTripleConstraint(branchId, serviceId, practitionerId, slotTime, templateId = null) {
-    const branch = CLINIC_BRANCHES.find((b) => b.id === branchId) || CLINIC_BRANCHES[0];
+    const branches = this.getBranches(templateId);
+    const branch = branches.find((b) => b.id === branchId) || branches[0];
     const services = this.getServices(templateId);
     const service = services.find((s) => s.id === serviceId) || CLINIC_SERVICES.find((s) => s.id === serviceId) || services[0];
 

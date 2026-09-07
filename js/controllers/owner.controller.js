@@ -7,6 +7,7 @@ import { authService, USER_ROLES } from "../services/auth.service.js";
 import { storageService } from "../services/storage.service.js";
 import { soundService } from "../services/sound.service.js";
 import { bookingService } from "../services/booking.service.js";
+import { getBranchesForTemplate } from "../config/clinic-data.js";
 
 export class OwnerController {
   constructor() {
@@ -68,58 +69,30 @@ export class OwnerController {
   }
 
   loadBranches() {
-    const defaultBranches = [
-      {
-        id: "sg-orchard",
-        name: "Orchard Wellness & Luxury Spa",
-        region: "Singapore",
-        address: "Paragon Medical #14-02, Singapore 238859",
-        profileType: "SPA_WELLNESS",
-        templateId: "wellness",
-        currency: "SGD",
-        revenue: "SGD 84,500.00",
-        occupancy: "92.1%",
-        practitioners: "3 Spa Therapists",
-        phone: "+65 8123 4567",
-        hours: "Mon - Sat (08:30 - 20:00 SGT)",
-        status: "ACTIVE",
-        logoUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f766e'/%3E%3Ctext x='50' y='64' font-size='42' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E✦%3C/text%3E%3C/svg%3E"
-      },
-      {
-        id: "my-kl",
-        name: "Kuala Lumpur Physiotherapy & Sports Rehab",
-        region: "Malaysia",
-        address: "Pavilion Embassy Tower, Jalan Ampang, Kuala Lumpur",
-        profileType: "PHYSIOTHERAPY",
-        templateId: "physio",
-        currency: "MYR",
-        revenue: "MYR 142,200.00",
-        occupancy: "86.5%",
-        practitioners: "2 Senior Physiotherapists",
-        phone: "+60 12 345 6789",
-        hours: "Mon - Sat (09:00 - 18:00 MYT)",
-        status: "ACTIVE",
-        logoUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230284c7'/%3E%3Ctext x='50' y='64' font-size='42' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E✦%3C/text%3E%3C/svg%3E"
-      },
-      {
-        id: "my-penang",
-        name: "Penang Clinical Nutrition & Dietetics Care",
-        region: "Malaysia",
-        address: "Gurney Walk, Persiaran Gurney, Penang",
-        profileType: "NUTRITION",
-        templateId: "nutrition",
-        currency: "MYR",
-        revenue: "MYR 78,800.00",
-        occupancy: "81.0%",
-        practitioners: "2 Registered Dietitians",
-        phone: "+60 17 888 9922",
-        hours: "Tue - Sun (10:00 - 19:00 MYT)",
-        status: "ACTIVE",
-        logoUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2316a34a'/%3E%3Ctext x='50' y='64' font-size='42' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E✦%3C/text%3E%3C/svg%3E"
-      }
-    ];
+    const activeTemplate = bookingService.getActiveTemplateId() || "wellness";
+    const templateBranches = getBranchesForTemplate(activeTemplate);
 
-    return storageService.get(this.BRANCHES_KEY, defaultBranches);
+    const makeBranchesWithMetrics = (baseList) => {
+      return baseList.map((b, idx) => ({
+        ...b,
+        revenue:
+          b.currency === "SGD"
+            ? `SGD ${(75000 + idx * 4500).toLocaleString()}.00`
+            : `MYR ${(120000 + idx * 8000).toLocaleString()}.00`,
+        occupancy: `${(82 + (idx * 3) % 15).toFixed(1)}%`,
+        practitioners: `${2 + (idx % 3)} Certified Specialists`,
+        status: "ACTIVE",
+        logoUrl: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f766e'/%3E%3Ctext x='50' y='64' font-size='42' font-family='sans-serif' font-weight='900' fill='white' text-anchor='middle'%3E✦%3C/text%3E%3C/svg%3E`
+      }));
+    };
+
+    const stored = storageService.get(this.BRANCHES_KEY, null);
+    if (!stored || !Array.isArray(stored) || stored.length < templateBranches.length) {
+      const branchesWithMetrics = makeBranchesWithMetrics(templateBranches);
+      storageService.set(this.BRANCHES_KEY, branchesWithMetrics);
+      return branchesWithMetrics;
+    }
+    return stored;
   }
 
   saveBranches() {
@@ -411,13 +384,26 @@ export class OwnerController {
 
         bookingService.setActiveTemplate(templateId);
 
-        // Synchronize primary branch template
-        if (this.branches && this.branches.length > 0) {
-          this.branches[0].profileType = profile;
-          this.branches[0].templateId = templateId;
-          this.saveBranches();
-          this.renderBranchCards();
-        }
+        // Synchronize all branches with the newly chosen business template
+        const freshBranches = getBranchesForTemplate(templateId);
+        this.branches = this.branches.map((b) => {
+          const matching = freshBranches.find((fb) => fb.id === b.id);
+          if (matching) {
+            return {
+              ...b,
+              name: matching.name,
+              badge: matching.badge,
+              icon: matching.icon,
+              profileType: profile,
+              templateId: templateId,
+              rooms: matching.rooms,
+              equipment: matching.equipment
+            };
+          }
+          return { ...b, profileType: profile, templateId: templateId };
+        });
+        this.saveBranches();
+        this.renderBranchCards();
 
         const label = this.getProfileTypeLabel(profile);
         this.addAuditEntry("Dr. Hendra Wijaya", "Set Default Clinic Template", "TEMPLATE", `Type: ${profile} (${templateId})`);

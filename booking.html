@@ -108,8 +108,26 @@
           </button>
         </div>
 
+        <!-- Regional Map View Quick Filters -->
+        <div class="clinic-region-filters" id="clinicRegionFilters">
+          <button type="button" class="clinic-filter-chip active" data-region="sg" id="filterRegionSg">
+            🇸🇬 Singapore (5 Branches)
+          </button>
+          <button type="button" class="clinic-filter-chip" data-region="my" id="filterRegionMy">
+            🇲🇾 Malaysia (4 Branches)
+          </button>
+          <button type="button" class="clinic-filter-chip" data-region="all" id="filterRegionAll">
+            🌐 All Locations (9)
+          </button>
+        </div>
+
         <!-- Interactive Map Container -->
         <div id="clinicInteractiveMap"></div>
+
+        <!-- Branch Quick-Select Pills (dynamically rendered by controller based on active template) -->
+        <div id="clinicMapPills" style="display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; padding-bottom:4px; overflow-x:auto;">
+          <!-- Pills injected by patient-booking.controller.js renderBranchPills() -->
+        </div>
 
         <!-- Active Selected Clinic Info Bar -->
         <div id="selectedClinicInfoBar" class="selected-clinic-card">

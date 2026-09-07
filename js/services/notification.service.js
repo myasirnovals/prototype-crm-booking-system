@@ -9,6 +9,7 @@ import { storageService } from "./storage.service.js";
 class NotificationService {
   constructor() {
     this.NOTIF_LOG_KEY = "cliniva_notif_logs";
+    this.SYSTEM_NOTIF_KEY = "cliniva_system_notifications";
   }
 
   getLogs() {
@@ -23,6 +24,79 @@ class NotificationService {
       ...entry
     });
     storageService.set(this.NOTIF_LOG_KEY, logs);
+  }
+
+  /**
+   * System Activity Notifications (In-App notification center)
+   */
+  getSystemNotifications() {
+    return storageService.get(this.SYSTEM_NOTIF_KEY, [
+      {
+        id: "NOTIF-INIT-1",
+        title: "Session Completed",
+        message: "Session for B-01 (David Lim) marked as Completed.",
+        category: "SESSION",
+        type: "success",
+        timestamp: "09:45 SGT",
+        read: true
+      },
+      {
+        id: "NOTIF-INIT-2",
+        title: "Queue Calling",
+        message: "Amanda Tan (A-01) called to Room A2.",
+        category: "QUEUE",
+        type: "info",
+        timestamp: "10:30 SGT",
+        read: true
+      }
+    ]);
+  }
+
+  addSystemNotification({ title, message, category = "SESSION", type = "info" }) {
+    const notifications = this.getSystemNotifications();
+    const newNotif = {
+      id: "NOTIF-" + Date.now(),
+      title,
+      message,
+      category,
+      type,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      read: false
+    };
+
+    notifications.unshift(newNotif);
+    // Keep max 50 recent notifications
+    const trimmed = notifications.slice(0, 50);
+    storageService.set(this.SYSTEM_NOTIF_KEY, trimmed);
+
+    // Dispatch global event for live UI reactivity (Fase 3 & Fase 4)
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("cliniva:systemNotificationAdded", {
+        detail: newNotif
+      }));
+    }
+
+    return newNotif;
+  }
+
+  markAllSystemNotificationsAsRead() {
+    const notifications = this.getSystemNotifications().map((n) => ({
+      ...n,
+      read: true
+    }));
+    storageService.set(this.SYSTEM_NOTIF_KEY, notifications);
+
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("cliniva:systemNotificationsUpdated", {
+        detail: notifications
+      }));
+    }
+    return notifications;
+  }
+
+  getUnreadCount() {
+    const notifications = this.getSystemNotifications();
+    return notifications.filter((n) => !n.read).length;
   }
 
   /**

@@ -178,6 +178,182 @@
   }
 }
 
+/* Status Pills on Patient Queue Cards */
+.session-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.2px;
+}
+
+.session-status-pill .status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.session-status-pill.status-waiting {
+  background: #fef3c7;
+  color: #b45309;
+}
+.session-status-pill.status-waiting .status-dot {
+  background: #f59e0b;
+}
+
+.session-status-pill.status-in-progress {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+.session-status-pill.status-in-progress .status-dot {
+  background: #0284c7;
+  animation: pulseDot 1.4s infinite;
+}
+
+.session-status-pill.status-completed {
+  background: #dcfce7;
+  color: #15803d;
+}
+.session-status-pill.status-completed .status-dot {
+  background: #22c55e;
+}
+
+.session-status-pill.status-noshow {
+  background: #ffe4e6;
+  color: #be123c;
+}
+.session-status-pill.status-noshow .status-dot {
+  background: #f43f5e;
+}
+
+@keyframes pulseDot {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+}
+
+/* Clinical Treatment & Observation Notes */
+.treatment-notes-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  margin-top: 24px;
+}
+
+.treatment-notes-textarea {
+  width: 100%;
+  min-height: 110px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+  background: #f8fafc;
+  resize: vertical;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.treatment-notes-textarea:focus {
+  outline: none;
+  border-color: #0284c7;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+/* Non-blocking Practitioner Toast Container */
+.practitioner-toast-container {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.practitioner-toast {
+  pointer-events: auto;
+  min-width: 280px;
+  max-width: 380px;
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid #0284c7;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  animation: toastSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s ease;
+}
+
+.practitioner-toast.toast-success {
+  border-left-color: #10b981;
+}
+
+.practitioner-toast.toast-warning {
+  border-left-color: #f59e0b;
+}
+
+.practitioner-toast.toast-info {
+  border-left-color: #0284c7;
+}
+
+.practitioner-toast .toast-icon {
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.practitioner-toast .toast-content {
+  flex: 1;
+}
+
+.practitioner-toast .toast-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.practitioner-toast .toast-message {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
 @media (max-width: 960px) {
   .doctor-layout {
     flex-direction: column;
@@ -189,5 +365,11 @@
   }
   .clinical-grid {
     grid-template-columns: 1fr;
+  }
+  .practitioner-toast-container {
+    top: auto;
+    bottom: 20px;
+    right: 16px;
+    left: 16px;
   }
 }

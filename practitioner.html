@@ -59,7 +59,7 @@
       </div>
       <p style="font-size:12px; color:var(--muted); margin:0 0 14px;">Select patient to view clinical intake details and Body Pain Map.</p>
 
-      <div class="patient-queue-list">
+      <div class="patient-queue-list" id="doctorPatientQueueList">
         <!-- Patient 1 (Active) -->
         <div class="patient-session-card active" data-queue="A-01" data-name="Amanda Tan"
           data-complaint="Sharp lower back pain (L4-L5) during forward bend after marathon. Difficulty sitting upright >20 mins."
@@ -132,6 +132,7 @@
         <div style="display:flex; align-items:center; gap:12px;">
           <strong style="font-size:14px;">Treatment Session Status:</strong>
           <select id="sessionStatusSelect" style="padding:6px 12px; border-radius:var(--radius-sm); border:1px solid var(--line); font-size:13px; font-weight:700;">
+            <option value="WAITING">🟡 Waiting Lounge (Checked In)</option>
             <option value="IN_PROGRESS">🔵 In Therapy (In Progress)</option>
             <option value="COMPLETED">🟢 Consultation Completed</option>
             <option value="NO_SHOW">🔴 Patient No-Show</option>
@@ -251,8 +252,37 @@
           </div>
         </div>
       </div>
+
+      <!-- Clinical Treatment Notes & Observations -->
+      <div class="treatment-notes-card" id="treatmentNotesCard">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <div>
+            <h3 style="font-size:18px; margin:0;" data-i18n="practitioner.notes">Clinical Treatment Notes & Observations</h3>
+            <p style="font-size:12px; color:var(--muted); margin:4px 0 0;">
+              Record treatment techniques administered, patient response, and home exercise recommendations for <strong id="notesPatientName">Amanda Tan</strong>.
+            </p>
+          </div>
+          <span id="treatmentNotesSavedTime" style="font-size:11px; color:var(--muted); font-weight:700; background:#f1f5f9; padding:4px 8px; border-radius:var(--radius-sm);">
+            Not saved yet
+          </span>
+        </div>
+
+        <textarea id="treatmentNotesInput" class="treatment-notes-textarea" placeholder="e.g. Myofascial trigger point release performed on L4-L5 lumbar region. Patient reported 40% relief. Recommended 3x daily pelvic tilts and ice compress..."></textarea>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px;">
+          <div style="font-size:11px; color:var(--muted);">
+            🔒 Encrypted &amp; synced to patient clinical history
+          </div>
+          <button type="button" class="btn btn-sm btn-primary" id="saveTreatmentNotesBtn" style="font-weight:800;">
+            💾 Save Clinical Notes
+          </button>
+        </div>
+      </div>
     </main>
   </div>
+
+  <!-- Toast feedback container -->
+  <div class="practitioner-toast-container" id="practitionerToastContainer" aria-live="polite"></div>
 
   <!-- Modular Practitioner Script Bootstrap -->
   <script type="module" src="js/pages/practitioner.js"></script>

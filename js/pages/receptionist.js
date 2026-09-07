@@ -4,12 +4,17 @@
  */
 
 import { ReceptionistController } from "../controllers/receptionist.controller.js";
+import { NotificationBarComponent } from "../components/notification-bar.component.js";
 import { i18nService } from "../services/i18n.service.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   i18nService.init();
+
+  const notifBar = new NotificationBarComponent("notificationBarContainer");
+  notifBar.mount();
+
   const receptionist = new ReceptionistController();
   receptionist.init();
 
-  console.log("Cliniva Receptionist Controller initialized with i18n.");
+  console.log("Cliniva Receptionist Controller & Notification Bar initialized.");
 });

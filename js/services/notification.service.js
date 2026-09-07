@@ -94,6 +94,34 @@ class NotificationService {
     return notifications;
   }
 
+  markNotificationAsRead(id) {
+    const notifications = this.getSystemNotifications().map((n) => {
+      if (n.id === id) {
+        return { ...n, read: true };
+      }
+      return n;
+    });
+    storageService.set(this.SYSTEM_NOTIF_KEY, notifications);
+
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("cliniva:systemNotificationsUpdated", {
+        detail: notifications
+      }));
+    }
+    return notifications;
+  }
+
+  clearAllSystemNotifications() {
+    storageService.set(this.SYSTEM_NOTIF_KEY, []);
+
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("cliniva:systemNotificationsUpdated", {
+        detail: []
+      }));
+    }
+    return [];
+  }
+
   getUnreadCount() {
     const notifications = this.getSystemNotifications();
     return notifications.filter((n) => !n.read).length;

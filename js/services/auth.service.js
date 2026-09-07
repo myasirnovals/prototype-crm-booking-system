@@ -5,6 +5,7 @@
 
 import { USER_ROLES, ROLE_CONFIG, REGISTERED_USERS } from "../config/role-routes.js";
 import { storageService } from "./storage.service.js";
+import { notificationService } from "./notification.service.js";
 
 class AuthService {
   constructor() {
@@ -209,6 +210,14 @@ class AuthService {
       storageService.set(this.SESSION_KEY, currentSession);
     }
 
+    // Log security notification to notification center
+    notificationService.addSystemNotification({
+      title: "Password Reset",
+      message: `Password for ${users[userIndex].name} (${users[userIndex].role}) has been updated.`,
+      category: "SECURITY",
+      type: "warning"
+    });
+
     return {
       success: true,
       user: users[userIndex],
@@ -250,6 +259,13 @@ class AuthService {
       };
       storageService.set(this.SESSION_KEY, currentSession);
     }
+
+    notificationService.addSystemNotification({
+      title: "Profile Updated",
+      message: `Profile data updated for ${users[userIndex].name} (${users[userIndex].role}).`,
+      category: "PROFILE",
+      type: "info"
+    });
 
     return {
       success: true,

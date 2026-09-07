@@ -1,4 +1,4 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.3.0-beta.1 [PRE-RELEASE]
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.3.0-beta.2 [PRE-RELEASE]
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 
@@ -133,6 +133,32 @@ Lalu buka:
 ---
 
 ## 📦 Riwayat Rilis & Semantic Versioning (SemVer)
+
+### 🏷️ V1.3.0-beta.2 (Pre-Release / Beta 2) ⚠️ *Unstable Release*
+*Rilis pembaruan pra-rilis (pre-release) fungsionalitas inti CRM operasional: alur kerja sesi terapi dokter (Practitioner Workspace), pemanggilan antrean audio chime, rekam medis catatan klinis, sistem reset kata sandi in-app, serta harmonisasi multibahasa kartu layanan.*
+
+> ⚠️ **Status Rilis: PRE-RELEASE / UNSTABLE**  
+> Versi ini merupakan iterasi beta kedua menuju rilis stabil `v1.3.0`. Memenuhi pencapaian target harian operasional CRM (Fase 2 & Fase 3) sebelum rilis final.
+
+- **🚀 New Features & Architecture (Minor)**:
+  - **Practitioner Therapy Session & Patient Queue Workflow (`practitioner.controller.js`)**:
+    - Alur kerja interaktif daftar antrean konsultasi harian dokter dengan persistensi LocalStorage (`cliniva_practitioner_sessions`).
+    - Transisi status sesi terapi dinamis (`WAITING` ➔ `IN_PROGRESS` ➔ `COMPLETED` / `NO_SHOW`) dengan indikator *status pill* visual langsung pada kartu antrean sidebar.
+    - Perekaman otomatis *timestamp* mulai tindakan (*startedAt*) dan selesai tindakan (*completedAt*).
+    - Audio chime pemanggilan antrean sintetis Web Audio API (`soundService.playQueueChime()`) dengan animasi banner pemanggilan aktif dan auto-transisi status ke *In Therapy*.
+    - Nada akord mayor penyelesaian sesi (*success chime*) saat terapi ditandai selesai (`soundService.playSuccessChime()`).
+  - **Clinical Treatment & Observation Notes**:
+    - Formulir textarea rekam medis klinis dokter (`#treatmentNotesInput`) dengan tombol simpan (`#saveTreatmentNotesBtn`) dan pelacakan riwayat waktu simpan terakhir (`#treatmentNotesSavedTime`).
+  - **Non-blocking Toast Feedback Notification System**:
+    - Wadah notifikasi toast modern (`#practitionerToastContainer`) untuk umpan balik instan perubahan status tanpa popup `alert()` browser yang mengganggu alur kerja.
+  - **In-App Reset Password Workflow (`sign-in.html` & `auth.service.js`)**:
+    - Formulir modal dialog interaktif reset kata sandi staf dengan validasi kekuatan sandi dan konfirmasi sandi.
+    - Penyimpanan pengguna terdaftar dinamis pada LocalStorage (`cliniva_users_registry`) tanpa ketergantungan SMTP email eksternal.
+  - **System Activity Notifications Foundation (`notification.service.js`)**:
+    - Penambahan metode `addSystemNotification()`, `getSystemNotifications()`, dan event `cliniva:systemNotificationAdded` untuk pencatatan log aktivitas pemanggilan antrean dan penyelesaian sesi klinis.
+- **🩹 Fixes & Multilingual Hardening (Patch)**:
+  - **Multilingual Harmonization on Service Cards**: Memperbaiki inkonsistensi bahasa campuran pada kartu layanan (`#bookingServiceCards`), menerjemahkan nama layanan, deskripsi, satuan durasi (`common.min`), dan lencana rekomendasi secara dinamis ke Bahasa Inggris, Melayu, dan Mandarin tanpa kebocoran teks.
+  - **DOM Defensive Hardening**: Penanganan penghapusan toast feedback yang tahan terhadap lingkungan runtime beragam.
 
 ### 🏷️ V1.3.0-beta.1 (Pre-Release / Beta) ⚠️ *Unstable Release*
 *Rilis pra-rilis (pre-release) arsitektur Dynamic Multi-Template Intake Form, integrasi peta interaktif Leaflet.js, serta adaptasi formulir klinis khusus untuk Fisioterapi, Nutrisi Klinis, dan Wellness Spa.*

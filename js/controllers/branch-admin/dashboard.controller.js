@@ -376,14 +376,16 @@ export class BranchAdminController {
     tbody.innerHTML = "";
     stockItems.forEach((item) => {
       const isLow = item.qty <= item.min;
+      const textColor = isLow ? "#ef4444" : "var(--text)";
+      const statusClass = isLow ? "cancelled" : "confirmed";
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td style="font-weight:700;">${item.name}</td>
         <td><span class="pill" style="font-size:11px;">${item.cat}</span></td>
-        <td><strong style="color:${isLow ? "#ef4444" : "var(--text)}; font-size:14px;">${item.qty} unit</strong></td>
+        <td><strong style="color:${textColor}; font-size:14px;">${item.qty} unit</strong></td>
         <td style="color:var(--muted);">${item.min} unit</td>
         <td>
-          <span class="status-pill ${isLow ? "cancelled" : "confirmed"}">
+          <span class="status-pill ${statusClass}">
             ${item.status}
           </span>
         </td>

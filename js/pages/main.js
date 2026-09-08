@@ -3,9 +3,9 @@
  * SOLID: Entry point orchestrating UI, Booking, and Dashboard controllers
  */
 
-import { UIController } from "../controllers/ui.controller.js";
-import { BookingController } from "../controllers/booking.controller.js";
-import { DashboardController } from "../controllers/dashboard.controller.js";
+import { UIController } from "../controllers/landing/ui.controller.js";
+import { BookingController } from "../controllers/landing/booking.controller.js";
+import { DashboardController } from "../controllers/landing/dashboard.controller.js";
 import { i18nService } from "../services/i18n.service.js";
 
 document.addEventListener("DOMContentLoaded", () => {

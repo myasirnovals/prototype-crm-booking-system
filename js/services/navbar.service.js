@@ -76,27 +76,53 @@ class NavbarService {
   }
 
   /**
+   * Secure ticket.html navigation bar so patients NEVER see operational buttons  /**
+   * Resolve target path relative to current page location
+   */
+  _resolvePath(targetPath) {
+    const path = (typeof window !== "undefined" && window.location && window.location.pathname)
+      ? window.location.pathname.replace(/\\/g, "/")
+      : "";
+    if (path.includes("/pages/")) {
+      const afterPages = path.substring(path.indexOf("/pages/") + 7);
+      const depth = afterPages.split("/").length;
+      const prefix = "../".repeat(depth);
+      return `${prefix}${targetPath}`;
+    }
+    return targetPath;
+  }
+
+  /**
    * Secure ticket.html navigation bar so patients NEVER see operational buttons
    */
   secureTicketNav(role) {
     const ticketNav = document.getElementById("ticketNavActions");
-    if (!ticketNav) return;    if (role === USER_ROLES.USER || role === "GUEST") {
+    if (!ticketNav) return;
+
+    if (role === USER_ROLES.USER || role === "GUEST") {
       ticketNav.innerHTML = `
-        <a href="patient-portal.html" class="btn btn-sm btn-soft">← Patient Portal</a>
-        <a href="booking.html" class="btn btn-sm btn-primary">+ New Booking</a>
+        <a href="${this._resolvePath("pages/patient/index.html")}" class="btn btn-sm btn-soft">← Patient Portal</a>
+        <a href="${this._resolvePath("pages/public/booking.html")}" class="btn btn-sm btn-primary">+ New Booking</a>
+      `;
+    } else if (role === USER_ROLES.SUPER_ADMIN) {
+      ticketNav.innerHTML = `
+        <a href="${this._resolvePath("pages/super-admin/index.html")}" class="btn btn-sm btn-primary">Super Admin Console →</a>
       `;
     } else if (role === USER_ROLES.OWNER) {
       ticketNav.innerHTML = `
-        <a href="owner.html" class="btn btn-sm btn-soft">← Owner Console</a>
-        <a href="receptionist.html" class="btn btn-sm btn-primary">Operations Panel →</a>
+        <a href="${this._resolvePath("pages/owner/dashboard.html")}" class="btn btn-sm btn-primary">Owner Dashboard →</a>
+      `;
+    } else if (role === USER_ROLES.BRANCH_MANAGER) {
+      ticketNav.innerHTML = `
+        <a href="${this._resolvePath("pages/branch-manager/index.html")}" class="btn btn-sm btn-primary">Branch Workspace →</a>
       `;
     } else if (role === USER_ROLES.RECEPTIONIST) {
       ticketNav.innerHTML = `
-        <a href="receptionist.html" class="btn btn-sm btn-primary">← Operations Panel</a>
+        <a href="${this._resolvePath("pages/receptionist/index.html")}" class="btn btn-sm btn-primary">← Operations Panel</a>
       `;
     } else if (role === USER_ROLES.PRACTITIONER) {
       ticketNav.innerHTML = `
-        <a href="practitioner.html" class="btn btn-sm btn-primary">← Practitioner Workspace</a>
+        <a href="${this._resolvePath("pages/practitioner/index.html")}" class="btn btn-sm btn-primary">← Practitioner Workspace</a>
       `;
     }
   }
@@ -114,7 +140,7 @@ class NavbarService {
 
     if (role === "GUEST" || !user) {
       // If guest and already rendered in static HTML, do not overwrite DOM or break language switcher
-      const existingGetStarted = navActions.querySelector('a[href="onboarding.html"]');
+      const existingGetStarted = navActions.querySelector('a[href*="onboarding.html"]');
       if (existingGetStarted) {
         return;
       }
@@ -122,7 +148,7 @@ class NavbarService {
       // If resetting from logged-in session back to guest
       navActions.innerHTML = `
         ${langHtml}
-        <a href="sign-in.html" class="btn btn-soft" data-i18n="nav.signIn">Sign In</a>
+        <a href="${this._resolvePath("pages/public/sign-in.html")}" class="btn btn-soft" data-i18n="nav.signIn">Sign In</a>
         <a href="onboarding.html" class="btn btn-primary" data-i18n="nav.getStarted">Get Started</a>
       `;
       return;
@@ -137,31 +163,19 @@ class NavbarService {
             <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
             <div style="font-size:10px; color:#16a34a; font-weight:700;">🛡️ Verified Patient</div>
           </div>
-          <a href="patient-portal.html" class="btn btn-sm btn-primary">Patient Portal →</a>
+          <a href="${this._resolvePath("pages/patient/index.html")}" class="btn btn-sm btn-primary">Patient Portal →</a>
           <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
         </div>
       `;
-    } else if (role === USER_ROLES.PRACTITIONER && user) {
+    } else if (role === USER_ROLES.SUPER_ADMIN && user) {
       navActions.innerHTML = `
         ${langHtml}
         <div style="display:flex; align-items:center; gap:12px;">
           <div style="text-align:right; line-height:1.2;">
             <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
-            <div style="font-size:10px; color:#0284c7; font-weight:700;">🧑‍⚕️ ${user.title || "Practitioner"}</div>
+            <div style="font-size:10px; color:#7c3aed; font-weight:700;">⚡ Super Admin</div>
           </div>
-          <a href="practitioner.html" class="btn btn-sm btn-primary">Practitioner Workspace →</a>
-          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
-        </div>
-      `;
-    } else if (role === USER_ROLES.RECEPTIONIST && user) {
-      navActions.innerHTML = `
-        ${langHtml}
-        <div style="display:flex; align-items:center; gap:12px;">
-          <div style="text-align:right; line-height:1.2;">
-            <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
-            <div style="font-size:10px; color:#d97706; font-weight:700;">🛎️ Front Desk</div>
-          </div>
-          <a href="receptionist.html" class="btn btn-sm btn-primary">Operations Panel →</a>
+          <a href="${this._resolvePath("pages/super-admin/index.html")}" class="btn btn-sm btn-primary">Platform Console →</a>
           <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
         </div>
       `;
@@ -173,8 +187,43 @@ class NavbarService {
             <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
             <div style="font-size:10px; color:#0f766e; font-weight:700;">👑 Owner HQ</div>
           </div>
-          <a href="owner.html" class="btn btn-sm btn-primary">Owner Console →</a>
-          <a href="receptionist.html" class="btn btn-sm btn-soft">Operations</a>
+          <a href="${this._resolvePath("pages/owner/dashboard.html")}" class="btn btn-sm btn-primary">Owner Console →</a>
+          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
+        </div>
+      `;
+    } else if (role === USER_ROLES.BRANCH_MANAGER && user) {
+      navActions.innerHTML = `
+        ${langHtml}
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="text-align:right; line-height:1.2;">
+            <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
+            <div style="font-size:10px; color:#2563eb; font-weight:700;">🏢 Branch Manager</div>
+          </div>
+          <a href="${this._resolvePath("pages/branch-manager/index.html")}" class="btn btn-sm btn-primary">Branch Console →</a>
+          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
+        </div>
+      `;
+    } else if (role === USER_ROLES.PRACTITIONER && user) {
+      navActions.innerHTML = `
+        ${langHtml}
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="text-align:right; line-height:1.2;">
+            <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
+            <div style="font-size:10px; color:#0284c7; font-weight:700;">🧑‍⚕️ ${user.title || "Practitioner"}</div>
+          </div>
+          <a href="${this._resolvePath("pages/practitioner/index.html")}" class="btn btn-sm btn-primary">Practitioner Workspace →</a>
+          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
+        </div>
+      `;
+    } else if (role === USER_ROLES.RECEPTIONIST && user) {
+      navActions.innerHTML = `
+        ${langHtml}
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="text-align:right; line-height:1.2;">
+            <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
+            <div style="font-size:10px; color:#d97706; font-weight:700;">🛎️ Front Desk</div>
+          </div>
+          <a href="${this._resolvePath("pages/receptionist/index.html")}" class="btn btn-sm btn-primary">Operations Panel →</a>
           <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
         </div>
       `;
@@ -203,23 +252,15 @@ class NavbarService {
         <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
           👤 ${user.name} (Patient)
         </div>
-        <a href="patient-portal.html" class="btn btn-primary full">Patient Portal</a>
+        <a href="${this._resolvePath("pages/patient/index.html")}" class="btn btn-primary full">Patient Portal</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
       `;
-    } else if (role === USER_ROLES.PRACTITIONER && user) {
+    } else if (role === USER_ROLES.SUPER_ADMIN && user) {
       return `
         <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
-          🧑‍⚕️ ${user.name}
+          ⚡ ${user.name} (Super Admin)
         </div>
-        <a href="practitioner.html" class="btn btn-primary full">Practitioner Workspace</a>
-        <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
-      `;
-    } else if (role === USER_ROLES.RECEPTIONIST && user) {
-      return `
-        <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
-          🛎️ ${user.name} (Receptionist)
-        </div>
-        <a href="receptionist.html" class="btn btn-primary full">Operations Panel</a>
+        <a href="${this._resolvePath("pages/super-admin/index.html")}" class="btn btn-primary full">Platform Console</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
       `;
     } else if (role === USER_ROLES.OWNER && user) {
@@ -227,14 +268,37 @@ class NavbarService {
         <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
           👑 ${user.name} (Owner)
         </div>
-        <a href="owner.html" class="btn btn-primary full">Owner HQ Console</a>
-        <a href="receptionist.html" class="btn btn-soft full" style="margin-top:8px;">Operations Panel</a>
+        <a href="${this._resolvePath("pages/owner/dashboard.html")}" class="btn btn-primary full">Owner HQ Console</a>
+        <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
+      `;
+    } else if (role === USER_ROLES.BRANCH_MANAGER && user) {
+      return `
+        <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
+          🏢 ${user.name} (Branch Manager)
+        </div>
+        <a href="${this._resolvePath("pages/branch-manager/index.html")}" class="btn btn-primary full">Branch Console</a>
+        <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
+      `;
+    } else if (role === USER_ROLES.PRACTITIONER && user) {
+      return `
+        <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
+          🧑‍⚕️ ${user.name}
+        </div>
+        <a href="${this._resolvePath("pages/practitioner/index.html")}" class="btn btn-primary full">Practitioner Workspace</a>
+        <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
+      `;
+    } else if (role === USER_ROLES.RECEPTIONIST && user) {
+      return `
+        <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
+          🛎️ ${user.name} (Receptionist)
+        </div>
+        <a href="${this._resolvePath("pages/receptionist/index.html")}" class="btn btn-primary full">Operations Panel</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
       `;
     }
 
     return `
-      <a href="sign-in.html" class="btn btn-soft full" data-i18n="nav.signIn">Sign In</a>
+      <a href="${this._resolvePath("pages/public/sign-in.html")}" class="btn btn-soft full" data-i18n="nav.signIn">Sign In</a>
       <a href="onboarding.html" class="btn btn-primary full" data-i18n="nav.getStarted">Get Started</a>
     `;
   }

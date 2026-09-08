@@ -3,10 +3,10 @@
  * SOLID: Single Responsibility for Booking Form DOM events, Multi-Template Switching & Real Reservation Persistence
  */
 
-import { CLINIC_BRANCHES, CLINIC_SERVICES, PRACTITIONERS } from "../config/clinic-data.js";
-import { bookingService } from "../services/booking.service.js";
-import { soundService } from "../services/sound.service.js";
-import { i18nService } from "../services/i18n.service.js";
+import { CLINIC_BRANCHES, CLINIC_SERVICES, PRACTITIONERS } from "../../config/clinic-data.js";
+import { bookingService } from "../../services/booking.service.js";
+import { soundService } from "../../services/sound.service.js";
+import { i18nService } from "../../services/i18n.service.js";
 
 export class BookingController {
   constructor(uiController) {

@@ -427,21 +427,39 @@ class AuthService {
   }
 
   /**
+   * Helper to dynamically compute relative path to pages/public/sign-in.html
+   */
+  getSignInUrl() {
+    const path = (typeof window !== "undefined" && window.location && window.location.pathname)
+      ? window.location.pathname.replace(/\\/g, "/")
+      : "";
+    if (path.includes("/pages/")) {
+      const afterPages = path.substring(path.indexOf("/pages/") + 7);
+      const depth = afterPages.split("/").length;
+      const prefix = "../".repeat(depth);
+      return `${prefix}pages/public/sign-in.html`;
+    }
+    return "pages/public/sign-in.html";
+  }
+
+  /**
    * Route Guard: Protect pages by requiring authentication & allowed roles
    */
-  requireAuth(allowedRoles = [], fallbackUrl = "sign-in.html") {
+  requireAuth(allowedRoles = [], fallbackUrl = null) {
     const session = this.getCurrentSession();
+    const loginUrl = fallbackUrl || this.getSignInUrl();
 
     if (!session || !session.user) {
       console.warn("[AuthService] Akses ditolak: Sesi tidak ditemukan. Mengalihkan ke login...");
-      window.location.href = fallbackUrl;
+      window.location.href = loginUrl;
       return null;
     }
 
     if (allowedRoles.length > 0 && !allowedRoles.includes(session.role)) {
       console.warn(`[AuthService] Akses dibatasi untuk role ${session.role}. Mengalihkan ke halaman yang diizinkan...`);
       const userHome = this.getHomeRouteForRole(session.role);
-      window.location.href = userHome;
+      const isInsidePages = typeof window !== "undefined" && window.location.pathname.includes("/pages/");
+      window.location.href = isInsidePages && userHome.startsWith("pages/") ? `../../${userHome}` : userHome;
       return null;
     }
 
@@ -453,7 +471,7 @@ class AuthService {
    */
   logout() {
     storageService.remove(this.SESSION_KEY);
-    window.location.href = "sign-in.html";
+    window.location.href = this.getSignInUrl();
     return true;
   }
 

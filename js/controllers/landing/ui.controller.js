@@ -3,8 +3,8 @@
  * SOLID: Single Responsibility for Global UI Interactions, Navbar & Toasts
  */
 
-import { navbarService } from "../services/navbar.service.js";
-import { i18nService } from "../services/i18n.service.js";
+import { navbarService } from "../../services/navbar.service.js";
+import { i18nService } from "../../services/i18n.service.js";
 
 export class UIController {
   constructor() {

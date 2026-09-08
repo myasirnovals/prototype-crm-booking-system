@@ -1,112 +1,97 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.6.0 [STABLE RELEASE]
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.7.1 [STABLE RELEASE]
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 
 ---
 
-## 🏛️ Arsitektur SOLID & Pengelompokan Berkas
+## 🏛️ Arsitektur SOLID & Pengelompokan Berkas per Aktor
 
-Struktur berkas telah dikelompokkan secara terstruktur (*Single Responsibility Principle* per berkas):
+Struktur berkas telah dikelompokkan secara terstruktur (*Single Responsibility Principle* per aktor & fitur):
 
 ```
 Desain/
-├── 📄 Halaman HTML (Entry Points per Role)
-│   ├── index.html                      # Portal Pasien Publik & Product Showcase
-│   ├── sign-in.html                    # Autentikasi Multi-Role, In-App Reset Password & 1-Click Quick Demo Login
-│   ├── owner.html                      # Dashboard Super Admin (HQ): Multi-Branch Consolidation & User Management
-│   ├── owner-dashboard.html            # [NEW] Dashboard Operasional Owner: Anti-Margin Error, 4 Modul Terisolasi Cabang
-│   ├── branch-select.html              # [NEW] Gateway Pemilihan Cabang Aktif (Choose Branch) & Registrasi Cabang Baru
-│   ├── admin-onboarding.html           # [NEW] Setup Branch Wizard 4-Langkah (Brand, 4 Template, Cabang 1, Launch)
-│   ├── practitioner.html               # Workspace Dokter: Queue Calling (Audio Chime), Sesi Terapi & Catatan Klinis
-│   ├── receptionist.html               # Panel Operasional Resepsionis: Live Queue, Check-in, Kasir POS & Notifikasi
-│   ├── patient-portal.html             # Portal Pasien Mandiri: E-Tiket Digital & Live Antrean Tracker
-│   ├── ticket.html                     # Viewer E-Tiket Digital & Kalender .ics
-│   ├── demo.html                       # Sandbox Demo Interaktif
-│   ├── onboarding.html                 # Registrasi Klinik Baru & Akun Super Admin Owner
-│   └── README.md                       # Dokumentasi arsitektur sistem
+├── 📄 Root (Landing & Public Tools)
+│   ├── index.html                          # Landing page & embedded hero preview
+│   ├── onboarding.html                     # Registrasi klinik baru publik
+│   ├── demo.html                           # Sandbox demo interaktif
+│   └── README.md                           # Dokumentasi arsitektur sistem
+│
+├── 📂 pages/                               # Halaman per Aktor (Strict Role Isolation)
+│   ├── super-admin/
+│   │   └── index.html                      # Platform Console: kelola akun owner & audit log
+│   ├── owner/
+│   │   ├── onboarding.html                 # Setup Branch Wizard (Brand, Template, Cabang 1)
+│   │   ├── branch-select.html              # Gateway pemilihan cabang aktif
+│   │   └── dashboard.html                  # Dashboard Owner: kelola cabang & Branch Manager
+│   ├── branch-manager/
+│   │   └── index.html                      # Workspace Branch Manager: dokter, staf, jadwal & shift
+│   ├── practitioner/
+│   │   └── index.html                      # Workspace Dokter: antrean, audio chime, Body Pain Map
+│   ├── receptionist/
+│   │   └── index.html                      # Meja Resepsionis: live queue, POS cashier, walk-in
+│   ├── patient/
+│   │   └── index.html                      # Portal Pasien: e-tiket, lacak antrean, reschedule
+│   └── public/
+│       ├── sign-in.html                    # Multi-role login, 1-click quick demo & reset password
+│       ├── booking.html                    # Wizard reservasi janji temu pasien 4-langkah
+│       └── ticket.html                     # Viewer e-tiket digital & sinkronisasi .ics
 │
 ├── 🎨 css/
-│   ├── style.css                       # Master stylesheet (mengimpor semua modul)
-│   ├── variables.css                   # Design Tokens: warna Medical Teal, gradien, shadow, radius
-│   ├── base.css                        # CSS Reset, elemen dasar, tombol, pill, feedback box
-│   ├── layout.css                      # Navbar glassmorphism, drawer mobile, header & footer
-│   └── components/
-│       ├── auth.css                    # Form login staf/pasien, OTP grid, modal reset password, modal edit profil
-│       ├── owner.css                   # Style panel owner, analitik omset & live logo uploader
-│       ├── practitioner.css            # Style workspace dokter, visualizer Body Pain Map, audio chime calling
-│       ├── patient-portal.css          # Style portal pasien, live queue tracker & riwayat booking
-│       ├── receptionist.css            # Live queue card, tabel SIMRS bridging, kasir POS
-│       ├── ticket.css                  # Kartu digital ticket, perforated divider, QR canvas
-│       ├── hero.css                    # Visual hero, phone mockup, live operations card
-│       ├── onboarding.css              # Form registrasi tenant, spesialisasi, animasi provisioning
-│       ├── demo.css                    # Sandbox wizard stepper, visual body pain map, WhatsApp chat
-│       ├── features.css                # Grid fitur, diagram alur rujukan ephemeral
-│       ├── showcase.css                # Tab shell, workspace operasional, master calendar, feed
-│       ├── booking.css                 # Form booking mandiri, kartu layanan, slot grid, ringkasan
-│       ├── notifications.css           # Engine notifikasi, mockup chat WhatsApp, reminder queue, drawer activity
-│       └── markets.css                 # Kartu pasar SG & MY, tagar, call-to-action
+│   ├── style.css                           # Master stylesheet (mengimpor semua modul)
+│   ├── variables.css                       # Design Tokens: Medical Teal, gradien, shadow, radius
+│   ├── base.css                            # CSS Reset, elemen dasar, tombol, pill, feedback box
+│   ├── layout.css                          # Navbar glassmorphism, drawer mobile, header & footer
+│   └── components/                         # CSS komponen spesifik per fitur/aktor
 │
 └── ⚡ js/
     ├── config/
-    │   ├── role-routes.js              # RBAC Matrix, route mapping & kredensial master per role (OCP)
-    │   ├── clinic-data.js              # Master data: Cabang SG/MY, praktisi, layanan, slot default
-    │   └── regional-config.js          # Konfigurasi regional: Mata uang, template WA, consent PDPA
-    │   ├── walkin-modal.component.js   # Component pendaftaran walk-in cepat
-    │   └── whatsapp-simulator.component.js # Component simulasi live chat WA 2-way
+    │   ├── role-routes.js                  # RBAC Matrix, route mapping & kredensial master (OCP)
+    │   ├── clinic-data.js                  # Master data: Cabang SG/MY, praktisi, layanan, slot
+    │   ├── regional-config.js              # Konfigurasi regional: Mata uang, template WA, PDPA
+    │   └── templates/                      # Template spesialisasi klinik (physio, dental, tcm, wellness)
     ├── locales/
-    │   ├── en.js                       # Kamus Bahasa Inggris (Default SG / Global)
-    │   ├── ms.js                       # Kamus Bahasa Melayu / Indonesia (MY / ID)
-    │   └── zh.js                       # Kamus Bahasa Mandarin (Simplified Chinese)
+    │   ├── en.js                           # Kamus Bahasa Inggris (Default SG / Global)
+    │   ├── ms.js                           # Kamus Bahasa Melayu / Indonesia (MY / ID)
+    │   └── zh.js                           # Kamus Bahasa Mandarin (Simplified Chinese)
     ├── services/
-    │   ├── auth.service.js             # AuthService: Validasi kredensial per role, session guard, proteksi rute (SRP)
-    │   ├── storage.service.js          # StorageService: LocalStorage abstraction + in-memory fallback
-    │   ├── i18n.service.js             # I18nService: Engine terjemahan multilingual (EN/MS/ZH)
-    │   ├── booking.service.js          # BookingService: Triple-Constraint engine & 10-min slot hold timer
-    │   ├── notification.service.js     # NotificationService: Multi-stage WhatsApp & .ics generator
-    │   └── sound.service.js            # SoundService: Web Audio API chime synthesizer antrean
-    ├── controllers/
-    │   ├── auth.controller.js          # AuthController: Sign-in validation, 1-Click quick login, auto-advance OTP
-    │   ├── owner.controller.js         # OwnerController: Analitik HQ multi-cabang, user management, profil bisnis
-    │   ├── owner-dashboard.controller.js # [NEW] OwnerDashboardController: Modul 1 Cabang, Modul 2 Staf, Modul 3 Stok, Modul 4 Praktisi
-    │   ├── branch-select.controller.js  # [NEW] BranchSelectController: Multi-branch gateway & new branch provisioning
-    │   ├── admin-onboarding.controller.js # [NEW] AdminOnboardingController: WordPress-style 4-step branch setup wizard
-    │   ├── practitioner.controller.js  # PractitionerController: Timeline dokter, calling chime, body pain map
-    │   ├── patient-portal.controller.js# PatientPortalController: Active ticket, live queue, reschedule/cancel
-    │   ├── receptionist.controller.js  # ReceptionistController: Live queue calling, kasir POS & walk-in dispatcher
-    │   ├── ui.controller.js            # UIController: Navbar scroll, mobile drawer, toast feedback
-    │   ├── onboarding.controller.js    # OnboardingController: Pendaftaran tenant & simulasi provisioning
-    │   ├── demo.controller.js          # DemoController: Wizard 5-langkah, Pain Map, WhatsApp 2-way, ROI
-    │   ├── booking.controller.js       # BookingController: Sinkronisasi form booking & checkout
-    │   └── dashboard.controller.js     # DashboardController: Filter cabang & live calendar
-    └── pages/
-        ├── auth.js                     # Entry point untuk sign-in.html
-        ├── owner.js                    # Entry point untuk owner.html
-        ├── owner-dashboard.js          # [NEW] Entry point untuk owner-dashboard.html
-        ├── branch-select.js            # [NEW] Entry point untuk branch-select.html
-        ├── admin-onboarding.js         # [NEW] Entry point untuk admin-onboarding.html
-        ├── practitioner.js             # Entry point untuk practitioner.html
-        ├── patient-portal.js           # Entry point untuk patient-portal.html
-        ├── receptionist.js             # Entry point untuk receptionist.html
-        ├── main.js                     # Entry point untuk index.html
-        ├── onboarding.js               # Entry point untuk onboarding.html
-        ├── demo.js                     # Entry point untuk demo.html
-        ├── ticket.js                   # Entry point untuk ticket.html
-        └── app.js                      # Universal re-export bridge
+    │   ├── auth.service.js                 # AuthService: Kredensial, dynamic route guard, logout (SRP)
+    │   ├── storage.service.js              # StorageService: LocalStorage abstraction + memory fallback
+    │   ├── i18n.service.js                 # I18nService: Multilingual translation engine
+    │   ├── booking.service.js              # BookingService: Triple-Constraint engine & slot hold
+    │   ├── navbar.service.js               # NavbarService: Dynamic nav, drawer & ticket sync
+    │   ├── notification.service.js         # NotificationService: WhatsApp & .ics generator
+    │   └── sound.service.js                # SoundService: Web Audio API chime synthesizer
+    ├── components/
+    │   ├── intake-form.component.js        # Form intake adaptif spesialisasi
+    │   ├── notification-bar.component.js   # Bar notifikasi live
+    │   ├── profile-modal.component.js      # Modal profil pengguna
+    │   └── demo/                           # Komponen modular sandbox demo
+    ├── controllers/                        # Controller Grouped by Actor / Surface
+    │   ├── super-admin/                    # SuperAdminController: Platform & owner accounts
+    │   ├── owner/                          # Owner controllers: onboarding, branch-select, dashboard
+    │   ├── branch-manager/                 # BranchManagerController: Cabang, dokter, staf, inventaris
+    │   ├── practitioner/                   # PractitionerController: Timeline dokter, calling chime
+    │   ├── receptionist/                   # ReceptionistController: Live queue, POS kasir, walk-in
+    │   ├── patient/                        # PatientPortalController: Tiket, live queue, reschedule
+    │   ├── public/                         # Public controllers: auth.controller, booking.controller
+    │   └── landing/                        # Landing page controllers: ui, booking, dashboard
+    └── pages/                              # Bootstrap entry points per halaman
 ```
 
 ---
 
 ## 🔑 Kredensial Akun Demo per Role (1-Click Login Ready)
 
-Pada halaman [`sign-in.html`](sign-in.html), tersedia tombol **⚡ 1-Click Quick Demo Login** untuk menguji setiap peran secara instan:
+Pada halaman [`pages/public/sign-in.html`](pages/public/sign-in.html), tersedia tombol **⚡ 1-Click Quick Demo Login** untuk menguji setiap peran secara instan:
 
 | Peran | Akun Email / Kontak | Password / OTP | Halaman Tujuan | Fitur Utama |
 |---|---|---|---|---|
-| 👑 **Super Admin** | `owner@cliniva.com` | `cliniva2026` | [`owner.html`](owner.html) | Dashboard HQ konsolidasian, User Management (buat akun owner baru), profil bisnis adaptif (FR-CONFIG-03), audit trail |
-| 💼 **Clinic Owner** | `dennis@cliniva.com` | `cliniva2026` | [`branch-select.html`](branch-select.html) ➔ [`owner-dashboard.html`](owner-dashboard.html) | Dashboard operasional cabang terisolasi (Anti-Margin Error), live queue hari ini, Modul 1 Cabang, Modul 2 Staf, Modul 3 Stok Template, Modul 4 Praktisi |
-| 🧑‍⚕️ **Practitioner / Dokter** | `dr.lim@orchardclinic.sg` | `cliniva2026` | [`practitioner.html`](practitioner.html) | Timeline konsultasi harian dokter, visualizer interaktif Body Pain Map, pemanggil antrean audio chime ke ruang periksa, pembaruan status sesi |
-| 🛎️ **Receptionist / Front Desk** | `reception@orchardclinic.sg` | `cliniva2026` | [`receptionist.html`](receptionist.html) | Papan antrean ruang tunggu (*Live Queue*), kasir POS & pelunasan tagihan sesi, bridging dokumen SIMRS, pendaftaran pasien walk-in |
-| 👤 **User / Pasien** | `+65 8123 4567` / `amanda@tan.sg` | OTP `123456` / `cliniva2026` | [`patient-portal.html`](patient-portal.html) | E-Tiket Digital & barcode QR Check-in kiosk, pelacak nomor antrean live, riwayat reservasi kunjungan, reschedule/batal mandiri |
+| 👑 **Super Admin** | `owner@cliniva.com` | `cliniva2026` | [`pages/super-admin/index.html`](pages/super-admin/index.html) | Dashboard HQ platform, User Management (buat akun owner baru), audit trail |
+| 💼 **Clinic Owner** | `dennis@cliniva.com` | `cliniva2026` | [`pages/owner/branch-select.html`](pages/owner/branch-select.html) ➔ [`pages/owner/dashboard.html`](pages/owner/dashboard.html) | Dashboard operasional owner, kelola cabang & Branch Manager |
+| 🏢 **Branch Manager** | `manager@orchardclinic.sg` | `cliniva2026` | [`pages/branch-manager/index.html`](pages/branch-manager/index.html) | Manajemen cabang tunggal: dokter/praktisi, staf resepsionis, jadwal & shift |
+| 🧑‍⚕️ **Practitioner / Dokter** | `dr.lim@orchardclinic.sg` | `cliniva2026` | [`pages/practitioner/index.html`](pages/practitioner/index.html) | Timeline konsultasi harian dokter, visualizer Body Pain Map, pemanggil chime |
+| 🛎️ **Receptionist / Front Desk** | `reception@orchardclinic.sg` | `cliniva2026` | [`pages/receptionist/index.html`](pages/receptionist/index.html) | Papan antrean ruang tunggu (*Live Queue*), kasir POS, pendaftaran walk-in |
+| 👤 **User / Pasien** | `+65 8123 4567` / `amanda@tan.sg` | OTP `123456` / `cliniva2026` | [`pages/patient/index.html`](pages/patient/index.html) | E-Tiket digital, pelacak nomor antrean live, riwayat reservasi, reschedule |
 
 ---
 

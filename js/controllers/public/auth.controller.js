@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Cliniva — Auth Controller
  * SOLID: Single Responsibility for Sign-In Interactions, Quick Role Login & OTP Verification
  */
@@ -121,7 +121,7 @@ export class AuthController {
         }
 
         setTimeout(() => {
-          window.location.href = result.targetRoute;
+          window.location.href = this.resolveRedirect(result.targetRoute);
         }, 800);
       });
     });
@@ -171,7 +171,7 @@ export class AuthController {
       );
 
       setTimeout(() => {
-        window.location.href = result.targetRoute;
+        window.location.href = this.resolveRedirect(result.targetRoute);
       }, 900);
     });
   }
@@ -347,9 +347,17 @@ export class AuthController {
       );
 
       setTimeout(() => {
-        window.location.href = result.targetRoute;
+        window.location.href = this.resolveRedirect(result.targetRoute);
       }, 900);
     });
+  }
+
+  resolveRedirect(targetRoute) {
+    if (!targetRoute) return "../../index.html";
+    if (window.location.pathname.includes("/pages/")) {
+      return targetRoute.startsWith("pages/") ? `../../${targetRoute}` : targetRoute;
+    }
+    return targetRoute;
   }
 
   resetStatus(elem) {

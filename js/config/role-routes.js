@@ -86,7 +86,7 @@ export const REGISTERED_USERS = [
   // ── Owner ─────────────────────────────────────────────────────────────────
   {
     id: "usr-owner-dennis",
-    email: "owner@cliniva.com",
+    email: "dennis@cliniva.com",
     phone: "+65 8999 7788",
     password: "cliniva2026",
     role: USER_ROLES.OWNER,

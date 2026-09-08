@@ -3,7 +3,7 @@
  * SOLID: Single Responsibility for Operations Dashboard & Calendar Synchronization
  */
 
-import { soundService } from "../services/sound.service.js";
+import { soundService } from "../../services/sound.service.js";
 
 export class DashboardController {
   constructor(uiController) {

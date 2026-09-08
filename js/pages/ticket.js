@@ -9,14 +9,14 @@ import { soundService } from "../services/sound.service.js";
 import { navbarService } from "../services/navbar.service.js";
 import { i18nService } from "../services/i18n.service.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   i18nService.init();
   navbarService.sync();
 
-  // 1. Resolve active booking: Check URL param ?code=... first, then fallback to most recent booking in storage
+  // 1. Resolve active booking: Check URL param ?code=... first, then fetch from Supabase SSOT
   const urlParams = new URLSearchParams(window.location.search);
   const codeParam = urlParams.get("code");
-  const allBookings = bookingService.getAllBookings();
+  const allBookings = await bookingService.fetchBookingsAsync();
 
   let activeBooking = null;
   if (codeParam) {

@@ -6,6 +6,7 @@
 import { USER_ROLES, ROLE_CONFIG, REGISTERED_USERS } from "../config/role-routes.js";
 import { storageService } from "./storage.service.js";
 import { notificationService } from "./notification.service.js";
+import { supabaseService } from "./supabase.service.js";
 
 class AuthService {
   constructor() {
@@ -149,40 +150,52 @@ class AuthService {
   }
 
   /**
-   * Authenticate user with Email / Identifier & Password
+   * Authenticate user with Email / Identifier & Password (Supabase SSOT + Fallback)
    */
-  loginWithCredentials(identifier, password, preferredRole = null, region = "sg") {
+  async loginWithCredentials(identifier, password, preferredRole = null, region = "sg") {
     if (!identifier || !password) {
       return { success: false, error: "Please enter your email/contact and password." };
     }
 
     const cleanIdentifier = identifier.trim().toLowerCase();
-    const users = this.getUsers();
-
-    // 1. If preferredRole is specified, check if there is a matching user with that role
     let user = null;
-    if (preferredRole) {
-      user = users.find((u) => 
-        (u.email.toLowerCase() === cleanIdentifier || u.phone.replace(/\s+/g, "") === cleanIdentifier.replace(/\s+/g, "")) &&
-        u.role === preferredRole
-      );
-      // If user selected OWNER role while keeping default email owner@cliniva.com
-      if (!user && (cleanIdentifier === "owner@cliniva.com" || cleanIdentifier === "dennis@cliniva.com") && preferredRole === USER_ROLES.OWNER) {
-        user = users.find((u) => u.role === USER_ROLES.OWNER);
+
+    // 1. Check Supabase profiles table directly (Single Source of Truth)
+    if (supabaseService.isAvailable()) {
+      try {
+        let profile = await supabaseService.getProfileByEmail(cleanIdentifier);
+        if (!profile && preferredRole) {
+          profile = await supabaseService.getProfileByRole(preferredRole);
+        }
+        if (profile) {
+          user = profile;
+        }
+      } catch (err) {
+        console.warn("[AuthService] Supabase profile query failed, using local fallback:", err);
       }
     }
 
-    // 2. Find by email or phone
+    // 2. Fallback to registered users if not connected or not found
     if (!user) {
-      user = users.find((u) => 
-        u.email.toLowerCase() === cleanIdentifier || 
-        u.phone.replace(/\s+/g, "") === cleanIdentifier.replace(/\s+/g, "")
-      );
-    }
-
-    // 3. Fallback: match by preferredRole
-    if (!user && preferredRole) {
-      user = users.find((u) => u.role === preferredRole);
+      const users = this.getUsers();
+      if (preferredRole) {
+        user = users.find((u) => 
+          (u.email.toLowerCase() === cleanIdentifier || u.phone.replace(/\s+/g, "") === cleanIdentifier.replace(/\s+/g, "")) &&
+          u.role === preferredRole
+        );
+        if (!user && (cleanIdentifier === "owner@cliniva.com" || cleanIdentifier === "dennis@cliniva.com") && preferredRole === USER_ROLES.OWNER) {
+          user = users.find((u) => u.role === USER_ROLES.OWNER);
+        }
+      }
+      if (!user) {
+        user = users.find((u) => 
+          u.email.toLowerCase() === cleanIdentifier || 
+          u.phone.replace(/\s+/g, "") === cleanIdentifier.replace(/\s+/g, "")
+        );
+      }
+      if (!user && preferredRole) {
+        user = users.find((u) => u.role === preferredRole);
+      }
     }
 
     // Verify password (demo accepts "cliniva2026" or user's custom updated password)
@@ -221,15 +234,34 @@ class AuthService {
     };
 
     storageService.set(this.SESSION_KEY, session);
+
+    // Audit log in cloud
+    if (supabaseService.isAvailable()) {
+      supabaseService.logAudit("LOGIN", `User ${user.email} (${user.role}) logged in`, user);
+    }
+
     return { success: true, session, targetRoute };
   }
 
   /**
-   * Fast 1-Click Demo Login by Role Key (SUPER_ADMIN, OWNER, PRACTITIONER, RECEPTIONIST, USER)
+   * Fast 1-Click Demo Login by Role Key (Supabase SSOT + Fallback)
    */
-  loginByRoleKey(roleKey) {
-    const users = this.getUsers();
-    const user = users.find((u) => u.role === roleKey);
+  async loginByRoleKey(roleKey) {
+    let user = null;
+
+    if (supabaseService.isAvailable()) {
+      try {
+        user = await supabaseService.getProfileByRole(roleKey);
+      } catch (err) {
+        console.warn("[AuthService] Supabase role lookup failed:", err);
+      }
+    }
+
+    if (!user) {
+      const users = this.getUsers();
+      user = users.find((u) => u.role === roleKey);
+    }
+
     if (!user) {
       return { success: false, error: `Demo account for role ${roleKey} not found.` };
     }
@@ -262,6 +294,11 @@ class AuthService {
     };
 
     storageService.set(this.SESSION_KEY, session);
+
+    if (supabaseService.isAvailable()) {
+      supabaseService.logAudit("DEMO_LOGIN", `1-Click login as ${roleKey} (${user.name})`, user);
+    }
+
     return { success: true, session, targetRoute };
   }
 

@@ -3,10 +3,30 @@
  * SOLID: Single Responsibility for persistent and in-memory storage abstraction
  */
 
+import { isSupabaseConfigured } from "../config/supabase.js";
+
 class StorageService {
   constructor() {
     this.memoryStorage = new Map();
     this.isLocalStorageAvailable = this.checkLocalStorage();
+  }
+
+  /**
+   * Check if application is running in Cloud Sync Mode (Supabase)
+   * @returns {boolean}
+   */
+  isCloudMode() {
+    return isSupabaseConfigured();
+  }
+
+  /**
+   * Get active storage tier description
+   * @returns {"CLOUD_SUPABASE" | "LOCAL_STORAGE" | "MEMORY"}
+   */
+  getStorageTier() {
+    if (this.isCloudMode()) return "CLOUD_SUPABASE";
+    if (this.isLocalStorageAvailable) return "LOCAL_STORAGE";
+    return "MEMORY";
   }
 
   checkLocalStorage() {

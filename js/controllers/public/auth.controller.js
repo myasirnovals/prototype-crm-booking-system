@@ -5,6 +5,7 @@
 
 import { authService, USER_ROLES } from "../../services/auth.service.js";
 import { soundService } from "../../services/sound.service.js";
+import { isSupabaseConfigured, getActiveSupabaseConfig, setSupabaseCredentials } from "../../config/supabase.js";
 
 export class AuthController {
   constructor() {
@@ -44,6 +45,7 @@ export class AuthController {
     this.setupForgotPasswordModal();
     this.setupOtpWorkflow();
     this.setupQuickDemoLogin();
+    this.setupCloudModal();
   }
 
   setupModeSwitching() {
@@ -92,7 +94,7 @@ export class AuthController {
    */
   setupQuickDemoLogin() {
     this.quickRoleCards.forEach((card) => {
-      card.addEventListener("click", () => {
+      card.addEventListener("click", async () => {
         const roleKey = card.dataset.role;
         const userEmail = card.dataset.userEmail;
         soundService.playQueueChime();
@@ -102,9 +104,9 @@ export class AuthController {
 
         let result;
         if (userEmail) {
-          result = authService.loginWithCredentials(userEmail, "cliniva2026");
+          result = await authService.loginWithCredentials(userEmail, "cliniva2026");
         } else {
-          result = authService.loginByRoleKey(roleKey);
+          result = await authService.loginByRoleKey(roleKey);
         }
 
         if (!result.success) {
@@ -153,7 +155,7 @@ export class AuthController {
       });
     }
 
-    this.staffForm.addEventListener("submit", (e) => {
+    this.staffForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const email = document.getElementById("staffEmail")?.value.trim() || "";
@@ -162,7 +164,7 @@ export class AuthController {
 
       this.resetStatus(this.staffStatus);
 
-      const result = authService.loginWithCredentials(email, password, role, this.selectedRegion);
+      const result = await authService.loginWithCredentials(email, password, role, this.selectedRegion);
 
       if (!result.success) {
         this.showError(this.staffStatus, result.error);
@@ -381,5 +383,95 @@ export class AuthController {
     if (!elem) return;
     elem.className = "status-box success";
     elem.innerHTML = message;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // SUPABASE CLOUD BACKEND CONFIGURATION MODAL
+  // ─────────────────────────────────────────────────────────────────────────
+
+  setupCloudModal() {
+    const banner = document.getElementById("cloudStatusBanner");
+    const dot = document.getElementById("cloudStatusDot");
+    const text = document.getElementById("cloudStatusText");
+    const openBtn = document.getElementById("btnOpenCloudModal");
+    const modal = document.getElementById("cloudConfigModal");
+    const closeBtn = document.getElementById("btnCloseCloudModal");
+    const cancelBtn = document.getElementById("btnCancelCloudModal");
+    const saveBtn = document.getElementById("btnSaveCloudModal");
+    const disconnectBtn = document.getElementById("btnDisconnectCloud");
+    const urlInput = document.getElementById("inputSupabaseUrl");
+    const keyInput = document.getElementById("inputSupabaseKey");
+    const statusBox = document.getElementById("cloudModalStatus");
+
+    if (!banner || !modal) return;
+
+    const updateStatusDisplay = () => {
+      const isCloud = isSupabaseConfigured();
+      if (isCloud) {
+        if (dot) dot.style.background = "#10b981"; // Emerald green
+        if (text) text.innerHTML = "Mode: <strong style='color:#059669;'>Supabase Cloud Aktif</strong> (PostgreSQL + Realtime)";
+      } else {
+        if (dot) dot.style.background = "#f59e0b"; // Amber
+        if (text) text.innerHTML = "Mode: <span style='color:#b45309;'>Local Storage (Demo Offline)</span>";
+      }
+    };
+
+    updateStatusDisplay();
+
+    const openModal = () => {
+      soundService.playClickTone?.();
+      const cfg = getActiveSupabaseConfig();
+      if (urlInput) urlInput.value = cfg.url || "";
+      if (keyInput) keyInput.value = cfg.anonKey || "";
+      if (statusBox) statusBox.style.display = "none";
+      modal.style.display = "flex";
+    };
+
+    const closeModal = () => {
+      soundService.playClickTone?.();
+      modal.style.display = "none";
+    };
+
+    openBtn?.addEventListener("click", openModal);
+    closeBtn?.addEventListener("click", closeModal);
+    cancelBtn?.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    saveBtn?.addEventListener("click", () => {
+      const url = urlInput?.value.trim() || "";
+      const key = keyInput?.value.trim() || "";
+
+      if (!url || !key) {
+        if (statusBox) {
+          statusBox.style.display = "block";
+          statusBox.style.color = "#ef4444";
+          statusBox.textContent = "Mohon isi Project URL dan Anon Key dengan lengkap.";
+        }
+        return;
+      }
+
+      setSupabaseCredentials(url, key);
+      soundService.playSuccessChime?.();
+      if (statusBox) {
+        statusBox.style.display = "block";
+        statusBox.style.color = "#059669";
+        statusBox.textContent = "✓ Kredensial tersimpan! Memuat ulang sistem...";
+      }
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 700);
+    });
+
+    disconnectBtn?.addEventListener("click", () => {
+      if (confirm("Putuskan koneksi Supabase dan kembali ke Local Storage mode?")) {
+        setSupabaseCredentials("", "");
+        soundService.playClickTone?.();
+        window.location.reload();
+      }
+    });
   }
 }

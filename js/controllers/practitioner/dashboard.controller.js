@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Cliniva — Practitioner / Doctor Workspace Controller
  * SOLID: Single Responsibility for Doctor Schedule, Patient Queue Calling, Treatment Session Management & Body Pain Map
  */
@@ -7,6 +7,7 @@ import { authService, USER_ROLES } from "../../services/auth.service.js";
 import { soundService } from "../../services/sound.service.js";
 import { storageService } from "../../services/storage.service.js";
 import { notificationService } from "../../services/notification.service.js";
+import { supabaseService } from "../../services/supabase.service.js";
 
 export class PractitionerController {
   constructor() {
@@ -33,20 +34,24 @@ export class PractitionerController {
 
     this.sessions = [];
     this.activePatient = null;
+    this.queueUnsubscribe = null;
+    this.currentUser = null;
   }
 
-  init() {
+  async init() {
     // Session Guard: Verify user has PRACTITIONER role
     const session = authService.requireAuth([USER_ROLES.PRACTITIONER]);
     if (!session) return;
 
+    this.currentUser = session.user;
     this.renderUserInfo(session.user);
-    this.loadSessions();
+    await this.loadSessions();
     this.renderQueueList();
     this.setupQueueCalling();
     this.setupStatusUpdates();
     this.setupTreatmentNotes();
     this.setupPainMapInteractions();
+    this.setupRealtimeQueueSubscription();
     this.setupSignOut();
   }
 
@@ -60,9 +65,41 @@ export class PractitionerController {
   }
 
   /**
-   * Load consultation sessions from LocalStorage or initialize with defaults
+   * Load consultation sessions directly from Supabase (SSOT) with local demo fallback
    */
-  loadSessions() {
+  async loadSessions() {
+    if (supabaseService.isAvailable()) {
+      try {
+        const cloudTickets = await supabaseService.fetchLiveQueue(this.currentUser?.branchId || "sg-orchard");
+        if (cloudTickets && Array.isArray(cloudTickets) && cloudTickets.length > 0) {
+          this.sessions = cloudTickets.map((t) => ({
+            id: t.id,
+            queueNo: t.queue,
+            name: t.patient,
+            phone: t.patientPhone || "+65 9123 4567",
+            service: t.serviceName || t.service,
+            time: t.createdAt ? new Date(t.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "10:30 SGT",
+            complaint: t.complaint || "Patient intake assessment completed.",
+            painScale: t.painScale || "5 / 10",
+            duration: "N/A",
+            activeMarker: "marker-lumbar",
+            status: t.status === "READY" || t.status === "IN_CONSULT" ? "IN_PROGRESS" : "WAITING",
+            notes: "",
+            notesUpdatedAt: null,
+            startedAt: t.calledAt ? new Date(t.calledAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : null
+          }));
+
+          const activeOne = this.sessions.find((s) => s.status === "IN_PROGRESS") || this.sessions[0];
+          this.activePatient = activeOne;
+          this.renderQueueList();
+          this.syncActivePatientView();
+          return;
+        }
+      } catch (err) {
+        console.warn("[Practitioner] Cloud sessions query failed, using local fallback:", err);
+      }
+    }
+
     const defaultSessions = [
       {
         queueNo: "A-01",
@@ -123,9 +160,32 @@ export class PractitionerController {
       this.sessions = stored;
     }
 
-    // Set initial active patient (first IN_PROGRESS or first WAITING, fallback index 0)
     const activeOne = this.sessions.find((s) => s.status === "IN_PROGRESS") || this.sessions[0];
     this.activePatient = activeOne;
+  }
+
+  /**
+   * Subscribe to live queue updates from Supabase Realtime
+   */
+  async setupRealtimeQueueSubscription() {
+    if (!supabaseService.isAvailable()) return;
+
+    if (this.queueUnsubscribe) {
+      this.queueUnsubscribe();
+      this.queueUnsubscribe = null;
+    }
+
+    try {
+      this.queueUnsubscribe = await supabaseService.subscribeToQueue(
+        this.currentUser?.branchId || "sg-orchard",
+        (payload) => {
+          console.info("[Practitioner] Live queue update via Supabase Realtime:", payload);
+          this.loadSessions();
+        }
+      );
+    } catch (err) {
+      console.warn("[Practitioner] Realtime subscription failed:", err);
+    }
   }
 
   saveSessions() {
@@ -293,6 +353,20 @@ export class PractitionerController {
         this.updateCardStatusBadge(this.activePatient.queueNo, "IN_PROGRESS");
       }
 
+      // Sync status to Supabase Cloud if connected
+      if (supabaseService.isAvailable()) {
+        supabaseService.fetchLiveQueue("sg-orchard").then((tickets) => {
+          const matching = tickets?.find((t) => t.queue === this.activePatient.queueNo);
+          if (matching?.id) {
+            supabaseService.updateQueueStatus(matching.id, "IN_CONSULT", {
+              statusBadge: "IN_CONSULT",
+              badgeColor: "#0369a1",
+              badgeBg: "#e0f2fe"
+            });
+          }
+        }).catch((err) => console.warn("[Practitioner] Cloud queue call sync failed:", err));
+      }
+
       // 4. Log system notification
       notificationService.addSystemNotification({
         title: "Queue Calling",
@@ -420,6 +494,20 @@ export class PractitionerController {
       this.activePatient.notesUpdatedAt = nowTime;
 
       this.saveSessions();
+
+      // Persist to Supabase Cloud if available
+      if (supabaseService.isAvailable()) {
+        supabaseService.saveTreatmentNotes({
+          patientName: this.activePatient.name,
+          complaint: this.activePatient.complaint,
+          painScale: this.activePatient.painScale,
+          duration: this.activePatient.duration,
+          notes: notesText,
+          painMarkers: this.activePatient.activeMarker ? [this.activePatient.activeMarker] : []
+        }).then((ok) => {
+          if (ok) console.info("[Practitioner] Treatment notes synced to Supabase Cloud");
+        }).catch((err) => console.warn("[Practitioner] Notes sync failed:", err));
+      }
 
       if (this.treatmentNotesSavedTime) {
         this.treatmentNotesSavedTime.textContent = `Last saved today at ${nowTime}`;

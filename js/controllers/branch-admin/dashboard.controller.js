@@ -9,6 +9,7 @@ import { soundService } from "../../services/sound.service.js";
 import { storageService } from "../../services/storage.service.js";
 import { bookingService } from "../../services/booking.service.js";
 import { notificationService } from "../../services/notification.service.js";
+import { supabaseService } from "../../services/supabase.service.js";
 
 export class BranchAdminController {
   constructor() {
@@ -17,6 +18,7 @@ export class BranchAdminController {
     this.tabButtons = [];
     this.tabPanes = [];
     this.queueGrid = null;
+    this.queueUnsubscribe = null;
   }
 
   init() {
@@ -73,6 +75,7 @@ export class BranchAdminController {
     this.setupTabs();
     this.setupChimeSound();
     this.renderLiveQueue();
+    this.setupRealtimeQueue();
     this.setupWalkInDispatcher();
     this.renderBranchPractitioners();
     this.setupPractitionerModal();
@@ -146,14 +149,33 @@ export class BranchAdminController {
   // LIVE QUEUE
   // ─────────────────────────────────────────────────────────────────────────
 
-  renderLiveQueue() {
+  async renderLiveQueue() {
     if (!this.queueGrid) return;
 
-    // Load branch queue items
-    const queueStorageKey = `cliniva_queue_${this.branchId}`;
-    let queueItems = storageService.get(queueStorageKey, null);
+    // If Supabase is available, sync live queue from Cloud (SSOT)
+    if (supabaseService.isAvailable()) {
+      try {
+        const cloudQueue = await supabaseService.fetchLiveQueue(this.branchId);
+        if (cloudQueue && Array.isArray(cloudQueue)) {
+          queueItems = cloudQueue;
+        }
+      } catch (err) {
+        console.warn("[BranchAdmin] Failed to fetch cloud queue, using local:", err);
+      }
+    }
 
     if (!queueItems || queueItems.length === 0) {
+      if (supabaseService.isAvailable()) {
+        this.queueGrid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 36px 16px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 14px; color: var(--muted);">
+            <div style="font-size: 28px; margin-bottom: 8px;">✨</div>
+            <strong style="display:block; color: #334155; margin-bottom: 4px;">Belum Ada Antrean Aktif di Cabang Ini</strong>
+            <span style="font-size: 12px;">Pasien yang mendaftar via online booking atau walk-in akan langsung muncul di sini via Supabase Realtime.</span>
+          </div>
+        `;
+        return;
+      }
+
       queueItems = [
         {
           queue: "A-01",
@@ -180,7 +202,6 @@ export class BranchAdminController {
           badgeBg: "#e0f2fe"
         }
       ];
-      storageService.set(queueStorageKey, queueItems);
     }
 
     // Update metric counters
@@ -209,8 +230,18 @@ export class BranchAdminController {
         </button>
       `;
 
-      card.querySelector(".btn-call-patient")?.addEventListener("click", () => {
+      card.querySelector(".btn-call-patient")?.addEventListener("click", async () => {
         soundService.playQueueChime();
+
+        // Update status in cloud if available
+        if (supabaseService.isAvailable() && item.id) {
+          await supabaseService.updateQueueStatus(item.id, "READY", {
+            statusBadge: "READY",
+            badgeColor: "#0f766e",
+            badgeBg: "#f0fdfa"
+          });
+        }
+
         if (notificationService && typeof notificationService.addSystemNotification === "function") {
           notificationService.addSystemNotification({
             title: `Panggilan Pasien ${item.queue}`,
@@ -226,11 +257,35 @@ export class BranchAdminController {
     });
   }
 
+  /**
+   * Subscribe to Supabase Realtime WebSocket for live queue updates across devices
+   */
+  async setupRealtimeQueue() {
+    if (!supabaseService.isAvailable()) return;
+
+    if (this.queueUnsubscribe) {
+      this.queueUnsubscribe();
+      this.queueUnsubscribe = null;
+    }
+
+    try {
+      this.queueUnsubscribe = await supabaseService.subscribeToQueue(this.branchId, (payload) => {
+        console.info("[BranchAdmin] Live queue update received via Supabase Realtime:", payload);
+        this.renderLiveQueue();
+        if (payload.eventType === "UPDATE" && payload.new?.status === "READY") {
+          soundService.playQueueChime();
+        }
+      });
+    } catch (err) {
+      console.warn("[BranchAdmin] Realtime subscription error:", err);
+    }
+  }
+
   setupWalkInDispatcher() {
     const walkInBtn = document.getElementById("adminWalkInBtn");
     if (!walkInBtn) return;
 
-    walkInBtn.addEventListener("click", () => {
+    walkInBtn.addEventListener("click", async () => {
       const name = prompt("Nama Pasien Datang Langsung (Walk-In):", "Pasien Walk-In");
       if (!name) return;
 
@@ -240,16 +295,32 @@ export class BranchAdminController {
       const queueItems = storageService.get(queueStorageKey, []) || [];
       const newQueueNumber = `W-0${queueItems.length + 1}`;
 
-      queueItems.unshift({
+      const walkInItem = {
         queue: newQueueNumber,
         patient: name,
         service: service,
         statusBadge: "READY",
         badgeColor: "#0f766e",
         badgeBg: "#f0fdfa"
-      });
+      };
 
+      queueItems.unshift(walkInItem);
       storageService.set(queueStorageKey, queueItems);
+
+      // Push to Supabase Cloud if available
+      if (supabaseService.isAvailable()) {
+        try {
+          await supabaseService.addWalkInQueue({
+            queueNumber: newQueueNumber,
+            branchId: this.branchId,
+            patientName: name,
+            serviceName: service
+          });
+        } catch (err) {
+          console.warn("[BranchAdmin] Cloud walk-in push failed:", err);
+        }
+      }
+
       this.renderLiveQueue();
       soundService.playSuccessChime?.();
       if (notificationService && typeof notificationService.addSystemNotification === "function") {

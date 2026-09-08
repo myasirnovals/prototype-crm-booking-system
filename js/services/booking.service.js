@@ -18,6 +18,7 @@ import {
   getTemplateIntakeSchema
 } from "../config/clinic-data.js";
 import { storageService } from "./storage.service.js";
+import { supabaseService } from "./supabase.service.js";
 
 class BookingService {
   constructor() {
@@ -287,10 +288,9 @@ class BookingService {
   }
 
   /**
-   * Create & Persist Booking
+   * Create & Persist Booking directly into Supabase (Single Source of Truth)
    */
-  createBooking(bookingPayload) {
-    const existing = storageService.get(this.STORAGE_KEY, []);
+  async createBooking(bookingPayload) {
     const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, "");
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
     const bookingCode = `BK-${dateStr}-${randomSuffix}`;
@@ -305,16 +305,68 @@ class BookingService {
       ...bookingPayload
     };
 
-    existing.unshift(newBooking);
-    storageService.set(this.STORAGE_KEY, existing);
     this.stopSlotHold();
     storageService.remove(this.HOLD_KEY);
+
+    // Save directly to Supabase Cloud as Single Source of Truth
+    if (supabaseService.isAvailable()) {
+      try {
+        const cloudRecord = await supabaseService.createBooking(newBooking);
+        if (cloudRecord) {
+          console.info("[BookingService] Successfully inserted booking into Supabase SSOT:", bookingCode);
+          return newBooking;
+        }
+      } catch (err) {
+        console.warn("[BookingService] Supabase insert failed, caching locally as fallback:", err);
+      }
+    }
+
+    const existing = storageService.get(this.STORAGE_KEY, []);
+    existing.unshift(newBooking);
+    storageService.set(this.STORAGE_KEY, existing);
 
     return newBooking;
   }
 
   getAllBookings() {
     return storageService.get(this.STORAGE_KEY, []);
+  }
+
+  /**
+   * Fetch bookings from Supabase Cloud with fallback to LocalStorage
+   * @returns {Promise<Array<object>>}
+   */
+  async fetchBookingsAsync() {
+    if (supabaseService.isAvailable()) {
+      const cloudData = await supabaseService.fetchBookings();
+      if (cloudData && Array.isArray(cloudData)) {
+        // Map database columns to app model
+        const mapped = cloudData.map((b) => ({
+          code: b.code,
+          patientName: b.patient_name,
+          patientPhone: b.patient_phone,
+          branchName: b.branch_name,
+          branchAddress: b.branch_address,
+          serviceName: b.service_name,
+          practitionerName: b.practitioner_name,
+          schedule: b.schedule_slot,
+          scheduleDate: b.schedule_date,
+          room: b.room,
+          depositPaid: b.deposit_paid,
+          paymentStatus: b.payment_status,
+          status: b.status,
+          templateType: b.template_type,
+          complaint: b.chief_complaint,
+          painScale: b.pain_scale,
+          intakeData: b.intake_data,
+          createdAt: b.created_at
+        }));
+        // Update local cache
+        storageService.set(this.STORAGE_KEY, mapped);
+        return mapped;
+      }
+    }
+    return this.getAllBookings();
   }
 }
 

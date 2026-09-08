@@ -99,6 +99,17 @@
             </div>
           </div>
 
+          <!-- Cloud Backend Status Pill & Modal Trigger -->
+          <div id="cloudStatusBanner" style="margin-top:14px; display:flex; align-items:center; justify-content:space-between; background:var(--surface, #ffffff); border:1px solid var(--border, #e2e8f0); border-radius:10px; padding:8px 14px; font-size:12px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span id="cloudStatusDot" style="width:8px; height:8px; border-radius:50%; background:#f59e0b; display:inline-block;"></span>
+              <span id="cloudStatusText" style="font-weight:600; color:var(--text, #334155);">Mode: Local Storage (Demo)</span>
+            </div>
+            <button type="button" id="btnOpenCloudModal" style="background:none; border:none; color:var(--primary, #0f766e); font-weight:700; cursor:pointer; font-size:12px; text-decoration:underline;">
+              ⚙️ Supabase Config
+            </button>
+          </div>
+
           <div class="mode-switch" aria-label="Sign in mode switch" style="margin-top:20px;">
             <button class="mode-btn active" data-mode="staff" data-i18n="auth.staffTab">Staff / Admin</button>
             <button class="mode-btn" data-mode="patient" data-i18n="auth.patientTab">Patient OTP</button>
@@ -427,6 +438,44 @@
           <button type="submit" class="btn btn-primary" id="submitResetBtn">Simpan Kata Sandi Baru →</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Supabase Cloud Config Modal -->
+  <div id="cloudConfigModal" class="modal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.65); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
+    <div style="background:#ffffff; border-radius:16px; max-width:480px; width:100%; padding:24px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.15); border:1px solid #e2e8f0;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:22px;">⚡</span>
+          <h3 style="margin:0; font-size:18px; font-weight:800; color:#0f172a;">Koneksi Supabase Cloud</h3>
+        </div>
+        <button type="button" id="btnCloseCloudModal" style="background:none; border:none; font-size:20px; cursor:pointer; color:#64748b;">✕</button>
+      </div>
+      <p style="font-size:13px; color:#64748b; margin-top:0; margin-bottom:16px; line-height:1.5;">
+        Masukkan kredensial dari dashboard project Supabase Anda untuk menyimpan data ke PostgreSQL dan mengaktifkan WebSocket Realtime Live Queue.
+      </p>
+      <div style="margin-bottom:14px;">
+        <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:6px;">Project URL</label>
+        <input type="url" id="inputSupabaseUrl" placeholder="https://your-project.supabase.co" style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px; box-sizing:border-box;" />
+      </div>
+      <div style="margin-bottom:18px;">
+        <label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:6px;">Anon Public Key</label>
+        <input type="password" id="inputSupabaseKey" placeholder="eyJhbGciOiJIUzI1NiIsIn..." style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px; box-sizing:border-box;" />
+      </div>
+      <div id="cloudModalStatus" style="font-size:12px; margin-bottom:14px; display:none;"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+        <button type="button" id="btnDisconnectCloud" style="background:#fee2e2; color:#b91c1c; border:none; padding:10px 14px; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">
+          Disconnect
+        </button>
+        <div style="display:flex; gap:8px;">
+          <button type="button" id="btnCancelCloudModal" style="background:#f1f5f9; color:#475569; border:none; padding:10px 14px; border-radius:8px; font-weight:600; font-size:12px; cursor:pointer;">
+            Tutup
+          </button>
+          <button type="button" id="btnSaveCloudModal" style="background:#0f766e; color:#ffffff; border:none; padding:10px 18px; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">
+            Simpan & Sambungkan
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 

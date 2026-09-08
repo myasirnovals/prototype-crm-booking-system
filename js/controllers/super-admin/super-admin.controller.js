@@ -13,6 +13,7 @@ import { authService, USER_ROLES } from "../../services/auth.service.js";
 import { storageService } from "../../services/storage.service.js";
 import { notificationService } from "../../services/notification.service.js";
 import { soundService } from "../../services/sound.service.js";
+import { supabaseService } from "../../services/supabase.service.js";
 
 export class SuperAdminController {
   constructor() {
@@ -24,7 +25,7 @@ export class SuperAdminController {
   // INIT
   // ─────────────────────────────────────────────────────────────────────────
 
-  init() {
+  async init() {
     // Guard: Only SUPER_ADMIN may access this page
     const session = authService.requireAuth([USER_ROLES.SUPER_ADMIN], "../../pages/public/sign-in.html");
     if (!session) return;
@@ -33,9 +34,9 @@ export class SuperAdminController {
     this.renderUserInfo();
     this.setupTabs();
     this.setupSignOut();
-    this.loadPlatformStats();
-    this.renderOwnerList();
-    this.renderAuditLogs();
+    await this.loadPlatformStats();
+    await this.renderOwnerList();
+    await this.renderAuditLogs();
     this.setupCreateOwnerForm();
   }
 
@@ -77,13 +78,25 @@ export class SuperAdminController {
   // PLATFORM STATS
   // ─────────────────────────────────────────────────────────────────────────
 
-  loadPlatformStats() {
-    const users   = authService.getUsers();
+  async loadPlatformStats() {
+    let users = [];
+    let branches = [];
+
+    if (supabaseService.isAvailable()) {
+      users = await supabaseService.fetchProfiles();
+      branches = await supabaseService.fetchBranches();
+    }
+
+    if (!users || users.length === 0) {
+      users = authService.getUsers();
+    }
+    if (!branches || branches.length === 0) {
+      branches = storageService.get("cliniva_branches", []);
+    }
+
     const owners  = users.filter(u => u.role === USER_ROLES.OWNER);
     const active  = owners.filter(u => u.onboardingCompleted);
     const pending = owners.filter(u => !u.onboardingCompleted);
-
-    const branches = storageService.get("cliniva_branches", []);
 
     this._setText("statTotalOwners",   owners.length);
     this._setText("statActiveOwners",  active.length);
@@ -95,11 +108,18 @@ export class SuperAdminController {
   // OWNER LIST
   // ─────────────────────────────────────────────────────────────────────────
 
-  renderOwnerList() {
+  async renderOwnerList() {
     const container = document.getElementById("ownerTableBody");
     if (!container) return;
 
-    const users  = authService.getUsers();
+    let users = [];
+    if (supabaseService.isAvailable()) {
+      users = await supabaseService.fetchProfiles();
+    }
+    if (!users || users.length === 0) {
+      users = authService.getUsers();
+    }
+
     const owners = users.filter(u => u.role === USER_ROLES.OWNER);
 
     if (owners.length === 0) {
@@ -171,7 +191,7 @@ export class SuperAdminController {
       return;
     }
 
-    const result = authService.createUserAccount({
+    const result = authService.registerOwner({
       name,
       email,
       phone: phone || "+60 000 0000",
@@ -185,6 +205,19 @@ export class SuperAdminController {
     if (!result.success) {
       alert("Error: " + result.error);
       return;
+    }
+
+    // Persist to Supabase Cloud as SSOT
+    if (supabaseService.isAvailable()) {
+      supabaseService.createProfile({
+        name,
+        email,
+        phone: phone || "+60 000 0000",
+        role: USER_ROLES.OWNER,
+        title: "Clinic Owner",
+        avatar: "💼",
+        onboardingCompleted: false
+      }).catch(err => console.warn("[SuperAdmin] Cloud profile creation failed:", err));
     }
 
     this._logAudit(`Super Admin created Owner account for: ${name} (${email})`);
@@ -245,11 +278,25 @@ export class SuperAdminController {
   // AUDIT LOGS
   // ─────────────────────────────────────────────────────────────────────────
 
-  renderAuditLogs() {
+  async renderAuditLogs() {
     const container = document.getElementById("auditLogsList");
     if (!container) return;
 
-    const logs = storageService.get(this.AUDIT_KEY, []);
+    let logs = [];
+    if (supabaseService.isAvailable()) {
+      const cloudLogs = await supabaseService.fetchAuditLogs(40);
+      if (cloudLogs && cloudLogs.length > 0) {
+        logs = cloudLogs.map(l => ({
+          action: l.action + (l.details ? ` — ${l.details}` : ""),
+          actor: l.actor_name,
+          timestamp: l.created_at
+        }));
+      }
+    }
+
+    if (logs.length === 0) {
+      logs = storageService.get(this.AUDIT_KEY, []);
+    }
 
     if (logs.length === 0) {
       container.innerHTML = `<div style="padding:32px; text-align:center; color:var(--muted);">No audit events yet. Actions performed by Super Admin will appear here.</div>`;
@@ -270,6 +317,10 @@ export class SuperAdminController {
   }
 
   _logAudit(action) {
+    if (supabaseService.isAvailable()) {
+      supabaseService.logAudit(action, action, this.currentUser || { name: "Super Admin", role: "SUPER_ADMIN" });
+    }
+
     const logs = storageService.get(this.AUDIT_KEY, []);
     logs.push({
       action,

@@ -868,7 +868,7 @@ export class PatientBookingController {
       confirmBtn.disabled = true;
       confirmBtn.textContent = i18nService.t("booking.processingDeposit", "Processing Deposit Payment...");
 
-      setTimeout(() => {
+      setTimeout(async () => {
         soundService.playQueueChime();
 
         // Generate booking record
@@ -880,6 +880,7 @@ export class PatientBookingController {
           code: bookingCode,
           patientName: user.name || "Amanda Tan",
           patientPhone: user.contact || "+65 8123 4567",
+          branchId: this.selectedBranch ? this.selectedBranch.id : "sg-orchard",
           branchName: this.bookingDraft.branchName,
           branchAddress: this.bookingDraft.branchAddress,
           serviceName: this.bookingDraft.serviceName,
@@ -895,10 +896,8 @@ export class PatientBookingController {
           createdAt: now.toISOString()
         };
 
-        // Save to booking list
-        const existingBookings = bookingService.getAllBookings();
-        existingBookings.unshift(newBooking);
-        storageService.set("cliniva_bookings", existingBookings);
+        // Save directly via bookingService (Supabase SSOT)
+        await bookingService.createBooking(newBooking);
 
         alert(i18nService.t("booking.confirmedAlert", `✓ Appointment ${bookingCode} confirmed! Deposit verified. Redirecting to your digital E-Ticket.`));
         window.location.href = `ticket.html?code=${encodeURIComponent(bookingCode)}`;

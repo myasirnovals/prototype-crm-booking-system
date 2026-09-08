@@ -4,6 +4,7 @@
  */
 
 export const USER_ROLES = {
+  SUPER_ADMIN: "SUPER_ADMIN",
   OWNER: "OWNER",
   PRACTITIONER: "PRACTITIONER",
   RECEPTIONIST: "RECEPTIONIST",
@@ -11,12 +12,19 @@ export const USER_ROLES = {
 };
 
 export const ROLE_CONFIG = {
-  [USER_ROLES.OWNER]: {
+  [USER_ROLES.SUPER_ADMIN]: {
     name: "Super Admin",
     homeRoute: "owner.html",
-    badge: "👑 Executive Owner",
+    badge: "👑 Super Admin",
     color: "#0f766e",
-    description: "Multi-branch analytics, clinic identity & logo configuration, audit logs"
+    description: "Platform multi-tenant analytics, clinic accounts provisioning & audit logs"
+  },
+  [USER_ROLES.OWNER]: {
+    name: "Owner",
+    homeRoute: "owner-dashboard.html",
+    badge: "💼 Clinic Owner",
+    color: "#0f766e",
+    description: "Clinic brand management, branch operations, revenue & staff"
   },
   [USER_ROLES.PRACTITIONER]: {
     name: "Practitioner / Doctor / Therapist",
@@ -43,13 +51,13 @@ export const ROLE_CONFIG = {
 
 export const REGISTERED_USERS = [
   {
-    id: "usr-owner-01",
+    id: "usr-superadmin-01",
     email: "owner@cliniva.com",
     phone: "+65 9000 1111",
     password: "cliniva2026",
-    role: USER_ROLES.OWNER,
+    role: USER_ROLES.SUPER_ADMIN,
     name: "Dr. Hendra Wijaya",
-    title: "Chief Medical Officer & Clinic Owner",
+    title: "Chief Medical Officer & Super Admin",
     branchId: "sg-orchard",
     branchName: "Orchard Wellness Clinic (HQ)",
     region: "sg",
@@ -64,7 +72,7 @@ export const REGISTERED_USERS = [
     password: "cliniva2026",
     role: USER_ROLES.OWNER,
     name: "Dennis Pratama",
-    title: "New Clinic Partner & Owner",
+    title: "Clinic Owner",
     branchId: null,
     branchName: "Setup Pending",
     region: "sg",

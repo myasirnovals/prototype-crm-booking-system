@@ -59,15 +59,15 @@
               <span class="pill" style="font-size:10px; padding:2px 8px;">Select Role</span>
             </div>
             <div class="quick-demo-grid">
-              <button type="button" class="demo-role-card" data-role="OWNER" title="Sign in as Owner / Super Admin">
+              <button type="button" class="demo-role-card" data-role="SUPER_ADMIN" title="Sign in as Super Admin">
                 <div class="demo-role-icon role-icon-owner">👑</div>
                 <div class="demo-role-info">
-                  <div class="demo-role-name" data-i18n="auth.quickOwner">Super Admin (HQ)</div>
+                  <div class="demo-role-name" data-i18n="auth.quickOwner">Super Admin</div>
                   <div class="demo-role-sub">owner@cliniva.com</div>
                 </div>
               </button>
-              <button type="button" class="demo-role-card" data-user-email="dennis@cliniva.com" id="quickDennisBtn"
-                title="Test WordPress-style Onboarding Wizard as Dennis">
+              <button type="button" class="demo-role-card" data-role="OWNER" data-user-email="dennis@cliniva.com" id="quickDennisBtn"
+                title="Sign in as Clinic Owner (Dennis Pratama)">
                 <div class="demo-role-icon" style="background:#fef3c7; border:1px solid #fde68a;">💼</div>
                 <div class="demo-role-info">
                   <div class="demo-role-name" style="color:#b45309; font-weight:800;">Owner</div>
@@ -140,7 +140,8 @@
               <div class="field">
                 <label for="staffRole">Continue as</label>
                 <select id="staffRole">
-                  <option value="OWNER">Super Admin / Owner (Dr. Hendra Wijaya)</option>
+                  <option value="SUPER_ADMIN">Super Admin (Dr. Hendra Wijaya)</option>
+                  <option value="OWNER">Owner (Dennis Pratama)</option>
                   <option value="PRACTITIONER">Practitioner / Doctor (Dr. Lim Wei Han)</option>
                   <option value="RECEPTIONIST">Receptionist / Front Desk (Siti Rahmah)</option>
                 </select>

@@ -390,9 +390,9 @@ export class AdminOnboardingController {
 
       setTimeout(() => {
         alert(
-          `🎉 ONBOARDING SELESAI!\n\nBrand: ${brandName}\nTemplate Lini Bisnis: ${this.getTemplateLabel(this.selectedTemplate)}\nCabang 1: ${branchName}\n\nSistem mengalihkan Anda ke Executive Dashboard...`
+          `🎉 ONBOARDING SELESAI!\n\nBrand: ${brandName}\nTemplate Lini Bisnis: ${this.getTemplateLabel(this.selectedTemplate)}\nCabang 1: ${branchName}\n\nSistem mengalihkan Anda ke Dashboard Owner...`
         );
-        window.location.href = "owner.html";
+        window.location.href = "owner-dashboard.html";
       }, 900);
     });
   }

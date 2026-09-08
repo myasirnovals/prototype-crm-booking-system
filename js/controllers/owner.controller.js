@@ -33,8 +33,8 @@ export class OwnerController {
   }
 
   init() {
-    // Session Guard: Verify user has OWNER role
-    const session = authService.requireAuth([USER_ROLES.OWNER]);
+    // Session Guard: Verify user has SUPER_ADMIN or OWNER role
+    const session = authService.requireAuth([USER_ROLES.SUPER_ADMIN, USER_ROLES.OWNER]);
     if (!session) return;
 
     this.currentUser = session.user;

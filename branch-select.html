@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pilih Cabang — Cliniva Clinic Gateway</title>
+  <meta name="description" content="Gerbang pemilihan cabang klinik aktif bagi Owner sebelum masuk ke dashboard operasional." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Modular Design System Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .gateway-container {
+      max-width: 960px;
+      margin: 48px auto;
+      padding: 0 20px;
+    }
+
+    .gateway-header-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: 32px 40px;
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .gateway-brand-info {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .gateway-brand-logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      background: #f0fdfa;
+      border: 1.5px solid #99f6e4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      overflow: hidden;
+    }
+
+    .gateway-brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 4px;
+    }
+
+    .branch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .branch-card {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .branch-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px -8px rgba(15, 118, 110, 0.15);
+    }
+
+    .branch-card.is-active {
+      border-color: var(--primary);
+      background: #fcfefe;
+    }
+
+    .branch-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .branch-card h3 {
+      margin: 0 0 4px;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .branch-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0 0 16px;
+    }
+
+    .branch-details-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px 0;
+      border-top: 1px dashed #e2e8f0;
+      border-bottom: 1px dashed #e2e8f0;
+      margin-bottom: 18px;
+      font-size: 12px;
+    }
+
+    .branch-detail-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #475569;
+    }
+
+    .add-branch-card {
+      border: 2px dashed #cbd5e1;
+      background: #f8fafc;
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 260px;
+    }
+
+    .add-branch-card:hover {
+      border-color: var(--primary);
+      background: #f0fdfa;
+      transform: translateY(-2px);
+    }
+
+    .add-icon-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .add-branch-card:hover .add-icon-circle {
+      background: var(--primary);
+      color: #ffffff;
+    }
+  </style>
+</head>
+
+<body style="background:#f1f5f9; min-height:100vh;">
+
+  <!-- Minimal Header -->
+  <header style="background:#ffffff; border-bottom:1px solid var(--line); padding:16px 28px;">
+    <div style="max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:22px; color:var(--primary);">✦</span>
+        <span style="font-size:18px; font-weight:900; letter-spacing:-0.5px;">Cliniva Gateway</span>
+        <span class="pill" style="font-size:11px; padding:3px 8px; background:#f0fdfa; color:var(--primary-dark); font-weight:800;">Branch Selector</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px;">
+        <span id="gatewayLoggedInAs" style="font-size:12px; color:var(--muted); font-weight:600;">Signed in as <strong>Dennis Pratama</strong> (Owner)</span>
+        <button type="button" class="btn btn-sm btn-white" id="gatewaySignOutBtn">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="gateway-container">
+    <!-- Brand Overview Banner -->
+    <div class="gateway-header-card">
+      <div class="gateway-brand-info">
+        <div class="gateway-brand-logo" id="gatewayBrandLogo">🌿</div>
+        <div>
+          <div class="pill" style="font-size:10px; padding:2px 8px; margin-bottom:6px;">Entitas Bisnis Mandiri</div>
+          <h1 id="gatewayBrandTitle" style="font-size:22px; margin:0 0 4px; letter-spacing:-0.5px;">Dennis Health &amp; Wellness Hub</h1>
+          <p id="gatewayBrandTagline" style="font-size:13px; color:var(--muted); margin:0;">Holistic Recovery &amp; Vitality Redefined</p>
+        </div>
+      </div>
+      <div>
+        <button type="button" class="btn btn-primary" id="btnOpenNewBranchModal">➕ Daftarkan Cabang Baru</button>
+      </div>
+    </div>
+
+    <!-- Section Heading -->
+    <div style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:flex-end;">
+      <div>
+        <h2 style="font-size:20px; margin:0 0 4px; letter-spacing:-0.4px;">Pilih Cabang Operasional Aktif</h2>
+        <p style="font-size:13px; color:var(--muted); margin:0;">Pilih cabang klinik yang ingin Anda kelola saat ini untuk membuka dashboard operasional spesifik cabang.</p>
+      </div>
+      <span class="pill" id="branchCountBadge" style="font-size:11px; padding:4px 10px; background:#e2e8f0; font-weight:700;">1 Cabang Terdaftar</span>
+    </div>
+
+    <!-- Branch Cards Grid -->
+    <div class="branch-grid" id="branchCardsGrid">
+      <!-- Dynamic branches rendered via branch-select.controller.js -->
+    </div>
+  </main>
+
+  <!-- Modal Tambah Cabang Baru -->
+  <div id="newBranchModalOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center; backdrop-filter:blur(3px);">
+    <div style="background:#ffffff; border-radius:var(--radius-xl); max-width:560px; width:90%; padding:32px; box-shadow:0 20px 40px rgba(0,0,0,0.2); position:relative;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid #e2e8f0; padding-bottom:14px;">
+        <h3 style="margin:0; font-size:18px; font-weight:800;">🏢 Daftarkan Cabang Baru</h3>
+        <button type="button" id="btnCloseNewBranchModal" style="background:none; border:none; font-size:20px; cursor:pointer; color:var(--muted);">&times;</button>
+      </div>
+
+      <form id="createBranchForm">
+        <div class="field">
+          <label for="newBranchName">Nama Cabang Klinik <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="newBranchName" placeholder="e.g. Marina Bay Wellness Center (Cabang 2)" required>
+        </div>
+
+        <div class="field">
+          <label for="newBranchTemplate">Template Lini Bisnis Cabang</label>
+          <select id="newBranchTemplate">
+            <option value="physio" selected>🏃 Physiotherapy &amp; Sports Rehab</option>
+            <option value="wellness">🌸 Wellness &amp; Spa Care</option>
+            <option value="tcm">🌿 Traditional Chinese Medicine (TCM)</option>
+            <option value="nutrition">🥗 Clinical Nutrition &amp; Dietetics</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="newBranchAddress">Alamat Lengkap Cabang <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="newBranchAddress" placeholder="Gedung, Jalan, Nomor Unit, Kode Pos" required>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="newBranchPhone">WhatsApp / Telepon Cabang</label>
+            <input type="tel" id="newBranchPhone" placeholder="+65 6888 1234" required>
+          </div>
+          <div class="field">
+            <label for="newBranchHours">Jam Operasional</label>
+            <input type="text" id="newBranchHours" placeholder="09:00 - 20:00 (Sen - Sab)" value="09:00 - 20:00 (Sen - Sab)">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="newBranchRooms">Jumlah Ruang Terapi / Bays</label>
+          <select id="newBranchRooms">
+            <option value="2">2 Ruang Terapi Privat</option>
+            <option value="4" selected>4 Ruang Terapi Standar</option>
+            <option value="6">6 Ruang Terapi &amp; Bay</option>
+            <option value="8">8+ Ruangan Multi-Spesialisasi</option>
+          </select>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:24px;">
+          <button type="button" class="btn btn-soft" id="btnCancelNewBranch">Batal</button>
+          <button type="submit" class="btn btn-primary">🚀 Buat Cabang Baru</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Page Script Bootstrap -->
+  <script type="module" src="js/pages/branch-select.js"></script>
+</body>
+</html>

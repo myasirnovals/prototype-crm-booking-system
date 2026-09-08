@@ -130,6 +130,24 @@ export class AuthController {
   setupStaffForm() {
     if (!this.staffForm) return;
 
+    const staffRoleSelect = document.getElementById("staffRole");
+    const staffEmailInput = document.getElementById("staffEmail");
+
+    if (staffRoleSelect && staffEmailInput) {
+      staffRoleSelect.addEventListener("change", () => {
+        const role = staffRoleSelect.value;
+        if (role === USER_ROLES.OWNER) {
+          staffEmailInput.value = "dennis@cliniva.com";
+        } else if (role === USER_ROLES.SUPER_ADMIN) {
+          staffEmailInput.value = "owner@cliniva.com";
+        } else if (role === USER_ROLES.PRACTITIONER) {
+          staffEmailInput.value = "dr.lim@orchardclinic.sg";
+        } else if (role === USER_ROLES.RECEPTIONIST) {
+          staffEmailInput.value = "reception@orchardclinic.sg";
+        }
+      });
+    }
+
     this.staffForm.addEventListener("submit", (e) => {
       e.preventDefault();
 

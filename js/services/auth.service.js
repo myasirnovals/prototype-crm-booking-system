@@ -18,8 +18,25 @@ class AuthService {
    * Get all registered users from storage with fallback to initial default
    */
   getUsers() {
-    const stored = storageService.get(this.USERS_STORAGE_KEY, null);
+    let stored = storageService.get(this.USERS_STORAGE_KEY, null);
     if (stored && Array.isArray(stored) && stored.length > 0) {
+      let changed = false;
+      REGISTERED_USERS.forEach((defaultUser) => {
+        const foundIndex = stored.findIndex(
+          (u) => u.id === defaultUser.id || u.email.toLowerCase() === defaultUser.email.toLowerCase()
+        );
+        if (foundIndex === -1) {
+          stored.push({ ...defaultUser });
+          changed = true;
+        } else if (defaultUser.role && stored[foundIndex].role !== defaultUser.role) {
+          // Keep roles synchronized if changed in config (e.g. SUPER_ADMIN vs OWNER)
+          stored[foundIndex].role = defaultUser.role;
+          changed = true;
+        }
+      });
+      if (changed) {
+        storageService.set(this.USERS_STORAGE_KEY, stored);
+      }
       return stored;
     }
     storageService.set(this.USERS_STORAGE_KEY, REGISTERED_USERS);
@@ -73,6 +90,30 @@ class AuthService {
   }
 
   /**
+   * Determine exact target route based on user role and diagram flow
+   * Flow according to alur aplikasi booking system.xml:
+   * Super Admin -> Dashboard (owner.html)
+   * Owner -> First? (Yes: admin-onboarding.html, No: branch-select.html -> owner-dashboard.html)
+   */
+  getHomeRouteForUser(user) {
+    if (!user) return "index.html";
+
+    if (user.role === USER_ROLES.SUPER_ADMIN) {
+      return "owner.html";
+    }
+
+    if (user.role === USER_ROLES.OWNER) {
+      if (user.onboardingCompleted === false) {
+        return "admin-onboarding.html"; // First = Yes (Setup Branch)
+      } else {
+        return "branch-select.html"; // First = No (Choose Branch gateway)
+      }
+    }
+
+    return this.getHomeRouteForRole(user.role);
+  }
+
+  /**
    * Authenticate user with Email / Identifier & Password
    */
   loginWithCredentials(identifier, password, preferredRole = null, region = "sg") {
@@ -83,13 +124,28 @@ class AuthService {
     const cleanIdentifier = identifier.trim().toLowerCase();
     const users = this.getUsers();
 
-    // Find registered user in dynamic registry
-    let user = users.find((u) => 
-      u.email.toLowerCase() === cleanIdentifier || 
-      u.phone.replace(/\s+/g, "") === cleanIdentifier.replace(/\s+/g, "")
-    );
+    // 1. If preferredRole is specified, check if there is a matching user with that role
+    let user = null;
+    if (preferredRole) {
+      user = users.find((u) => 
+        (u.email.toLowerCase() === cleanIdentifier || u.phone.replace(/\s+/g, "") === cleanIdentifier.replace(/\s+/g, "")) &&
+        u.role === preferredRole
+      );
+      // If user selected OWNER role while keeping default email owner@cliniva.com
+      if (!user && (cleanIdentifier === "owner@cliniva.com" || cleanIdentifier === "dennis@cliniva.com") && preferredRole === USER_ROLES.OWNER) {
+        user = users.find((u) => u.role === USER_ROLES.OWNER);
+      }
+    }
 
-    // Fallback: If not found by email, match by preferredRole if provided
+    // 2. Find by email or phone
+    if (!user) {
+      user = users.find((u) => 
+        u.email.toLowerCase() === cleanIdentifier || 
+        u.phone.replace(/\s+/g, "") === cleanIdentifier.replace(/\s+/g, "")
+      );
+    }
+
+    // 3. Fallback: match by preferredRole
     if (!user && preferredRole) {
       user = users.find((u) => u.role === preferredRole);
     }
@@ -102,9 +158,7 @@ class AuthService {
       };
     }
 
-    const targetRoute = (user.role === USER_ROLES.OWNER && user.onboardingCompleted === false)
-      ? "admin-onboarding.html"
-      : this.getHomeRouteForRole(user.role);
+    const targetRoute = this.getHomeRouteForUser(user);
 
     const session = {
       type: user.role === USER_ROLES.USER ? "PATIENT" : "STAFF",
@@ -136,7 +190,7 @@ class AuthService {
   }
 
   /**
-   * Fast 1-Click Demo Login by Role Key (OWNER, PRACTITIONER, RECEPTIONIST, USER)
+   * Fast 1-Click Demo Login by Role Key (SUPER_ADMIN, OWNER, PRACTITIONER, RECEPTIONIST, USER)
    */
   loginByRoleKey(roleKey) {
     const users = this.getUsers();
@@ -145,9 +199,7 @@ class AuthService {
       return { success: false, error: `Demo account for role ${roleKey} not found.` };
     }
 
-    const targetRoute = (user.role === USER_ROLES.OWNER && user.onboardingCompleted === false)
-      ? "admin-onboarding.html"
-      : this.getHomeRouteForRole(user.role);
+    const targetRoute = this.getHomeRouteForUser(user);
 
     const session = {
       type: user.role === USER_ROLES.USER ? "PATIENT" : "STAFF",
@@ -538,9 +590,7 @@ class AuthService {
       return { success: false, error: "User not found in registry." };
     }
 
-    const targetRoute = (user.role === USER_ROLES.OWNER && user.onboardingCompleted === false)
-      ? "admin-onboarding.html"
-      : this.getHomeRouteForRole(user.role);
+    const targetRoute = this.getHomeRouteForUser(user);
 
     const session = {
       type: user.role === USER_ROLES.USER ? "PATIENT" : "STAFF",

@@ -12,7 +12,7 @@ export const USER_ROLES = {
 
 export const ROLE_CONFIG = {
   [USER_ROLES.OWNER]: {
-    name: "Owner / Super Admin",
+    name: "Super Admin",
     homeRoute: "owner.html",
     badge: "👑 Executive Owner",
     color: "#0f766e",

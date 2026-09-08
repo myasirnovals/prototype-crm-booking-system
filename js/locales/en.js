@@ -233,7 +233,7 @@ export const en = {
   "auth.signInBtn": "Sign In to Dashboard →",
   "auth.requestOnboarding": "Request onboarding",
   "auth.quickLoginTitle": "⚡ 1-Click Quick Demo Login",
-  "auth.quickOwner": "Owner / Super Admin",
+  "auth.quickOwner": "Super Admin",
   "auth.quickDoctor": "Doctor / Practitioner",
   "auth.quickReception": "Receptionist / Front Desk",
   "auth.quickPatient": "Patient / User",

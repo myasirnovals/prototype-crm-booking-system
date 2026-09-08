@@ -1,4 +1,4 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.5.0 [STABLE RELEASE]
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.6.0 [STABLE RELEASE]
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 
@@ -13,7 +13,10 @@ Desain/
 ├── 📄 Halaman HTML (Entry Points per Role)
 │   ├── index.html                      # Portal Pasien Publik & Product Showcase
 │   ├── sign-in.html                    # Autentikasi Multi-Role, In-App Reset Password & 1-Click Quick Demo Login
-│   ├── owner.html                      # Panel Eksekutif Owner: Analitik Omset, Profil & Unified Notification Bar
+│   ├── owner.html                      # Dashboard Super Admin (HQ): Multi-Branch Consolidation & User Management
+│   ├── owner-dashboard.html            # [NEW] Dashboard Operasional Owner: Anti-Margin Error, 4 Modul Terisolasi Cabang
+│   ├── branch-select.html              # [NEW] Gateway Pemilihan Cabang Aktif (Choose Branch) & Registrasi Cabang Baru
+│   ├── admin-onboarding.html           # [NEW] Setup Branch Wizard 4-Langkah (Brand, 4 Template, Cabang 1, Launch)
 │   ├── practitioner.html               # Workspace Dokter: Queue Calling (Audio Chime), Sesi Terapi & Catatan Klinis
 │   ├── receptionist.html               # Panel Operasional Resepsionis: Live Queue, Check-in, Kasir POS & Notifikasi
 │   ├── patient-portal.html             # Portal Pasien Mandiri: E-Tiket Digital & Live Antrean Tracker
@@ -63,10 +66,13 @@ Desain/
     │   └── sound.service.js            # SoundService: Web Audio API chime synthesizer antrean
     ├── controllers/
     │   ├── auth.controller.js          # AuthController: Sign-in validation, 1-Click quick login, auto-advance OTP
-    │   ├── owner.controller.js         # [NEW] OwnerController: Analitik multi-cabang, live logo uploader, profil bisnis
-    │   ├── practitioner.controller.js  # [NEW] PractitionerController: Timeline dokter, calling chime, body pain map
-    │   ├── patient-portal.controller.js# [NEW] PatientPortalController: Active ticket, live queue, reschedule/cancel
-    │   ├── receptionist.controller.js  # [NEW] ReceptionistController: Live queue calling, kasir POS & walk-in dispatcher
+    │   ├── owner.controller.js         # OwnerController: Analitik HQ multi-cabang, user management, profil bisnis
+    │   ├── owner-dashboard.controller.js # [NEW] OwnerDashboardController: Modul 1 Cabang, Modul 2 Staf, Modul 3 Stok, Modul 4 Praktisi
+    │   ├── branch-select.controller.js  # [NEW] BranchSelectController: Multi-branch gateway & new branch provisioning
+    │   ├── admin-onboarding.controller.js # [NEW] AdminOnboardingController: WordPress-style 4-step branch setup wizard
+    │   ├── practitioner.controller.js  # PractitionerController: Timeline dokter, calling chime, body pain map
+    │   ├── patient-portal.controller.js# PatientPortalController: Active ticket, live queue, reschedule/cancel
+    │   ├── receptionist.controller.js  # ReceptionistController: Live queue calling, kasir POS & walk-in dispatcher
     │   ├── ui.controller.js            # UIController: Navbar scroll, mobile drawer, toast feedback
     │   ├── onboarding.controller.js    # OnboardingController: Pendaftaran tenant & simulasi provisioning
     │   ├── demo.controller.js          # DemoController: Wizard 5-langkah, Pain Map, WhatsApp 2-way, ROI
@@ -74,10 +80,13 @@ Desain/
     │   └── dashboard.controller.js     # DashboardController: Filter cabang & live calendar
     └── pages/
         ├── auth.js                     # Entry point untuk sign-in.html
-        ├── owner.js                    # [NEW] Entry point untuk owner.html
-        ├── practitioner.js             # [NEW] Entry point untuk practitioner.html
-        ├── patient-portal.js           # [NEW] Entry point untuk patient-portal.html
-        ├── receptionist.js             # [NEW] Entry point untuk receptionist.html
+        ├── owner.js                    # Entry point untuk owner.html
+        ├── owner-dashboard.js          # [NEW] Entry point untuk owner-dashboard.html
+        ├── branch-select.js            # [NEW] Entry point untuk branch-select.html
+        ├── admin-onboarding.js         # [NEW] Entry point untuk admin-onboarding.html
+        ├── practitioner.js             # Entry point untuk practitioner.html
+        ├── patient-portal.js           # Entry point untuk patient-portal.html
+        ├── receptionist.js             # Entry point untuk receptionist.html
         ├── main.js                     # Entry point untuk index.html
         ├── onboarding.js               # Entry point untuk onboarding.html
         ├── demo.js                     # Entry point untuk demo.html
@@ -93,7 +102,8 @@ Pada halaman [`sign-in.html`](sign-in.html), tersedia tombol **⚡ 1-Click Quick
 
 | Peran | Akun Email / Kontak | Password / OTP | Halaman Tujuan | Fitur Utama |
 |---|---|---|---|---|
-| 👑 **Super Admin** | `owner@cliniva.com` | `cliniva2026` | [`owner.html`](owner.html) | Analitik omset konsolidasian, ganti nama & logo resmi klinik dengan live preview (FR-CONFIG-01), profil bisnis adaptif (FR-CONFIG-03), audit log |
+| 👑 **Super Admin** | `owner@cliniva.com` | `cliniva2026` | [`owner.html`](owner.html) | Dashboard HQ konsolidasian, User Management (buat akun owner baru), profil bisnis adaptif (FR-CONFIG-03), audit trail |
+| 💼 **Clinic Owner** | `dennis@cliniva.com` | `cliniva2026` | [`branch-select.html`](branch-select.html) ➔ [`owner-dashboard.html`](owner-dashboard.html) | Dashboard operasional cabang terisolasi (Anti-Margin Error), live queue hari ini, Modul 1 Cabang, Modul 2 Staf, Modul 3 Stok Template, Modul 4 Praktisi |
 | 🧑‍⚕️ **Practitioner / Dokter** | `dr.lim@orchardclinic.sg` | `cliniva2026` | [`practitioner.html`](practitioner.html) | Timeline konsultasi harian dokter, visualizer interaktif Body Pain Map, pemanggil antrean audio chime ke ruang periksa, pembaruan status sesi |
 | 🛎️ **Receptionist / Front Desk** | `reception@orchardclinic.sg` | `cliniva2026` | [`receptionist.html`](receptionist.html) | Papan antrean ruang tunggu (*Live Queue*), kasir POS & pelunasan tagihan sesi, bridging dokumen SIMRS, pendaftaran pasien walk-in |
 | 👤 **User / Pasien** | `+65 8123 4567` / `amanda@tan.sg` | OTP `123456` / `cliniva2026` | [`patient-portal.html`](patient-portal.html) | E-Tiket Digital & barcode QR Check-in kiosk, pelacak nomor antrean live, riwayat reservasi kunjungan, reschedule/batal mandiri |
@@ -129,26 +139,39 @@ Lalu buka:
 ## 📦 Riwayat Rilis & Semantic Versioning (SemVer)
 
 ### 🏷️ V1.6.0 (Minor Release) ✅ *Stable Release*
-*Rilis resmi stabil V1.6.0: Peningkatan densitas jaringan klinik interaktif pada peta Leaflet (`#clinicInteractiveMap`) menjadi 9 cabang strategis (5 di Singapura dan 4 di Malaysia), serta adaptasi dinamis seluruh pin peta, ikon emoji, popup detail klinik, dan filter regional secara real-time mengikuti template bisnis yang diatur oleh Owner/Super Admin.*
+*Rilis resmi stabil V1.6.0: Transformasi arsitektur multi-tenant dengan pemisahan peran operasional sesuai diagram alur resmi (`alur aplikasi booking system.xml`). Menghadirkan modul Super Admin User Management, WordPress-Style Setup Wizard 4-langkah untuk penyiapan identitas brand dan lini spesialisasi, Gerbang Pemilihan Cabang Aktif (*Choose Branch Gateway*) untuk mereduksi margin error operasional, Dashboard Khusus Owner (`owner-dashboard.html`) dengan 4 modul manajemen mandiri (Cabang, Staf, Stok Inventaris Spesifik Template, dan Praktisi/Terapis), serta ekspansi jaringan peta Leaflet 9 cabang strategis SG & MY.*
 
 - **🚀 New Features & Architecture (Minor)**:
+  - **Super Admin User Management Module (`owner.html` & `owner.controller.js`)**:
+    - Panel registri pengguna platform multi-tenant dengan metrik KPI akun terdaftar, direktur owner, dan pending onboarding.
+    - Tabel direktori pengguna lengkap dengan penanda status onboarding (`✅ Active` vs `⏳ Pending Setup`), filter role dinamis, dan aksi cepat *"Simulate First Login 🚀"* serta *"Delete 🗑️"*.
+    - Modal pembuatan Admin/Owner baru (`#createAdminModalOverlay`) untuk mendaftarkan akun mitra/klien (misal: Dennis Pratama).
+  - **WordPress-Style Setup Wizard Onboarding (`admin-onboarding.html`)**:
+    - Stepper 4 langkah terstruktur saat Owner baru pertama kali masuk (`onboardingCompleted: false`):
+      1. *Identitas Brand*: Nama klinik, tagline, pemilih logo emoji/upload gambar logo fisik drag-and-drop dengan live preview, yurisdiksi SG/MY.
+      2. *Pemilihan 1 dari 4 Lini Spesialisasi Bisnis*: TCM (Meridian/Akupunktur), Wellness & Spa (Aromaterapi/Tekanan Pijat), Fisioterapi (Peta Nyeri/Skala VAS 1-10), dan Klinik Nutrisi (Kalkulator BMI Real-Time).
+      3. *Konfigurasi Cabang Pertama (Cabang 1)*: Alamat fisik, WhatsApp cabang, jam operasional, kapasitas ruang terapi.
+      4. *Peluncuran*: Konfirmasi dan auto-redirect langsung ke Dashboard Cabang.
+  - **Gerbang Pemilihan Cabang Aktif (*Branch Selector Gateway* - `branch-select.html`)**:
+    - Antarmuka pemilihan cabang bagi Owner yang sudah memiliki cabang saat login kembali (`First = No`).
+    - Kartu cabang terdaftar dengan template spesifik, kontak, kapasitas, dan badge cabang aktif.
+    - Formulir penambahan cabang baru (Cabang 2, 3, dst.) dengan template dan isolasi data operasional tersendiri.
+  - **Dashboard Operasional Khusus Owner (`owner-dashboard.html`)**:
+    - Halaman terpisah dan arsitektur mandiri dengan topbar brand resmi, indikator cabang aktif, tombol cepat *"Ganti Cabang 🔄"*, dan link pratinjau booking pasien.
+    - *Tab 1 (Overview & Antrean)*: KPI omset cabang, okupansi, janji temu hari ini, dan tabel antrean live khusus cabang aktif dengan aksi *"Tandai Selesai ✓"*.
+    - *Tab 2 (Modul 1: Pengaturan Cabang)*: Formulir edit identitas cabang, jam operasional, alamat, dan nomor kontak.
+    - *Tab 3 (Modul 2: Staf Cabang)*: Pengelolaan resepsionis dan admin yang bertugas di cabang aktif + modal tambah staf.
+    - *Tab 4 (Modul 3: Inventaris Spesifik Template)*: Katalog barang adaptif yang otomatis berubah mengikuti template (Jarum/Moxa untuk TCM; Taping/Resistance Band/Gel untuk Fisioterapi; Minyak Esensial/Scrub untuk Spa; Whey/Multivitamin/Bio-impedance untuk Nutrisi), batas minimum peringatan stok, dan tombol instan `+10 Stok`.
+    - *Tab 5 (Modul 4: Praktisi & Terapis)*: Penjadwalan dokter/terapis cabang aktif, alokasi ruangan, jam shift, dan tarif.
+  - **Full Diagram Flowchart Compliance (`alur aplikasi booking system.xml`)**:
+    - Integrasi penuh `getHomeRouteForUser(user)` pada `auth.service.js`.
+    - Super Admin ➔ `owner.html`
+    - Owner (First = Yes) ➔ `admin-onboarding.html` ➔ `owner-dashboard.html`
+    - Owner (First = No) ➔ `branch-select.html` ➔ `owner-dashboard.html`
   - **Ekspansi 9 Cabang Jaringan Klinik Multi-Disiplin (`clinic-data.js` & `CLINIC_LOCATIONS`)**:
-    - **Singapura (5 Cabang Strategis)**: Orchard (Paragon Medical), Novena (Novena Specialist Center), Marina Bay (MBFC Tower 1), Jurong West (Vision Exchange Medical Suites), dan Tampines (CPF Tampines Building).
-    - **Malaysia (4 Cabang Strategis)**: Kuala Lumpur (Pavilion Embassy Tower), Petaling Jaya (The Pinnacle Sunway), Penang (Gurney Walk Persiaran Gurney), dan Johor Bahru (The Mall Mid Valley Southkey).
-    - Memastikan saat pasien membuka area Singapura, peta menampilkan sebaran 5 pin klinik lengkap yang merata di area Central, North, South/Downtown, West, dan East.
-  - **Adaptasi Dinamis Pin & Popup Peta Mengikuti Template Super Admin (`patient-booking.controller.js`)**:
-    - Seluruh pin klinik pada peta Leaflet otomatis berubah ikon emoji (`🌸` untuk Wellness, `🏃` untuk Fisioterapi, `🥗` untuk Nutrisi, `🌿` untuk TCM) dan badge klinik yang relevan saat template diganti.
-    - Popup peta Leaflet menampilkan nama spesialisasi cabang, alamat suite medis, dan lencana akreditasi yang disesuaikan secara real-time.
-    - Fungsi `renderMapMarkers()` membersihkan layer lama dan me-render ulang marker secara reaktif saat `cliniva:templateChanged` terpicu.
-  - **Filter Cepat Tampilan Wilayah Peta (`#clinicRegionFilters`)**:
-    - Menyediakan tombol filter chip di atas peta: `🇸🇬 Singapore (5 Branches)`, `🇲🇾 Malaysia (4 Branches)`, dan `🌐 All Locations (9)`.
-    - Navigasi halus (`map.flyTo()` dan `map.fitBounds()`) yang secara instan memfokuskan peta ke wilayah yang dipilih pengguna.
-  - **Pendeteksi Lokasi GPS Terdekat (Haversine Algorithm)**:
-    - Menghitung jarak dari koordinat pengguna ke seluruh 9 lokasi cabang klinik dan memilih cabang terdekat secara presisi.
-  - **Sinkronisasi Panel Eksekutif Owner (`owner.controller.js`)**:
-    - Seluruh 9 cabang klinik terintegrasi ke dalam tab "Multi-Branch Network" konsol Owner dengan metrik pendapatan bulanan, rasio okupansi jadwal, dan jumlah tenaga medis yang adaptif.
-  - **Automated Verification Matrix (`test_map_template_sync.mjs`)**:
-    - Menjalankan uji validasi otomatis untuk densitas 9 cabang, validitas koordinat geografis, adaptasi pin & popup pada 4 disiplin klinik, integrasi `BookingService`, dan kalkulasi jarak terdekat dengan kelulusan 100%.
+    - 5 Cabang di Singapura dan 4 Cabang di Malaysia dengan adaptasi pin & popup dinamis mengikuti template aktif.
+    - Filter cepat wilayah: `🇸🇬 Singapore (5 Branches)`, `🇲🇾 Malaysia (4 Branches)`, dan `🌐 All Locations (9)`.
+    - Algoritma jarak Haversine untuk deteksi cabang terdekat.
 
 ### 🏷️ V1.5.0 (Minor Release) ✅ *Stable Release*
 *Rilis resmi stabil V1.5.0: Menghubungkan secara penuh seleksi profil bisnis adaptif Super Admin pada panel eksekutif (`owner.html` & `owner.controller.js`) dengan alur reservasi pasien pada `booking.html`. Tampilan portal pasien terjaga bersih tanpa bilah switcher admin, dengan data sesi konsultasi, praktisi spesialis, instrumen form intake khusus, dan E-Tiket yang beradaptasi secara dinamis dan presisi sesuai profil yang diaktifkan oleh Super Admin.*

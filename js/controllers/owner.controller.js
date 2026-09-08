@@ -57,7 +57,10 @@ export class OwnerController {
     if (user.brandName) {
       const logoEl = document.querySelector(".logo");
       if (logoEl) {
-        logoEl.innerHTML = `<span class="logo-mark">${user.brandLogo || "✦"}</span> ${user.brandName}`;
+        const logoBadge = user.brandLogo && (user.brandLogo.startsWith("data:image") || user.brandLogo.startsWith("http") || user.brandLogo.includes("/"))
+          ? `<img src="${user.brandLogo}" alt="Logo" style="width:26px; height:26px; object-fit:contain; border-radius:6px; vertical-align:middle; margin-right:6px; background:#fff;">`
+          : `<span class="logo-mark">${user.brandLogo || "✦"}</span>`;
+        logoEl.innerHTML = `${logoBadge} ${user.brandName}`;
       }
     }
   }
@@ -589,8 +592,12 @@ export class OwnerController {
           ? `<span class="pill" style="background:#fef3c7; color:#b45309; font-weight:800; font-size:11px; padding:3px 8px;">⏳ Pending Setup</span>`
           : `<span class="pill" style="background:#dcfce7; color:#15803d; font-weight:800; font-size:11px; padding:3px 8px;">✅ Active</span>`;
 
+        const logoBadge = u.brandLogo && (u.brandLogo.startsWith("data:image") || u.brandLogo.startsWith("http") || u.brandLogo.includes("/"))
+          ? `<img src="${u.brandLogo}" alt="Logo" style="width:20px; height:20px; object-fit:contain; border-radius:4px; vertical-align:middle; margin-right:4px; background:#fff;">`
+          : `${u.brandLogo || "✦"}`;
+
         const brandDisplay = u.brandName
-          ? `<strong>${u.brandLogo || "✦"} ${u.brandName}</strong><br><small style="color:var(--muted);">${u.branchName || "No Branch"}</small>`
+          ? `<strong>${logoBadge} ${u.brandName}</strong><br><small style="color:var(--muted);">${u.branchName || "No Branch"}</small>`
           : `<span style="color:var(--muted);">${u.branchName || "HQ Unassigned"}</span>`;
 
         const simulateBtn = isPending

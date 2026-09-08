@@ -132,14 +132,120 @@ export class AdminOnboardingController {
   }
 
   setupLogoPicker() {
-    const buttons = document.querySelectorAll(".logo-choice-btn");
-    buttons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        buttons.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        this.selectedLogo = btn.dataset.emoji || "🌿";
-        const input = document.getElementById("selectedLogoEmoji");
-        if (input) input.value = this.selectedLogo;
+    const fileInput = document.getElementById("brandLogoFileInput");
+    const dropZone = document.getElementById("logoDropZone");
+    const btnBrowse = document.getElementById("btnBrowseLogo");
+    const btnRemove = document.getElementById("btnRemoveLogo");
+    const previewEmoji = document.getElementById("logoPreviewEmoji");
+    const previewImage = document.getElementById("logoPreviewImage");
+    const uploadTitle = document.getElementById("logoUploadTitle");
+    const hiddenInput = document.getElementById("selectedLogoInput");
+    const presetButtons = document.querySelectorAll(".logo-choice-btn");
+
+    const setLogoState = (logoVal, isImage = false) => {
+      this.selectedLogo = logoVal;
+      if (hiddenInput) hiddenInput.value = logoVal;
+
+      if (isImage) {
+        if (previewImage) {
+          previewImage.src = logoVal;
+          previewImage.style.display = "block";
+        }
+        if (previewEmoji) previewEmoji.style.display = "none";
+        if (btnRemove) btnRemove.style.display = "inline-flex";
+        if (uploadTitle) uploadTitle.textContent = "Logo gambar berhasil diunggah (Klik untuk mengganti)";
+        presetButtons.forEach((b) => b.classList.remove("active"));
+      } else {
+        if (previewImage) {
+          previewImage.src = "";
+          previewImage.style.display = "none";
+        }
+        if (previewEmoji) {
+          previewEmoji.textContent = logoVal;
+          previewEmoji.style.display = "block";
+        }
+        if (btnRemove) btnRemove.style.display = "none";
+        if (uploadTitle) uploadTitle.textContent = "Klik untuk Mengunggah Logo atau Tarik File Gambar ke Sini";
+        presetButtons.forEach((b) => {
+          b.classList.toggle("active", b.dataset.emoji === logoVal);
+        });
+      }
+
+      this.updateReviewSummary();
+    };
+
+    const processFile = (file) => {
+      if (!file) return;
+      if (!file.type.startsWith("image/")) {
+        alert("Mohon pilih file gambar yang valid (PNG, JPG, WebP, SVG).");
+        return;
+      }
+      if (file.size > 3 * 1024 * 1024) {
+        alert("Ukuran gambar maksimal 3MB.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target.result;
+        setLogoState(dataUrl, true);
+        soundService.playClickTone();
+      };
+      reader.readAsDataURL(file);
+    };
+
+    if (btnBrowse && fileInput) {
+      btnBrowse.addEventListener("click", (e) => {
+        e.stopPropagation();
+        fileInput.click();
+      });
+    }
+
+    if (dropZone && fileInput) {
+      dropZone.addEventListener("click", () => {
+        fileInput.click();
+      });
+
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("dragover");
+      });
+
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("dragover");
+      });
+
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("dragover");
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+          processFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      fileInput.addEventListener("change", () => {
+        if (fileInput.files && fileInput.files[0]) {
+          processFile(fileInput.files[0]);
+        }
+      });
+    }
+
+    if (btnRemove) {
+      btnRemove.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (fileInput) fileInput.value = "";
+        setLogoState("🌿", false);
+        soundService.playClickTone();
+      });
+    }
+
+    // Preset quick emblem clicks
+    presetButtons.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (fileInput) fileInput.value = "";
+        const emoji = btn.dataset.emoji || "🌿";
+        setLogoState(emoji, false);
         soundService.playClickTone();
       });
     });
@@ -190,7 +296,13 @@ export class AdminOnboardingController {
     const regionValEl = document.getElementById("reviewRegionVal");
     const ownerValEl = document.getElementById("reviewOwnerVal");
 
-    if (logoEl) logoEl.textContent = this.selectedLogo;
+    if (logoEl) {
+      if (this.selectedLogo && (this.selectedLogo.startsWith("data:image") || this.selectedLogo.startsWith("http") || this.selectedLogo.includes("/"))) {
+        logoEl.innerHTML = `<img src="${this.selectedLogo}" alt="Brand Logo" style="width:100%; height:100%; object-fit:contain; padding:4px;">`;
+      } else {
+        logoEl.textContent = this.selectedLogo || "🌿";
+      }
+    }
     if (brandTitleEl) brandTitleEl.textContent = brandName;
     if (brandTaglineEl) brandTaglineEl.textContent = brandTagline;
     if (templateValEl) templateValEl.textContent = this.getTemplateLabel(this.selectedTemplate);

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -16,29 +16,45 @@
 
   <style>
     .gateway-container {
-      max-width: 960px;
-      margin: 48px auto;
+      max-width: 980px;
+      margin: 40px auto;
       padding: 0 20px;
     }
 
     .gateway-header-card {
       background: #ffffff;
-      border: 1px solid var(--line);
+      border: 1.5px solid #e2e8f0;
       border-radius: var(--radius-xl);
-      padding: 32px 40px;
-      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
-      margin-bottom: 28px;
+      padding: 24px 32px;
+      box-shadow: 0 4px 20px -5px rgba(0,0,0,0.04);
+      margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 20px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .gateway-header-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -8px rgba(15, 118, 110, 0.15);
+    }
+
+    .gateway-header-card.is-active {
+      border-color: var(--primary);
+      background: #fcfefe;
+      box-shadow: 0 8px 24px -6px rgba(15, 118, 110, 0.15);
     }
 
     .gateway-brand-info {
       display: flex;
       align-items: center;
       gap: 18px;
+      flex: 1;
+      min-width: 280px;
     }
 
     .gateway-brand-logo {
@@ -52,6 +68,7 @@
       justify-content: center;
       font-size: 32px;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     .gateway-brand-logo img {
@@ -61,113 +78,98 @@
       padding: 4px;
     }
 
-    .branch-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
+    .branch-brand-text {
+      flex: 1;
     }
 
-    .branch-card {
-      background: #ffffff;
-      border: 2px solid #e2e8f0;
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: all 0.25s ease;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .branch-card:hover {
-      border-color: var(--primary);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 28px -8px rgba(15, 118, 110, 0.15);
-    }
-
-    .branch-card.is-active {
-      border-color: var(--primary);
-      background: #fcfefe;
-    }
-
-    .branch-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 12px;
-    }
-
-    .branch-card h3 {
-      margin: 0 0 4px;
-      font-size: 18px;
+    .branch-brand-text h2 {
+      font-size: 20px;
       font-weight: 800;
+      margin: 0 0 4px;
+      letter-spacing: -0.4px;
       color: var(--text);
     }
 
-    .branch-card p {
+    .branch-brand-text p {
       font-size: 13px;
       color: var(--muted);
-      line-height: 1.5;
-      margin: 0 0 16px;
+      margin: 0 0 8px;
+      line-height: 1.4;
     }
 
-    .branch-details-row {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding: 12px 0;
-      border-top: 1px dashed #e2e8f0;
-      border-bottom: 1px dashed #e2e8f0;
-      margin-bottom: 18px;
-      font-size: 12px;
-    }
-
-    .branch-detail-item {
+    .branch-meta-row {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 16px;
+      font-size: 12px;
       color: #475569;
+      flex-wrap: wrap;
     }
 
-    .add-branch-card {
+    .branch-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .branch-action-wrap {
+      flex-shrink: 0;
+    }
+
+    .add-branch-card-row {
       border: 2px dashed #cbd5e1;
       background: #f8fafc;
-      border-radius: var(--radius-lg);
-      padding: 32px 24px;
+      border-radius: var(--radius-xl);
+      padding: 22px 28px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
+      gap: 16px;
       cursor: pointer;
       transition: all 0.2s ease;
-      min-height: 260px;
+      color: var(--muted);
     }
 
-    .add-branch-card:hover {
+    .add-branch-card-row:hover {
       border-color: var(--primary);
       background: #f0fdfa;
+      color: var(--primary);
       transform: translateY(-2px);
     }
 
-    .add-icon-circle {
-      width: 56px;
-      height: 56px;
+    .add-branch-icon {
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       background: #e2e8f0;
       color: var(--text);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      margin-bottom: 14px;
+      font-size: 22px;
+      font-weight: 800;
       transition: all 0.2s ease;
+      flex-shrink: 0;
     }
 
-    .add-branch-card:hover .add-icon-circle {
+    .add-branch-card-row:hover .add-branch-icon {
       background: var(--primary);
       color: #ffffff;
+    }
+
+    @media (max-width: 768px) {
+      .gateway-header-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+      }
+      .branch-action-wrap {
+        width: 100%;
+      }
+      .branch-action-wrap button {
+        width: 100%;
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -190,32 +192,31 @@
   </header>
 
   <main class="gateway-container">
-    <!-- Brand Overview Banner -->
-    <div class="gateway-header-card">
-      <div class="gateway-brand-info">
-        <div class="gateway-brand-logo" id="gatewayBrandLogo">🌿</div>
-        <div>
-          <div class="pill" style="font-size:10px; padding:2px 8px; margin-bottom:6px;">Entitas Bisnis Mandiri</div>
-          <h1 id="gatewayBrandTitle" style="font-size:22px; margin:0 0 4px; letter-spacing:-0.5px;">Dennis Health &amp; Wellness Hub</h1>
-          <p id="gatewayBrandTagline" style="font-size:13px; color:var(--muted); margin:0;">Holistic Recovery &amp; Vitality Redefined</p>
+    <!-- Section Heading & Global Action Bar -->
+    <div style="margin-bottom:24px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+      <div>
+        <div class="pill" style="font-size:11px; padding:3px 10px; background:#e0f2fe; color:#0369a1; font-weight:800; margin-bottom:8px;">
+          🏢 Pintu Masuk Owner · Pemilihan Cabang Operasional
         </div>
+        <h1 style="font-size:24px; font-weight:900; margin:0 0 4px; letter-spacing:-0.5px; color:var(--text);">
+          Pilih Cabang Operasional Aktif
+        </h1>
+        <p style="font-size:13px; color:var(--muted); margin:0;">
+          Pilih cabang klinik yang ingin Anda kelola saat ini untuk membuka dashboard operasional spesifik cabang.
+        </p>
       </div>
-      <div>
-        <button type="button" class="btn btn-primary" id="btnOpenNewBranchModal">➕ Daftarkan Cabang Baru</button>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span class="pill" id="branchCountBadge" style="font-size:12px; padding:7px 14px; background:#e2e8f0; font-weight:700; color:#334155;">
+          -- Cabang Terdaftar
+        </span>
+        <button type="button" class="btn btn-primary" id="btnOpenNewBranchModal" style="padding:10px 18px; font-weight:800; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(15,118,110,0.25);">
+          <span>➕</span> <span>Daftarkan Cabang Baru</span>
+        </button>
       </div>
     </div>
 
-    <!-- Section Heading -->
-    <div style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:flex-end;">
-      <div>
-        <h2 style="font-size:20px; margin:0 0 4px; letter-spacing:-0.4px;">Pilih Cabang Operasional Aktif</h2>
-        <p style="font-size:13px; color:var(--muted); margin:0;">Pilih cabang klinik yang ingin Anda kelola saat ini untuk membuka dashboard operasional spesifik cabang.</p>
-      </div>
-      <span class="pill" id="branchCountBadge" style="font-size:11px; padding:4px 10px; background:#e2e8f0; font-weight:700;">1 Cabang Terdaftar</span>
-    </div>
-
-    <!-- Branch Cards Grid -->
-    <div class="branch-grid" id="branchCardsGrid">
+    <!-- Branch Cards List: Every branch styled uniformly using the gateway-header-card benchmark -->
+    <div class="branch-list" id="branchCardsGrid" style="display:flex; flex-direction:column; gap:16px;">
       <!-- Dynamic branches rendered via branch-select.controller.js -->
     </div>
   </main>

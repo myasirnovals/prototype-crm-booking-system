@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Cliniva — Branch Selection Gateway Controller
  * SOLID: Single Responsibility for Branch Switching & Multi-Branch Tenant Navigation
  * Flow based on Scraping Data/alur aplikasi booking system.xml (Owner -> First: No -> Choose Branch -> Dashboard)
@@ -112,14 +112,14 @@ export class BranchSelectController {
   getTemplateMeta(templateId) {
     switch (templateId) {
       case "tcm":
-        return { label: "🌿 TCM & Akupunktur", color: "#065f46", bg: "#d1fae5" };
+        return { label: "🌿 TCM & Akupunktur", color: "#065f46", bg: "#d1fae5", icon: "🌿" };
       case "wellness":
-        return { label: "🌸 Wellness & Spa", color: "#9d174d", bg: "#fce7f3" };
+        return { label: "🌸 Wellness & Spa", color: "#9d174d", bg: "#fce7f3", icon: "🌸" };
       case "nutrition":
-        return { label: "🥗 Klinik Nutrisi & Diet", color: "#166534", bg: "#dcfce7" };
+        return { label: "🥗 Klinik Nutrisi & Diet", color: "#166534", bg: "#dcfce7", icon: "🥗" };
       case "physio":
       default:
-        return { label: "🏃 Fisioterapi & Rehab", color: "#0f766e", bg: "#ccfbf1" };
+        return { label: "🏃 Fisioterapi & Rehab", color: "#0f766e", bg: "#ccfbf1", icon: "🏃" };
     }
   }
 
@@ -132,39 +132,42 @@ export class BranchSelectController {
     const cardsHtml = this.branches.map((b) => {
       const meta = this.getTemplateMeta(b.template);
       const isActive = b.id === activeBranchId;
+      const roomsCount = Array.isArray(b.rooms) ? b.rooms.length : (b.rooms || "4");
+
+      const logoSrc = b.logo || this.brandProfile?.logo;
+      const hasImageLogo = logoSrc && (logoSrc.startsWith("data:image") || logoSrc.startsWith("http") || logoSrc.includes("/"));
+      const logoContent = hasImageLogo
+        ? `<img src="${logoSrc}" alt="${b.name}">`
+        : `<span>${meta.icon || "🌿"}</span>`;
 
       return `
-        <div class="branch-card ${isActive ? "is-active" : ""}" data-branch-id="${b.id}">
-          <div>
-            <div class="branch-card-header">
-              <span class="pill" style="background:${meta.bg}; color:${meta.color}; font-weight:800; font-size:11px; padding:3px 8px;">
-                ${meta.label}
-              </span>
-              <span class="pill" style="background:#dcfce7; color:#15803d; font-weight:800; font-size:10px; padding:2px 6px;">
-                ● AKTIF
-              </span>
+        <div class="gateway-header-card branch-card-row ${isActive ? "is-active" : ""}" data-branch-id="${b.id}">
+          <div class="gateway-brand-info">
+            <div class="gateway-brand-logo">
+              ${logoContent}
             </div>
-            <h3>${b.name}</h3>
-            <p>${b.address}</p>
+            <div class="branch-brand-text">
+              <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px; flex-wrap:wrap;">
+                <span class="pill" style="background:${meta.bg}; color:${meta.color}; font-weight:800; font-size:11px; padding:3px 8px;">
+                  ${meta.label}
+                </span>
+                <span class="pill" style="background:#dcfce7; color:#15803d; font-weight:800; font-size:10px; padding:2px 6px;">
+                  ● AKTIF
+                </span>
+                ${isActive ? `<span class="pill" style="background:#0f766e; color:#ffffff; font-weight:800; font-size:10px; padding:2px 6px;">SEDANG DIBUKA</span>` : ""}
+              </div>
+              <h2>${b.name}</h2>
+              <p>📍 ${b.address}</p>
+              <div class="branch-meta-row">
+                <span class="branch-meta-item">📞 <strong>${b.phone || "-"}</strong></span>
+                <span class="branch-meta-item">⏰ <strong>${b.hours || "09:00 - 20:00"}</strong></span>
+                <span class="branch-meta-item">🚪 <strong>${roomsCount} Ruang Terapi</strong></span>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <div class="branch-details-row">
-              <div class="branch-detail-item">
-                <span>📞</span>
-                <span><strong>Kontak:</strong> ${b.phone || "-"}</span>
-              </div>
-              <div class="branch-detail-item">
-                <span>⏰</span>
-                <span><strong>Jam Buka:</strong> ${b.hours || "09:00 - 20:00"}</span>
-              </div>
-              <div class="branch-detail-item">
-                <span>🚪</span>
-                <span><strong>Kapasitas:</strong> ${b.rooms || "4"} Ruang Terapi</span>
-              </div>
-            </div>
-
-            <button type="button" class="btn btn-primary full select-branch-btn" data-branch-id="${b.id}" style="padding:10px; font-weight:800;">
+          <div class="branch-action-wrap">
+            <button type="button" class="btn btn-primary select-branch-btn" data-branch-id="${b.id}" style="padding:12px 24px; font-weight:800; white-space:nowrap; border-radius:12px; font-size:13px; ${isActive ? 'background:#0f766e; border-color:#0f766e;' : ''}">
               ${isActive ? "Buka Dashboard Cabang Aktif →" : "Pilih &amp; Masuk Dashboard →"}
             </button>
           </div>
@@ -172,14 +175,14 @@ export class BranchSelectController {
       `;
     }).join("");
 
-    // Append the "Daftarkan Cabang Baru" card
+    // Append the "Daftarkan Cabang Baru" card row
     const addCardHtml = `
-      <div class="add-branch-card" id="cardTriggerNewBranch">
-        <div class="add-icon-circle">＋</div>
-        <h3 style="margin:0 0 6px; font-size:16px; font-weight:800; color:var(--text);">Tambah Cabang Baru</h3>
-        <p style="margin:0; font-size:12px; color:var(--muted); max-width:220px;">
-          Buka cabang baru (Cabang 2, 3, dst.) dengan template dan isolasi data operasional tersendiri.
-        </p>
+      <div class="add-branch-card-row" id="cardTriggerNewBranch">
+        <div class="add-branch-icon">＋</div>
+        <div style="text-align:left;">
+          <strong style="margin:0 0 2px; font-size:15px; font-weight:800; color:var(--text); display:block;">Daftarkan Cabang Baru</strong>
+          <p style="margin:0; font-size:12px; color:var(--muted);">Buka cabang operasional baru (Cabang 2, 3, dst.) dengan template dan isolasi data operasional tersendiri.</p>
+        </div>
       </div>
     `;
 
@@ -194,7 +197,7 @@ export class BranchSelectController {
       });
     });
 
-    container.querySelectorAll(".branch-card").forEach((card) => {
+    container.querySelectorAll(".branch-card-row").forEach((card) => {
       card.addEventListener("click", () => {
         const branchId = card.dataset.branchId;
         this.selectBranchAndGo(branchId);
@@ -294,6 +297,11 @@ export class BranchSelectController {
 
   openNewBranchModal() {
     const modalOverlay = document.getElementById("newBranchModalOverlay");
+    const nameInput = document.getElementById("newBranchName");
+    if (nameInput && !nameInput.value) {
+      const nextNum = this.branches.length + 1;
+      nameInput.placeholder = `e.g. Marina Bay Clinic (Cabang ${nextNum})`;
+    }
     if (modalOverlay) {
       modalOverlay.style.display = "flex";
       soundService.playClickTone();

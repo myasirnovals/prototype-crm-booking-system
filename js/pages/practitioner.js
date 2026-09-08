@@ -1,9 +1,9 @@
-/**
+﻿/**
  * Cliniva — Practitioner / Doctor Workspace Bootstrap
  * SOLID: Entry point for Practitioner Schedule, Chime Calling & Body Pain Map
  */
 
-import { PractitionerController } from "../controllers/practitioner.controller.js";
+import { PractitionerController } from "../controllers/practitioner/dashboard.controller.js";
 import { NotificationBarComponent } from "../components/notification-bar.component.js";
 import { ProfileModalComponent } from "../components/profile-modal.component.js";
 import { i18nService } from "../services/i18n.service.js";

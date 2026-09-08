@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Cliniva — Admin Onboarding Setup Wizard Page Bootstrap
  * SOLID: Entry point for WordPress-style setup wizard for newly provisioned clinic owners
  *
@@ -6,7 +6,7 @@
  * when no session is found, allowing direct URL access on Vercel for demo/review.
  */
 
-import { AdminOnboardingController } from "../controllers/admin-onboarding.controller.js";
+import { AdminOnboardingController } from "../controllers/owner/onboarding.controller.js";
 import { i18nService } from "../services/i18n.service.js";
 import { storageService } from "../services/storage.service.js";
 

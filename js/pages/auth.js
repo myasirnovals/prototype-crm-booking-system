@@ -3,7 +3,7 @@
  * SOLID: Entry point for Sign In and OTP authentication
  */
 
-import { AuthController } from "../controllers/auth.controller.js";
+import { AuthController } from "../controllers/public/auth.controller.js";
 import { i18nService } from "../services/i18n.service.js";
 
 document.addEventListener("DOMContentLoaded", () => {

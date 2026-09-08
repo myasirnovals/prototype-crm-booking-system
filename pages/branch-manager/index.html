@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Branch Manager — Cliniva</title>
+  <meta name="description" content="Branch Manager dashboard: manage practitioners and receptionists for your assigned clinic branch." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <style>
+    .bm-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: calc(100vh - 57px);
+    }
+
+    /* ── Sidebar ─────────────────────────── */
+    .bm-sidebar {
+      background: #0c2340;
+      padding: 28px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .bm-sidebar-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #4a7fa5;
+      text-transform: uppercase;
+      padding: 16px 20px 6px;
+    }
+    .bm-tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 20px;
+      background: transparent;
+      border: 0;
+      color: #90b8d6;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      transition: background 0.15s, color 0.15s;
+    }
+    .bm-tab-btn:hover  { background: #143352; color: #fff; }
+    .bm-tab-btn.active { background: #0369a1; color: #fff; font-weight: 700; }
+
+    /* ── Main ────────────────────────────── */
+    .bm-main {
+      background: var(--surface, #f8fafc);
+      padding: 32px;
+      overflow-y: auto;
+    }
+    .bm-tab-pane { display: none; }
+    .bm-tab-pane.active { display: block; }
+
+    /* ── Stats Grid ──────────────────────── */
+    .bm-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .bm-stat-card {
+      background: #fff;
+      border: 1px solid var(--line, #e2e8f0);
+      border-radius: 14px;
+      padding: 20px 24px;
+    }
+    .bm-stat-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted, #64748b);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .bm-stat-value {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--text, #0f172a);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    /* ── Table ───────────────────────────── */
+    .bm-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--line, #e2e8f0);
+    }
+    .bm-table thead { background: #f1f5f9; }
+    .bm-table th {
+      padding: 12px 16px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted, #64748b);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+    }
+    .bm-table td {
+      padding: 14px 16px;
+      font-size: 13px;
+      border-top: 1px solid var(--line, #e2e8f0);
+      vertical-align: middle;
+    }
+    .bm-table tbody tr:hover { background: #f8fafc; }
+
+    /* ── Add Staff Panel ─────────────────── */
+    .add-staff-panel {
+      background: #fff;
+      border: 1.5px solid #bae6fd;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .bm-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    /* ── Page Header ─────────────────────── */
+    .bm-page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+    .bm-page-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text, #0f172a);
+      letter-spacing: -0.5px;
+      margin: 0 0 4px;
+    }
+    .bm-page-sub {
+      font-size: 13px;
+      color: var(--muted, #64748b);
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ── Header ──────────────────────────────────────────── -->
+  <header style="background:#0c2340; border-bottom:1px solid #143352; padding:14px 28px; position:sticky; top:0; z-index:100;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <a href="../../index.html" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
+          <span style="font-size:18px; color:#90b8d6;">✦</span>
+          <span style="font-size:15px; font-weight:800; color:#fff; letter-spacing:-0.5px;">Cliniva</span>
+        </a>
+        <span style="font-size:11px; padding:4px 10px; background:#143352; color:#90b8d6; border-radius:20px; font-weight:800; border:1px solid #0369a1;">
+          🏢 Branch Manager
+        </span>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:center;">
+        <div style="text-align:right;">
+          <div style="font-size:13px; font-weight:800; color:#fff;" id="bmName">Loading…</div>
+          <div style="font-size:11px; color:#90b8d6;" id="bmRole">Branch Manager</div>
+        </div>
+        <button type="button" class="btn btn-sm" id="bmSignOutBtn"
+          style="background:#143352; color:#90b8d6; border:1px solid #0369a1; font-weight:700;">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Layout ──────────────────────────────────────────── -->
+  <div class="bm-layout">
+
+    <!-- Sidebar -->
+    <aside class="bm-sidebar">
+      <div class="bm-sidebar-label">Branch</div>
+      <button class="bm-tab-btn active" data-pane="paneOverview">📊 Branch Overview</button>
+
+      <div class="bm-sidebar-label">Staff Management</div>
+      <button class="bm-tab-btn" data-pane="panePractitioners">🧑‍⚕️ Practitioners</button>
+      <button class="bm-tab-btn" data-pane="paneReceptionists">🛎️ Receptionists</button>
+
+      <!-- Info card -->
+      <div style="margin-top:auto; padding:16px 20px;">
+        <div style="background:#143352; border-radius:10px; padding:14px;">
+          <div style="font-size:10px; font-weight:800; color:#4a7fa5; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Scope</div>
+          <div style="font-size:12px; color:#90b8d6; line-height:1.5;">
+            You manage one branch.<br>
+            Branch: <strong style="color:#fff;" id="bmBranchName">—</strong>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="bm-main">
+
+      <!-- ── PANE 1: Overview ───────────────────────────── -->
+      <section class="bm-tab-pane active" id="paneOverview">
+        <div class="bm-page-header">
+          <div>
+            <h1 class="bm-page-title">Branch Overview</h1>
+            <p class="bm-page-sub">Summary of your branch staff composition.</p>
+          </div>
+        </div>
+
+        <div class="bm-stats-grid">
+          <div class="bm-stat-card">
+            <div class="bm-stat-label">Practitioners</div>
+            <div class="bm-stat-value" id="statPractitioners" style="color:#0369a1;">—</div>
+          </div>
+          <div class="bm-stat-card">
+            <div class="bm-stat-label">Receptionists</div>
+            <div class="bm-stat-value" id="statReceptionists" style="color:#d97706;">—</div>
+          </div>
+          <div class="bm-stat-card">
+            <div class="bm-stat-label">Total Staff</div>
+            <div class="bm-stat-value" id="statTotalStaff">—</div>
+          </div>
+        </div>
+
+        <!-- Quick links -->
+        <div style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px;">
+          <h3 style="font-size:16px; font-weight:800; margin:0 0 16px;">Quick Actions</h3>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button class="btn bm-tab-btn" data-pane="panePractitioners"
+              style="background:#0369a1; color:#fff; border-color:#0369a1; width:auto; display:inline-flex; padding:10px 20px;">
+              🧑‍⚕️ Manage Practitioners
+            </button>
+            <button class="btn bm-tab-btn" data-pane="paneReceptionists"
+              style="background:#d97706; color:#fff; border-color:#d97706; width:auto; display:inline-flex; padding:10px 20px;">
+              🛎️ Manage Receptionists
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── PANE 2: Practitioners ──────────────────────── -->
+      <section class="bm-tab-pane" id="panePractitioners">
+        <div class="bm-page-header">
+          <div>
+            <h1 class="bm-page-title">Practitioners</h1>
+            <p class="bm-page-sub">Doctors, therapists, and specialists assigned to your branch.</p>
+          </div>
+          <button class="btn btn-primary" id="showAddPractitionerBtn" style="white-space:nowrap;">
+            + Add Practitioner
+          </button>
+        </div>
+
+        <!-- Add Form -->
+        <div class="add-staff-panel" id="addPractitionerPanel" style="display:none;">
+          <h3 style="font-size:15px; font-weight:800; margin:0 0 4px; color:#0369a1;">Add New Practitioner</h3>
+          <p style="font-size:12px; color:var(--muted); margin:0;">This practitioner will be added to your branch with login access.</p>
+          <div class="bm-form-grid">
+            <div>
+              <label class="form-label">Full Name *</label>
+              <input type="text" id="pracName" class="input" placeholder="e.g. Dr. Ahmad Malik" />
+            </div>
+            <div>
+              <label class="form-label">Email Address *</label>
+              <input type="email" id="pracEmail" class="input" placeholder="e.g. dr.ahmad@clinic.com" />
+            </div>
+            <div>
+              <label class="form-label">Phone Number</label>
+              <input type="tel" id="pracPhone" class="input" placeholder="e.g. +60 12 345 6789" />
+            </div>
+            <div>
+              <label class="form-label">Title / Role</label>
+              <input type="text" id="pracTitle" class="input" placeholder="e.g. Senior Physiotherapist" />
+            </div>
+            <div style="grid-column: 1/-1;">
+              <label class="form-label">Specialty</label>
+              <input type="text" id="pracSpecialty" class="input" placeholder="e.g. Sports Rehabilitation & Spine" />
+            </div>
+          </div>
+          <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
+            <button class="btn btn-soft"
+              onclick="document.getElementById('addPractitionerPanel').style.display='none'; document.getElementById('showAddPractitionerBtn').textContent='+ Add Practitioner';">
+              Cancel
+            </button>
+            <button class="btn btn-primary" id="addPractitionerBtn">✓ Add Practitioner</button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div style="overflow-x:auto; border-radius:14px; border:1px solid var(--line);">
+          <table class="bm-table">
+            <thead>
+              <tr>
+                <th>Practitioner</th>
+                <th>Title</th>
+                <th>Specialty / Room</th>
+                <th>Phone</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="practitionerTableBody">
+              <tr><td colspan="5" style="text-align:center; padding:28px; color:var(--muted);">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── PANE 3: Receptionists ──────────────────────── -->
+      <section class="bm-tab-pane" id="paneReceptionists">
+        <div class="bm-page-header">
+          <div>
+            <h1 class="bm-page-title">Receptionists</h1>
+            <p class="bm-page-sub">Front desk staff assigned to your branch.</p>
+          </div>
+          <button class="btn btn-primary" id="showAddReceptionistBtn"
+            style="background:#d97706; border-color:#d97706; white-space:nowrap;">
+            + Add Receptionist
+          </button>
+        </div>
+
+        <!-- Add Form -->
+        <div class="add-staff-panel" id="addReceptionistPanel" style="display:none; border-color:#fed7aa;">
+          <h3 style="font-size:15px; font-weight:800; margin:0 0 4px; color:#d97706;">Add New Receptionist</h3>
+          <p style="font-size:12px; color:var(--muted); margin:0;">This receptionist will be added to your branch with login access.</p>
+          <div class="bm-form-grid">
+            <div>
+              <label class="form-label">Full Name *</label>
+              <input type="text" id="recName" class="input" placeholder="e.g. Siti Aminah" />
+            </div>
+            <div>
+              <label class="form-label">Email Address *</label>
+              <input type="email" id="recEmail" class="input" placeholder="e.g. siti@clinic.com" />
+            </div>
+            <div>
+              <label class="form-label">Phone Number</label>
+              <input type="tel" id="recPhone" class="input" placeholder="e.g. +60 12 345 6789" />
+            </div>
+            <div>
+              <label class="form-label">Title / Role</label>
+              <input type="text" id="recTitle" class="input" placeholder="e.g. Front Desk Receptionist" />
+            </div>
+          </div>
+          <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
+            <button class="btn btn-soft"
+              onclick="document.getElementById('addReceptionistPanel').style.display='none'; document.getElementById('showAddReceptionistBtn').textContent='+ Add Receptionist';">
+              Cancel
+            </button>
+            <button class="btn btn-primary" id="addReceptionistBtn"
+              style="background:#d97706; border-color:#d97706;">✓ Add Receptionist</button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div style="overflow-x:auto; border-radius:14px; border:1px solid var(--line);">
+          <table class="bm-table">
+            <thead>
+              <tr>
+                <th>Receptionist</th>
+                <th>Title</th>
+                <th>Specialty / Room</th>
+                <th>Phone</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="receptionistTableBody">
+              <tr><td colspan="5" style="text-align:center; padding:28px; color:var(--muted);">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="../../js/controllers/branch-manager/dashboard.controller.js"></script>
+</body>
+</html>

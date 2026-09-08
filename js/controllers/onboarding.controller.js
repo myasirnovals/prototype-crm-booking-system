@@ -155,7 +155,7 @@ export class OnboardingController {
           role: "SUPER_ADMIN"
         });
 
-        alert(`🎉 CONGRATULATIONS! CLINIC REGISTERED SUCCESSFULLY!\n\nTenant: ${clinicName}\nOwner / Super Admin: ${ownerName} (${ownerEmail})\nTenant ID: ${tenantId}\n\nRedirecting to Super Admin Console...`);
+        alert(`🎉 CONGRATULATIONS! CLINIC REGISTERED SUCCESSFULLY!\n\nTenant: ${clinicName}\nSuper Admin: ${ownerName} (${ownerEmail})\nTenant ID: ${tenantId}\n\nRedirecting to Super Admin Console...`);
 
         // Redirect to Demo Super Admin view or Admin Panel
         window.location.href = "demo.html";

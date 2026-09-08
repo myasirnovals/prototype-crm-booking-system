@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="practitioner.pageTitle">Practitioner Workspace — Cliniva Clinical Suite</title>
+  <meta name="description" content="Dedicated workspace for doctors and therapists: patient consultation timeline, visual body pain map, digital chime queue calling, and session updates." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Modular Design System Stylesheet -->
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+  <!-- Header Topbar -->
+  <header style="background:#fff; border-bottom:1px solid var(--line); padding:14px 28px; position:sticky; top:0; z-index:100;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <a href="../../index.html" class="logo">
+          <span class="logo-mark">✦</span>
+          Cliniva Clinical
+        </a>
+        <span class="pill" style="font-size:11px; padding:4px 10px; background:#f0f9ff; color:#0284c7; font-weight:800;" data-i18n="practitioner.topbar">
+          🧑‍⚕️ Practitioner Workspace
+        </span>
+      </div>
+
+      <div style="display:flex; gap:14px; align-items:center;">
+        <!-- Global Notification Bar -->
+        <div class="notif-bar-slot" id="notificationBarContainer"></div>
+
+        <!-- Language Switcher -->
+        <div class="lang-switcher-wrap">
+          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+            <option value="en">🇬🇧 English</option>
+            <option value="zh">🇸🇬 华语 (Singapura)</option>
+            <option value="ms">🇲🇾 Bahasa Melayu (Malaysia)</option>
+          </select>
+        </div>
+
+        <div style="text-align:right;">
+          <div style="display:flex; align-items:center; justify-content:flex-end; gap:4px;">
+            <span id="doctorUserName" style="font-size:13px; font-weight:800; color:var(--text);">Dr. Lim Wei Han</span>
+            <button type="button" class="profile-edit-trigger" id="editProfileBtn" title="Edit Profile" aria-label="Edit Profile">✏️</button>
+          </div>
+          <div style="font-size:11px; color:var(--muted); display:flex; gap:6px; justify-content:flex-end;">
+            <span id="doctorUserTitle">Senior Physiotherapist</span> · <span id="doctorUserRoom" style="font-weight:700; color:var(--primary);">📍 Room A2</span>
+          </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-primary" id="doctorSignOutBtn" data-i18n="nav.signOut">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="doctor-layout">
+    <!-- Sidebar: Today's Consultation Queue -->
+    <aside class="doctor-sidebar">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h3 style="font-size:16px; margin:0;" data-i18n="practitioner.timeline">Today's Patient Queue</h3>
+        <span class="badge-live">3 PATIENTS</span>
+      </div>
+      <p style="font-size:12px; color:var(--muted); margin:0 0 14px;">Select patient to view clinical intake details and Body Pain Map.</p>
+
+      <div class="patient-queue-list" id="doctorPatientQueueList">
+        <!-- Patient 1 (Active) -->
+        <div class="patient-session-card active" data-queue="A-01" data-name="Amanda Tan"
+          data-complaint="Sharp lower back pain (L4-L5) during forward bend after marathon. Difficulty sitting upright >20 mins."
+          data-pain="7 / 10 (Moderate-Severe)" data-marker="marker-lumbar">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span class="queue-number" style="font-size:20px;">A-01</span>
+            <span class="session-time-badge">10:30 SGT</span>
+          </div>
+          <h4 style="margin:0 0 4px; font-size:14px;">Amanda Tan</h4>
+          <div style="font-size:12px; color:var(--muted);">Physiotherapy &amp; Spine Rehab</div>
+          <div style="margin-top:8px; font-size:11px; font-weight:700; color:var(--primary-dark);">● Waiting Lounge A (Checked In)</div>
+        </div>
+
+        <!-- Patient 2 -->
+        <div class="patient-session-card" data-queue="B-02" data-name="Jason Lee"
+          data-complaint="Post-operative rehabilitation for right knee ACL reconstruction. Stiffness upon full extension."
+          data-pain="5 / 10 (Moderate)" data-marker="marker-knee">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span class="queue-number" style="font-size:20px; color:#0284c7;">B-02</span>
+            <span class="session-time-badge">11:45 SGT</span>
+          </div>
+          <h4 style="margin:0 0 4px; font-size:14px;">Jason Lee</h4>
+          <div style="font-size:12px; color:var(--muted);">Sports Knee Rehabilitation</div>
+          <div style="margin-top:8px; font-size:11px; color:var(--muted);">● Confirmed (Deposit Paid)</div>
+        </div>
+
+        <!-- Patient 3 -->
+        <div class="patient-session-card" data-queue="C-03" data-name="Nur Aisyah"
+          data-complaint="Chronic upper neck and trapezius spasm due to prolonged laptop posture."
+          data-pain="6 / 10 (Moderate)" data-marker="marker-cervical">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span class="queue-number" style="font-size:20px; color:#d97706;">C-03</span>
+            <span class="session-time-badge">14:00 SGT</span>
+          </div>
+          <h4 style="margin:0 0 4px; font-size:14px;">Nur Aisyah</h4>
+          <div style="font-size:12px; color:var(--muted);">Postural Cervical Therapy</div>
+          <div style="margin-top:8px; font-size:11px; color:var(--muted);">● Scheduled Slot</div>
+        </div>
+      </div>
+
+      <div style="margin-top:auto; padding-top:20px; border-top:1px solid var(--line);">
+        <div style="font-size:12px; font-weight:800; color:var(--text); margin-bottom:6px;">BUFFER &amp; SANITIZATION</div>
+        <p style="font-size:11px; color:var(--muted); line-height:1.5; margin:0;">
+          Automatic 15-minute gap enforced between treatments for room preparation &amp; equipment calibration.
+        </p>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <main class="doctor-main">
+      <!-- Action Banner: Queue Calling -->
+      <div class="calling-banner" id="doctorCallingBanner">
+        <div>
+          <span style="font-size:11px; text-transform:uppercase; letter-spacing:1px; opacity:0.9;">ACTIVE PATIENT IN CONSULTATION</span>
+          <h3 style="margin:4px 0 0; font-size:22px;">
+            Queue <span id="currentQueueBadge">A-01</span> — <span id="currentPatientName">Amanda Tan</span>
+          </h3>
+          <div style="font-size:12px; opacity:0.9; margin-top:4px;">Service: Physiotherapy &amp; Posture Rehab · Room A2</div>
+        </div>
+
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button type="button" class="btn btn-white" id="doctorCallQueueBtn" style="font-weight:900;" data-i18n="practitioner.callChime">
+            🔊 Call Patient to Room (Audio Chime)
+          </button>
+        </div>
+      </div>
+
+      <!-- Session Status Bar -->
+      <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px 20px; display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <strong style="font-size:14px;">Treatment Session Status:</strong>
+          <select id="sessionStatusSelect" style="padding:6px 12px; border-radius:var(--radius-sm); border:1px solid var(--line); font-size:13px; font-weight:700;">
+            <option value="WAITING">🟡 Waiting Lounge (Checked In)</option>
+            <option value="IN_PROGRESS">🔵 In Therapy (In Progress)</option>
+            <option value="COMPLETED">🟢 Consultation Completed</option>
+            <option value="NO_SHOW">🔴 Patient No-Show</option>
+          </select>
+        </div>
+
+        <div style="font-size:12px; color:var(--muted);">
+          Buffer Time: <span style="font-weight:700; color:var(--primary);">15-min auto buffer active</span>
+        </div>
+      </div>
+
+      <!-- Clinical Intake & Visual Body Pain Map Grid -->
+      <div class="clinical-grid">
+        <!-- Left: Intake Form Answers -->
+        <div class="intake-detail-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h3 style="font-size:18px; margin:0;" data-i18n="practitioner.notes">Clinical Intake Record</h3>
+            <span class="pill" style="font-size:11px; padding:3px 8px;">PII Encrypted</span>
+          </div>
+
+          <div style="margin-bottom:18px;">
+            <label style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">
+              Patient Chief Complaint:
+            </label>
+            <div id="intakeChiefComplaint" style="font-size:14px; color:var(--text); line-height:1.6; background:#f8fafc; padding:12px 16px; border-radius:var(--radius-sm); border:1px solid var(--line);">
+              Sharp lower back pain (L4-L5) during forward bend after marathon. Difficulty sitting upright &gt;20 mins.
+            </div>
+          </div>
+
+          <div class="field-row" style="margin-bottom:18px;">
+            <div>
+              <label style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Pain Severity:</label>
+              <div id="intakePainScale" style="font-size:16px; font-weight:900; color:#ef4444;">
+                7 / 10 (Moderate-Severe)
+              </div>
+            </div>
+            <div>
+              <label style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Symptom Duration:</label>
+              <div id="intakeDuration" style="font-size:14px; font-weight:700; color:var(--text);">
+                Last 3 weeks
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:18px;">
+            <label style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:4px;">Allergies / Clinical Notes:</label>
+            <p style="font-size:13px; color:var(--text); margin:0;">No allergies to topical analgesics. Previous physiotherapy in 2024.</p>
+          </div>
+
+          <!-- Ephemeral SIMRS Referral Bridge Status -->
+          <div style="background:#f0fdfa; border:1px solid #ccfbf1; border-radius:var(--radius-sm); padding:14px; margin-top:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:12px; font-weight:800; color:var(--primary-dark);">📄 PARTNER HOSPITAL REFERRAL</span>
+              <span class="status-pill confirmed" style="font-size:10px;">TTL: 70 HOURS</span>
+            </div>
+            <p style="font-size:12px; color:var(--text-secondary); margin:6px 0 10px;">
+              Document Hospital_Referral.pdf bridged to internal hospital SIMRS. 72-hour ephemeral retention active.
+            </p>
+            <button type="button" class="btn btn-sm btn-soft" onclick="alert('Viewing encrypted referral document...')">
+              👁️ View Referral Document
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Body Pain Map -->
+        <div class="pain-map-container">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="font-size:18px; margin:0;" data-i18n="practitioner.painMap">Visual Body Pain Map</h3>
+            <span class="pill" style="font-size:11px; padding:3px 8px;">Anatomical View</span>
+          </div>
+          <p style="font-size:12px; color:var(--muted); margin:0 0 14px;">
+            Pulsing marker highlights discomfort location specified by patient during intake.
+          </p>
+
+          <div class="pain-map-visual">
+            <!-- Modern Anatomical Human Body Silhouette -->
+            <svg class="pain-map-svg" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="100" cy="40" rx="20" ry="26" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+              <rect x="94" y="66" width="12" height="16" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+              <path d="M 65 82 L 135 82 L 125 200 L 75 200 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+              <path d="M 65 85 L 40 180 L 52 182 L 72 105 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+              <path d="M 135 85 L 160 180 L 148 182 L 128 105 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+              <path d="M 75 200 L 125 200 L 120 230 L 80 230 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+              <path d="M 80 230 L 70 380 L 84 380 L 96 230 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+              <path d="M 120 230 L 130 380 L 116 380 L 104 230 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+            </svg>
+
+            <!-- Pain Markers (Anatomical Locations) -->
+            <div class="pain-marker" id="marker-lumbar" style="top:47%; left:50%;"
+              data-body-part="Lower Back (L4-L5 Lumbar)"
+              data-clinical-note="Primary focus: Amanda Tan (Scale 7/10). Indication: paravertebral muscle spasm.">
+              !
+            </div>
+
+            <div class="pain-marker" id="marker-cervical" style="top:20%; left:50%; background:#94a3b8;"
+              data-body-part="Neck (Cervical Spine &amp; Trapezius)"
+              data-clinical-note="Secondary: Nur Aisyah (Scale 6/10). Posture fatigue.">
+              !
+            </div>
+
+            <div class="pain-marker" id="marker-knee" style="top:75%; left:62%; background:#94a3b8;"
+              data-body-part="Right Knee (Patellar &amp; ACL)"
+              data-clinical-note="Post-op recovery: Jason Lee (Scale 5/10). ACL ligament rehab.">
+              !
+            </div>
+          </div>
+
+          <div class="pain-legend">
+            <div class="legend-item">
+              <span class="legend-color" style="background:#ef4444;"></span>
+              <span>Active Chief Complaint</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-color" style="background:#94a3b8;"></span>
+              <span>Secondary / Previous History</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clinical Treatment Notes & Observations -->
+      <div class="treatment-notes-card" id="treatmentNotesCard">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <div>
+            <h3 style="font-size:18px; margin:0;" data-i18n="practitioner.notes">Clinical Treatment Notes & Observations</h3>
+            <p style="font-size:12px; color:var(--muted); margin:4px 0 0;">
+              Record treatment techniques administered, patient response, and home exercise recommendations for <strong id="notesPatientName">Amanda Tan</strong>.
+            </p>
+          </div>
+          <span id="treatmentNotesSavedTime" style="font-size:11px; color:var(--muted); font-weight:700; background:#f1f5f9; padding:4px 8px; border-radius:var(--radius-sm);">
+            Not saved yet
+          </span>
+        </div>
+
+        <textarea id="treatmentNotesInput" class="treatment-notes-textarea" placeholder="e.g. Myofascial trigger point release performed on L4-L5 lumbar region. Patient reported 40% relief. Recommended 3x daily pelvic tilts and ice compress..."></textarea>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px;">
+          <div style="font-size:11px; color:var(--muted);">
+            🔒 Encrypted &amp; synced to patient clinical history
+          </div>
+          <button type="button" class="btn btn-sm btn-primary" id="saveTreatmentNotesBtn" style="font-weight:800;">
+            💾 Save Clinical Notes
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast feedback container -->
+  <div class="practitioner-toast-container" id="practitionerToastContainer" aria-live="polite"></div>
+
+  <!-- Modular Practitioner Script Bootstrap -->
+  <script type="module" src="../../js/pages/practitioner.js"></script>
+</body>
+</html>

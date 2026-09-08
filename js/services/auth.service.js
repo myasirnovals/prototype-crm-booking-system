@@ -92,22 +92,32 @@ class AuthService {
   /**
    * Determine exact target route based on user role and diagram flow
    * Flow according to alur aplikasi booking system.xml:
-   * Super Admin -> Dashboard (owner.html)
-   * Owner -> First? (Yes: admin-onboarding.html, No: branch-select.html -> owner-dashboard.html)
+   *
+   * Super Admin      → pages/super-admin/index.html
+   * Owner (first)    → pages/owner/onboarding.html  (Setup Branch)
+   * Owner (return)   → pages/owner/branch-select.html → pages/owner/dashboard.html
+   * Branch Manager   → pages/branch-manager/index.html
+   * Practitioner     → pages/practitioner/index.html
+   * Receptionist     → pages/receptionist/index.html
+   * Patient/User     → pages/patient/index.html
    */
   getHomeRouteForUser(user) {
     if (!user) return "index.html";
 
     if (user.role === USER_ROLES.SUPER_ADMIN) {
-      return "owner.html";
+      return "pages/super-admin/index.html";
     }
 
     if (user.role === USER_ROLES.OWNER) {
       if (user.onboardingCompleted === false) {
-        return "admin-onboarding.html"; // First = Yes (Setup Branch)
+        return "pages/owner/onboarding.html"; // First time = Yes → Setup Branch
       } else {
-        return "branch-select.html"; // First = No (Choose Branch gateway)
+        return "pages/owner/branch-select.html"; // Returning → Choose Branch
       }
+    }
+
+    if (user.role === USER_ROLES.BRANCH_MANAGER) {
+      return "pages/branch-manager/index.html";
     }
 
     return this.getHomeRouteForRole(user.role);
@@ -387,7 +397,7 @@ class AuthService {
     }
 
     // Use default patient demo account or create dynamic
-    const defaultPatient = this.USERS.find((u) => u.role === USER_ROLES.USER);
+    const defaultPatient = this.getUsers().find((u) => u.role === USER_ROLES.USER);
     const user = defaultPatient ? { ...defaultPatient } : {
       id: "usr-patient-dynamic",
       name: "Amanda Tan",

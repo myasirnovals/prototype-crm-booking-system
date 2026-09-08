@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Super Admin — Cliniva Platform Management</title>
+  <meta name="description" content="Super Admin platform dashboard: manage Owner accounts, view audit logs, and monitor system-wide analytics for the Cliniva multi-tenant booking platform." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Shared Design System -->
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <style>
+    /* ── Super Admin Layout ─────────────────────────────── */
+    .sa-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: calc(100vh - 57px);
+    }
+
+    /* ── Sidebar ─────────────────────────────────────────── */
+    .sa-sidebar {
+      background: #1e1b4b;
+      padding: 28px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sa-sidebar-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #6d6aab;
+      text-transform: uppercase;
+      padding: 16px 20px 6px;
+    }
+
+    .sa-tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 20px;
+      background: transparent;
+      border: 0;
+      color: #a5b4fc;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      border-radius: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sa-tab-btn:hover  { background: #2e2a6e; color: #fff; }
+    .sa-tab-btn.active { background: #4f46e5; color: #fff; font-weight: 700; }
+
+    /* ── Main ────────────────────────────────────────────── */
+    .sa-main {
+      background: var(--surface, #f8fafc);
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    .sa-tab-pane { display: none; }
+    .sa-tab-pane.active { display: block; }
+
+    /* ── Stat Cards ──────────────────────────────────────── */
+    .sa-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .sa-stat-card {
+      background: #fff;
+      border: 1px solid var(--line, #e2e8f0);
+      border-radius: 14px;
+      padding: 20px 24px;
+    }
+
+    .sa-stat-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted, #64748b);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .sa-stat-value {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--text, #0f172a);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    /* ── Table ───────────────────────────────────────────── */
+    .sa-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--line, #e2e8f0);
+    }
+    .sa-table thead { background: #f1f5f9; }
+    .sa-table th {
+      padding: 12px 16px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted, #64748b);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: left;
+    }
+    .sa-table td {
+      padding: 14px 16px;
+      font-size: 13px;
+      border-top: 1px solid var(--line, #e2e8f0);
+      vertical-align: middle;
+    }
+    .sa-table tbody tr:hover { background: #f8fafc; }
+
+    /* ── Create Owner Panel ──────────────────────────────── */
+    .create-owner-panel {
+      background: #fff;
+      border: 1.5px solid #c7d2fe;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .sa-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    /* ── Audit Log ───────────────────────────────────────── */
+    .audit-log-box {
+      background: #fff;
+      border: 1px solid var(--line, #e2e8f0);
+      border-radius: 14px;
+      overflow: hidden;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    /* ── Page Header ─────────────────────────────────────── */
+    .sa-page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+    .sa-page-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text, #0f172a);
+      letter-spacing: -0.5px;
+      margin: 0 0 4px;
+    }
+    .sa-page-sub {
+      font-size: 13px;
+      color: var(--muted, #64748b);
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <header style="background:#1e1b4b; border-bottom:1px solid #312e81; padding:14px 28px; position:sticky; top:0; z-index:100;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <a href="../../index.html" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
+          <span style="font-size:18px; color:#a5b4fc;">✦</span>
+          <span style="font-size:15px; font-weight:800; color:#fff; letter-spacing:-0.5px;">Cliniva</span>
+        </a>
+        <span style="font-size:11px; padding:4px 10px; background:#312e81; color:#a5b4fc; border-radius:20px; font-weight:800; border: 1px solid #4f46e5;">
+          👑 Super Admin — Platform Management
+        </span>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:center;">
+        <div style="text-align:right;">
+          <div style="font-size:13px; font-weight:800; color:#fff;" id="superAdminName">Loading…</div>
+          <div style="font-size:11px; color:#a5b4fc;" id="superAdminRole">Super Administrator</div>
+        </div>
+        <button type="button" class="btn btn-sm" id="saSignOutBtn"
+          style="background:#312e81; color:#a5b4fc; border:1px solid #4f46e5; font-weight:700;">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Layout ──────────────────────────────────────────────────────────── -->
+  <div class="sa-layout">
+
+    <!-- Sidebar -->
+    <aside class="sa-sidebar">
+      <div class="sa-sidebar-label">Platform</div>
+      <button class="sa-tab-btn active" data-pane="paneStats" id="tabStats">
+        📊 Platform Overview
+      </button>
+
+      <div class="sa-sidebar-label">Owner Management</div>
+      <button class="sa-tab-btn" data-pane="paneOwners" id="tabOwners">
+        💼 Owner Accounts
+      </button>
+
+      <div class="sa-sidebar-label">System</div>
+      <button class="sa-tab-btn" data-pane="paneAudit" id="tabAudit">
+        🛡️ Audit Logs
+      </button>
+
+      <!-- Spacer + Info -->
+      <div style="margin-top:auto; padding:16px 20px;">
+        <div style="background:#312e81; border-radius:10px; padding:14px;">
+          <div style="font-size:10px; font-weight:800; color:#a5b4fc; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Access Level</div>
+          <div style="font-size:12px; color:#e0e7ff; line-height:1.5;">
+            Full platform access.<br>Branch-level operations are managed by each Owner &amp; Branch Manager.
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="sa-main">
+
+      <!-- ── PANE 1: Platform Overview ────────────────────────────────── -->
+      <section class="sa-tab-pane active" id="paneStats">
+        <div class="sa-page-header">
+          <div>
+            <h1 class="sa-page-title">Platform Overview</h1>
+            <p class="sa-page-sub">High-level statistics across all tenants on the Cliniva platform.</p>
+          </div>
+        </div>
+
+        <div class="sa-stats-grid">
+          <div class="sa-stat-card">
+            <div class="sa-stat-label">Total Owner Accounts</div>
+            <div class="sa-stat-value" id="statTotalOwners">—</div>
+          </div>
+          <div class="sa-stat-card">
+            <div class="sa-stat-label">Active Owners</div>
+            <div class="sa-stat-value" id="statActiveOwners" style="color:#0f766e;">—</div>
+          </div>
+          <div class="sa-stat-card">
+            <div class="sa-stat-label">Pending Setup</div>
+            <div class="sa-stat-value" id="statPendingOwners" style="color:#d97706;">—</div>
+          </div>
+          <div class="sa-stat-card">
+            <div class="sa-stat-label">Total Branches</div>
+            <div class="sa-stat-value" id="statTotalBranches" style="color:#4f46e5;">—</div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px;">
+          <h3 style="font-size:16px; font-weight:800; margin:0 0 16px;">Quick Actions</h3>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button class="btn btn-primary sa-tab-btn" data-pane="paneOwners"
+              style="background:#4f46e5; border-color:#4f46e5; color:#fff; width:auto; display:inline-flex; padding:10px 20px;">
+              💼 Manage Owner Accounts
+            </button>
+            <button class="btn btn-soft sa-tab-btn" data-pane="paneAudit"
+              style="width:auto; display:inline-flex; padding:10px 20px;">
+              🛡️ View Audit Logs
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── PANE 2: Owner Accounts ────────────────────────────────────── -->
+      <section class="sa-tab-pane" id="paneOwners">
+        <div class="sa-page-header">
+          <div>
+            <h1 class="sa-page-title">Owner Accounts</h1>
+            <p class="sa-page-sub">Create and manage clinic Owner accounts. Owners will set up their own branches after account creation.</p>
+          </div>
+          <button class="btn btn-primary" id="showCreateOwnerBtn" style="background:#4f46e5; border-color:#4f46e5; white-space:nowrap;">
+            + Add Owner Account
+          </button>
+        </div>
+
+        <!-- Create Owner Form (hidden by default) -->
+        <div class="create-owner-panel" id="createOwnerPanel" style="display:none;">
+          <h3 style="font-size:15px; font-weight:800; margin:0 0 4px; color:#4f46e5;">Create New Owner Account</h3>
+          <p style="font-size:12px; color:var(--muted); margin:0;">The Owner will receive their credentials and complete branch setup on first login.</p>
+
+          <div class="sa-form-grid">
+            <div>
+              <label class="form-label">Full Name *</label>
+              <input type="text" id="newOwnerName" class="input" placeholder="e.g. Ahmad bin Hassan" />
+            </div>
+            <div>
+              <label class="form-label">Email Address *</label>
+              <input type="email" id="newOwnerEmail" class="input" placeholder="e.g. ahmad@clinicname.com" />
+            </div>
+            <div>
+              <label class="form-label">Phone Number</label>
+              <input type="tel" id="newOwnerPhone" class="input" placeholder="e.g. +60 12 345 6789" />
+            </div>
+            <div>
+              <label class="form-label">Initial Password</label>
+              <input type="text" id="newOwnerPass" class="input" placeholder="Default: cliniva2026" />
+            </div>
+          </div>
+
+          <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
+            <button class="btn btn-soft" id="cancelCreateOwnerBtn"
+              onclick="document.getElementById('createOwnerPanel').style.display='none'; document.getElementById('showCreateOwnerBtn').textContent='+ Add Owner Account';">
+              Cancel
+            </button>
+            <button class="btn btn-primary" id="createOwnerSubmitBtn"
+              style="background:#4f46e5; border-color:#4f46e5;">
+              ✓ Create Owner Account
+            </button>
+          </div>
+        </div>
+
+        <!-- Owner Table -->
+        <div style="overflow-x:auto; border-radius:14px; border:1px solid var(--line);">
+          <table class="sa-table">
+            <thead>
+              <tr>
+                <th>Owner</th>
+                <th>Phone</th>
+                <th>Brand / Clinic</th>
+                <th>Status</th>
+                <th>Joined</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ownerTableBody">
+              <tr><td colspan="6" style="text-align:center; padding:32px; color:var(--muted);">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── PANE 3: Audit Logs ────────────────────────────────────────── -->
+      <section class="sa-tab-pane" id="paneAudit">
+        <div class="sa-page-header">
+          <div>
+            <h1 class="sa-page-title">Audit Logs</h1>
+            <p class="sa-page-sub">Record of all Super Admin actions on the platform.</p>
+          </div>
+          <button class="btn btn-soft" onclick="window.superAdminCtrl?.renderAuditLogs()">↻ Refresh</button>
+        </div>
+
+        <div class="audit-log-box" id="auditLogsList">
+          <div style="padding:32px; text-align:center; color:var(--muted);">Loading audit logs…</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Controller -->
+  <script type="module" src="../../js/controllers/super-admin/super-admin.controller.js"></script>
+</body>
+</html>

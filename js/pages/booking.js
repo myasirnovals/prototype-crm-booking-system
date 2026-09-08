@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Cliniva — Patient Booking Page Bootstrap
  * SOLID: Entry point for patient booking wizard
  */

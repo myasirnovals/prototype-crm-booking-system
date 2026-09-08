@@ -78,7 +78,49 @@ export class BranchSelectController {
       storageService.set("cliniva_active_branch_id", defaultBranch.id);
     }
 
+    // Deduplicate any existing duplicate branches in storage
+    stored = this.deduplicateBranches(stored);
+    storageService.set("cliniva_branches", stored);
+
     this.branches = stored;
+  }
+
+  deduplicateBranches(branches) {
+    if (!Array.isArray(branches)) return [];
+    const activeBranchId = storageService.get("cliniva_active_branch_id", null);
+
+    // Deduplicate by ID and by normalized Name
+    const seenNames = new Set();
+    const seenIds = new Set();
+    const result = [];
+
+    // Sort to prioritize currently active branch first, then primary branches
+    const sorted = [...branches].sort((a, b) => {
+      if (a.id === activeBranchId) return -1;
+      if (b.id === activeBranchId) return 1;
+      if (a.isPrimary) return -1;
+      if (b.isPrimary) return 1;
+      return 0;
+    });
+
+    for (const b of sorted) {
+      if (!b || !b.id) continue;
+      const cleanName = (b.name || "").trim().toLowerCase();
+
+      if (seenIds.has(b.id)) continue;
+      if (cleanName && seenNames.has(cleanName)) continue;
+
+      seenIds.add(b.id);
+      if (cleanName) seenNames.add(cleanName);
+      result.push(b);
+    }
+
+    // Ensure active branch ID is valid
+    if (result.length > 0 && !result.some((b) => b.id === activeBranchId)) {
+      storageService.set("cliniva_active_branch_id", result[0].id);
+    }
+
+    return result;
   }
 
   renderHeader() {
@@ -175,18 +217,7 @@ export class BranchSelectController {
       `;
     }).join("");
 
-    // Append the "Daftarkan Cabang Baru" card row
-    const addCardHtml = `
-      <div class="add-branch-card-row" id="cardTriggerNewBranch">
-        <div class="add-branch-icon">＋</div>
-        <div style="text-align:left;">
-          <strong style="margin:0 0 2px; font-size:15px; font-weight:800; color:var(--text); display:block;">Daftarkan Cabang Baru</strong>
-          <p style="margin:0; font-size:12px; color:var(--muted);">Buka cabang operasional baru (Cabang 2, 3, dst.) dengan template dan isolasi data operasional tersendiri.</p>
-        </div>
-      </div>
-    `;
-
-    container.innerHTML = cardsHtml + addCardHtml;
+    container.innerHTML = cardsHtml;
 
     // Attach click listeners to cards and buttons
     container.querySelectorAll(".select-branch-btn").forEach((btn) => {
@@ -203,11 +234,6 @@ export class BranchSelectController {
         this.selectBranchAndGo(branchId);
       });
     });
-
-    const triggerAdd = document.getElementById("cardTriggerNewBranch");
-    if (triggerAdd) {
-      triggerAdd.addEventListener("click", () => this.openNewBranchModal());
-    }
   }
 
   selectBranchAndGo(branchId) {

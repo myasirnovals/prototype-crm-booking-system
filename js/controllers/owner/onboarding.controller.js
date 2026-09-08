@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Cliniva — Admin Onboarding Setup Wizard Controller
  * SOLID: Single Responsibility for WordPress-style setup wizard, brand initialization,
  * 4-specialty template selection, and initial branch provisioning.
@@ -356,8 +356,13 @@ export class AdminOnboardingController {
 
       // 2. Save Branch to Branches Storage
       let currentBranches = storageService.get("cliniva_branches", []);
-      // If user had no custom branches, start clean with this new primary branch
-      currentBranches = [newBranch, ...currentBranches.filter((b) => b.id !== branchId)];
+      // If user had no custom branches, start clean with this new primary branch, ensuring no duplicate branch names
+      currentBranches = [
+        newBranch,
+        ...currentBranches.filter(
+          (b) => b.id !== branchId && (b.name || "").trim().toLowerCase() !== branchName.trim().toLowerCase()
+        )
+      ];
       storageService.set("cliniva_branches", currentBranches);
       storageService.set("cliniva_active_branch_id", branchId);
 

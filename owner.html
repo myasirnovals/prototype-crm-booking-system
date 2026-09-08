@@ -71,6 +71,9 @@
         <button class="side-link owner-tab-btn" data-pane="paneAudit" style="border:0;background:transparent;width:100%;text-align:left;">
           🛡️ System Audit Trail Logs
         </button>
+        <button class="side-link owner-tab-btn" data-pane="paneUsers" id="tabBtnUsers" style="border:0;background:transparent;width:100%;text-align:left;">
+          👥 Super Admin: User Management
+        </button>
       </div>
 
       <div class="side-card" style="margin-top:auto; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px;">
@@ -369,6 +372,90 @@
           </table>
         </div>
       </section>
+
+      <!-- PANE 5: SUPER ADMIN USER MANAGEMENT -->
+      <section class="owner-tab-pane" id="paneUsers" style="display:none;">
+        <div class="panel-top" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; flex-wrap:wrap; gap:16px;">
+          <div>
+            <div class="pill" style="font-size:11px; margin-bottom:6px; background:#eff6ff; color:#2563eb; font-weight:800;">
+              👑 Multi-Tenant Platform Master
+            </div>
+            <h2 style="font-size:24px; letter-spacing:-0.5px; margin:0 0 6px;">Tenant &amp; User Management</h2>
+            <p style="color:var(--muted); font-size:14px; margin:0;">
+              Provision clinic partner accounts, manage owner privileges, and monitor WordPress-style onboarding progress.
+            </p>
+          </div>
+          <div>
+            <button class="btn btn-primary" id="btnOpenCreateAdminModal" style="font-weight:800; font-size:13px; padding:10px 18px;">
+              + Create Admin / Owner
+            </button>
+          </div>
+        </div>
+
+        <!-- Tenant Stats Grid -->
+        <div class="executive-kpi-grid" style="margin-bottom:24px;">
+          <div class="kpi-card teal">
+            <div class="kpi-icon">👥</div>
+            <div class="kpi-meta">
+              <span class="kpi-title">Total Registered Accounts</span>
+              <strong class="kpi-value" id="kpiTotalUsers">5 Accounts</strong>
+              <span class="kpi-delta positive">Platform wide</span>
+            </div>
+          </div>
+          <div class="kpi-card emerald">
+            <div class="kpi-icon">👑</div>
+            <div class="kpi-meta">
+              <span class="kpi-title">Clinic Owners &amp; Partners</span>
+              <strong class="kpi-value" id="kpiTotalOwners">2 Owners</strong>
+              <span class="kpi-delta positive">Tenant directors</span>
+            </div>
+          </div>
+          <div class="kpi-card amber">
+            <div class="kpi-icon">⏳</div>
+            <div class="kpi-meta">
+              <span class="kpi-title">Pending Onboarding Setup</span>
+              <strong class="kpi-value" id="kpiPendingOnboardings">1 Account</strong>
+              <span class="kpi-delta" style="color:#d97706;">Requires first login</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div style="background:#ffffff; border:1px solid var(--line); border-radius:var(--radius-md); padding:14px 18px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <label for="userRoleFilter" style="font-size:12px; font-weight:700; color:var(--muted);">Filter Role:</label>
+            <select id="userRoleFilter" style="padding:6px 12px; border-radius:var(--radius-sm); border:1px solid #cbd5e1; font-size:12px; font-weight:700; background:#fff; cursor:pointer;">
+              <option value="ALL">All Roles</option>
+              <option value="OWNER">Owner / Admin</option>
+              <option value="PRACTITIONER">Doctor / Practitioner</option>
+              <option value="RECEPTIONIST">Receptionist</option>
+              <option value="USER">Patient / User</option>
+            </select>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <input type="text" id="userSearchInput" placeholder="Search by name or email..." style="padding:6px 14px; border-radius:var(--radius-sm); border:1px solid #cbd5e1; font-size:12px; width:240px;">
+          </div>
+        </div>
+
+        <!-- Users Registry Table -->
+        <div class="table-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>User / Name</th>
+                <th>Work Email &amp; Phone</th>
+                <th>Role &amp; Title</th>
+                <th>Onboarding Status</th>
+                <th>Assigned Brand / Branch</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="userRegistryTableBody">
+              <!-- Dynamically populated by owner.controller.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -469,6 +556,73 @@
         <div class="branch-modal-footer">
           <button type="button" class="btn btn-soft" id="cancelBranchModalBtn">Cancel</button>
           <button type="submit" class="btn btn-primary" id="saveBranchModalBtn">Save Branch Settings</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL POP-UP: CREATE ADMIN / OWNER (SUPER ADMIN) -->
+  <div class="branch-modal-overlay" id="createAdminModalOverlay" style="display:none;">
+    <div class="branch-modal" style="max-width:540px;" role="dialog" aria-modal="true" aria-labelledby="createAdminModalTitle">
+      <div class="branch-modal-header">
+        <div>
+          <h3 id="createAdminModalTitle" style="margin:0; font-size:18px;">👑 Provision New Clinic Admin / Owner</h3>
+          <p style="margin:4px 0 0; font-size:12px; color:var(--muted);">Create credentials for a partner clinic director (e.g. Dennis). They will configure their brand upon first login.</p>
+        </div>
+        <button type="button" class="btn-close-modal" id="closeCreateAdminModalBtn" aria-label="Close">✕</button>
+      </div>
+
+      <form id="createAdminForm" class="branch-modal-body">
+        <div class="field">
+          <label for="newAdminName">Owner Full Name <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="newAdminName" placeholder="e.g. Dennis Pratama" required />
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="newAdminEmail">Official Work Email <span style="color:#ef4444;">*</span></label>
+            <input type="email" id="newAdminEmail" placeholder="e.g. dennis@cliniva.com" required />
+          </div>
+          <div class="field">
+            <label for="newAdminPhone">WhatsApp / Mobile</label>
+            <input type="tel" id="newAdminPhone" placeholder="+65 8999 7788" value="+65 8999 7788" required />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="newAdminPassword">Initial Password</label>
+            <input type="text" id="newAdminPassword" value="cliniva2026" required />
+          </div>
+          <div class="field">
+            <label for="newAdminRegion">Jurisdiction</label>
+            <select id="newAdminRegion">
+              <option value="sg">🇸🇬 Singapore (SGD)</option>
+              <option value="my">🇲🇾 Malaysia (MYR)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="newAdminInitialBrand">Initial Clinic Brand Idea (Optional)</label>
+          <input type="text" id="newAdminInitialBrand" placeholder="e.g. Dennis Wellness Hub (Can be changed in wizard)" />
+        </div>
+
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:var(--radius-sm); padding:12px; margin-top:8px;">
+          <label style="display:flex; align-items:flex-start; gap:10px; font-size:12px; cursor:pointer; margin:0;">
+            <input type="checkbox" id="newAdminRequireWizard" checked style="margin-top:2px;" />
+            <div>
+              <strong>Require WordPress-Style Setup Wizard on First Login</strong>
+              <div style="color:var(--muted); font-size:11px; margin-top:2px;">
+                Directs the user to choose their practice template (TCM, Spa, Physio, or Nutrition) and register their first branch upon login.
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <div class="branch-modal-footer" style="margin-top:20px;">
+          <button type="button" class="btn btn-soft" id="cancelCreateAdminBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveCreateAdminBtn">Provision Admin Account →</button>
         </div>
       </form>
     </div>

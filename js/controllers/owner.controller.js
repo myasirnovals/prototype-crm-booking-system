@@ -37,11 +37,13 @@ export class OwnerController {
     const session = authService.requireAuth([USER_ROLES.OWNER]);
     if (!session) return;
 
+    this.currentUser = session.user;
     this.renderUserInfo(session.user);
     this.setupTabs();
     this.renderBranchCards();
     this.setupBranchModal();
     this.setupAdaptiveProfileCatalog();
+    this.setupUserManagement();
     this.setupSignOut();
   }
 
@@ -50,6 +52,14 @@ export class OwnerController {
     const roleEl = document.getElementById("ownerUserRole");
     if (nameEl) nameEl.textContent = user.name;
     if (roleEl) roleEl.textContent = user.title || "Chief Executive & Clinic Owner";
+
+    // If user has a specific brand name configured from onboarding, reflect it in the header logo / title
+    if (user.brandName) {
+      const logoEl = document.querySelector(".logo");
+      if (logoEl) {
+        logoEl.innerHTML = `<span class="logo-mark">${user.brandLogo || "✦"}</span> ${user.brandName}`;
+      }
+    }
   }
 
   setupTabs() {
@@ -428,6 +438,229 @@ export class OwnerController {
       if (confirm("Are you sure you want to sign out from the executive console?")) {
         authService.logout();
       }
+    });
+  }
+
+  setupUserManagement() {
+    this.createAdminOverlay = document.getElementById("createAdminModalOverlay");
+    this.btnOpenCreateAdmin = document.getElementById("btnOpenCreateAdminModal");
+    this.btnCloseCreateAdmin = document.getElementById("closeCreateAdminModalBtn");
+    this.btnCancelCreateAdmin = document.getElementById("cancelCreateAdminBtn");
+    this.createAdminForm = document.getElementById("createAdminForm");
+
+    this.roleFilterSelect = document.getElementById("userRoleFilter");
+    this.userSearchInput = document.getElementById("userSearchInput");
+    this.userTableBody = document.getElementById("userRegistryTableBody");
+
+    // Modal open
+    if (this.btnOpenCreateAdmin) {
+      this.btnOpenCreateAdmin.addEventListener("click", () => {
+        soundService.playClickTone();
+        if (this.createAdminOverlay) this.createAdminOverlay.style.display = "flex";
+      });
+    }
+
+    // Modal close/cancel
+    const closeModal = () => {
+      soundService.playClickTone();
+      if (this.createAdminOverlay) this.createAdminOverlay.style.display = "none";
+      if (this.createAdminForm) this.createAdminForm.reset();
+    };
+
+    if (this.btnCloseCreateAdmin) this.btnCloseCreateAdmin.addEventListener("click", closeModal);
+    if (this.btnCancelCreateAdmin) this.btnCancelCreateAdmin.addEventListener("click", closeModal);
+
+    // Form submit
+    if (this.createAdminForm) {
+      this.createAdminForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        soundService.playClickTone();
+
+        const name = document.getElementById("newAdminName")?.value.trim();
+        const email = document.getElementById("newAdminEmail")?.value.trim();
+        const phone = document.getElementById("newAdminPhone")?.value.trim();
+        const password = document.getElementById("newAdminPassword")?.value.trim() || "cliniva2026";
+        const region = document.getElementById("newAdminRegion")?.value || "sg";
+        const initialBrand = document.getElementById("newAdminInitialBrand")?.value.trim() || null;
+        const requireWizard = document.getElementById("newAdminRequireWizard")?.checked !== false;
+
+        const result = authService.createUserAccount({
+          name,
+          email,
+          phone,
+          password,
+          role: USER_ROLES.OWNER,
+          title: "Clinic Partner & Owner",
+          brandName: initialBrand,
+          region,
+          onboardingCompleted: !requireWizard
+        });
+
+        if (!result.success) {
+          alert(`Failed to create owner account: ${result.error}`);
+          return;
+        }
+
+        soundService.playQueueChime();
+        closeModal();
+        this.renderUserRegistryTable();
+
+        alert(
+          `🎉 AKUN OWNER BERHASIL DIBUAT!\n\nNama: ${result.user.name}\nEmail: ${result.user.email}\nPassword: ${password}\nStatus Onboarding: ${requireWizard ? "Wajib Setup Wizard (Pending)" : "Langsung Aktif"}\n\nAnda dapat menguji alur onboarding dengan mengklik tombol 'Simulate First Login 🚀' pada tabel pengguna.`
+        );
+      });
+    }
+
+    // Filter and search events
+    if (this.roleFilterSelect) {
+      this.roleFilterSelect.addEventListener("change", () => {
+        soundService.playClickTone();
+        this.renderUserRegistryTable();
+      });
+    }
+
+    if (this.userSearchInput) {
+      this.userSearchInput.addEventListener("input", () => {
+        this.renderUserRegistryTable();
+      });
+    }
+
+    // Check URL parameters: if ?view=users, automatically activate the paneUsers tab!
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("view") === "users") {
+      const usersTabBtn = document.getElementById("tabBtnUsers");
+      if (usersTabBtn) {
+        usersTabBtn.click();
+      }
+    }
+
+    this.renderUserRegistryTable();
+  }
+
+  renderUserRegistryTable() {
+    if (!this.userTableBody) return;
+
+    const allUsers = authService.getUsers();
+    const filterRole = this.roleFilterSelect?.value || "ALL";
+    const searchQuery = (this.userSearchInput?.value || "").toLowerCase().trim();
+
+    // Calculate metrics
+    const totalCount = allUsers.length;
+    const ownersCount = allUsers.filter((u) => u.role === USER_ROLES.OWNER).length;
+    const pendingCount = allUsers.filter((u) => u.onboardingCompleted === false).length;
+
+    const kpiTotalEl = document.getElementById("kpiTotalUsers");
+    const kpiOwnersEl = document.getElementById("kpiTotalOwners");
+    const kpiPendingEl = document.getElementById("kpiPendingOnboardings");
+
+    if (kpiTotalEl) kpiTotalEl.textContent = `${totalCount} Accounts`;
+    if (kpiOwnersEl) kpiOwnersEl.textContent = `${ownersCount} Owners`;
+    if (kpiPendingEl) kpiPendingEl.textContent = `${pendingCount} Account${pendingCount !== 1 ? "s" : ""}`;
+
+    // Filter users
+    let filtered = allUsers;
+    if (filterRole !== "ALL") {
+      filtered = filtered.filter((u) => u.role === filterRole);
+    }
+    if (searchQuery) {
+      filtered = filtered.filter(
+        (u) =>
+          u.name.toLowerCase().includes(searchQuery) ||
+          u.email.toLowerCase().includes(searchQuery) ||
+          (u.brandName && u.brandName.toLowerCase().includes(searchQuery))
+      );
+    }
+
+    if (filtered.length === 0) {
+      this.userTableBody.innerHTML = `
+        <tr>
+          <td colspan="6" style="text-align:center; padding:30px; color:var(--muted); font-size:13px;">
+            No user accounts found matching current filter or search criteria.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    this.userTableBody.innerHTML = filtered
+      .map((u) => {
+        const isPending = u.onboardingCompleted === false;
+        const statusBadge = isPending
+          ? `<span class="pill" style="background:#fef3c7; color:#b45309; font-weight:800; font-size:11px; padding:3px 8px;">⏳ Pending Setup</span>`
+          : `<span class="pill" style="background:#dcfce7; color:#15803d; font-weight:800; font-size:11px; padding:3px 8px;">✅ Active</span>`;
+
+        const brandDisplay = u.brandName
+          ? `<strong>${u.brandLogo || "✦"} ${u.brandName}</strong><br><small style="color:var(--muted);">${u.branchName || "No Branch"}</small>`
+          : `<span style="color:var(--muted);">${u.branchName || "HQ Unassigned"}</span>`;
+
+        const simulateBtn = isPending
+          ? `<button type="button" class="btn btn-sm btn-primary simulate-login-btn" data-userid="${u.id}" style="font-size:11px; padding:4px 8px; font-weight:800;" title="Simulate first login as this user to test onboarding">Simulate First Login 🚀</button>`
+          : `<button type="button" class="btn btn-sm btn-soft simulate-login-btn" data-userid="${u.id}" style="font-size:11px; padding:4px 8px;" title="Switch session to this user">Switch Session ↗</button>`;
+
+        const isCurrentActive = this.currentUser && this.currentUser.id === u.id;
+        const deleteBtn = isCurrentActive
+          ? `<span style="font-size:11px; color:var(--muted); font-style:italic;">(Active You)</span>`
+          : `<button type="button" class="btn btn-sm btn-white delete-user-btn" data-userid="${u.id}" style="font-size:11px; color:#ef4444; padding:4px 8px;" title="Delete User">🗑️</button>`;
+
+        return `
+          <tr style="${isPending ? "background:#fffdfa;" : ""}">
+            <td>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:20px;">${u.avatar || "👤"}</span>
+                <div>
+                  <strong style="font-size:13px; color:var(--text);">${u.name}</strong>
+                  ${isCurrentActive ? '<span class="pill" style="font-size:9px; padding:1px 5px; background:#ccfbf1; color:#0f766e; margin-left:4px;">YOU</span>' : ""}
+                </div>
+              </div>
+            </td>
+            <td>
+              <div style="font-size:12px; font-weight:600;">${u.email}</div>
+              <div style="font-size:11px; color:var(--muted);">${u.phone || "—"}</div>
+            </td>
+            <td>
+              <span class="pill" style="font-size:10px; padding:2px 6px; font-weight:800;">${u.role}</span>
+              <div style="font-size:11px; color:var(--muted); margin-top:2px;">${u.title || "—"}</div>
+            </td>
+            <td>${statusBadge}</td>
+            <td>${brandDisplay}</td>
+            <td style="text-align:right;">
+              <div style="display:flex; justify-content:flex-end; align-items:center; gap:6px;">
+                ${simulateBtn}
+                ${deleteBtn}
+              </div>
+            </td>
+          </tr>
+        `;
+      })
+      .join("");
+
+    // Bind simulate login buttons
+    this.userTableBody.querySelectorAll(".simulate-login-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.dataset.userid;
+        soundService.playQueueChime();
+        const res = authService.simulateLoginAsUser(userId);
+        if (res.success) {
+          alert(`Switched session to ${res.session.user.name}! Redirecting to ${res.targetRoute}...`);
+          window.location.href = res.targetRoute;
+        }
+      });
+    });
+
+    // Bind delete user buttons
+    this.userTableBody.querySelectorAll(".delete-user-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const userId = btn.dataset.userid;
+        if (confirm("Are you sure you want to delete this user account from the registry?")) {
+          soundService.playClickTone();
+          const res = authService.deleteUserAccount(userId);
+          if (res.success) {
+            this.renderUserRegistryTable();
+          } else {
+            alert(res.error);
+          }
+        }
+      });
     });
   }
 }

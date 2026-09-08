@@ -53,7 +53,24 @@ export const REGISTERED_USERS = [
     branchId: "sg-orchard",
     branchName: "Orchard Wellness Clinic (HQ)",
     region: "sg",
-    avatar: "👑"
+    avatar: "👑",
+    onboardingCompleted: true,
+    createdAt: "2026-09-01T08:00:00.000Z"
+  },
+  {
+    id: "usr-owner-dennis",
+    email: "dennis@cliniva.com",
+    phone: "+65 8999 7788",
+    password: "cliniva2026",
+    role: USER_ROLES.OWNER,
+    name: "Dennis Pratama",
+    title: "New Clinic Partner & Owner",
+    branchId: null,
+    branchName: "Setup Pending",
+    region: "sg",
+    avatar: "💼",
+    onboardingCompleted: false,
+    createdAt: "2026-09-08T08:30:00.000Z"
   },
   {
     id: "usr-practitioner-01",
@@ -68,7 +85,9 @@ export const REGISTERED_USERS = [
     branchId: "sg-orchard",
     branchName: "Orchard Wellness Clinic",
     region: "sg",
-    avatar: "🧑‍⚕️"
+    avatar: "🧑‍⚕️",
+    onboardingCompleted: true,
+    createdAt: "2026-09-01T08:00:00.000Z"
   },
   {
     id: "usr-receptionist-01",
@@ -81,7 +100,9 @@ export const REGISTERED_USERS = [
     branchId: "sg-orchard",
     branchName: "Orchard Wellness Clinic",
     region: "sg",
-    avatar: "🛎️"
+    avatar: "🛎️",
+    onboardingCompleted: true,
+    createdAt: "2026-09-01T08:00:00.000Z"
   },
   {
     id: "usr-patient-01",
@@ -97,6 +118,9 @@ export const REGISTERED_USERS = [
     region: "sg",
     avatar: "👤",
     activeBookingCode: "BK-20260901-0812",
-    queueNumber: "A-01"
+    queueNumber: "A-01",
+    onboardingCompleted: true,
+    createdAt: "2026-09-01T08:00:00.000Z"
   }
 ];
+

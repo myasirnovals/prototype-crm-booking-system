@@ -94,12 +94,19 @@ export class AuthController {
     this.quickRoleCards.forEach((card) => {
       card.addEventListener("click", () => {
         const roleKey = card.dataset.role;
+        const userEmail = card.dataset.userEmail;
         soundService.playQueueChime();
 
         card.style.transform = "scale(0.96)";
         setTimeout(() => (card.style.transform = ""), 200);
 
-        const result = authService.loginByRoleKey(roleKey);
+        let result;
+        if (userEmail) {
+          result = authService.loginWithCredentials(userEmail, "cliniva2026");
+        } else {
+          result = authService.loginByRoleKey(roleKey);
+        }
+
         if (!result.success) {
           alert(result.error);
           return;

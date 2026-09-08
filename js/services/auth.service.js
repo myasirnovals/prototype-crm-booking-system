@@ -102,7 +102,9 @@ class AuthService {
       };
     }
 
-    const targetRoute = this.getHomeRouteForRole(user.role);
+    const targetRoute = (user.role === USER_ROLES.OWNER && user.onboardingCompleted === false)
+      ? "admin-onboarding.html"
+      : this.getHomeRouteForRole(user.role);
 
     const session = {
       type: user.role === USER_ROLES.USER ? "PATIENT" : "STAFF",
@@ -118,8 +120,12 @@ class AuthService {
         room: user.room || null,
         branchId: user.branchId,
         branchName: user.branchName,
+        brandName: user.brandName || null,
+        brandLogo: user.brandLogo || null,
+        activeTemplate: user.activeTemplate || null,
         region: user.region || region,
-        avatar: user.avatar
+        avatar: user.avatar,
+        onboardingCompleted: user.onboardingCompleted !== false
       },
       targetRoute,
       loggedInAt: new Date().toISOString()
@@ -139,7 +145,9 @@ class AuthService {
       return { success: false, error: `Demo account for role ${roleKey} not found.` };
     }
 
-    const targetRoute = this.getHomeRouteForRole(user.role);
+    const targetRoute = (user.role === USER_ROLES.OWNER && user.onboardingCompleted === false)
+      ? "admin-onboarding.html"
+      : this.getHomeRouteForRole(user.role);
 
     const session = {
       type: user.role === USER_ROLES.USER ? "PATIENT" : "STAFF",
@@ -155,8 +163,12 @@ class AuthService {
         room: user.room || null,
         branchId: user.branchId,
         branchName: user.branchName,
+        brandName: user.brandName || null,
+        brandLogo: user.brandLogo || null,
+        activeTemplate: user.activeTemplate || null,
         region: user.region || "sg",
-        avatar: user.avatar
+        avatar: user.avatar,
+        onboardingCompleted: user.onboardingCompleted !== false
       },
       targetRoute,
       loggedInAt: new Date().toISOString()
@@ -385,6 +397,178 @@ class AuthService {
 
   signOut() {
     return this.logout();
+  }
+
+  /**
+   * Create a new Admin/Owner or Staff account (Super Admin action)
+   */
+  createUserAccount(userData) {
+    if (!userData.email || !userData.name) {
+      return { success: false, error: "Please provide full name and valid email." };
+    }
+
+    const cleanEmail = userData.email.trim().toLowerCase();
+    const users = this.getUsers();
+
+    if (users.some((u) => u.email.toLowerCase() === cleanEmail)) {
+      return { success: false, error: `An account with email '${cleanEmail}' already exists.` };
+    }
+
+    const newUser = {
+      id: `usr-${userData.role ? userData.role.toLowerCase() : "owner"}-${Date.now().toString().slice(-6)}`,
+      name: userData.name.trim(),
+      email: cleanEmail,
+      phone: userData.phone?.trim() || "+65 8000 0000",
+      password: userData.password?.trim() || "cliniva2026",
+      role: userData.role || USER_ROLES.OWNER,
+      title: userData.title || (userData.role === USER_ROLES.OWNER ? "Clinic Partner & Owner" : "Clinic Staff"),
+      branchId: userData.branchId || null,
+      branchName: userData.branchName || "Pending Setup",
+      brandName: userData.brandName || null,
+      brandLogo: userData.brandLogo || "💼",
+      region: userData.region || "sg",
+      avatar: userData.avatar || (userData.role === USER_ROLES.OWNER ? "💼" : "👤"),
+      onboardingCompleted: userData.onboardingCompleted ?? false,
+      createdAt: new Date().toISOString()
+    };
+
+    users.push(newUser);
+    this.saveUsers(users);
+
+    if (notificationService && typeof notificationService.addSystemNotification === "function") {
+      notificationService.addSystemNotification({
+        title: "New Clinic Owner Provisioned",
+        message: `Super Admin created tenant account for ${newUser.name} (${newUser.email}).`,
+        category: "AUDIT",
+        type: "info"
+      });
+    }
+
+    return { success: true, user: newUser };
+  }
+
+  /**
+   * Delete user account by ID (Cannot delete currently active user)
+   */
+  deleteUserAccount(userId) {
+    const current = this.getCurrentUser();
+    if (current && current.id === userId) {
+      return { success: false, error: "You cannot delete your own active account." };
+    }
+
+    let users = this.getUsers();
+    const target = users.find((u) => u.id === userId);
+    if (!target) {
+      return { success: false, error: "User account not found." };
+    }
+
+    users = users.filter((u) => u.id !== userId);
+    this.saveUsers(users);
+
+    if (notificationService && typeof notificationService.addSystemNotification === "function") {
+      notificationService.addSystemNotification({
+        title: "User Account Removed",
+        message: `Account for ${target.name} (${target.email}) was removed from the registry.`,
+        category: "AUDIT",
+        type: "warning"
+      });
+    }
+
+    return { success: true };
+  }
+
+  /**
+   * Complete Setup Wizard Onboarding for a User
+   */
+  completeUserOnboarding(userId, onboardingData) {
+    const users = this.getUsers();
+    const userIndex = users.findIndex((u) => u.id === userId);
+    if (userIndex === -1) {
+      return { success: false, error: "Target user not found." };
+    }
+
+    const user = users[userIndex];
+    user.onboardingCompleted = true;
+    if (onboardingData.brandName) user.brandName = onboardingData.brandName;
+    if (onboardingData.brandLogo) user.brandLogo = onboardingData.brandLogo;
+    if (onboardingData.brandTagline) user.brandTagline = onboardingData.brandTagline;
+    if (onboardingData.activeTemplate) user.activeTemplate = onboardingData.activeTemplate;
+    if (onboardingData.branchId) user.branchId = onboardingData.branchId;
+    if (onboardingData.branchName) user.branchName = onboardingData.branchName;
+    if (onboardingData.ownerName) user.name = onboardingData.ownerName;
+
+    users[userIndex] = user;
+    this.saveUsers(users);
+
+    // Update active session if matching
+    const currentSession = this.getCurrentSession();
+    if (currentSession && currentSession.user && currentSession.user.id === userId) {
+      currentSession.user = {
+        ...currentSession.user,
+        name: user.name,
+        brandName: user.brandName,
+        brandLogo: user.brandLogo,
+        branchId: user.branchId,
+        branchName: user.branchName,
+        activeTemplate: user.activeTemplate,
+        onboardingCompleted: true
+      };
+      storageService.set(this.SESSION_KEY, currentSession);
+    }
+
+    if (notificationService && typeof notificationService.addSystemNotification === "function") {
+      notificationService.addSystemNotification({
+        title: "Clinic Onboarding Completed",
+        message: `${user.brandName || user.name} completed setup for branch: ${user.branchName}.`,
+        category: "SYSTEM",
+        type: "success"
+      });
+    }
+
+    return { success: true, user };
+  }
+
+  /**
+   * Simulate login as any user in the registry (Super Admin testing convenience)
+   */
+  simulateLoginAsUser(userId) {
+    const users = this.getUsers();
+    const user = users.find((u) => u.id === userId);
+    if (!user) {
+      return { success: false, error: "User not found in registry." };
+    }
+
+    const targetRoute = (user.role === USER_ROLES.OWNER && user.onboardingCompleted === false)
+      ? "admin-onboarding.html"
+      : this.getHomeRouteForRole(user.role);
+
+    const session = {
+      type: user.role === USER_ROLES.USER ? "PATIENT" : "STAFF",
+      role: user.role,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        title: user.title,
+        specialty: user.specialty || null,
+        room: user.room || null,
+        branchId: user.branchId,
+        branchName: user.branchName,
+        brandName: user.brandName || null,
+        brandLogo: user.brandLogo || null,
+        activeTemplate: user.activeTemplate || null,
+        region: user.region || "sg",
+        avatar: user.avatar,
+        onboardingCompleted: user.onboardingCompleted !== false
+      },
+      targetRoute,
+      loggedInAt: new Date().toISOString()
+    };
+
+    storageService.set(this.SESSION_KEY, session);
+    return { success: true, session, targetRoute };
   }
 }
 

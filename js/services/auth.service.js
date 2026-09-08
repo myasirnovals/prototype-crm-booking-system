@@ -527,6 +527,9 @@ class AuthService {
       password: userData.password?.trim() || "cliniva2026",
       role: userData.role || USER_ROLES.OWNER,
       title: userData.title || (userData.role === USER_ROLES.OWNER ? "Clinic Partner & Owner" : "Clinic Staff"),
+      specialty: userData.specialty || null,
+      room: userData.room || null,
+      status: userData.status || "BERTUGAS",
       branchId: userData.branchId || null,
       branchName: userData.branchName || "Pending Setup",
       brandName: userData.brandName || null,
@@ -542,14 +545,21 @@ class AuthService {
 
     if (notificationService && typeof notificationService.addSystemNotification === "function") {
       notificationService.addSystemNotification({
-        title: "New Clinic Owner Provisioned",
-        message: `Super Admin created tenant account for ${newUser.name} (${newUser.email}).`,
+        title: "New Account Provisioned",
+        message: `Account created for ${newUser.name} (${newUser.email}).`,
         category: "AUDIT",
         type: "info"
       });
     }
 
     return { success: true, user: newUser };
+  }
+
+  /**
+   * Alias for createUserAccount
+   */
+  createUser(userData) {
+    return this.createUserAccount(userData);
   }
 
   /**

@@ -21,11 +21,43 @@ export class BranchAdminController {
 
   init() {
     // Session Guard: Allow BRANCH_ADMIN, OWNER, and legacy aliases
-    const session = authService.requireAuth(
-      [USER_ROLES.BRANCH_ADMIN, USER_ROLES.OWNER, "BRANCH_MANAGER", "RECEPTIONIST"],
-      "../../pages/public/sign-in.html"
-    );
-    if (!session) return;
+    let session = authService.getCurrentSession();
+
+    // Prototype Direct Access Handling:
+    // If opened directly in browser without prior login, auto-provision default demo session
+    // for Siti Rahmah (Branch Admin) so all interactive controls work immediately without crashing.
+    if (!session || !session.user) {
+      session = {
+        role: USER_ROLES.BRANCH_ADMIN,
+        user: {
+          id: "usr-branchadmin-01",
+          name: "Siti Rahmah",
+          email: "reception@orchardclinic.sg",
+          phone: "+65 9222 3333",
+          role: USER_ROLES.BRANCH_ADMIN,
+          title: "Lead Branch Admin & Front Desk",
+          branchId: "sg-orchard",
+          branchName: "Orchard Wellness Clinic (SG)",
+          region: "sg",
+          avatar: "🏪",
+          onboardingCompleted: true
+        }
+      };
+      storageService.set(authService.SESSION_KEY, session);
+    } else {
+      // Validate role if an existing session is present
+      const allowedRoles = [
+        USER_ROLES.BRANCH_ADMIN,
+        USER_ROLES.OWNER,
+        "BRANCH_MANAGER",
+        "RECEPTIONIST"
+      ];
+      if (!allowedRoles.includes(session.role)) {
+        console.warn(`[BranchAdmin] Role ${session.role} not authorized for Branch Admin console. Redirecting...`);
+        authService.requireAuth(allowedRoles, "../../pages/public/sign-in.html");
+        return;
+      }
+    }
 
     this.currentUser = session.user;
     this.branchId = session.user.branchId || "sg-orchard";
@@ -179,10 +211,15 @@ export class BranchAdminController {
 
       card.querySelector(".btn-call-patient")?.addEventListener("click", () => {
         soundService.playQueueChime();
-        notificationService?.showNotification?.(
-          `🔊 Memanggil Pasien: [${item.queue}] ${item.patient} silakan masuk ke Ruang Praktik.`,
-          "info"
-        );
+        if (notificationService && typeof notificationService.addSystemNotification === "function") {
+          notificationService.addSystemNotification({
+            title: `Panggilan Pasien ${item.queue}`,
+            message: `[${item.queue}] ${item.patient} silakan menuju ke Ruang Praktik.`,
+            category: "QUEUE",
+            type: "info"
+          });
+        }
+        alert(`🔊 Memanggil Nomor Antrean [${item.queue}]: ${item.patient} silakan masuk ke Ruang Praktik.`);
       });
 
       this.queueGrid.appendChild(card);
@@ -214,7 +251,15 @@ export class BranchAdminController {
 
       storageService.set(queueStorageKey, queueItems);
       this.renderLiveQueue();
-      soundService.playQueueChime();
+      soundService.playSuccessChime?.();
+      if (notificationService && typeof notificationService.addSystemNotification === "function") {
+        notificationService.addSystemNotification({
+          title: "Pasien Walk-In Terdaftar",
+          message: `${name} (${newQueueNumber}) berhasil didaftarkan untuk ${service}.`,
+          category: "QUEUE",
+          type: "info"
+        });
+      }
       alert(`✓ Pasien walk-in berhasil didaftarkan dengan Nomor Antrean: ${newQueueNumber}`);
     });
   }
@@ -349,8 +394,12 @@ export class BranchAdminController {
         onboardingCompleted: true
       };
 
-      authService.createUser(newDoc);
-      soundService.playQueueChime();
+      if (typeof authService.createUserAccount === "function") {
+        authService.createUserAccount(newDoc);
+      } else if (typeof authService.createUser === "function") {
+        authService.createUser(newDoc);
+      }
+      soundService.playSuccessChime?.();
       closeModal();
       this.renderBranchPractitioners();
       alert(`✓ Berhasil menambahkan ${name} sebagai praktisi di cabang ini!`);
@@ -402,7 +451,15 @@ export class BranchAdminController {
     soundService.playClickTone?.();
     const confirmed = confirm(`Proses checkout kasir untuk antrean ${queueNo}?\nDeposit online telah diverifikasi.`);
     if (confirmed) {
-      soundService.playQueueChime();
+      soundService.playSuccessChime?.();
+      if (notificationService && typeof notificationService.addSystemNotification === "function") {
+        notificationService.addSystemNotification({
+          title: `Kasir POS: Antrean ${queueNo} Lunas`,
+          message: `Pelunasan tagihan checkout antrean ${queueNo} berhasil diselesaikan.`,
+          category: "SESSION",
+          type: "success"
+        });
+      }
       alert(`✓ Transaksi kasir untuk antrean ${queueNo} berhasil diselesaikan!\nStruk pembayaran telah dicetak.`);
     }
   }

@@ -96,9 +96,8 @@ class AuthService {
    * Super Admin      → pages/super-admin/index.html
    * Owner (first)    → pages/owner/onboarding.html  (Setup Branch)
    * Owner (return)   → pages/owner/branch-select.html → pages/owner/dashboard.html
-   * Branch Manager   → pages/branch-manager/index.html
+   * Branch Admin     → pages/branch-admin/index.html (Front Desk, Queue, Doctors, POS)
    * Practitioner     → pages/practitioner/index.html
-   * Receptionist     → pages/receptionist/index.html
    * Patient/User     → pages/patient/index.html
    */
   getHomeRouteForUser(user) {
@@ -116,11 +115,37 @@ class AuthService {
       }
     }
 
-    if (user.role === USER_ROLES.BRANCH_MANAGER) {
-      return "pages/branch-manager/index.html";
+    if (
+      user.role === USER_ROLES.BRANCH_ADMIN ||
+      user.role === "BRANCH_MANAGER" ||
+      user.role === "RECEPTIONIST"
+    ) {
+      return "pages/branch-admin/index.html";
+    }
+
+    if (user.role === USER_ROLES.PRACTITIONER) {
+      return "pages/practitioner/index.html";
+    }
+
+    if (user.role === USER_ROLES.USER) {
+      return "pages/patient/index.html";
     }
 
     return this.getHomeRouteForRole(user.role);
+  }
+
+  /**
+   * Resolve home route purely by role identifier
+   */
+  getHomeRouteForRole(role) {
+    if (
+      role === USER_ROLES.BRANCH_ADMIN ||
+      role === "BRANCH_MANAGER" ||
+      role === "RECEPTIONIST"
+    ) {
+      return "pages/branch-admin/index.html";
+    }
+    return ROLE_CONFIG[role]?.homeRoute || "index.html";
   }
 
   /**

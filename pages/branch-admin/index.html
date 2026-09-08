@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="branchAdmin.pageTitle">Branch Admin &amp; Operations Desk — Cliniva Clinic &amp; CRM</title>
+  <meta name="description" content="Unified operations console for Branch Admin: front desk check-in, live queue calling, practitioner management, room schedule, and cashier POS." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Modular Design System Stylesheet -->
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <style>
+    .ba-stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+    .add-practitioner-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .add-practitioner-modal.active {
+      display: flex;
+    }
+    .modal-box {
+      background: #fff;
+      border-radius: var(--radius-lg, 16px);
+      border: 1px solid var(--line, #e2e8f0);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.2);
+      max-width: 540px;
+      width: 100%;
+      padding: 28px;
+      animation: modalSlideUp 0.25s ease;
+    }
+    @keyframes modalSlideUp {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header Topbar -->
+  <header style="background:#fff; border-bottom:1px solid var(--line); padding:14px 28px; position:sticky; top:0; z-index:100;">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <a href="../../index.html" class="logo">
+          <span class="logo-mark">✦</span>
+          Cliniva Operations
+        </a>
+        <span class="ba-stat-pill" id="branchAdminBadge">
+          🏪 Admin Cabang: <span id="branchNameHeader">Orchard Wellness Clinic (SG)</span>
+        </span>
+      </div>
+
+      <div style="display:flex; gap:14px; align-items:center;">
+        <!-- Global Notification Bar Slot -->
+        <div class="notif-bar-slot" id="notificationBarContainer"></div>
+
+        <!-- Language Switcher -->
+        <div class="lang-switcher-wrap">
+          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+            <option value="en">🇬🇧 English</option>
+            <option value="id" selected>🇮🇩 Bahasa Indonesia</option>
+            <option value="zh">🇸🇬 华语 (Singapura)</option>
+            <option value="ms">🇲🇾 Bahasa Melayu (Malaysia)</option>
+          </select>
+        </div>
+
+        <div style="text-align:right;">
+          <div style="display:flex; align-items:center; justify-content:flex-end; gap:4px;">
+            <span id="adminStaffName" style="font-size:13px; font-weight:800; color:var(--text);">Siti Rahmah</span>
+            <button type="button" class="profile-edit-trigger" id="editProfileBtn" title="Edit Profile" aria-label="Edit Profile">✏️</button>
+          </div>
+          <div style="font-size:11px; color:var(--muted);" id="adminStaffTitle">Lead Branch Admin &amp; Front Desk</div>
+        </div>
+
+        <a href="../../pages/owner/dashboard.html" class="btn btn-sm btn-soft" id="adminOwnerPanelLink" data-role-access="OWNER" style="display:none;">Owner HQ →</a>
+        <button type="button" class="btn btn-sm btn-primary" id="adminSignOutBtn" data-i18n="nav.signOut">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted); margin:0 0 10px 8px;">
+        Operasional Cabang
+      </div>
+
+      <div class="side-menu">
+        <button class="side-link admin-tab-btn active" data-pane="paneOverview" style="border:0;background:transparent;width:100%;text-align:left;">
+          📊 Antrean &amp; Meja Depan
+        </button>
+        <button class="side-link admin-tab-btn" data-pane="panePractitioners" style="border:0;background:transparent;width:100%;text-align:left;">
+          🧑‍⚕️ Praktisi &amp; Dokter Cabang
+        </button>
+        <button class="side-link admin-tab-btn" data-pane="paneCalendar" style="border:0;background:transparent;width:100%;text-align:left;">
+          📅 Jadwal &amp; Ruang Praktik
+        </button>
+        <button class="side-link admin-tab-btn" data-pane="panePOS" style="border:0;background:transparent;width:100%;text-align:left;">
+          💳 Kasir POS &amp; Billing
+        </button>
+        <button class="side-link admin-tab-btn" data-pane="paneInventory" style="border:0;background:transparent;width:100%;text-align:left;">
+          📦 Stok &amp; Inventaris Cabang
+        </button>
+        <button class="side-link admin-tab-btn" data-pane="paneClinicSettings" style="border:0;background:transparent;width:100%;text-align:left;">
+          ⚙️ Profil &amp; Identitas Cabang
+        </button>
+        <button class="side-link admin-tab-btn" data-pane="paneSIMRS" style="border:0;background:transparent;width:100%;text-align:left;">
+          🔁 Bridge SIMRS / Rujukan
+        </button>
+      </div>
+
+      <div class="side-card" style="margin-top:auto;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+          <span style="font-size:16px;">🔊</span>
+          <h4 style="margin:0; font-size:13px; font-weight:800;">Chime Synthesizer</h4>
+        </div>
+        <p style="font-size:11px; color:var(--muted); line-height:1.4; margin-bottom:10px;">
+          Web Audio API Synthesizer aktif untuk memanggil nomor antrean pasien di ruang tunggu.
+        </p>
+        <button type="button" class="btn btn-white btn-sm full" id="btnTestChime">Tes Bunyi Chime (Ding-Dong)</button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+
+      <!-- ── PANE 1: OVERVIEW & LIVE QUEUE ────────────────────────────────── -->
+      <section class="admin-tab-pane" id="paneOverview" style="display:block;">
+        <div class="panel-top">
+          <div>
+            <h2>Papan Antrean Ruang Tunggu &amp; Meja Depan (*Front Desk*)</h2>
+            <p>Pantau pasien di ruang tunggu, panggil nomor antrean dengan audio chime, atau daftarkan pasien datang langsung (*walk-in*).</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-primary" id="adminWalkInBtn">+ Daftarkan Pasien Datang (*Walk-in*)</button>
+            <button class="btn btn-white" id="btnRefreshQueue">↻ Muat Ulang Antrean</button>
+          </div>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="dashboard-grid">
+          <div class="metric-card">
+            <span>PASIEN HARI INI</span>
+            <strong id="statPatientsToday">42</strong>
+            <small>↑ 12% vs minggu lalu</small>
+          </div>
+          <div class="metric-card">
+            <span>MENUNGGU DI RUANG TUNGGU</span>
+            <strong id="statWaitingCount">3</strong>
+            <small style="color:var(--warning);">Lounge Depan</small>
+          </div>
+          <div class="metric-card">
+            <span>SEDANG KONSULTASI / TERAPI</span>
+            <strong id="statInConsultCount">4</strong>
+            <small>Ruang 1, 2, Bed 3</small>
+          </div>
+          <div class="metric-card">
+            <span>DOKTER / PRAKTISI BERTUGAS</span>
+            <strong id="statActiveDocs" style="color:var(--primary);">3 Dokter</strong>
+            <small style="color:var(--success);">Shift Pagi &amp; Siang</small>
+          </div>
+        </div>
+
+        <h3 style="margin-top:28px; font-size:18px; display:flex; justify-content:space-between; align-items:center;">
+          <span>Antrean Pasien Aktif</span>
+          <span style="font-size:12px; font-weight:600; color:var(--muted);">Terhubung ke Cabang Aktif</span>
+        </h3>
+        
+        <div class="queue-card-grid" id="receptionistLiveQueueGrid">
+          <!-- Rendered dynamically by BranchAdminController -->
+        </div>
+      </section>
+
+      <!-- ── PANE 2: PRAKTISI & DOKTER CABANG ─────────────────────────────── -->
+      <section class="admin-tab-pane" id="panePractitioners" style="display:none;">
+        <div class="panel-top">
+          <div>
+            <h2>Manajemen Praktisi &amp; Dokter Cabang</h2>
+            <p>Admin Cabang bertugas mengelola daftar dokter, menetapkan spesialisasi, dan menentukan alokasi ruangan konsultasi.</p>
+          </div>
+          <div>
+            <button class="btn btn-primary" id="btnOpenAddPractitionerModal">
+              + Tambah Dokter / Praktisi Baru
+            </button>
+          </div>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nama Dokter / Terapis</th>
+                <th>Spesialisasi</th>
+                <th>Ruangan Praktik</th>
+                <th>Email Login</th>
+                <th>Status Shift</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="branchPractitionersTableBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── PANE 3: TIMELINE & RUANGAN ────────────────────────────────────── -->
+      <section class="admin-tab-pane" id="paneCalendar" style="display:none;">
+        <div class="panel-top">
+          <div>
+            <h2>Master Timeline Jadwal Dokter &amp; Ruangan</h2>
+            <p>Visualisasi jadwal terpadu dengan perlindungan tabrakan waktu otomatis (*15-Minute Buffer*).</p>
+          </div>
+        </div>
+
+        <div class="calendar-board">
+          <div class="calendar-table">
+            <div class="cell head">Waktu</div>
+            <div class="cell head">Dr. Lim (Physio)</div>
+            <div class="cell head">Dr. Wong (TCM)</div>
+            <div class="cell head">Therapist Sarah (Spa)</div>
+            <div class="cell head">Ruang Bed A2</div>
+
+            <div class="cell time-cell">09:00</div>
+            <div class="cell"><div class="booking-block b1">Amanda Tan<br><small>Terkonfirmasi</small></div></div>
+            <div class="cell"></div>
+            <div class="cell"><div class="booking-block b2">Jason Lee<br><small>Checked-in</small></div></div>
+            <div class="cell"></div>
+
+            <div class="cell time-cell">10:00</div>
+            <div class="cell"></div>
+            <div class="cell"><div class="booking-block b3">Nur Aisyah<br><small>Menunggu Selesai</small></div></div>
+            <div class="cell"></div>
+            <div class="cell"><div class="booking-block b4">Sedang Dipakai<br><small>Bed A2</small></div></div>
+
+            <div class="cell time-cell">11:00</div>
+            <div class="cell"><div class="booking-block b2">S. Raj<br><small>Terkonfirmasi</small></div></div>
+            <div class="cell"></div>
+            <div class="cell"><div class="booking-block b1">M. Chan<br><small>Terkonfirmasi</small></div></div>
+            <div class="cell"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── PANE 4: POS CASHIER & BILLING ─────────────────────────────────── -->
+      <section class="admin-tab-pane" id="panePOS" style="display:none;">
+        <div class="panel-top">
+          <div>
+            <h2>Kasir POS &amp; Pelunasan Tagihan (*Checkout Settlement*)</h2>
+            <p>Pelunasan tagihan layanan/produk dengan pengurangan otomatis dari deposit reservasi online.</p>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1.3fr 0.9fr; gap:20px;">
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>No Antrean</th>
+                  <th>Pasien</th>
+                  <th>Layanan</th>
+                  <th>Sisa Tagihan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="posCheckoutTableBody">
+                <tr>
+                  <td><strong>A-01</strong></td>
+                  <td>Rendra Pratama</td>
+                  <td>Clinical Acupuncture</td>
+                  <td style="color:var(--primary); font-weight:800;">SGD 65.00</td>
+                  <td><button class="btn btn-sm btn-primary" onclick="window.branchAdminInstance?.openPOSModal('A-01')">Checkout POS</button></td>
+                </tr>
+                <tr>
+                  <td><strong>B-02</strong></td>
+                  <td>Amanda Tan</td>
+                  <td>Physiotherapy &amp; Spine</td>
+                  <td style="color:var(--primary); font-weight:800;">SGD 90.00</td>
+                  <td><button class="btn btn-sm btn-primary" onclick="window.branchAdminInstance?.openPOSModal('B-02')">Checkout POS</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:22px;">
+            <h3 style="font-size:16px; margin-bottom:14px;">Ringkasan Pemasukan Hari Ini</h3>
+            <div class="summary-row">
+              <span style="color:var(--muted);">Total Deposit Online:</span>
+              <strong>SGD 1,260.00</strong>
+            </div>
+            <div class="summary-row">
+              <span style="color:var(--muted);">Pelunasan Kasir POS:</span>
+              <strong>SGD 2,480.00</strong>
+            </div>
+            <div class="summary-row total" style="display:flex; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:1px solid var(--line); font-size:15px; font-weight:800;">
+              <span>Total Pemasukan Cabang:</span>
+              <span style="color:var(--primary);">SGD 3,740.00</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── PANE 5: STOK & INVENTARIS CABANG ─────────────────────────────── -->
+      <section class="admin-tab-pane" id="paneInventory" style="display:none;">
+        <div class="panel-top">
+          <div>
+            <h2>Inventaris Stok Bahan &amp; Perlengkapan Cabang</h2>
+            <p>Disesuaikan secara adaptif dengan lini template klinik (TCM, Fisioterapi, Wellness/Spa, atau Nutrisi).</p>
+          </div>
+          <button class="btn btn-soft" onclick="alert('Sinkronisasi data stok cabang berhasil.')">↻ Sinkronkan Stok</button>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nama Produk / Bahan</th>
+                <th>Kategori Template</th>
+                <th>Stok Fisik Tersedia</th>
+                <th>Batas Minimum (*Threshold*)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="branchStockTableBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── PANE 6: PROFIL IDENTITAS CABANG ──────────────────────────────── -->
+      <section class="admin-tab-pane" id="paneClinicSettings" style="display:none;">
+        <div class="panel-top">
+          <div>
+            <h2>Profil &amp; Konfigurasi Cabang</h2>
+            <p>Informasi operasional cabang yang ditugaskan kepada Admin Cabang saat ini.</p>
+          </div>
+        </div>
+
+        <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:24px; max-width:700px;">
+          <form id="branchConfigForm">
+            <div class="field" style="margin-bottom:16px;">
+              <label for="cfgBranchName">Nama Cabang Klinik</label>
+              <input type="text" id="cfgBranchName" value="Orchard Wellness Clinic" class="input" style="width:100%;" required />
+            </div>
+
+            <div class="field" style="margin-bottom:16px;">
+              <label for="cfgBranchPhone">Kontak WhatsApp / Layanan Pasien</label>
+              <input type="text" id="cfgBranchPhone" value="+65 6738 8899" class="input" style="width:100%;" />
+            </div>
+
+            <div class="field" style="margin-bottom:20px;">
+              <label for="cfgBranchAddress">Alamat Fisik Cabang</label>
+              <textarea id="cfgBranchAddress" rows="2" class="input" style="width:100%;">290 Orchard Road, Paragon Medical #14-02, Singapore 238859</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Simpan Perubahan Cabang</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ── PANE 7: SIMRS BRIDGING ────────────────────────────────────────── -->
+      <section class="admin-tab-pane" id="paneSIMRS" style="display:none;">
+        <div class="panel-top">
+          <div>
+            <h2>SIMRS Referral Ephemeral Proxy Hub</h2>
+            <p>Non-EMR Ephemeral Storage: Dokumen rujukan pasien dijembatani ke SIMRS dan dihapus otomatis dalam 72 jam.</p>
+          </div>
+        </div>
+
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Booking Code</th>
+                <th>Nama Pasien</th>
+                <th>Dokumen Rujukan</th>
+                <th>Status Bridge</th>
+                <th>Masa Aktif (TTL)</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>BK-20260901-0812</strong></td>
+                <td>Rendra Pratama</td>
+                <td>Hospital_Referral.pdf</td>
+                <td><span class="status-pill confirmed">✓ FORWARDED</span></td>
+                <td>70 Jam tersisa</td>
+                <td><button class="btn btn-sm btn-soft" onclick="alert('Memeriksa payload SIMRS...')">Periksa Payload</button></td>
+              </tr>
+              <tr>
+                <td><strong>BK-20260901-0945</strong></td>
+                <td>Nur Aisyah</td>
+                <td>Clinical_Letter.jpg</td>
+                <td><span class="status-pill confirmed">✓ FORWARDED</span></td>
+                <td>71 Jam tersisa</td>
+                <td><button class="btn btn-sm btn-soft" onclick="alert('Memeriksa payload SIMRS...')">Periksa Payload</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ── MODAL: TAMBAH PRAKTISI CABANG ────────────────────────────────────── -->
+  <div class="add-practitioner-modal" id="addPractitionerModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+        <h3 style="margin:0; font-size:18px; font-weight:800;">+ Tambah Praktisi / Dokter Cabang</h3>
+        <button type="button" class="btn btn-soft btn-sm" id="btnClosePractitionerModal" style="padding:4px 8px;">✕</button>
+      </div>
+      
+      <p style="font-size:12px; color:var(--muted); margin:0 0 16px;">
+        Dokter/terapis baru ini akan langsung ditugaskan ke cabang aktif dan memiliki akun login sistem.
+      </p>
+
+      <form id="addPractitionerForm">
+        <div class="field" style="margin-bottom:14px;">
+          <label for="pracName" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;">Nama Lengkap Dokter <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="pracName" class="input" placeholder="misal: Dr. Kevin Wijaya, Sp.KFR" style="width:100%;" required />
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+          <div class="field">
+            <label for="pracSpecialty" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;">Spesialisasi <span style="color:#ef4444;">*</span></label>
+            <input type="text" id="pracSpecialty" class="input" placeholder="misal: Akupunktur / Physio" style="width:100%;" required />
+          </div>
+          <div class="field">
+            <label for="pracRoom" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;">Ruangan Praktik</label>
+            <input type="text" id="pracRoom" class="input" placeholder="misal: Ruang A1 / Suite 2" value="Ruang A1" style="width:100%;" />
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+          <div class="field">
+            <label for="pracEmail" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;">Email Login <span style="color:#ef4444;">*</span></label>
+            <input type="email" id="pracEmail" class="input" placeholder="dr.kevin@orchardclinic.sg" style="width:100%;" required />
+          </div>
+          <div class="field">
+            <label for="pracPhone" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;">WhatsApp / Telepon</label>
+            <input type="tel" id="pracPhone" class="input" placeholder="+65 9123 4567" value="+65 9123 4567" style="width:100%;" />
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+          <button type="button" class="btn btn-soft" id="btnCancelAddPractitioner">Batal</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitAddPractitioner">Simpan Dokter Baru</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modular Bootstrap Script -->
+  <script type="module" src="../../js/pages/branch-admin.js"></script>
+</body>
+</html>

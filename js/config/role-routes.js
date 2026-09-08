@@ -14,10 +14,12 @@
 export const USER_ROLES = {
   SUPER_ADMIN:     "SUPER_ADMIN",
   OWNER:           "OWNER",
-  BRANCH_MANAGER:  "BRANCH_MANAGER", // Admin of a single branch, assigned by Owner
+  BRANCH_ADMIN:    "BRANCH_ADMIN",   // Admin Cabang: Front desk, live queue, branch doctors, room schedule & POS
   PRACTITIONER:    "PRACTITIONER",
-  RECEPTIONIST:    "RECEPTIONIST",
-  USER:            "USER"            // Patient / Client
+  USER:            "USER",           // Patient / Client
+  // Backward compatibility aliases
+  BRANCH_MANAGER:  "BRANCH_ADMIN",
+  RECEPTIONIST:    "BRANCH_ADMIN"
 };
 
 export const ROLE_CONFIG = {
@@ -33,14 +35,29 @@ export const ROLE_CONFIG = {
     homeRoute: "pages/owner/dashboard.html",
     badge: "💼 Clinic Owner",
     color: "#0f766e",
-    description: "Brand management: create branches, assign Branch Manager, view cross-branch reports"
+    description: "Brand management: create branches, assign Branch Admin, view cross-branch reports"
   },
-  [USER_ROLES.BRANCH_MANAGER]: {
-    name: "Branch Manager",
-    homeRoute: "pages/branch-manager/index.html",
-    badge: "🏢 Branch Manager",
+  [USER_ROLES.BRANCH_ADMIN]: {
+    name: "Admin Cabang (Branch Admin)",
+    homeRoute: "pages/branch-admin/index.html",
+    badge: "🏪 Admin Cabang",
     color: "#0369a1",
-    description: "Branch-level management: add Practitioners & Receptionists, manage daily operations"
+    description: "Operasional cabang: antrean meja depan (front desk), dokter/praktisi cabang, jadwal ruangan & kasir POS"
+  },
+  // Backward compatibility fallback keys
+  "BRANCH_MANAGER": {
+    name: "Admin Cabang (Branch Admin)",
+    homeRoute: "pages/branch-admin/index.html",
+    badge: "🏪 Admin Cabang",
+    color: "#0369a1",
+    description: "Operasional cabang: antrean meja depan (front desk), dokter/praktisi cabang, jadwal ruangan & kasir POS"
+  },
+  "RECEPTIONIST": {
+    name: "Admin Cabang (Branch Admin)",
+    homeRoute: "pages/branch-admin/index.html",
+    badge: "🏪 Admin Cabang",
+    color: "#0369a1",
+    description: "Operasional cabang: antrean meja depan (front desk), dokter/praktisi cabang, jadwal ruangan & kasir POS"
   },
   [USER_ROLES.PRACTITIONER]: {
     name: "Practitioner / Doctor / Therapist",
@@ -48,13 +65,6 @@ export const ROLE_CONFIG = {
     badge: "🧑‍⚕️ Clinical Practitioner",
     color: "#0284c7",
     description: "Doctor's consultation schedule, patient intake, interactive body pain map & chime calling"
-  },
-  [USER_ROLES.RECEPTIONIST]: {
-    name: "Receptionist / Front Desk",
-    homeRoute: "pages/receptionist/index.html",
-    badge: "🛎️ Clinic Receptionist",
-    color: "#d97706",
-    description: "Live waiting room queue, master calendar, cashier POS & walk-in dispatcher"
   },
   [USER_ROLES.USER]: {
     name: "User / Patient",
@@ -102,15 +112,30 @@ export const REGISTERED_USERS = [
     createdAt: "2026-09-08T08:30:00.000Z"
   },
 
-  // ── Branch Manager ────────────────────────────────────────────────────────
+  // ── Branch Admin (Siti Rahmah & Rachel Tan) ───────────────────────────────
   {
-    id: "usr-branchmgr-01",
+    id: "usr-branchadmin-01",
+    email: "reception@orchardclinic.sg",
+    phone: "+65 9222 3333",
+    password: "cliniva2026",
+    role: USER_ROLES.BRANCH_ADMIN,
+    name: "Siti Rahmah",
+    title: "Lead Branch Admin & Front Desk",
+    branchId: "sg-orchard",
+    branchName: "Orchard Wellness Clinic",
+    region: "sg",
+    avatar: "🏪",
+    onboardingCompleted: true,
+    createdAt: "2026-09-01T08:00:00.000Z"
+  },
+  {
+    id: "usr-branchadmin-02",
     email: "manager@orchardclinic.sg",
     phone: "+65 9333 4444",
     password: "cliniva2026",
-    role: USER_ROLES.BRANCH_MANAGER,
+    role: USER_ROLES.BRANCH_ADMIN,
     name: "Rachel Tan",
-    title: "Branch Manager",
+    title: "Branch Operations Admin",
     branchId: "sg-orchard",
     branchName: "Orchard Wellness Clinic",
     region: "sg",
@@ -134,23 +159,6 @@ export const REGISTERED_USERS = [
     branchName: "Orchard Wellness Clinic",
     region: "sg",
     avatar: "🧑‍⚕️",
-    onboardingCompleted: true,
-    createdAt: "2026-09-01T08:00:00.000Z"
-  },
-
-  // ── Receptionist ──────────────────────────────────────────────────────────
-  {
-    id: "usr-receptionist-01",
-    email: "reception@orchardclinic.sg",
-    phone: "+65 9222 3333",
-    password: "cliniva2026",
-    role: USER_ROLES.RECEPTIONIST,
-    name: "Siti Rahmah",
-    title: "Lead Front Desk Receptionist",
-    branchId: "sg-orchard",
-    branchName: "Orchard Wellness Clinic",
-    region: "sg",
-    avatar: "🛎️",
     onboardingCompleted: true,
     createdAt: "2026-09-01T08:00:00.000Z"
   },

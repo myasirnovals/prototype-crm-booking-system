@@ -62,12 +62,62 @@
       "permanent": true
     },
     {
+      "source": "/practitioner",
+      "destination": "/pages/practitioner/index.html",
+      "permanent": true
+    },
+    {
       "source": "/receptionist.html",
-      "destination": "/pages/receptionist/index.html",
+      "destination": "/pages/branch-admin/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/receptionist",
+      "destination": "/pages/branch-admin/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/branch-manager.html",
+      "destination": "/pages/branch-admin/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/branch-manager",
+      "destination": "/pages/branch-admin/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/branch-admin.html",
+      "destination": "/pages/branch-admin/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/branch-admin",
+      "destination": "/pages/branch-admin/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/pages/branch-admin",
+      "destination": "/pages/branch-admin/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/pages/receptionist/:path*",
+      "destination": "/pages/branch-admin/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/pages/branch-manager/:path*",
+      "destination": "/pages/branch-admin/index.html",
       "permanent": true
     },
     {
       "source": "/patient-portal.html",
+      "destination": "/pages/patient/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/patient",
       "destination": "/pages/patient/index.html",
       "permanent": true
     }

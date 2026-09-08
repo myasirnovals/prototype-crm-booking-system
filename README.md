@@ -22,13 +22,11 @@ Desain/
 │   ├── owner/
 │   │   ├── onboarding.html                 # Setup Branch Wizard (Brand, Template, Cabang 1)
 │   │   ├── branch-select.html              # Gateway pemilihan cabang aktif
-│   │   └── dashboard.html                  # Dashboard Owner: kelola cabang & Branch Manager
-│   ├── branch-manager/
-│   │   └── index.html                      # Workspace Branch Manager: dokter, staf, jadwal & shift
+│   │   └── dashboard.html                  # Dashboard Owner: kelola cabang & Branch Admin
+│   ├── branch-admin/
+│   │   └── index.html                      # Workspace Admin Cabang: antrean meja depan, dokter/praktisi, jadwal & POS
 │   ├── practitioner/
 │   │   └── index.html                      # Workspace Dokter: antrean, audio chime, Body Pain Map
-│   ├── receptionist/
-│   │   └── index.html                      # Meja Resepsionis: live queue, POS cashier, walk-in
 │   ├── patient/
 │   │   └── index.html                      # Portal Pasien: e-tiket, lacak antrean, reschedule
 │   └── public/
@@ -69,9 +67,8 @@ Desain/
     ├── controllers/                        # Controller Grouped by Actor / Surface
     │   ├── super-admin/                    # SuperAdminController: Platform & owner accounts
     │   ├── owner/                          # Owner controllers: onboarding, branch-select, dashboard
-    │   ├── branch-manager/                 # BranchManagerController: Cabang, dokter, staf, inventaris
+    │   ├── branch-admin/                   # BranchAdminController: Antrean, dokter cabang, jadwal, POS
     │   ├── practitioner/                   # PractitionerController: Timeline dokter, calling chime
-    │   ├── receptionist/                   # ReceptionistController: Live queue, POS kasir, walk-in
     │   ├── patient/                        # PatientPortalController: Tiket, live queue, reschedule
     │   ├── public/                         # Public controllers: auth.controller, booking.controller
     │   └── landing/                        # Landing page controllers: ui, booking, dashboard
@@ -86,11 +83,10 @@ Pada halaman [`pages/public/sign-in.html`](pages/public/sign-in.html), tersedia 
 
 | Peran | Akun Email / Kontak | Password / OTP | Halaman Tujuan | Fitur Utama |
 |---|---|---|---|---|
-| 👑 **Super Admin** | `owner@cliniva.com` | `cliniva2026` | [`pages/super-admin/index.html`](pages/super-admin/index.html) | Dashboard HQ platform, User Management (buat akun owner baru), audit trail |
-| 💼 **Clinic Owner** | `dennis@cliniva.com` | `cliniva2026` | [`pages/owner/branch-select.html`](pages/owner/branch-select.html) ➔ [`pages/owner/dashboard.html`](pages/owner/dashboard.html) | Dashboard operasional owner, kelola cabang & Branch Manager |
-| 🏢 **Branch Manager** | `manager@orchardclinic.sg` | `cliniva2026` | [`pages/branch-manager/index.html`](pages/branch-manager/index.html) | Manajemen cabang tunggal: dokter/praktisi, staf resepsionis, jadwal & shift |
+| 👑 **Super Admin** | `superadmin@cliniva.com` | `cliniva2026` | [`pages/super-admin/index.html`](pages/super-admin/index.html) | Dashboard HQ platform, User Management (buat akun owner baru), audit trail |
+| 💼 **Clinic Owner** | `dennis@cliniva.com` | `cliniva2026` | [`pages/owner/branch-select.html`](pages/owner/branch-select.html) ➔ [`pages/owner/dashboard.html`](pages/owner/dashboard.html) | Dashboard operasional owner, kelola cabang & Branch Admin |
+| 🏪 **Admin Cabang (Branch Admin)** | `reception@orchardclinic.sg` / `manager@orchardclinic.sg` | `cliniva2026` | [`pages/branch-admin/index.html`](pages/branch-admin/index.html) | Operasional cabang terpadu: Meja Depan (antrean & chime), kelola dokter cabang, jadwal ruangan, kasir POS & stok |
 | 🧑‍⚕️ **Practitioner / Dokter** | `dr.lim@orchardclinic.sg` | `cliniva2026` | [`pages/practitioner/index.html`](pages/practitioner/index.html) | Timeline konsultasi harian dokter, visualizer Body Pain Map, pemanggil chime |
-| 🛎️ **Receptionist / Front Desk** | `reception@orchardclinic.sg` | `cliniva2026` | [`pages/receptionist/index.html`](pages/receptionist/index.html) | Papan antrean ruang tunggu (*Live Queue*), kasir POS, pendaftaran walk-in |
 | 👤 **User / Pasien** | `+65 8123 4567` / `amanda@tan.sg` | OTP `123456` / `cliniva2026` | [`pages/patient/index.html`](pages/patient/index.html) | E-Tiket digital, pelacak nomor antrean live, riwayat reservasi, reschedule |
 
 ---

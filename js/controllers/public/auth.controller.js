@@ -142,7 +142,12 @@ export class AuthController {
           staffEmailInput.value = "owner@cliniva.com";
         } else if (role === USER_ROLES.PRACTITIONER) {
           staffEmailInput.value = "dr.lim@orchardclinic.sg";
-        } else if (role === USER_ROLES.RECEPTIONIST) {
+        } else if (
+          role === USER_ROLES.BRANCH_ADMIN ||
+          role === "BRANCH_ADMIN" ||
+          role === "BRANCH_MANAGER" ||
+          role === "RECEPTIONIST"
+        ) {
           staffEmailInput.value = "reception@orchardclinic.sg";
         }
       });

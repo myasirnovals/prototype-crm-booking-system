@@ -20,7 +20,7 @@ class NavbarService {
 
     // 1. Tag body element with current role for CSS rules
     document.body.dataset.userRole = role;
-    document.body.classList.remove("role-GUEST", "role-OWNER", "role-PRACTITIONER", "role-RECEPTIONIST", "role-USER");
+    document.body.classList.remove("role-GUEST", "role-SUPER_ADMIN", "role-OWNER", "role-PRACTITIONER", "role-BRANCH_ADMIN", "role-RECEPTIONIST", "role-BRANCH_MANAGER", "role-USER");
     document.body.classList.add(`role-${role}`);
 
     // 2. Filter elements with explicit role attributes
@@ -55,7 +55,7 @@ class NavbarService {
 
       if (allowed.includes("ALL")) {
         hasAccess = true;
-      } else if (allowed.includes("STAFF") && [USER_ROLES.OWNER, USER_ROLES.RECEPTIONIST, USER_ROLES.PRACTITIONER].includes(role)) {
+      } else if (allowed.includes("STAFF") && [USER_ROLES.OWNER, USER_ROLES.BRANCH_ADMIN, USER_ROLES.PRACTITIONER, "BRANCH_MANAGER", "RECEPTIONIST"].includes(role)) {
         hasAccess = true;
       } else if (allowed.includes(role)) {
         hasAccess = true;
@@ -112,13 +112,9 @@ class NavbarService {
       ticketNav.innerHTML = `
         <a href="${this._resolvePath("pages/owner/dashboard.html")}" class="btn btn-sm btn-primary">Owner Dashboard →</a>
       `;
-    } else if (role === USER_ROLES.BRANCH_MANAGER) {
+    } else if (role === USER_ROLES.BRANCH_ADMIN || role === "BRANCH_MANAGER" || role === "RECEPTIONIST") {
       ticketNav.innerHTML = `
-        <a href="${this._resolvePath("pages/branch-manager/index.html")}" class="btn btn-sm btn-primary">Branch Workspace →</a>
-      `;
-    } else if (role === USER_ROLES.RECEPTIONIST) {
-      ticketNav.innerHTML = `
-        <a href="${this._resolvePath("pages/receptionist/index.html")}" class="btn btn-sm btn-primary">← Operations Panel</a>
+        <a href="${this._resolvePath("pages/branch-admin/index.html")}" class="btn btn-sm btn-primary">Branch Workspace →</a>
       `;
     } else if (role === USER_ROLES.PRACTITIONER) {
       ticketNav.innerHTML = `
@@ -191,15 +187,15 @@ class NavbarService {
           <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
         </div>
       `;
-    } else if (role === USER_ROLES.BRANCH_MANAGER && user) {
+    } else if ((role === USER_ROLES.BRANCH_ADMIN || role === "BRANCH_MANAGER" || role === "RECEPTIONIST") && user) {
       navActions.innerHTML = `
         ${langHtml}
         <div style="display:flex; align-items:center; gap:12px;">
           <div style="text-align:right; line-height:1.2;">
             <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
-            <div style="font-size:10px; color:#2563eb; font-weight:700;">🏢 Branch Manager</div>
+            <div style="font-size:10px; color:#0369a1; font-weight:700;">🏪 Admin Cabang</div>
           </div>
-          <a href="${this._resolvePath("pages/branch-manager/index.html")}" class="btn btn-sm btn-primary">Branch Console →</a>
+          <a href="${this._resolvePath("pages/branch-admin/index.html")}" class="btn btn-sm btn-primary">Branch Console →</a>
           <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
         </div>
       `;
@@ -212,18 +208,6 @@ class NavbarService {
             <div style="font-size:10px; color:#0284c7; font-weight:700;">🧑‍⚕️ ${user.title || "Practitioner"}</div>
           </div>
           <a href="${this._resolvePath("pages/practitioner/index.html")}" class="btn btn-sm btn-primary">Practitioner Workspace →</a>
-          <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
-        </div>
-      `;
-    } else if (role === USER_ROLES.RECEPTIONIST && user) {
-      navActions.innerHTML = `
-        ${langHtml}
-        <div style="display:flex; align-items:center; gap:12px;">
-          <div style="text-align:right; line-height:1.2;">
-            <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
-            <div style="font-size:10px; color:#d97706; font-weight:700;">🛎️ Front Desk</div>
-          </div>
-          <a href="${this._resolvePath("pages/receptionist/index.html")}" class="btn btn-sm btn-primary">Operations Panel →</a>
           <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
         </div>
       `;
@@ -271,12 +255,12 @@ class NavbarService {
         <a href="${this._resolvePath("pages/owner/dashboard.html")}" class="btn btn-primary full">Owner HQ Console</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
       `;
-    } else if (role === USER_ROLES.BRANCH_MANAGER && user) {
+    } else if ((role === USER_ROLES.BRANCH_ADMIN || role === "BRANCH_MANAGER" || role === "RECEPTIONIST") && user) {
       return `
         <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
-          🏢 ${user.name} (Branch Manager)
+          🏪 ${user.name} (Admin Cabang)
         </div>
-        <a href="${this._resolvePath("pages/branch-manager/index.html")}" class="btn btn-primary full">Branch Console</a>
+        <a href="${this._resolvePath("pages/branch-admin/index.html")}" class="btn btn-primary full">Branch Console</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
       `;
     } else if (role === USER_ROLES.PRACTITIONER && user) {
@@ -285,14 +269,6 @@ class NavbarService {
           🧑‍⚕️ ${user.name}
         </div>
         <a href="${this._resolvePath("pages/practitioner/index.html")}" class="btn btn-primary full">Practitioner Workspace</a>
-        <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
-      `;
-    } else if (role === USER_ROLES.RECEPTIONIST && user) {
-      return `
-        <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
-          🛎️ ${user.name} (Receptionist)
-        </div>
-        <a href="${this._resolvePath("pages/receptionist/index.html")}" class="btn btn-primary full">Operations Panel</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>
       `;
     }

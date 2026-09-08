@@ -1,0 +1,75 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/sign-in.html",
+      "destination": "/pages/public/sign-in.html",
+      "permanent": true
+    },
+    {
+      "source": "/sign-in",
+      "destination": "/pages/public/sign-in.html",
+      "permanent": true
+    },
+    {
+      "source": "/login",
+      "destination": "/pages/public/sign-in.html",
+      "permanent": true
+    },
+    {
+      "source": "/booking.html",
+      "destination": "/pages/public/booking.html",
+      "permanent": true
+    },
+    {
+      "source": "/booking",
+      "destination": "/pages/public/booking.html",
+      "permanent": true
+    },
+    {
+      "source": "/ticket.html",
+      "destination": "/pages/public/ticket.html",
+      "permanent": true
+    },
+    {
+      "source": "/ticket",
+      "destination": "/pages/public/ticket.html",
+      "permanent": true
+    },
+    {
+      "source": "/owner.html",
+      "destination": "/pages/super-admin/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/owner-dashboard.html",
+      "destination": "/pages/owner/dashboard.html",
+      "permanent": true
+    },
+    {
+      "source": "/branch-select.html",
+      "destination": "/pages/owner/branch-select.html",
+      "permanent": true
+    },
+    {
+      "source": "/admin-onboarding.html",
+      "destination": "/pages/owner/onboarding.html",
+      "permanent": true
+    },
+    {
+      "source": "/practitioner.html",
+      "destination": "/pages/practitioner/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/receptionist.html",
+      "destination": "/pages/receptionist/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/patient-portal.html",
+      "destination": "/pages/patient/index.html",
+      "permanent": true
+    }
+  ]
+}

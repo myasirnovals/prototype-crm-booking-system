@@ -1,4 +1,4 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.7.1 [STABLE RELEASE]
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.8.1 [STABLE RELEASE]
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 
@@ -118,6 +118,60 @@ Lalu buka:
 ---
 
 ## 📦 Riwayat Rilis & Semantic Versioning (SemVer)
+
+### 🏷️ V1.8.1 (Patch Release) ✅ *Stable Release*
+*Rilis perbaikan (patch release) v1.8.1: Harmonisasi benchmark visual kartu cabang pada Owner Gateway (`branch-select.html`), deduplikasi cerdas data cabang untuk mencegah duplikasi entri kartu ganda, eliminasi elemen pembatas bawah redundan (`#cardTriggerNewBranch`) yang digantikan tombol header primer, serta perbaikan menyeluruh interaktivitas tombol dan sintaks template literal pada konsol operasional Branch Admin (`pages/branch-admin/index.html`).*
+
+- **🩹 Bug Fixes & UI Hardening (Patch)**:
+  - **Deduplikasi Cerdas Data Cabang (`branch-select.controller.js` & `onboarding.controller.js`)**:
+    - Menambahkan algoritma `deduplicateBranches()` berbasis ID dan normalisasi nama cabang dengan prioritas cabang aktif dan primer.
+    - Mengeliminasi kemunculan kartu ganda (seperti duplikasi *"Paragon Medical Flagship (Cabang 1)"*).
+    - Menambahkan validasi submit pendaftaran cabang baru guna mencegah penambahan nama cabang yang sudah terdaftar.
+    - Memastikan proses inisialisasi pada onboarding klinik baru tidak memicu duplikasi data ke `localStorage`.
+  - **Pembersihan Elemen Redundan (`branch-select.html` & `branch-select.controller.js`)**:
+    - Menghapus elemen kartu pembatas bawah `#cardTriggerNewBranch` (`.add-branch-card-row`) beserta handler-nya karena pendaftaran cabang baru telah terakomodasi secara optimal oleh tombol primer di header (`#btnOpenNewBranchModal`).
+    - Menghapus deklarasi CSS usang terkait elemen kartu pembatas bawah.
+  - **Harmonisasi Benchmark Desain Kartu Cabang (`branch-select.controller.js`)**:
+    - Menyelaraskan hierarki tipografi, padding, dan struktur kartu cabang agar konsisten 1:1 dengan benchmark kartu identitas brand induk (`.gateway-header-card`).
+    - Memperbaiki parsing data jumlah ruang terapi adaptif: `${Array.isArray(b.rooms) ? b.rooms.length : (b.rooms || "4")} Ruang Terapi`.
+  - **Pemulihan Interaktivitas Tombol Branch Admin Console (`dashboard.controller.js` & `pages/branch-admin/index.html`)**:
+    - Memperbaiki sintaks kutip string template literal yang tidak tertutup pada helper `renderBranchStock`.
+    - Memasang dan menginisialisasi `NotificationBarComponent` pada header konsol Branch Admin sehingga proses bootstrap controller berjalan tuntas tanpa runtime exception.
+    - Menambahkan mekanisme fallback sesi demo otomatis saat halaman dibuka langsung tanpa proses login manual.
+    - Menjamin seluruh tombol interaktif (panggil antrean, ubah status pasien, tab switcher, filter ruangan/dokter, modal tambah staf/stok/dokter) merespons klik 100%.
+
+### 🏷️ V1.8.0 (Minor Release) ✅ *Stable Release*
+*Rilis resmi minor v1.8.0: Konsolidasi struktural peran Branch Manager dan Receptionist menjadi peran operasional tunggal terpadu yaitu Branch Admin (`pages/branch-admin/index.html`), penegasan arsitektur 5 aktor definitif (Super Admin, Owner, Branch Admin, Practitioner, Patient), serta konfigurasi pengalihan backwards-compatible penuh pada `vercel.json`.*
+
+- **🚀 New Features & Architecture (Minor)**:
+  - **Unified Branch Admin Console (`pages/branch-admin/index.html` & `dashboard.controller.js`)**:
+    - Menggabungkan fungsionalitas meja resepsionis (front desk check-in, live queue calling, status antrean) dan operasional manajerial (jadwal dokter, alokasi ruangan, kasir POS, manajemen stok inventaris).
+    - Menghapus pemisahan redundant antara Branch Manager dan Receptionist demi alur kerja operasional klinik yang lebih ramping dan efisien.
+  - **Arsitektur 5 Aktor Definitif Platform**:
+    - 👑 **Super Admin** (`pages/super-admin/`): Manajemen platform dan akun owner mitra.
+    - 💼 **Clinic Owner** (`pages/owner/`): Pengaturan brand induk, gerbang cabang, dan penunjukan admin cabang.
+    - 🏪 **Branch Admin** (`pages/branch-admin/`): Operasional meja depan, antrean, kasir, stok, dan dokter cabang.
+    - 🧑‍⚕️ **Practitioner / Dokter** (`pages/practitioner/`): Konsultasi medis, Body Pain Map, dan catatan klinis.
+    - 👤 **Patient / Pasien** (`pages/patient/`): Reservasi mandiri, e-ticket digital, dan reschedule.
+  - **Routing & Server Redirects (`role-routes.js` & `vercel.json`)**:
+    - Menambahkan aturan redirect HTTP 301 untuk backward compatibility dari rute lama `/pages/receptionist/*` dan `/pages/branch-manager/*` menuju `/pages/branch-admin/*`.
+
+### 🏷️ V1.7.1 (Patch Release) ✅ *Stable Release*
+*Rilis perbaikan v1.7.1: Pembersihan berkas duplikat dan usang di tingkat root directory setelah restrukturisasi folder berbasis peran aktor, audit integritas referensi impor ES6, serta validasi deployment Vercel.*
+
+- **🩹 Bug Fixes & Code Cleanup (Patch)**:
+  - Mengeliminasi lebih dari 8.000 baris kode usang dan file duplikat yang tersisa di root directory setelah migrasi modular ke `pages/` dan `js/controllers/`.
+  - Memperbarui seluruh jalur import modul ES6 dan referensi asset CSS/JS agar sinkron dengan struktur subdirektori peran aktor.
+
+### 🏷️ V1.7.0 (Minor Release) ✅ *Stable Release*
+*Rilis minor v1.7.0: Restrukturisasi arsitektur direktori secara komprehensif mengikuti prinsip Single Responsibility Principle (SOLID) berbasis peran aktor (`pages/` dan `js/controllers/` dikelompokkan per subfolder aktor).*
+
+- **🚀 New Features & Architecture (Minor)**:
+  - **Struktur Direktori Berbasis Peran Aktor**:
+    - Pengelompokan halaman HTML ke dalam `pages/super-admin/`, `pages/owner/`, `pages/branch-admin/`, `pages/practitioner/`, `pages/patient/`, dan `pages/public/`.
+    - Pengelompokan controller JavaScript ke dalam subfolder bersesuaian di `js/controllers/`.
+  - **Modularitas & Kemudahan Maintenance**:
+    - Menghilangkan kopling silang antar halaman aktor dan meningkatkan isolasi konteks keamanan RBAC.
 
 ### 🏷️ V1.6.0 (Minor Release) ✅ *Stable Release*
 *Rilis resmi stabil V1.6.0: Transformasi arsitektur multi-tenant dengan pemisahan peran operasional sesuai diagram alur resmi (`alur aplikasi booking system.xml`). Menghadirkan modul Super Admin User Management, WordPress-Style Setup Wizard 4-langkah untuk penyiapan identitas brand dan lini spesialisasi, Gerbang Pemilihan Cabang Aktif (*Choose Branch Gateway*) untuk mereduksi margin error operasional, Dashboard Khusus Owner (`owner-dashboard.html`) dengan 4 modul manajemen mandiri (Cabang, Staf, Stok Inventaris Spesifik Template, dan Praktisi/Terapis), serta ekspansi jaringan peta Leaflet 9 cabang strategis SG & MY.*

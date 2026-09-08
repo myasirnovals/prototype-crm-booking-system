@@ -32,6 +32,8 @@ export class AdminOnboardingController {
     this.setupTemplateSelection();
     this.setupLaunchButton();
     this.setupSignOut();
+    this.updateReviewSummary();
+    this.goToStep(1, false);
   }
 
   renderUserInfo() {
@@ -57,13 +59,13 @@ export class AdminOnboardingController {
           alert("Please enter your clinic / practice brand name.");
           return;
         }
-        this.goToStep(2);
+        this.goToStep(2, true);
       });
     }
 
     if (btnNext2) {
       btnNext2.addEventListener("click", () => {
-        this.goToStep(3);
+        this.goToStep(3, true);
       });
     }
 
@@ -78,18 +80,20 @@ export class AdminOnboardingController {
         }
 
         this.updateReviewSummary();
-        this.goToStep(4);
+        this.goToStep(4, true);
       });
     }
 
-    if (btnPrev2) btnPrev2.addEventListener("click", () => this.goToStep(1));
-    if (btnPrev3) btnPrev3.addEventListener("click", () => this.goToStep(2));
-    if (btnPrev4) btnPrev4.addEventListener("click", () => this.goToStep(3));
+    if (btnPrev2) btnPrev2.addEventListener("click", () => this.goToStep(1, true));
+    if (btnPrev3) btnPrev3.addEventListener("click", () => this.goToStep(2, true));
+    if (btnPrev4) btnPrev4.addEventListener("click", () => this.goToStep(3, true));
   }
 
-  goToStep(step) {
+  goToStep(step, playSound = false) {
     this.currentStep = step;
-    soundService.playClickTone();
+    if (playSound) {
+      soundService.playClickTone();
+    }
 
     // Update node states
     for (let i = 1; i <= 4; i++) {
@@ -112,11 +116,19 @@ export class AdminOnboardingController {
       }
 
       if (panel) {
-        panel.style.display = i === step ? "block" : "none";
+        if (i === step) {
+          panel.classList.add("active");
+          panel.style.setProperty("display", "block", "important");
+        } else {
+          panel.classList.remove("active");
+          panel.style.setProperty("display", "none", "important");
+        }
       }
     }
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (playSound) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }
 
   setupLogoPicker() {

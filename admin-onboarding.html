@@ -259,6 +259,33 @@
       color: var(--text);
       text-align: right;
     }
+
+    /* Wizard Step Panels (Override demo.css defaults) */
+    .wizard-step-panel {
+      display: none !important;
+    }
+
+    .wizard-step-panel.active {
+      display: block !important;
+      animation: wizardFadeIn 0.25s ease;
+    }
+
+    @keyframes wizardFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .wizard-container .field-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .wizard-container .field-row {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
@@ -303,7 +330,7 @@
       </div>
 
       <!-- STEP 1: BRAND IDENTITY -->
-      <div class="wizard-step-panel" id="wizardStep1">
+      <div class="wizard-step-panel active" id="wizardStep1" style="display:block !important;">
         <div style="margin-bottom:24px;">
           <div class="pill" style="margin-bottom:8px; font-size:11px;">Step 1 of 4: Setup Brand</div>
           <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Establish Your Clinic Brand Identity</h2>

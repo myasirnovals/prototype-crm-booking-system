@@ -540,9 +540,7 @@
       <section class="admin-tab-pane" id="paneOverview" style="display:block;">
         <div class="panel-top">
           <div>
-            <h2>Papan Antrean Ruang Tunggu &amp; Meja Depan (*Front Desk*)</h2>
-            <p>Pantau pasien di ruang tunggu, panggil nomor antrean dengan audio chime, atau daftarkan pasien datang
-              langsung (*walk-in*).</p>
+            <h2>Papan Antrean Ruang Tunggu</h2>
           </div>
           <div style="display:flex; gap:8px;">
             <button class="btn btn-primary" id="adminWalkInBtn">+ Daftarkan Pasien Datang (*Walk-in*)</button>
@@ -575,51 +573,12 @@
         </div>
 
         <h3 style="margin-top:28px; font-size:18px; display:flex; justify-content:space-between; align-items:center;">
-          <span>Antrean Pasien Aktif</span>
+          <span>Antrean Pasien</span>
           <span style="font-size:12px; font-weight:600; color:var(--muted);">Terhubung ke Cabang Aktif</span>
         </h3>
 
         <div class="queue-card-grid" id="receptionistLiveQueueGrid">
           <!-- Rendered dynamically by BranchAdminController -->
-        </div>
-
-        <!-- ── TABEL ANTREAN PASIEN AKTIF HARI INI ───────────────────────── -->
-        <div class="active-today-queue-wrap" style="margin-top:28px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
-            <div>
-              <h4 style="margin:0; font-size:16px; font-weight:800; color:var(--text); display:flex; align-items:center; gap:8px;">
-                <span>📋 Tabel Antrean Pasien Aktif</span>
-                <span class="status-pill confirmed" style="font-size:10px; padding:2px 8px; font-weight:700;">Hari Ini Saja</span>
-              </h4>
-              <p style="margin:4px 0 0; font-size:12px; color:var(--muted);">
-                Data seluruh antrean pasien yang aktif dan terdaftar pada operasional cabang hari ini.
-              </p>
-            </div>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span style="font-size:11px; font-weight:700; color:var(--muted); background:#f1f5f9; padding:4px 10px; border-radius:6px;">
-                📅 Hari Ini (<span id="todayQueueDateLabel">9 September 2026</span>)
-              </span>
-            </div>
-          </div>
-
-          <div class="data-table-container">
-            <table class="data-table" id="todayQueueTable">
-              <thead>
-                <tr>
-                  <th style="width:85px;">No. Antrean</th>
-                  <th>Nama Pasien</th>
-                  <th>Layanan &amp; Dokter</th>
-                  <th>Waktu</th>
-                  <th>Ruangan</th>
-                  <th>Status Antrean</th>
-                  <th style="text-align:center; min-width:130px;">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="todayQueueTableBody">
-                <!-- Rendered dynamically by BranchAdminController -->
-              </tbody>
-            </table>
-          </div>
         </div>
       </section>
 
@@ -628,8 +587,6 @@
         <div class="panel-top">
           <div>
             <h2>Manajemen Praktisi &amp; Dokter Cabang</h2>
-            <p>Admin Cabang bertugas mengelola daftar dokter, menetapkan spesialisasi, dan menentukan alokasi ruangan
-              konsultasi.</p>
           </div>
           <div>
             <button class="btn btn-primary" id="btnOpenAddPractitionerModal">
@@ -662,7 +619,6 @@
         <div class="panel-top">
           <div>
             <h2>Master Timeline Jadwal Dokter &amp; Ruangan</h2>
-            <p>Visualisasi jadwal terpadu dengan perlindungan tabrakan waktu otomatis (*15-Minute Buffer*).</p>
           </div>
         </div>
 
@@ -743,7 +699,6 @@
         <div class="panel-top">
           <div>
             <h2>Profil &amp; Konfigurasi Cabang</h2>
-            <p>Informasi operasional cabang yang ditugaskan kepada Admin Cabang saat ini.</p>
           </div>
         </div>
 

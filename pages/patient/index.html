@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-i18n="portal.pageTitle">Patient Self-Service Portal — Cliniva Digital Healthcare</title>
-  <meta name="description" content="Patient self-service portal for appointments, digital e-ticket QR, live queue tracking, and booking management." />
+  <meta name="description"
+    content="Patient self-service portal for appointments, digital e-ticket QR, live queue tracking, and booking management." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
 
   <!-- Modular Design System Stylesheet -->
   <link rel="stylesheet" href="../../css/style.css">
@@ -24,13 +27,15 @@
           <span class="logo-mark">✦</span>
           <span data-i18n="portal.topbar">Patient Self-Service Portal</span>
         </a>
-        <span class="pill" style="font-size:11px; padding:3px 8px; background:#f0fdf4; color:#16a34a; font-weight:800;" data-i18n="nav.verifiedPdpa">● PDPA Compliant</span>
+        <span class="pill" style="font-size:11px; padding:3px 8px; background:#f0fdf4; color:#16a34a; font-weight:800;"
+          data-i18n="nav.verifiedPdpa">● PDPA Compliant</span>
       </div>
 
       <div class="patient-header-right">
         <!-- Language Switcher -->
         <div class="lang-switcher-wrap">
-          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+          <select class="lang-select" aria-label="Select Language"
+            style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
             <option value="en">🇬🇧 English</option>
             <option value="zh">🇸🇬 华语 (Singapura)</option>
             <option value="ms">🇲🇾 Bahasa Melayu (Malaysia)</option>
@@ -41,8 +46,10 @@
           <div id="patientPortalName" style="font-size:13px; font-weight:800; color:var(--text);">Amanda Tan</div>
           <div id="patientPortalContact" style="font-size:11px; color:var(--muted);">+65 8123 4567</div>
         </div>
-        <a href="../../pages/public/booking.html" class="btn btn-sm btn-primary" data-i18n="nav.newBooking">+ Book Appointment</a>
-        <button type="button" class="btn btn-sm btn-soft" id="patientSignOutBtn" data-i18n="nav.signOut">Sign Out</button>
+        <a href="../../pages/public/booking.html" class="btn btn-sm btn-primary" data-i18n="nav.newBooking">+ Book
+          Appointment</a>
+        <button type="button" class="btn btn-sm btn-soft" id="patientSignOutBtn" data-i18n="nav.signOut">Sign
+          Out</button>
       </div>
     </div>
   </header>
@@ -59,12 +66,14 @@
           <span data-i18n="portal.welcome">Welcome,</span> Amanda Tan
         </h1>
         <p style="font-size:14px; opacity:0.9; margin:0; max-width:600px; line-height:1.5;">
-          Your physiotherapy appointment at Orchard Wellness Clinic is confirmed. Present the QR code below upon arrival at the clinic check-in kiosk.
+          Your physiotherapy appointment at Orchard Wellness Clinic is confirmed. Present the QR code below upon arrival
+          at the clinic check-in kiosk.
         </p>
       </div>
 
       <div>
-        <a href="../../pages/public/ticket.html" class="btn btn-white" style="font-weight:800;" data-i18n="portal.viewTicket">
+        <a href="../../pages/public/ticket.html" class="btn btn-white" style="font-weight:800;"
+          data-i18n="portal.viewTicket">
           🎟️ View Full E-Ticket
         </a>
       </div>
@@ -77,7 +86,8 @@
         <div class="queue-status-text">
           <h3><span data-i18n="portal.queueNumber">Your Queue Number</span>: A-01</h3>
           <p>
-            Status: <span style="font-weight:800; color:var(--primary);" data-i18n="portal.statusCalling">Calling Patient to Room</span> · Physiotherapy with <strong>Dr. Lim Wei Han</strong>
+            Status: <span style="font-weight:800; color:var(--primary);" data-i18n="portal.statusCalling">Calling
+              Patient to Room</span> · Physiotherapy with <strong>Dr. Lim Wei Han</strong>
           </p>
         </div>
       </div>
@@ -129,22 +139,22 @@
               <div class="qr-canvas-box">
                 <!-- High Quality SVG QR Code for Scanner -->
                 <svg width="140" height="140" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="5" y="5" width="26" height="26" fill="#0f172a" rx="4"/>
-                  <rect x="9" y="9" width="18" height="18" fill="#fff" rx="2"/>
-                  <rect x="13" y="13" width="10" height="10" fill="#0f766e" rx="1"/>
-                  <rect x="69" y="5" width="26" height="26" fill="#0f172a" rx="4"/>
-                  <rect x="73" y="9" width="18" height="18" fill="#fff" rx="2"/>
-                  <rect x="77" y="13" width="10" height="10" fill="#0f766e" rx="1"/>
-                  <rect x="5" y="69" width="26" height="26" fill="#0f172a" rx="4"/>
-                  <rect x="9" y="73" width="18" height="18" fill="#fff" rx="2"/>
-                  <rect x="13" y="77" width="10" height="10" fill="#0f766e" rx="1"/>
-                  <rect x="36" y="8" width="6" height="6" fill="#0f172a"/>
-                  <rect x="46" y="8" width="8" height="6" fill="#0f172a"/>
-                  <rect x="58" y="12" width="6" height="6" fill="#0f766e"/>
-                  <rect x="36" y="36" width="28" height="28" fill="#0f172a" rx="3"/>
-                  <rect x="42" y="42" width="16" height="16" fill="#fff" rx="2"/>
-                  <rect x="46" y="46" width="8" height="8" fill="#0f766e"/>
-                  <rect x="72" y="70" width="20" height="6" fill="#0f172a"/>
+                  <rect x="5" y="5" width="26" height="26" fill="#0f172a" rx="4" />
+                  <rect x="9" y="9" width="18" height="18" fill="#fff" rx="2" />
+                  <rect x="13" y="13" width="10" height="10" fill="#0f766e" rx="1" />
+                  <rect x="69" y="5" width="26" height="26" fill="#0f172a" rx="4" />
+                  <rect x="73" y="9" width="18" height="18" fill="#fff" rx="2" />
+                  <rect x="77" y="13" width="10" height="10" fill="#0f766e" rx="1" />
+                  <rect x="5" y="69" width="26" height="26" fill="#0f172a" rx="4" />
+                  <rect x="9" y="73" width="18" height="18" fill="#fff" rx="2" />
+                  <rect x="13" y="77" width="10" height="10" fill="#0f766e" rx="1" />
+                  <rect x="36" y="8" width="6" height="6" fill="#0f172a" />
+                  <rect x="46" y="8" width="8" height="6" fill="#0f172a" />
+                  <rect x="58" y="12" width="6" height="6" fill="#0f766e" />
+                  <rect x="36" y="36" width="28" height="28" fill="#0f172a" rx="3" />
+                  <rect x="42" y="42" width="16" height="16" fill="#fff" rx="2" />
+                  <rect x="46" y="46" width="8" height="8" fill="#0f766e" />
+                  <rect x="72" y="70" width="20" height="6" fill="#0f172a" />
                 </svg>
               </div>
 
@@ -153,13 +163,16 @@
               </p>
 
               <div class="ticket-actions" style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-                <button type="button" class="btn btn-sm btn-primary" id="patientDownloadIcsBtn" data-i18n="ticket.addToCalendar">
+                <button type="button" class="btn btn-sm btn-primary" id="patientDownloadIcsBtn"
+                  data-i18n="ticket.addToCalendar">
                   📅 Add to Mobile Calendar (.ics)
                 </button>
-                <button type="button" class="btn btn-sm btn-soft" id="patientRescheduleBtn" data-i18n="portal.reschedule">
+                <button type="button" class="btn btn-sm btn-soft" id="patientRescheduleBtn"
+                  data-i18n="portal.reschedule">
                   🔄 Reschedule
                 </button>
-                <button type="button" class="btn btn-sm btn-soft" id="patientCancelBtn" style="color:#ef4444;" data-i18n="portal.cancel">
+                <button type="button" class="btn btn-sm btn-soft" id="patientCancelBtn" style="color:#ef4444;"
+                  data-i18n="portal.cancel">
                   ✕ Cancel Appointment
                 </button>
               </div>
@@ -208,24 +221,14 @@
             <span><strong>Official Email (amanda@tan.sg)</strong></span>
           </label>
         </div>
-
-        <!-- Quick Booking Banner -->
-        <div style="background:#f8fafc; border:1px dashed var(--line); border-radius:var(--radius-lg); padding:20px; text-align:center;">
-          <h4 style="font-size:14px; margin:0 0 6px;">Need to schedule your next session?</h4>
-          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">
-            Book another session with your dedicated practitioner or schedule an appointment for family members.
-          </p>
-          <a href="../../pages/public/booking.html" class="btn btn-sm btn-primary full" data-i18n="nav.newBooking">
-            + Book New Appointment →
-          </a>
-        </div>
       </section>
     </div>
   </main>
 
   <!-- Footer -->
   <footer style="margin-top:auto; background:#fff; border-top:1px solid var(--line); padding:20px 0;">
-    <div class="container footer-inner" style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted);">
+    <div class="container footer-inner"
+      style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted);">
       <div>© 2026 Cliniva Healthcare Systems. Encrypted Self-Service Patient Portal.</div>
       <div style="display:flex; gap:16px;">
         <a href="../../index.html" data-i18n="nav.backHome">Public Home</a>
@@ -237,4 +240,5 @@
   <!-- Modular Patient Portal Script Bootstrap -->
   <script type="module" src="../../js/pages/patient-portal.js"></script>
 </body>
+
 </html>

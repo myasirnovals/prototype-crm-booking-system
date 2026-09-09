@@ -307,6 +307,329 @@
   to { transform: scale(1); opacity: 1; }
 }
 
+/* ==========================================================================
+   Owner Data Tables — Modern SaaS & IMK / Ergonomic Standards
+   ========================================================================== */
+
+.owner-table-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  margin-top: 24px;
+}
+
+.owner-table-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.owner-table-card-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.owner-table-card-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.owner-table-hint {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0f766e;
+  background: #f0fdfa;
+  border: 1px solid #ccfbf1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.owner-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.02);
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.owner-table-wrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.owner-table-wrapper::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.owner-table-wrapper::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+.owner-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.owner-table,
+.table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+  font-size: 13px;
+}
+
+/* Header */
+.owner-table thead tr,
+.table thead tr {
+  background: #f8fafc;
+}
+
+.owner-table th,
+.table th {
+  padding: 13px 16px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.owner-table th.col-center,
+.owner-table td.col-center,
+.table th.col-center,
+.table td.col-center {
+  text-align: center;
+}
+
+.owner-table th.col-right,
+.owner-table td.col-right,
+.table th.col-right,
+.table td.col-right {
+  text-align: right;
+}
+
+/* Body */
+.owner-table tbody tr,
+.table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.owner-table tbody tr:hover,
+.table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.owner-table tbody tr:not(:last-child) td,
+.table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.owner-table td,
+.table td {
+  padding: 13px 16px;
+  color: var(--text);
+  vertical-align: middle;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+/* Specific Column Styles */
+.owner-table .patient-info,
+.owner-table .staff-info,
+.owner-table .item-info,
+.owner-table .prac-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.owner-table .primary-text {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.owner-table .secondary-text {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.owner-table .code-badge {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 800;
+  background: #f1f5f9;
+  color: #0f766e;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  display: inline-block;
+  letter-spacing: 0.5px;
+}
+
+.owner-table .tabular-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.owner-table .price-text {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.owner-table .unit-tag {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* Status Badges */
+.owner-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.owner-status-badge.success {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.owner-status-badge.teal {
+  background: #ccfbf1;
+  color: #0f766e;
+  border: 1px solid #99f6e4;
+}
+
+.owner-status-badge.warning {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.owner-status-badge.danger {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.owner-status-badge.neutral {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+/* Table Action Buttons */
+.btn-table-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-height: 32px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.btn-table-action:active {
+  transform: scale(0.96);
+}
+
+.btn-table-success {
+  background: #f0fdfa;
+  color: #0f766e;
+  border-color: #99f6e4;
+}
+
+.btn-table-success:hover {
+  background: #0f766e;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(15, 118, 110, 0.2);
+}
+
+.btn-table-primary {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.btn-table-primary:hover {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+}
+
+.btn-table-danger {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.btn-table-danger:hover {
+  background: #dc2626;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.2);
+}
+
+/* Empty State */
+.owner-table-empty {
+  padding: 44px 20px !important;
+  text-align: center;
+  color: var(--muted);
+}
+
+.owner-table-empty-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.owner-table-empty-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.owner-table-empty-desc {
+  font-size: 12px;
+  color: var(--muted);
+}
+
 @media (max-width: 900px) {
   .owner-layout {
     display: block;
@@ -317,4 +640,23 @@
   .owner-main {
     padding: 16px 14px 96px 14px !important;
   }
+  .owner-table-card {
+    padding: 16px 12px;
+    border-radius: var(--radius-md);
+    margin-top: 16px;
+  }
+  .owner-table-hint {
+    display: flex !important;
+  }
+  .owner-table th,
+  .table th {
+    padding: 10px 12px;
+    font-size: 10px;
+  }
+  .owner-table td,
+  .table td {
+    padding: 11px 12px;
+    font-size: 12px;
+  }
 }
+

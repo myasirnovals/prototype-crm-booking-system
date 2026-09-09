@@ -392,29 +392,42 @@ export class OwnerDashboardController {
     const tbody = document.getElementById("branchQueueTableBody");
     if (!tbody) return;
 
+    if (!this.activeBranchQueue || this.activeBranchQueue.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="owner-table-empty">
+            <div class="owner-table-empty-icon">📅</div>
+            <div class="owner-table-empty-title">Tidak ada antrean hari ini</div>
+            <div class="owner-table-empty-desc">Semua sesi pasien untuk cabang ini telah selesai atau belum dijadwalkan.</div>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
     tbody.innerHTML = this.activeBranchQueue.map((item, idx) => {
-      let statusStyle = "background:#f1f5f9; color:#475569;";
-      if (item.status === "SELESAI") statusStyle = "background:#dcfce7; color:#15803d;";
-      if (item.status === "SEDANG SESI") statusStyle = "background:#ccfbf1; color:#0f766e;";
-      if (item.status === "MENUNGGU") statusStyle = "background:#fef3c7; color:#b45309;";
+      let statusBadge = `<span class="owner-status-badge neutral">● ${item.status}</span>`;
+      if (item.status === "SELESAI") {
+        statusBadge = `<span class="owner-status-badge success">● Selesai</span>`;
+      } else if (item.status === "SEDANG SESI") {
+        statusBadge = `<span class="owner-status-badge teal">● Sedang Sesi</span>`;
+      } else if (item.status === "MENUNGGU") {
+        statusBadge = `<span class="owner-status-badge warning">⏳ Menunggu</span>`;
+      }
 
       return `
         <tr>
-          <td><strong style="font-family:monospace; font-size:13px;">${item.queue}</strong></td>
-          <td><strong>${item.patient}</strong></td>
-          <td>${item.service}</td>
-          <td>${item.prac}</td>
-          <td>${item.room}</td>
-          <td>${item.time}</td>
-          <td>
-            <span class="pill" style="${statusStyle} font-size:10px; font-weight:800; padding:2px 8px;">
-              ${item.status}
-            </span>
-          </td>
-          <td style="text-align:right;">
+          <td class="col-center"><span class="code-badge">${item.queue}</span></td>
+          <td><div class="patient-info"><span class="primary-text">${item.patient}</span></div></td>
+          <td><span style="color:#0f766e; font-weight:600;">${item.service}</span></td>
+          <td><span style="color:var(--text); font-weight:500;">${item.prac}</span></td>
+          <td class="col-center"><span class="pill" style="background:#f1f5f9; color:#334155; font-size:11px; font-weight:700;">${item.room}</span></td>
+          <td class="col-center"><span style="font-size:12px; color:var(--text); font-variant-numeric:tabular-nums; font-weight:600;">🕒 ${item.time}</span></td>
+          <td class="col-center">${statusBadge}</td>
+          <td class="col-right">
             ${item.status !== "SELESAI" 
-              ? `<button class="btn btn-sm btn-white btn-finish-session" data-index="${idx}" style="font-size:11px; padding:3px 8px;">Tandai Selesai ✓</button>`
-              : `<span style="font-size:11px; color:var(--muted);">Tuntas</span>`}
+              ? `<button class="btn-table-action btn-table-success btn-finish-session" data-index="${idx}" title="Tandai sesi telah tuntas">Tandai Selesai ✓</button>`
+              : `<span style="font-size:11.5px; font-weight:700; color:var(--muted); display:inline-flex; align-items:center; gap:4px;">✓ Tuntas</span>`}
           </td>
         </tr>
       `;
@@ -487,16 +500,33 @@ export class OwnerDashboardController {
     const tbody = document.getElementById("branchStaffTableBody");
     if (!tbody) return;
 
+    if (!this.activeBranchStaff || this.activeBranchStaff.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="owner-table-empty">
+            <div class="owner-table-empty-icon">👥</div>
+            <div class="owner-table-empty-title">Belum ada staf terdaftar</div>
+            <div class="owner-table-empty-desc">Tambahkan staf resepsionis atau admin untuk cabang aktif ini.</div>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
     tbody.innerHTML = this.activeBranchStaff.map((stf, idx) => `
       <tr>
-        <td><strong>${stf.name}</strong></td>
+        <td>
+          <div class="staff-info">
+            <span class="primary-text">${stf.name}</span>
+          </div>
+        </td>
         <td><span class="pill" style="background:#f1f5f9; color:#334155; font-size:11px; font-weight:700;">${stf.role}</span></td>
-        <td style="font-family:monospace; font-size:12px;">${stf.email}</td>
-        <td>${stf.phone}</td>
-        <td><span style="font-size:12px; color:#0f766e; font-weight:700;">${stf.branchName}</span></td>
-        <td><span class="pill" style="background:#dcfce7; color:#15803d; font-size:10px; font-weight:800;">● ${stf.status}</span></td>
-        <td style="text-align:right;">
-          <button class="btn btn-sm btn-white btn-delete-staff" data-index="${idx}" style="color:#ef4444; font-size:11px; padding:3px 8px;">Hapus</button>
+        <td><span style="font-family:ui-monospace, monospace; font-size:12px; color:var(--muted);">${stf.email}</span></td>
+        <td><span style="font-size:12px; font-weight:600; font-variant-numeric:tabular-nums;">${stf.phone}</span></td>
+        <td><span style="font-size:12px; color:#0f766e; font-weight:700;">🏢 ${stf.branchName}</span></td>
+        <td class="col-center"><span class="owner-status-badge success">● ${stf.status}</span></td>
+        <td class="col-right">
+          <button class="btn-table-action btn-table-danger btn-delete-staff" data-index="${idx}" title="Hapus staf dari cabang">🗑️ Hapus</button>
         </td>
       </tr>
     `).join("");
@@ -532,16 +562,37 @@ export class OwnerDashboardController {
     let lowCount = 0;
     let criticalCount = 0;
 
+    if (!this.activeBranchInventory || this.activeBranchInventory.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="owner-table-empty">
+            <div class="owner-table-empty-icon">📦</div>
+            <div class="owner-table-empty-title">Katalog inventaris masih kosong</div>
+            <div class="owner-table-empty-desc">Tambahkan perlengkapan atau barang inventaris baru khusus cabang ini.</div>
+          </td>
+        </tr>
+      `;
+      const elTotal = document.getElementById("invTotalItems");
+      const elSafe = document.getElementById("invSafeItems");
+      const elLow = document.getElementById("invLowItems");
+      const elCrit = document.getElementById("invCriticalItems");
+      if (elTotal) elTotal.textContent = 0;
+      if (elSafe) elSafe.textContent = 0;
+      if (elLow) elLow.textContent = 0;
+      if (elCrit) elCrit.textContent = 0;
+      return;
+    }
+
     tbody.innerHTML = this.activeBranchInventory.map((item, idx) => {
-      let statusClass = "safe";
+      let statusClass = "success";
       let statusText = "● Stok Aman";
 
       if (item.stock === 0) {
-        statusClass = "critical";
+        statusClass = "danger";
         statusText = "✕ Stok Habis (Kritis)";
         criticalCount++;
       } else if (item.stock <= item.min) {
-        statusClass = "low";
+        statusClass = "warning";
         statusText = "⚠️ Stok Menipis";
         lowCount++;
       } else {
@@ -551,20 +602,30 @@ export class OwnerDashboardController {
       return `
         <tr>
           <td>
-            <strong>${item.name}</strong>
-            <div style="font-size:11px; color:var(--muted);">${item.unit || "Satuan"}</div>
+            <div class="item-info">
+              <span class="primary-text">${item.name}</span>
+              <span class="unit-tag">${item.unit || "Satuan"}</span>
+            </div>
           </td>
-          <td><span class="pill" style="background:#f1f5f9; color:#475569; font-size:11px;">${item.category}</span></td>
-          <td><strong style="font-size:14px;">${item.stock}</strong></td>
-          <td style="color:var(--muted); font-size:12px;">Min. ${item.min}</td>
-          <td style="font-weight:700;">${item.price}</td>
-          <td>
-            <span class="inventory-status-pill ${statusClass}">
+          <td><span class="pill" style="background:#f1f5f9; color:#475569; font-size:11px; font-weight:600;">${item.category}</span></td>
+          <td class="col-right">
+            <span class="tabular-num" style="font-size:14px; font-weight:800; color:${item.stock <= item.min ? '#b91c1c' : 'var(--text)'};">
+              ${item.stock}
+            </span>
+          </td>
+          <td class="col-right">
+            <span class="tabular-num secondary-text">Min. ${item.min}</span>
+          </td>
+          <td class="col-right">
+            <span class="price-text">${item.price}</span>
+          </td>
+          <td class="col-center">
+            <span class="owner-status-badge ${statusClass}">
               ${statusText}
             </span>
           </td>
-          <td style="text-align:right;">
-            <button class="btn btn-sm btn-white btn-add-stock" data-index="${idx}" style="font-size:11px; padding:4px 10px; font-weight:800;">
+          <td class="col-right">
+            <button class="btn-table-action btn-table-primary btn-add-stock" data-index="${idx}" title="Tambah 10 stok otomatis">
               ＋ 10 Stok
             </button>
           </td>
@@ -601,16 +662,33 @@ export class OwnerDashboardController {
     const tbody = document.getElementById("branchPractitionersTableBody");
     if (!tbody) return;
 
+    if (!this.activeBranchPractitioners || this.activeBranchPractitioners.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="owner-table-empty">
+            <div class="owner-table-empty-icon">🧑‍⚕️</div>
+            <div class="owner-table-empty-title">Belum ada praktisi yang bertugas</div>
+            <div class="owner-table-empty-desc">Jadwalkan dokter atau praktisi klinis untuk cabang aktif ini.</div>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
     tbody.innerHTML = this.activeBranchPractitioners.map((prac, idx) => `
       <tr>
-        <td><strong>${prac.name}</strong></td>
+        <td>
+          <div class="prac-info">
+            <span class="primary-text">${prac.name}</span>
+          </div>
+        </td>
         <td><span style="color:#0f766e; font-weight:700; font-size:12px;">${prac.specialty}</span></td>
-        <td><span class="pill" style="background:#f1f5f9; color:#334155; font-size:11px;">${prac.room}</span></td>
-        <td style="font-size:12px; color:var(--text);">${prac.shift}</td>
-        <td><strong>${prac.fee}</strong></td>
-        <td><span class="pill" style="background:#dcfce7; color:#15803d; font-size:10px; font-weight:800;">● ${prac.status}</span></td>
-        <td style="text-align:right;">
-          <button class="btn btn-sm btn-white btn-delete-prac" data-index="${idx}" style="color:#ef4444; font-size:11px; padding:3px 8px;">Hapus</button>
+        <td class="col-center"><span class="pill" style="background:#f1f5f9; color:#334155; font-size:11px; font-weight:700;">${prac.room}</span></td>
+        <td><span style="font-size:12px; color:var(--text); font-variant-numeric:tabular-nums; font-weight:500;">${prac.shift}</span></td>
+        <td class="col-right"><span class="price-text">${prac.fee}</span></td>
+        <td class="col-center"><span class="owner-status-badge success">● ${prac.status}</span></td>
+        <td class="col-right">
+          <button class="btn-table-action btn-table-danger btn-delete-prac" data-index="${idx}" title="Hapus praktisi dari jadwal cabang">🗑️ Hapus</button>
         </td>
       </tr>
     `).join("");

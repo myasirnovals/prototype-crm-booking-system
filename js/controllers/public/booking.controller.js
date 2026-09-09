@@ -596,16 +596,25 @@ export class PatientBookingController {
 
     // Update active consultation session box in selected clinic info bar
     const sessionTitleEl = document.getElementById("activeClinicSessionTitle");
+    const sessionDurationEl = document.getElementById("activeClinicSessionDuration");
+    const sessionTypeEl = document.getElementById("activeClinicSessionType");
     const sessionPriceEl = document.getElementById("activeClinicSessionPrice");
     const sessionDepositEl = document.getElementById("activeClinicSessionDeposit");
+
     if (sessionTitleEl) {
-      sessionTitleEl.textContent = `${consultation.serviceName} (${consultation.duration})`;
+      sessionTitleEl.textContent = `${consultation.serviceName}`;
+    }
+    if (sessionDurationEl) {
+      sessionDurationEl.textContent = `⏱️ ${consultation.duration}`;
+    }
+    if (sessionTypeEl) {
+      sessionTypeEl.textContent = `✨ Reservasi Online`;
     }
     if (sessionPriceEl) {
-      sessionPriceEl.textContent = consultation.price;
+      sessionPriceEl.style.display = "none";
     }
     if (sessionDepositEl) {
-      sessionDepositEl.textContent = `Deposit: ${consultation.deposit}`;
+      sessionDepositEl.style.display = "none";
     }
 
     // Optional legacy consultation banner support if present in DOM
@@ -876,8 +885,8 @@ export class PatientBookingController {
       complaintEl.textContent = this.bookingDraft.chiefComplaint || this.bookingDraft.intakeData || "Routine Clinical Assessment";
     }
 
-    if (priceEl) priceEl.textContent = this.bookingDraft.servicePrice;
-    if (depositEl) depositEl.textContent = this.bookingDraft.depositAmount;
+    if (priceEl) priceEl.textContent = "Bebas Biaya Online";
+    if (depositEl) depositEl.textContent = "Tanpa Uang Muka";
   }
 
   setupCheckoutAction(user) {
@@ -886,18 +895,24 @@ export class PatientBookingController {
 
     confirmBtn.addEventListener("click", () => {
       confirmBtn.disabled = true;
-      confirmBtn.textContent = i18nService.t("booking.processingDeposit", "Processing Deposit Payment...");
+      confirmBtn.textContent = "Memproses Reservasi Janji Temu...";
 
       setTimeout(async () => {
         soundService.playQueueChime();
 
-        // Generate booking record
+        // Generate booking record & clinical queue number
         const now = new Date();
         const codeSuffix = Math.floor(1000 + Math.random() * 9000);
         const bookingCode = `BK-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}-${codeSuffix}`;
+        
+        // Generate daily clinic queue letter & number (e.g. A-08, B-03)
+        const prefixChar = (this.activeTemplateId === "tcm" ? "A" : this.activeTemplateId === "physio" ? "B" : this.activeTemplateId === "nutrition" ? "D" : "C");
+        const queueNum = Math.floor(1 + Math.random() * 15);
+        const queueCode = `${prefixChar}-${String(queueNum).padStart(2, "0")}`;
 
         const newBooking = {
           code: bookingCode,
+          queueNumber: queueCode,
           patientName: user.name || "Amanda Tan",
           patientPhone: user.contact || "+65 8123 4567",
           branchId: this.selectedBranch ? this.selectedBranch.id : "sg-orchard",
@@ -907,8 +922,8 @@ export class PatientBookingController {
           practitionerName: this.bookingDraft.practitionerName,
           schedule: this.bookingDraft.scheduleSlot,
           room: this.bookingDraft.room || "Private Consultation Suite 01",
-          depositPaid: this.bookingDraft.depositAmount,
-          paymentStatus: `DEPOSIT PAID (${this.bookingDraft.depositAmount})`,
+          depositPaid: "0.00",
+          paymentStatus: "TERKONFIRMASI (Bayar di Klinik / On-Site Settlement)",
           complaint: this.bookingDraft.chiefComplaint,
           templateType: this.activeTemplateId,
           intakeData: this.bookingDraft.intakeData,
@@ -916,12 +931,12 @@ export class PatientBookingController {
           createdAt: now.toISOString()
         };
 
-        // Save directly via bookingService (Supabase SSOT)
+        // Save directly via bookingService (Supabase SSOT & LocalStorage)
         await bookingService.createBooking(newBooking);
 
         const clinicName = this.bookingDraft.branchName || "Klinik Cliniva";
         const arrivalTime = this.bookingDraft.scheduleSlot || "jam yang dipilih";
-        alert(`✅ Booking Anda sudah terkonfirmasi!\nSilakan datang ke ${clinicName} pada jam ${arrivalTime}.\n\n(Menampilkan E-Tiket resmi Anda...)`);
+        alert(`✅ Booking Anda sudah terkonfirmasi!\n\n🎫 Nomor Antrean Klinik: [${queueCode}]\n🏥 Lokasi: ${clinicName}\n⏰ Jadwal Kedatangan: ${arrivalTime}\n\nCatatan: Pembayaran konsultasi/tindakan diselesaikan langsung di kasir klinik saat kunjungan selesai.\n\n(Menampilkan E-Tiket resmi Anda...)`);
         window.location.href = `ticket.html?code=${encodeURIComponent(bookingCode)}`;
       }, 1000);
     });

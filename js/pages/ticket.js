@@ -33,14 +33,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       practitionerName: "Dr. Wong Mei Ling",
       schedule: "Wednesday, 10:30 SGT",
       room: "Room B1 (TCM Suite)",
-      depositPaid: "SGD 25.00",
-      paymentStatus: "DEPOSIT PAID (SGD 25.00)",
+      queueNumber: "A-01",
+      depositPaid: "0.00",
+      paymentStatus: "TERKONFIRMASI (Bayar di Klinik / On-Site)",
       intakeData: "Pain Areas: Lower Back / Lumbar | Intensity: Moderate"
     };
   }
 
   // 2. Populate dynamic ticket DOM elements
   const codeEl = document.getElementById("ticketCodeVal");
+  const queueEl = document.getElementById("ticketQueueVal");
   const patientEl = document.getElementById("ticketPatientVal");
   const serviceEl = document.getElementById("ticketServiceVal");
   const practitionerEl = document.getElementById("ticketPractitionerVal");
@@ -52,13 +54,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const brandEl = document.querySelector(".ticket-brand");
 
   if (codeEl) codeEl.textContent = activeBooking.code;
+  if (queueEl) queueEl.textContent = activeBooking.queueNumber || activeBooking.queue || "A-01";
   if (patientEl) patientEl.textContent = activeBooking.patientName;
   if (serviceEl) serviceEl.textContent = activeBooking.serviceName;
   if (practitionerEl) practitionerEl.textContent = activeBooking.practitionerName;
   if (scheduleEl) scheduleEl.textContent = activeBooking.schedule;
   if (roomEl && activeBooking.room) roomEl.textContent = activeBooking.room;
-  if (paymentEl && (activeBooking.paymentStatus || activeBooking.depositPaid)) {
-    paymentEl.textContent = activeBooking.paymentStatus || `DEPOSIT PAID (${activeBooking.depositPaid})`;
+  if (paymentEl) {
+    paymentEl.textContent = activeBooking.paymentStatus && !activeBooking.paymentStatus.includes("DEPOSIT") 
+      ? activeBooking.paymentStatus 
+      : "TERKONFIRMASI (Bayar di Klinik / On-Site Settlement)";
   }
   if (brandEl && activeBooking.branchName) {
     brandEl.textContent = `CLINIVA HEALTHCARE • ${activeBooking.branchName.toUpperCase()}`;

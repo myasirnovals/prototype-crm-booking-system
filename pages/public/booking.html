@@ -149,11 +149,10 @@
                   Aromatherapy Massage (75 min)</div>
               </div>
               <div style="text-align:right;">
-                <span id="activeClinicSessionPrice" style="font-size:13px; font-weight:800; color:var(--text);">SGD
-                  130.00</span>
-                <span id="activeClinicSessionDeposit" class="pill"
-                  style="font-size:10px; padding:2px 8px; background:#f0fdf4; color:#16a34a; font-weight:800; margin-left:6px;">Deposit:
-                  SGD 35.00</span>
+                <span id="activeClinicSessionDuration" class="pill"
+                  style="font-size:11px; padding:3px 8px; background:#eff6ff; color:#2563eb; font-weight:800;">⏱️ 75 Menit</span>
+                <span id="activeClinicSessionType" class="pill"
+                  style="font-size:10px; padding:2px 8px; background:#f0fdf4; color:#16a34a; font-weight:800; margin-left:6px;">✨ Reservasi Online</span>
               </div>
             </div>
           </div>
@@ -255,12 +254,11 @@
       </div>
     </section>
 
-    <!-- STEP 4 PANE: SUMMARY & DEPOSIT E-TICKET -->
+    <!-- STEP 4 PANE: SUMMARY & DIGITAL E-TICKET CONFIRMATION -->
     <section class="wizard-step-pane" id="bookingStepPane4">
       <div class="wizard-pane-header">
-        <h2 data-i18n="booking.step4.title">Review Appointment &amp; Deposit Payment</h2>
-        <p data-i18n="booking.step4.desc">Review your appointment details and complete deposit payment to secure your
-          reservation.</p>
+        <h2 data-i18n="booking.step4.title">Review &amp; Konfirmasi Janji Temu</h2>
+        <p data-i18n="booking.step4.desc">Periksa kembali detail reservasi konsultasi Anda. Tiket janji temu digital akan diterbitkan langsung untuk check-in di klinik.</p>
       </div>
 
       <div class="booking-summary-card">
@@ -295,24 +293,23 @@
             style="font-size:12px; max-width:60%; text-align:right; color:var(--text-secondary);">Aromatherapy: Lavender
             · Pressure: Medium</span>
         </div>
-        <div class="booking-summary-row">
-          <span style="color:var(--muted);">Standard Consultation Fee:</span>
-          <strong id="summaryPriceVal" style="font-size:15px; color:var(--text);">SGD 130.00</strong>
-        </div>
         <div class="booking-summary-row"
-          style="background:#f0fdf4; padding:12px; border-radius:var(--radius-sm); margin-top:8px;">
-          <span style="color:#16a34a; font-weight:800;" data-i18n="booking.step4.depositFee">Deposit Commitment Fee
-            (Hold Slot):</span>
-          <strong id="summaryDepositVal" class="booking-deposit-total">SGD 35.00</strong>
+          style="background:#f0fdf4; padding:12px; border-radius:var(--radius-sm); margin-top:8px; border:1px solid #bbf7d0;">
+          <div>
+            <div style="color:#16a34a; font-weight:800; font-size:13px;" data-i18n="booking.step4.reservationFee">Biaya Reservasi Online:</div>
+            <small style="color:var(--muted); font-size:11px;">Bebas Biaya di Awal · Reservasi Mandiri</small>
+          </div>
+          <strong class="pill" style="font-size:12px; background:#16a34a; color:#fff; font-weight:800; padding:4px 10px;">GRATIS (SGD 0.00)</strong>
         </div>
       </div>
 
       <div
         style="background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-sm); padding:16px; margin-bottom:24px;">
-        <div style="font-size:12px; font-weight:800; color:var(--text); margin-bottom:4px;"
-          data-i18n="booking.step4.paymentMethod">METODE PEMBAYARAN:</div>
-        <p style="font-size:12px; color:var(--muted); margin:0 0 10px;">
-          Pembayaran biaya konsultasi dan tindakan diselesaikan langsung di meja resepsionis saat Anda tiba di klinik (tersedia PayNow SG, DuitNow MY, Tunai, dan Kartu).
+        <div style="font-size:12px; font-weight:800; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+          <span>🏥</span> <span data-i18n="booking.step4.paymentMethod">INFORMASI PEMBAYARAN DI KLINIK (ON-SITE PAYMENT):</span>
+        </div>
+        <p style="font-size:12px; color:var(--muted); margin:0 0 10px; line-height:1.5;">
+          Aplikasi ini murni sebagai sistem reservasi janji temu dan antrean. Seluruh pembayaran biaya konsultasi, tindakan dokter, dan obat diselesaikan langsung di kasir klinik saat kunjungan Anda selesai.
         </p>
         <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
           <span class="pill" style="font-size:11px; background:#fff; border:1px solid var(--line); color:var(--text);">
@@ -322,7 +319,10 @@
             🇲🇾 DuitNow QR
           </span>
           <span class="pill" style="font-size:11px; background:#fff; border:1px solid var(--line); color:var(--text);">
-            💳 Kartu / Tunai di Klinik
+            💳 Kartu Debit / Kredit
+          </span>
+          <span class="pill" style="font-size:11px; background:#fff; border:1px solid var(--line); color:var(--text);">
+            💵 Tunai di Kasir Klinik
           </span>
         </div>
       </div>
@@ -332,7 +332,7 @@
           Information</button>
         <button type="button" class="btn btn-primary" id="confirmBookingCheckoutBtn"
           style="font-size:15px; padding:12px 24px;" data-i18n="booking.step4.confirmBtn">
-          Confirm &amp; Issue Digital E-Ticket 🎟️
+          Konfirmasi Reservasi &amp; Terbitkan E-Tiket 🎟️
         </button>
       </div>
     </section>

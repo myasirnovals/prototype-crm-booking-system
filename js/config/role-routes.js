@@ -42,7 +42,7 @@ export const ROLE_CONFIG = {
     homeRoute: "pages/branch-admin/index.html",
     badge: "🏪 Admin Cabang",
     color: "#0369a1",
-    description: "Operasional cabang: antrean meja depan (front desk), dokter/praktisi cabang, jadwal ruangan & kasir POS"
+    description: "Operasional cabang: antrean meja depan (front desk), dokter/praktisi cabang, jadwal & keterisian ruangan"
   },
   // Backward compatibility fallback keys
   "BRANCH_MANAGER": {
@@ -50,14 +50,14 @@ export const ROLE_CONFIG = {
     homeRoute: "pages/branch-admin/index.html",
     badge: "🏪 Admin Cabang",
     color: "#0369a1",
-    description: "Operasional cabang: antrean meja depan (front desk), dokter/praktisi cabang, jadwal ruangan & kasir POS"
+    description: "Operasional cabang: antrean meja depan (front desk), dokter/praktisi cabang, jadwal & keterisian ruangan"
   },
   "RECEPTIONIST": {
     name: "Admin Cabang (Branch Admin)",
     homeRoute: "pages/branch-admin/index.html",
     badge: "🏪 Admin Cabang",
     color: "#0369a1",
-    description: "Operasional cabang: antrean meja depan (front desk), dokter/praktisi cabang, jadwal ruangan & kasir POS"
+    description: "Operasional cabang: antrean meja depan (front desk), dokter/praktisi cabang, jadwal & keterisian ruangan"
   },
   [USER_ROLES.PRACTITIONER]: {
     name: "Practitioner / Doctor / Therapist",

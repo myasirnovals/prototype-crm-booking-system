@@ -269,6 +269,18 @@ export class BranchAdminController {
       items.forEach((item) => {
         const card = document.createElement("div");
         card.className = "queue-card";
+        
+        let actionBtnHtml = "";
+        if (item.statusBadge === "WAITING") {
+          actionBtnHtml = `<button type="button" class="btn btn-sm btn-primary full btn-action-step" data-action="call">🔊 Panggil Pasien (Chime)</button>`;
+        } else if (item.statusBadge === "READY") {
+          actionBtnHtml = `<button type="button" class="btn btn-sm btn-secondary full btn-action-step" data-action="start" style="background:#7c3aed; color:#fff;">🩺 Mulai Konsultasi (Masuk)</button>`;
+        } else if (item.statusBadge === "IN_CONSULT") {
+          actionBtnHtml = `<button type="button" class="btn btn-sm btn-success full btn-action-step" data-action="complete" style="background:#16a34a; color:#fff;">✅ Selesaikan &amp; Approve</button>`;
+        } else {
+          actionBtnHtml = `<button type="button" class="btn btn-sm btn-soft full" disabled style="opacity:0.75; font-weight:700;">✓ Janji Temu Selesai</button>`;
+        }
+
         card.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:flex-start;">
             <span class="queue-number">${item.queue}</span>
@@ -276,13 +288,14 @@ export class BranchAdminController {
           </div>
           <h4 style="margin:8px 0 4px;">${item.patient}</h4>
           <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">${item.service}</p>
-          <button type="button" class="btn btn-sm btn-primary full btn-call-patient" data-queue="${item.queue}" data-patient="${item.patient}">
-            🔊 Panggil Pasien (Audio Chime)
-          </button>
+          ${actionBtnHtml}
         `;
 
-        card.querySelector(".btn-call-patient")?.addEventListener("click", () => {
-          this.callPatient(item);
+        card.querySelector(".btn-action-step")?.addEventListener("click", (e) => {
+          const action = e.currentTarget.dataset.action;
+          if (action === "call") this.callPatient(item);
+          else if (action === "start") this.updateQueueItemStatus(item, "IN_CONSULT");
+          else if (action === "complete") this.updateQueueItemStatus(item, "COMPLETED");
         });
 
         this.queueGrid.appendChild(card);
@@ -296,6 +309,17 @@ export class BranchAdminController {
         const tr = document.createElement("tr");
         const serviceName = item.service ? item.service.split("·")[0].trim() : "Konsultasi";
         const doctorName = item.doctor || (item.service && item.service.includes("·") ? item.service.split("·")[1].trim() : "Dokter Bertugas");
+
+        let tableActionHtml = "";
+        if (item.statusBadge === "WAITING") {
+          tableActionHtml = `<button type="button" class="btn btn-sm btn-primary btn-tab-action" data-action="call" style="padding:4px 8px; font-size:11px;">🔊 Panggil</button>`;
+        } else if (item.statusBadge === "READY") {
+          tableActionHtml = `<button type="button" class="btn btn-sm btn-tab-action" data-action="start" style="padding:4px 8px; font-size:11px; background:#7c3aed; color:#fff;">🩺 Mulai</button>`;
+        } else if (item.statusBadge === "IN_CONSULT") {
+          tableActionHtml = `<button type="button" class="btn btn-sm btn-tab-action" data-action="complete" style="padding:4px 8px; font-size:11px; background:#16a34a; color:#fff;">✅ Selesai</button>`;
+        } else {
+          tableActionHtml = `<span style="font-size:11px; color:#16a34a; font-weight:800;">✓ Selesai</span>`;
+        }
 
         tr.innerHTML = `
           <td><strong style="font-size:14px; color:${item.badgeColor || 'var(--primary)'};">${item.queue}</strong></td>
@@ -315,14 +339,15 @@ export class BranchAdminController {
             </span>
           </td>
           <td style="text-align:center;">
-            <button type="button" class="btn btn-sm btn-primary btn-call-table" data-queue="${item.queue}" data-patient="${item.patient}" style="padding:4px 10px; font-size:11px;">
-              🔊 Panggil
-            </button>
+            ${tableActionHtml}
           </td>
         `;
 
-        tr.querySelector(".btn-call-table")?.addEventListener("click", () => {
-          this.callPatient(item);
+        tr.querySelector(".btn-tab-action")?.addEventListener("click", (e) => {
+          const action = e.currentTarget.dataset.action;
+          if (action === "call") this.callPatient(item);
+          else if (action === "start") this.updateQueueItemStatus(item, "IN_CONSULT");
+          else if (action === "complete") this.updateQueueItemStatus(item, "COMPLETED");
         });
 
         this.queueTableBody.appendChild(tr);
@@ -330,17 +355,52 @@ export class BranchAdminController {
     }
   }
 
+  async updateQueueItemStatus(item, newStatus) {
+    const queueStorageKey = `cliniva_queue_${this.branchId}`;
+    let items = storageService.get(queueStorageKey, null) || this.queueItems || [];
+
+    const target = items.find(q => q.id === item.id || q.queue === item.queue);
+    if (target) {
+      target.statusBadge = newStatus;
+      if (newStatus === "READY") {
+        target.badgeColor = "#0f766e";
+        target.badgeBg = "#f0fdfa";
+      } else if (newStatus === "IN_CONSULT") {
+        target.badgeColor = "#7c3aed";
+        target.badgeBg = "#f5f3ff";
+      } else if (newStatus === "COMPLETED") {
+        target.badgeColor = "#16a34a";
+        target.badgeBg = "#f0fdf4";
+      }
+    }
+
+    storageService.set(queueStorageKey, items);
+    this.queueItems = items;
+
+    if (supabaseService.isAvailable() && item.id) {
+      try {
+        await supabaseService.updateQueueStatus(item.id, newStatus, {
+          statusBadge: newStatus,
+          badgeColor: target?.badgeColor,
+          badgeBg: target?.badgeBg
+        });
+      } catch (err) {
+        console.warn("[BranchAdmin] Failed to update cloud status:", err);
+      }
+    }
+
+    if (newStatus === "COMPLETED") {
+      alert(`✅ Janji Temu [${item.queue}] ${item.patient} telah disetujui & diselesaikan di klinik.`);
+    } else if (newStatus === "IN_CONSULT") {
+      alert(`🩺 Pasien [${item.queue}] ${item.patient} telah masuk ke ${item.room || 'Ruang Praktik'} untuk sesi konsultasi.`);
+    }
+
+    this.renderLiveQueue();
+  }
+
   async callPatient(item) {
     soundService.playQueueChime();
-
-    // Update status in cloud if available
-    if (supabaseService.isAvailable() && item.id) {
-      await supabaseService.updateQueueStatus(item.id, "READY", {
-        statusBadge: "READY",
-        badgeColor: "#0f766e",
-        badgeBg: "#f0fdfa"
-      });
-    }
+    await this.updateQueueItemStatus(item, "READY");
 
     if (notificationService && typeof notificationService.addSystemNotification === "function") {
       notificationService.addSystemNotification({

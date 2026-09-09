@@ -354,22 +354,531 @@
   }
 }
 
-@media (max-width: 960px) {
+/* ==========================================================================
+   Header Topbar Component
+   ========================================================================== */
+.practitioner-header {
+  background: #ffffff;
+  border-bottom: 1px solid var(--line, #e2e8f0);
+  padding: 12px 28px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+
+.practitioner-header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1600px;
+  margin: 0 auto;
+  gap: 16px;
+}
+
+.practitioner-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.practitioner-header-right {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.practitioner-user-detail {
+  text-align: right;
+}
+
+/* ==========================================================================
+   Tab Panes (Desktop: All visible; Mobile: Switched via Bottom Nav)
+   ========================================================================== */
+.doc-tab-pane {
+  display: block;
+}
+
+/* ==========================================================================
+   Mobile Bottom Navigation (Thumb Zone & Fitts's Law)
+   ========================================================================== */
+.doctor-mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(226, 232, 240, 0.9);
+  z-index: 500;
+  padding: 0;
+  box-shadow: 0 -4px 24px rgba(15, 23, 42, 0.06);
+}
+
+.doctor-mobile-nav-inner {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 6px));
+  box-sizing: border-box;
+}
+
+.doc-mob-btn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 2px 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: #64748b;
+  position: relative;
+  border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.doc-mob-btn:active {
+  transform: scale(0.93);
+}
+
+.doc-mob-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 28px;
+  border-radius: 14px;
+  font-size: 16px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: inherit;
+}
+
+.doc-mob-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+/* Active State */
+.doc-mob-btn.active {
+  color: #0284c7;
+}
+
+.doc-mob-btn.active .doc-mob-icon {
+  background: rgba(2, 132, 199, 0.12);
+  color: #0284c7;
+  transform: scale(1.05);
+}
+
+.doc-mob-btn.active .doc-mob-label {
+  font-weight: 800;
+  color: #0284c7;
+}
+
+/* ==========================================================================
+   Mobile Patient Quick Switcher Strip
+   ========================================================================== */
+.mobile-patient-bar {
+  display: none;
+  background: #ffffff;
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: var(--radius-lg, 16px);
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.mobile-patient-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.mobile-patient-bar-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted, #64748b);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mobile-patient-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 2px 6px;
+  scrollbar-width: none;
+}
+
+.mobile-patient-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-patient-chip {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: 1px solid var(--line, #e2e8f0);
+  background: #f8fafc;
+  color: var(--text, #0f172a);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-patient-chip:hover {
+  border-color: #0284c7;
+  background: #f0f9ff;
+}
+
+.mobile-patient-chip.active {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+}
+
+.mobile-patient-chip .chip-queue {
+  font-weight: 900;
+  padding: 1px 5px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.08);
+  font-size: 10px;
+}
+
+.mobile-patient-chip.active .chip-queue {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* Touch Hitbox for Pain Markers */
+.pain-marker::after {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   Session Status Bar
+   ========================================================================== */
+.session-status-bar {
+  background: #ffffff;
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: var(--radius-lg, 16px);
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.session-status-bar-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@keyframes fadeInPane {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 900px) {
+  /* Header: Compact 56px Bar without horizontal overflow */
+  .practitioner-header {
+    padding: 8px 14px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+  }
+
+  .practitioner-header-inner {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .practitioner-header-left {
+    gap: 8px;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .practitioner-header-left .logo {
+    font-size: 15px;
+    white-space: nowrap;
+  }
+
+  .practitioner-header-left .pill {
+    font-size: 10.5px;
+    padding: 3px 8px;
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Declutter secondary items on mobile */
+  .practitioner-header-right {
+    gap: 8px;
+  }
+
+  .lang-switcher-wrap {
+    display: none;
+  }
+
+  .practitioner-user-detail {
+    display: none;
+  }
+
+  #doctorSignOutBtn {
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+    height: 34px !important;
+    border-radius: 8px !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  #editProfileBtn,
+  #editProfileBtnMob {
+    width: 34px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+    background: #f8fafc;
+    border: 1px solid var(--line, #e2e8f0);
+    cursor: pointer;
+  }
+
+  /* Layout: Column with Bottom Padding for Sticky Nav */
   .doctor-layout {
     flex-direction: column;
+    padding-bottom: 74px; /* Space for bottom navigation */
   }
+
   .doctor-sidebar {
     width: 100%;
     border-right: none;
-    border-bottom: 1px solid var(--line);
+    border-bottom: none;
+    padding: 14px;
+    box-sizing: border-box;
   }
+
+  .doctor-main {
+    padding: 14px;
+    box-sizing: border-box;
+    overflow-y: visible;
+  }
+
+  /* Show Bottom Navigation */
+  .doctor-mobile-nav {
+    display: block;
+  }
+
+  /* Tab Panes Switch via data-active-tab on .doctor-layout */
+  .doctor-layout[data-active-tab="queue"] .doctor-sidebar {
+    display: flex !important;
+    animation: fadeInPane 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .doctor-layout[data-active-tab="queue"] .doctor-main {
+    display: none !important;
+  }
+
+  .doctor-layout:not([data-active-tab="queue"]) .doctor-sidebar {
+    display: none !important;
+  }
+  .doctor-layout:not([data-active-tab="queue"]) .doctor-main {
+    display: block !important;
+  }
+
+  /* When on consult tab */
+  .doctor-layout[data-active-tab="consult"] #doctorCallingBanner,
+  .doctor-layout[data-active-tab="consult"] .session-status-bar,
+  .doctor-layout[data-active-tab="consult"] .intake-detail-card {
+    display: block !important;
+    animation: fadeInPane 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .doctor-layout[data-active-tab="consult"] #doctorCallingBanner {
+    display: flex !important;
+  }
+  .doctor-layout[data-active-tab="consult"] .session-status-bar {
+    display: flex !important;
+  }
+  .doctor-layout[data-active-tab="consult"] .pain-map-container,
+  .doctor-layout[data-active-tab="consult"] .treatment-notes-card {
+    display: none !important;
+  }
+
+  /* When on painmap tab */
+  .doctor-layout[data-active-tab="painmap"] #doctorCallingBanner,
+  .doctor-layout[data-active-tab="painmap"] .session-status-bar,
+  .doctor-layout[data-active-tab="painmap"] .intake-detail-card,
+  .doctor-layout[data-active-tab="painmap"] .treatment-notes-card {
+    display: none !important;
+  }
+  .doctor-layout[data-active-tab="painmap"] .pain-map-container {
+    display: block !important;
+    animation: fadeInPane 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* When on notes tab */
+  .doctor-layout[data-active-tab="notes"] #doctorCallingBanner,
+  .doctor-layout[data-active-tab="notes"] .session-status-bar,
+  .doctor-layout[data-active-tab="notes"] .intake-detail-card,
+  .doctor-layout[data-active-tab="notes"] .pain-map-container {
+    display: none !important;
+  }
+  .doctor-layout[data-active-tab="notes"] .treatment-notes-card {
+    display: block !important;
+    animation: fadeInPane 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-patient-bar {
+    display: block;
+  }
+
+  /* Calling Banner: Columnar & Thumb Friendly */
+  .calling-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 18px 16px;
+    text-align: left;
+    margin-bottom: 16px;
+  }
+
+  .calling-banner h3 {
+    font-size: 19px !important;
+  }
+
+  .calling-banner .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+    font-size: 13.5px;
+    border-radius: 10px;
+  }
+
+  /* Session Status Bar */
+  .session-status-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+
+  .session-status-bar-select-wrap {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .session-status-bar select {
+    width: 100% !important;
+    box-sizing: border-box;
+    min-height: 40px;
+    font-size: 13.5px;
+  }
+
+  /* Clinical Grid */
   .clinical-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 0;
   }
+
+  .intake-detail-card,
+  .pain-map-container,
+  .treatment-notes-card {
+    padding: 18px 16px;
+    border-radius: var(--radius-lg, 16px);
+  }
+
+  .field-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* Toast Container */
   .practitioner-toast-container {
     top: auto;
-    bottom: 20px;
-    right: 16px;
-    left: 16px;
+    bottom: 80px;
+    right: 14px;
+    left: 14px;
+  }
+
+  .practitioner-toast {
+    max-width: 100%;
+  }
+
+  /* Treatment Notes Form */
+  .treatment-notes-textarea {
+    font-size: 14px;
+    min-height: 120px;
+  }
+
+  .treatment-notes-card .btn {
+    min-height: 46px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 430px) {
+  .practitioner-header-left .pill {
+    max-width: 90px;
+    font-size: 9.5px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .calling-banner h3 {
+    font-size: 17.5px !important;
   }
 }

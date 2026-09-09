@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -17,9 +17,9 @@
 
 <body>
   <!-- Header Topbar -->
-  <header style="background:#fff; border-bottom:1px solid var(--line); padding:14px 28px; position:sticky; top:0; z-index:100;">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <div style="display:flex; align-items:center; gap:16px;">
+  <header class="practitioner-header">
+    <div class="practitioner-header-inner">
+      <div class="practitioner-header-left">
         <a href="../../index.html" class="logo">
           <span class="logo-mark">✦</span>
           Cliniva Clinical
@@ -27,9 +27,12 @@
         <span class="pill" style="font-size:11px; padding:4px 10px; background:#f0f9ff; color:#0284c7; font-weight:800;" data-i18n="practitioner.topbar">
           🧑‍⚕️ Practitioner Workspace
         </span>
+        <span class="pill" id="mobileDoctorRoomBadge" style="font-size:10.5px; padding:3px 8px; background:#f8fafc; color:#0284c7; font-weight:800; border:1px solid var(--line);">
+          📍 Room A2
+        </span>
       </div>
 
-      <div style="display:flex; gap:14px; align-items:center;">
+      <div class="practitioner-header-right">
         <!-- Global Notification Bar -->
         <div class="notif-bar-slot" id="notificationBarContainer"></div>
 
@@ -42,7 +45,7 @@
           </select>
         </div>
 
-        <div style="text-align:right;">
+        <div class="practitioner-user-detail">
           <div style="display:flex; align-items:center; justify-content:flex-end; gap:4px;">
             <span id="doctorUserName" style="font-size:13px; font-weight:800; color:var(--text);">Dr. Lim Wei Han</span>
             <button type="button" class="profile-edit-trigger" id="editProfileBtn" title="Edit Profile" aria-label="Edit Profile">✏️</button>
@@ -51,12 +54,13 @@
             <span id="doctorUserTitle">Senior Physiotherapist</span> · <span id="doctorUserRoom" style="font-weight:700; color:var(--primary);">📍 Room A2</span>
           </div>
         </div>
+        <button type="button" class="profile-edit-trigger show-mobile-only" id="editProfileBtnMob" title="Edit Profile" aria-label="Edit Profile" style="display:none;">✏️</button>
         <button type="button" class="btn btn-sm btn-primary" id="doctorSignOutBtn" data-i18n="nav.signOut">Sign Out</button>
       </div>
     </div>
   </header>
 
-  <div class="doctor-layout">
+  <div class="doctor-layout" data-active-tab="queue">
     <!-- Sidebar: Today's Consultation Queue -->
     <aside class="doctor-sidebar">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
@@ -116,6 +120,17 @@
 
     <!-- Main Workspace Area -->
     <main class="doctor-main">
+      <!-- Mobile Patient Quick Switcher Strip (Visible on mobile across consult, pain map & notes) -->
+      <div class="mobile-patient-bar" id="mobilePatientBar">
+        <div class="mobile-patient-bar-header">
+          <span class="mobile-patient-bar-title">Pasien Dalam Konsultasi</span>
+          <span class="badge-live" id="mobActivePatientCount">3 PASIEN</span>
+        </div>
+        <div class="mobile-patient-chips" id="mobilePatientChips">
+          <!-- Populated dynamically via controller -->
+        </div>
+      </div>
+
       <!-- Action Banner: Queue Calling -->
       <div class="calling-banner" id="doctorCallingBanner">
         <div>
@@ -134,8 +149,8 @@
       </div>
 
       <!-- Session Status Bar -->
-      <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px 20px; display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-        <div style="display:flex; align-items:center; gap:12px;">
+      <div class="session-status-bar">
+        <div class="session-status-bar-select-wrap">
           <strong style="font-size:14px;">Treatment Session Status:</strong>
           <select id="sessionStatusSelect" style="padding:6px 12px; border-radius:var(--radius-sm); border:1px solid var(--line); font-size:13px; font-weight:700;">
             <option value="WAITING">🟡 Waiting Lounge (Checked In)</option>
@@ -286,6 +301,28 @@
       </div>
     </main>
   </div>
+
+  <!-- Mobile Bottom Navigation Bar (Fitts's Law & Ergonomic Thumb Zone) -->
+  <nav class="doctor-mobile-nav" aria-label="Practitioner Mobile Navigation">
+    <div class="doctor-mobile-nav-inner">
+      <button type="button" class="doc-mob-btn active" data-tab="queue" id="mobTabQueue" title="Antrean Pasien">
+        <span class="doc-mob-icon">📋</span>
+        <span class="doc-mob-label">Antrean</span>
+      </button>
+      <button type="button" class="doc-mob-btn" data-tab="consult" id="mobTabConsult" title="Konsultasi &amp; Rekam Medis">
+        <span class="doc-mob-icon">🩺</span>
+        <span class="doc-mob-label">Konsultasi</span>
+      </button>
+      <button type="button" class="doc-mob-btn" data-tab="painmap" id="mobTabPainMap" title="Visual Body Pain Map">
+        <span class="doc-mob-icon">🧍</span>
+        <span class="doc-mob-label">Pain Map</span>
+      </button>
+      <button type="button" class="doc-mob-btn" data-tab="notes" id="mobTabNotes" title="Catatan Terapi">
+        <span class="doc-mob-icon">📝</span>
+        <span class="doc-mob-label">Catatan</span>
+      </button>
+    </div>
+  </nav>
 
   <!-- Toast feedback container -->
   <div class="practitioner-toast-container" id="practitionerToastContainer" aria-live="polite"></div>

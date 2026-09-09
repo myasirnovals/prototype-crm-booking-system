@@ -52,6 +52,7 @@ export class PractitionerController {
     this.setupTreatmentNotes();
     this.setupPainMapInteractions();
     this.setupRealtimeQueueSubscription();
+    this.setupMobileTabs();
     this.setupSignOut();
   }
 
@@ -59,9 +60,11 @@ export class PractitionerController {
     const nameEl = document.getElementById("doctorUserName");
     const titleEl = document.getElementById("doctorUserTitle");
     const roomEl = document.getElementById("doctorUserRoom");
+    const mobRoomEl = document.getElementById("mobileDoctorRoomBadge");
     if (nameEl) nameEl.textContent = user.name || "Dr. Lim Wei Han";
     if (titleEl) titleEl.textContent = user.specialty || user.title || "Senior Physiotherapist";
     if (roomEl) roomEl.textContent = `📍 ${user.room || "Room A2 (Physio Suite)"}`;
+    if (mobRoomEl) mobRoomEl.textContent = `📍 ${user.room || "Room A2"}`;
   }
 
   /**
@@ -224,9 +227,82 @@ export class PractitionerController {
       this.queueListContainer.appendChild(card);
     });
 
+    this.renderMobilePatientChips();
+
     if (this.activePatient) {
       this.syncActivePatientView();
     }
+  }
+
+  /**
+   * Render horizontal patient switcher chips for mobile
+   */
+  renderMobilePatientChips() {
+    const container = document.getElementById("mobilePatientChips");
+    if (!container) return;
+
+    container.innerHTML = "";
+    this.sessions.forEach((patient) => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = `mobile-patient-chip ${this.activePatient && this.activePatient.queueNo === patient.queueNo ? "active" : ""}`;
+      chip.dataset.queue = patient.queueNo;
+      chip.innerHTML = `
+        <span class="chip-queue">${patient.queueNo}</span>
+        <span>${patient.name}</span>
+      `;
+      chip.addEventListener("click", () => {
+        this.selectPatient(patient.queueNo);
+      });
+      container.appendChild(chip);
+    });
+
+    const mobCount = document.getElementById("mobActivePatientCount");
+    if (mobCount) {
+      mobCount.textContent = `${this.sessions.length} Pasien`;
+    }
+  }
+
+  /**
+   * Setup Mobile Bottom Navigation Tabs (IMK Fitts's Law & Ergonomic Thumb Zone)
+   */
+  setupMobileTabs() {
+    const docLayout = document.querySelector(".doctor-layout");
+    const mobBtns = document.querySelectorAll(".doc-mob-btn");
+    if (!docLayout || mobBtns.length === 0) return;
+
+    // Set initial active tab to queue if not set
+    if (!docLayout.dataset.activeTab) {
+      docLayout.dataset.activeTab = "queue";
+    }
+
+    mobBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tab = btn.dataset.tab;
+        if (!tab) return;
+        soundService.playClickTone();
+        this.switchMobileTab(tab);
+      });
+    });
+  }
+
+  /**
+   * Switch mobile active tab with smooth top scroll
+   */
+  switchMobileTab(tabKey) {
+    const docLayout = document.querySelector(".doctor-layout");
+    const mobBtns = document.querySelectorAll(".doc-mob-btn");
+    if (!docLayout) return;
+
+    docLayout.dataset.activeTab = tabKey;
+
+    mobBtns.forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.tab === tabKey);
+    });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    const mainEl = document.querySelector(".doctor-main");
+    if (mainEl) mainEl.scrollTop = 0;
   }
 
   /**
@@ -262,7 +338,21 @@ export class PractitionerController {
       card.classList.toggle("active", card.dataset.queue === queueNo);
     });
 
+    // Update active class on mobile chips
+    const chips = document.querySelectorAll(".mobile-patient-chip");
+    chips.forEach((chip) => {
+      chip.classList.toggle("active", chip.dataset.queue === queueNo);
+    });
+
     this.syncActivePatientView();
+
+    // On mobile screens: auto-transition from queue tab to consult tab
+    if (window.innerWidth <= 900) {
+      const docLayout = document.querySelector(".doctor-layout");
+      if (docLayout && docLayout.dataset.activeTab === "queue") {
+        this.switchMobileTab("consult");
+      }
+    }
   }
 
   /**

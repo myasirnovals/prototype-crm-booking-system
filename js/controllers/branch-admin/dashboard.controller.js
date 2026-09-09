@@ -18,7 +18,9 @@ export class BranchAdminController {
     this.tabButtons = [];
     this.tabPanes = [];
     this.queueGrid = null;
+    this.queueTableBody = null;
     this.queueUnsubscribe = null;
+    this.queueItems = [];
   }
 
   init() {
@@ -70,6 +72,7 @@ export class BranchAdminController {
     this.tabButtons = document.querySelectorAll(".admin-tab-btn");
     this.tabPanes = document.querySelectorAll(".admin-tab-pane");
     this.queueGrid = document.getElementById("receptionistLiveQueueGrid");
+    this.queueTableBody = document.getElementById("todayQueueTableBody");
 
     this.renderUserInfo(session.user, session.role);
     this.setupTabs();
@@ -154,112 +157,200 @@ export class BranchAdminController {
   // LIVE QUEUE
   // ─────────────────────────────────────────────────────────────────────────
 
+  // ─────────────────────────────────────────────────────────────────────────
+  // LIVE QUEUE (TODAY ACTIVE QUEUE)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  getDefaultTodayQueue() {
+    return [
+      {
+        id: "q-01",
+        queue: "A-01",
+        patient: "Rendra Pratama",
+        regNo: "REG-2026-0901",
+        service: "Clinical Acupuncture · Physician Huang Wei",
+        doctor: "Physician Huang Wei",
+        time: "09:00",
+        room: "Ruang A1",
+        statusBadge: "READY",
+        badgeColor: "#0f766e",
+        badgeBg: "#f0fdfa"
+      },
+      {
+        id: "q-02",
+        queue: "B-02",
+        patient: "Amanda Tan",
+        regNo: "REG-2026-0902",
+        service: "Physiotherapy & Spine · Dr. Lim",
+        doctor: "Dr. Lim Wei Han",
+        time: "09:30",
+        room: "Ruang Bed A2",
+        statusBadge: "WAITING",
+        badgeColor: "#b45309",
+        badgeBg: "#fef3c7"
+      },
+      {
+        id: "q-03",
+        queue: "C-03",
+        patient: "Jason Lee",
+        regNo: "REG-2026-0903",
+        service: "Wellness Spa Aromatherapy · Therapist Sarah",
+        doctor: "Therapist Sarah",
+        time: "10:00",
+        room: "Suite 1",
+        statusBadge: "CHECKED-IN",
+        badgeColor: "#0369a1",
+        badgeBg: "#e0f2fe"
+      },
+      {
+        id: "q-04",
+        queue: "A-04",
+        patient: "Siti Rahmawati",
+        regNo: "REG-2026-0904",
+        service: "Konsultasi Dokter Umum · Dr. Kevin Wijaya",
+        doctor: "Dr. Kevin Wijaya",
+        time: "10:15",
+        room: "Ruang Konsul 1",
+        statusBadge: "WAITING",
+        badgeColor: "#b45309",
+        badgeBg: "#fef3c7"
+      },
+      {
+        id: "q-05",
+        queue: "B-05",
+        patient: "Dewi Lestari",
+        regNo: "REG-2026-0905",
+        service: "Fisioterapi & Rehabilitasi · Dr. Lim",
+        doctor: "Dr. Lim Wei Han",
+        time: "10:45",
+        room: "Ruang Bed A2",
+        statusBadge: "IN_CONSULT",
+        badgeColor: "#7c3aed",
+        badgeBg: "#f5f3ff"
+      }
+    ];
+  }
+
   async renderLiveQueue() {
-    if (!this.queueGrid) return;
+    const queueStorageKey = `cliniva_queue_${this.branchId}`;
+    let items = storageService.get(queueStorageKey, null);
 
     // If Supabase is available, sync live queue from Cloud (SSOT)
     if (supabaseService.isAvailable()) {
       try {
         const cloudQueue = await supabaseService.fetchLiveQueue(this.branchId);
-        if (cloudQueue && Array.isArray(cloudQueue)) {
-          queueItems = cloudQueue;
+        if (cloudQueue && Array.isArray(cloudQueue) && cloudQueue.length > 0) {
+          items = cloudQueue;
         }
       } catch (err) {
         console.warn("[BranchAdmin] Failed to fetch cloud queue, using local:", err);
       }
     }
 
-    if (!queueItems || queueItems.length === 0) {
-      if (supabaseService.isAvailable()) {
-        this.queueGrid.innerHTML = `
-          <div style="grid-column: 1 / -1; text-align: center; padding: 36px 16px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 14px; color: var(--muted);">
-            <div style="font-size: 28px; margin-bottom: 8px;">✨</div>
-            <strong style="display:block; color: #334155; margin-bottom: 4px;">Belum Ada Antrean Aktif di Cabang Ini</strong>
-            <span style="font-size: 12px;">Pasien yang mendaftar via online booking atau walk-in akan langsung muncul di sini via Supabase Realtime.</span>
-          </div>
-        `;
-        return;
-      }
-
-      queueItems = [
-        {
-          queue: "A-01",
-          patient: "Rendra Pratama",
-          service: "Clinical Acupuncture · Physician Huang Wei",
-          statusBadge: "READY",
-          badgeColor: "#0f766e",
-          badgeBg: "#f0fdfa"
-        },
-        {
-          queue: "B-02",
-          patient: "Amanda Tan",
-          service: "Physiotherapy & Spine · Dr. Lim",
-          statusBadge: "WAITING",
-          badgeColor: "#b45309",
-          badgeBg: "#fef3c7"
-        },
-        {
-          queue: "C-03",
-          patient: "Jason Lee",
-          service: "Wellness Spa Aromatherapy · Therapist Sarah",
-          statusBadge: "CHECKED-IN",
-          badgeColor: "#0369a1",
-          badgeBg: "#e0f2fe"
-        }
-      ];
+    if (!items || items.length === 0) {
+      items = this.getDefaultTodayQueue();
+      storageService.set(queueStorageKey, items);
     }
+
+    this.queueItems = items;
 
     // Update metric counters
     const waitingEl = document.getElementById("statWaitingCount");
     const inConsultEl = document.getElementById("statInConsultCount");
     const totalTodayEl = document.getElementById("statPatientsToday");
 
-    if (waitingEl) waitingEl.textContent = queueItems.filter(q => q.statusBadge === "WAITING" || q.statusBadge === "READY").length;
-    if (inConsultEl) inConsultEl.textContent = queueItems.filter(q => q.statusBadge === "CHECKED-IN" || q.statusBadge === "IN_CONSULT").length + 2;
-    if (totalTodayEl) totalTodayEl.textContent = queueItems.length + 38;
+    if (waitingEl) waitingEl.textContent = items.filter(q => q.statusBadge === "WAITING" || q.statusBadge === "READY").length;
+    if (inConsultEl) inConsultEl.textContent = items.filter(q => q.statusBadge === "CHECKED-IN" || q.statusBadge === "IN_CONSULT").length;
+    if (totalTodayEl) totalTodayEl.textContent = items.length + 37;
 
-    this.queueGrid.innerHTML = "";
+    // 1. Render Cards Grid
+    if (this.queueGrid) {
+      this.queueGrid.innerHTML = "";
+      items.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "queue-card";
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <span class="queue-number">${item.queue}</span>
+            <span class="badge-live" style="background:${item.badgeBg || '#f0fdfa'}; color:${item.badgeColor || '#0f766e'};">${item.statusBadge}</span>
+          </div>
+          <h4 style="margin:8px 0 4px;">${item.patient}</h4>
+          <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">${item.service}</p>
+          <button type="button" class="btn btn-sm btn-primary full btn-call-patient" data-queue="${item.queue}" data-patient="${item.patient}">
+            🔊 Panggil Pasien (Audio Chime)
+          </button>
+        `;
 
-    queueItems.forEach((item) => {
-      const card = document.createElement("div");
-      card.className = "queue-card";
-      card.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-          <span class="queue-number">${item.queue}</span>
-          <span class="badge-live" style="background:${item.badgeBg}; color:${item.badgeColor};">${item.statusBadge}</span>
-        </div>
-        <h4 style="margin:8px 0 4px;">${item.patient}</h4>
-        <p style="font-size:12px; color:var(--muted); margin-bottom:14px;">${item.service}</p>
-        <button type="button" class="btn btn-sm btn-primary full btn-call-patient" data-queue="${item.queue}" data-patient="${item.patient}">
-          🔊 Panggil Pasien (Audio Chime)
-        </button>
-      `;
+        card.querySelector(".btn-call-patient")?.addEventListener("click", () => {
+          this.callPatient(item);
+        });
 
-      card.querySelector(".btn-call-patient")?.addEventListener("click", async () => {
-        soundService.playQueueChime();
-
-        // Update status in cloud if available
-        if (supabaseService.isAvailable() && item.id) {
-          await supabaseService.updateQueueStatus(item.id, "READY", {
-            statusBadge: "READY",
-            badgeColor: "#0f766e",
-            badgeBg: "#f0fdfa"
-          });
-        }
-
-        if (notificationService && typeof notificationService.addSystemNotification === "function") {
-          notificationService.addSystemNotification({
-            title: `Panggilan Pasien ${item.queue}`,
-            message: `[${item.queue}] ${item.patient} silakan menuju ke Ruang Praktik.`,
-            category: "QUEUE",
-            type: "info"
-          });
-        }
-        alert(`🔊 Memanggil Nomor Antrean [${item.queue}]: ${item.patient} silakan masuk ke Ruang Praktik.`);
+        this.queueGrid.appendChild(card);
       });
+    }
 
-      this.queueGrid.appendChild(card);
-    });
+    // 2. Render Today's Active Queue Table
+    if (this.queueTableBody) {
+      this.queueTableBody.innerHTML = "";
+      items.forEach((item) => {
+        const tr = document.createElement("tr");
+        const serviceName = item.service ? item.service.split("·")[0].trim() : "Konsultasi";
+        const doctorName = item.doctor || (item.service && item.service.includes("·") ? item.service.split("·")[1].trim() : "Dokter Bertugas");
+
+        tr.innerHTML = `
+          <td><strong style="font-size:14px; color:${item.badgeColor || 'var(--primary)'};">${item.queue}</strong></td>
+          <td>
+            <div style="font-weight:700;">${item.patient}</div>
+            <small style="color:var(--muted); font-size:11px;">${item.regNo || '#' + item.queue}</small>
+          </td>
+          <td>
+            <div style="font-weight:600;">${serviceName}</div>
+            <small style="color:var(--muted); font-size:11px;">${doctorName}</small>
+          </td>
+          <td><span style="font-weight:700; font-size:12px;">${item.time || '09:00'}</span></td>
+          <td><span style="font-size:12px;">${item.room || 'Ruang Konsul'}</span></td>
+          <td>
+            <span class="status-pill" style="background:${item.badgeBg || '#f1f5f9'}; color:${item.badgeColor || '#0f766e'}; font-size:11px; padding:3px 8px; border:1px solid ${item.badgeColor || '#cbd5e1'}40;">
+              ● ${item.statusBadge}
+            </span>
+          </td>
+          <td style="text-align:center;">
+            <button type="button" class="btn btn-sm btn-primary btn-call-table" data-queue="${item.queue}" data-patient="${item.patient}" style="padding:4px 10px; font-size:11px;">
+              🔊 Panggil
+            </button>
+          </td>
+        `;
+
+        tr.querySelector(".btn-call-table")?.addEventListener("click", () => {
+          this.callPatient(item);
+        });
+
+        this.queueTableBody.appendChild(tr);
+      });
+    }
+  }
+
+  async callPatient(item) {
+    soundService.playQueueChime();
+
+    // Update status in cloud if available
+    if (supabaseService.isAvailable() && item.id) {
+      await supabaseService.updateQueueStatus(item.id, "READY", {
+        statusBadge: "READY",
+        badgeColor: "#0f766e",
+        badgeBg: "#f0fdfa"
+      });
+    }
+
+    if (notificationService && typeof notificationService.addSystemNotification === "function") {
+      notificationService.addSystemNotification({
+        title: `Panggilan Pasien ${item.queue}`,
+        message: `[${item.queue}] ${item.patient} silakan menuju ke ${item.room || 'Ruang Praktik'}.`,
+        category: "QUEUE",
+        type: "info"
+      });
+    }
+    alert(`🔊 Memanggil Nomor Antrean [${item.queue}]: ${item.patient} silakan masuk ke ${item.room || 'Ruang Praktik'}.`);
   }
 
   /**
@@ -301,9 +392,14 @@ export class BranchAdminController {
       const newQueueNumber = `W-0${queueItems.length + 1}`;
 
       const walkInItem = {
+        id: `q-walkin-${Date.now()}`,
         queue: newQueueNumber,
         patient: name,
+        regNo: `WALKIN-${Date.now().toString().slice(-4)}`,
         service: service,
+        doctor: "Dokter Jaga (Walk-In)",
+        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        room: "Ruang Meja Depan",
         statusBadge: "READY",
         badgeColor: "#0f766e",
         badgeBg: "#f0fdfa"

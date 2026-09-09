@@ -13,8 +13,8 @@ const SUPABASE_CDN_URL = "https://esm.sh/@supabase/supabase-js@2.39.8";
  *   localStorage.setItem('cliniva_supabase_key', 'eyJhbGciOi...');
  */
 export const SUPABASE_CONFIG = {
-  url: "",       // e.g. "https://your-project.supabase.co"
-  anonKey: ""    // e.g. "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  url: "https://apfkptmitrvdpdoudfys.supabase.co",       // e.g. "https://your-project.supabase.co"
+  anonKey: "sb_publishable_--jX4BfJw4Xv_TaTFI8bzw_7qnbuWsS"    // e.g. "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 };
 
 let supabaseInstance = null;

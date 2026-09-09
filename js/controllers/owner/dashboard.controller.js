@@ -243,26 +243,18 @@ export class OwnerDashboardController {
       }
     }
 
-    // Topbar active branch pill (Desktop & Mobile)
+    // Topbar active branch pill
     const branchNameEl = document.getElementById("topbarActiveBranchName");
     const branchPillEl = document.getElementById("topbarActiveBranchTemplateBadge");
-    const mobBranchName = document.getElementById("mobileActiveBranchName");
-    const mobBranchPill = document.getElementById("mobileActiveBranchBadge");
 
     if (this.activeBranch) {
       if (branchNameEl) branchNameEl.textContent = this.activeBranch.name;
-      if (mobBranchName) mobBranchName.textContent = this.activeBranch.name;
 
       const meta = this.getTemplateMeta(this.activeBranch.template);
       if (branchPillEl) {
         branchPillEl.textContent = meta.label;
         branchPillEl.style.color = meta.color;
         branchPillEl.style.background = meta.bg;
-      }
-      if (mobBranchPill) {
-        mobBranchPill.textContent = meta.label;
-        mobBranchPill.style.color = meta.color;
-        mobBranchPill.style.background = meta.bg;
       }
     }
   }

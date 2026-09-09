@@ -18,22 +18,50 @@
   <link rel="stylesheet" href="../../css/style.css">
 
   <style>
+    .owner-header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--line);
+      padding: 10px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+
+    .owner-header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .owner-header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
     .owner-brand-badge {
       display: flex;
       align-items: center;
       gap: 12px;
+      min-width: 0;
+      flex-shrink: 0;
     }
 
     .owner-brand-logo-wrap {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
       background: #f0fdfa;
       border: 1.5px solid #99f6e4;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: 20px;
       overflow: hidden;
       flex-shrink: 0;
     }
@@ -45,16 +73,99 @@
       padding: 2px;
     }
 
+    .owner-brand-text {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
     .owner-brand-title {
       font-size: 15px;
-      font-weight: 900;
+      font-weight: 800;
       color: var(--text);
-      line-height: 1.2;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .owner-brand-sub {
       font-size: 11px;
       color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .owner-header-sep {
+      height: 28px;
+      width: 1px;
+      background: var(--line);
+      flex-shrink: 0;
+    }
+
+    .owner-branch-pill-desktop {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 12px;
+      flex-shrink: 0;
+    }
+
+    .owner-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+
+    .owner-user-profile {
+      text-align: right;
+      margin-right: 2px;
+    }
+
+    .owner-user-name-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+    }
+
+    #ownerUserName {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .owner-user-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .owner-preview-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .owner-signout-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+      transition: all 0.15s ease;
     }
 
     .branch-status-strip {
@@ -235,9 +346,29 @@
         transform: scale(1.15);
       }
 
-      /* Top Header: Bersih & Minimalis */
+      /* Top Header: Bersih, Ramping, 1 Baris Sempurna (No Wrapping) */
       .owner-header {
-        padding: 10px 14px !important;
+        padding: 8px 14px !important;
+        height: 56px !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+
+      .owner-header-inner {
+        gap: 8px !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+      }
+
+      .owner-header-left {
+        gap: 8px !important;
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+      }
+
+      .owner-brand-badge {
+        gap: 8px !important;
+        min-width: 0 !important;
       }
 
       .owner-brand-logo-wrap {
@@ -249,10 +380,10 @@
 
       .owner-brand-title {
         font-size: 13px !important;
-        max-width: 135px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        max-width: 135px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
       }
 
       .owner-brand-sub {
@@ -267,35 +398,51 @@
         display: none !important;
       }
 
-      .owner-user-sub {
+      .owner-header-right {
+        gap: 6px !important;
+        flex-shrink: 0 !important;
+        margin-left: auto !important;
+      }
+
+      /* Sembunyikan profil teks pada mobile agar muat rapi 1 baris */
+      .owner-user-profile {
         display: none !important;
+      }
+
+      .notif-bell-btn {
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 8px !important;
+      }
+
+      .owner-preview-btn {
+        width: 34px !important;
+        height: 34px !important;
+        padding: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 8px !important;
+        font-size: 14px !important;
       }
 
       .owner-preview-text {
         display: none !important;
       }
 
-      .owner-preview-btn {
-        padding: 6px 8px !important;
-        font-size: 13px !important;
-      }
-
       .owner-signout-btn {
         padding: 6px 10px !important;
         font-size: 11px !important;
-        white-space: nowrap;
+        height: 34px !important;
+        border-radius: 8px !important;
+        white-space: nowrap !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
       }
 
-      /* Baris Konteks Cabang Aktif pada Mobile */
       .owner-branch-context-strip-mobile {
-        margin-top: 8px;
-        padding: 6px 10px;
-        background: #f8fafc;
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        display: flex !important;
-        align-items: center;
-        justify-content: space-between;
+        display: none !important;
       }
 
       /* Banner Cabang dalam Pane */
@@ -373,54 +520,46 @@
 
 <body>
   <!-- Header Topbar -->
-  <header class="owner-header"
-    style="background:#fff; border-bottom:1px solid var(--line); padding:12px 28px; position:sticky; top:0; z-index:100;">
-    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+  <header class="owner-header">
+    <div class="owner-header-inner">
 
       <!-- Brand & Active Branch Info -->
-      <div style="display:flex; align-items:center; gap:16px;">
+      <div class="owner-header-left">
         <div class="owner-brand-badge">
           <div class="owner-brand-logo-wrap" id="topbarBrandLogo">🌿</div>
-          <div>
+          <div class="owner-brand-text">
             <div class="owner-brand-title" id="topbarBrandName">Cliniva Health Hub</div>
             <div class="owner-brand-sub" id="topbarBrandTagline">Holistic Recovery &amp; Vitality</div>
           </div>
         </div>
 
-        <div class="owner-header-sep" style="height:28px; width:1px; background:var(--line);"></div>
+        <div class="owner-header-sep"></div>
 
         <!-- Active Branch Pill (Desktop View) -->
-        <div class="owner-branch-pill-desktop"
-          style="display:flex; align-items:center; gap:10px; background:#f8fafc; border:1px solid var(--line); border-radius:999px; padding:4px 12px;">
-          <span style="font-size:12px; font-weight:800; color:var(--text);" id="topbarActiveBranchName">Paragon Flagship
-            (Cabang 1)</span>
-          <span class="pill"
-            style="font-size:11px; padding:2px 8px; background:#ccfbf1; color:#0f766e; font-weight:800;"
-            id="topbarActiveBranchTemplateBadge">
+        <div class="owner-branch-pill-desktop">
+          <span style="font-size:12px; font-weight:800; color:var(--text);" id="topbarActiveBranchName">Paragon Flagship (Cabang 1)</span>
+          <span class="pill" style="font-size:11px; padding:2px 8px; background:#ccfbf1; color:#0f766e; font-weight:800;" id="topbarActiveBranchTemplateBadge">
             🏃 Fisioterapi
           </span>
-          <a href="../../pages/owner/branch-select.html" class="btn btn-sm btn-soft"
-            style="padding:2px 8px; font-size:11px; border-radius:999px; text-decoration:none;"
-            title="Ganti ke cabang lain">
+          <a href="../../pages/owner/branch-select.html" class="btn btn-sm btn-soft" style="padding:2px 8px; font-size:11px; border-radius:999px; text-decoration:none;" title="Ganti ke cabang lain">
             Ganti Cabang 🔄
           </a>
         </div>
       </div>
 
       <!-- Right Profile & Quick Actions -->
-      <div style="display:flex; gap:10px; align-items:center; margin-left:auto;">
+      <div class="owner-header-right">
         <div class="notif-bar-slot" id="notificationBarContainer"></div>
 
-        <div style="text-align:right; margin-right:4px;">
-          <div style="display:flex; align-items:center; justify-content:flex-end; gap:4px;">
-            <span id="ownerUserName" style="font-size:13px; font-weight:800; color:var(--text);">Dennis Pratama</span>
+        <div class="owner-user-profile">
+          <div class="owner-user-name-wrap">
+            <span id="ownerUserName">Dennis Pratama</span>
             <span style="font-size:12px;">💼</span>
           </div>
-          <div class="owner-user-sub" style="font-size:11px; color:var(--muted);">Clinic Owner &amp; Director</div>
+          <div class="owner-user-sub">Clinic Owner &amp; Director</div>
         </div>
 
-        <a href="../../pages/public/booking.html" target="_blank" class="btn btn-sm btn-white owner-preview-btn"
-          style="text-decoration:none;" title="Lihat alur reservasi pasien untuk cabang ini">
+        <a href="../../pages/public/booking.html" target="_blank" class="btn btn-sm btn-white owner-preview-btn" title="Lihat alur reservasi pasien untuk cabang ini">
           <span>👁️</span> <span class="owner-preview-text">Pratinjau Booking Pasien ↗</span>
         </a>
 
@@ -428,23 +567,6 @@
           Sign Out
         </button>
       </div>
-    </div>
-
-    <!-- Active Branch Context Strip (Mobile View Only) -->
-    <div class="owner-branch-context-strip-mobile" style="display:none;">
-      <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
-        <span style="font-size:12px;">📍</span>
-        <span
-          style="font-size:12px; font-weight:800; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"
-          id="mobileActiveBranchName">Paragon Flagship (Cabang 1)</span>
-        <span class="pill"
-          style="font-size:10px; padding:2px 6px; background:#ccfbf1; color:#0f766e; font-weight:800; white-space:nowrap;"
-          id="mobileActiveBranchBadge">🏃 Fisioterapi</span>
-      </div>
-      <a href="../../pages/owner/branch-select.html"
-        style="font-size:11px; font-weight:700; color:#0f766e; text-decoration:none; padding:3px 8px; background:#ffffff; border:1px solid var(--line); border-radius:999px; white-space:nowrap;">
-        Ganti 🔄
-      </a>
     </div>
   </header>
 

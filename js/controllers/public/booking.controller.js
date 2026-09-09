@@ -112,6 +112,9 @@ export class PatientBookingController {
       } catch (e) {}
     }
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }, 120);
   }
 
   loadBranches(templateId = null) {
@@ -708,9 +711,13 @@ export class PatientBookingController {
         node.classList.remove("active", "completed");
         if (i === stepNumber) {
           node.classList.add("active");
-          // Smoothly scroll active step into view on mobile wizard bar
+          // Smoothly scroll active step into view on mobile wizard bar container ONLY (avoids window scroll)
           try {
-            node.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+            const wizardBar = document.querySelector(".booking-wizard-steps");
+            if (wizardBar) {
+              const targetLeft = node.offsetLeft - (wizardBar.clientWidth / 2) + (node.clientWidth / 2);
+              wizardBar.scrollTo({ left: Math.max(0, targetLeft), behavior: "smooth" });
+            }
           } catch (e) {}
         } else if (i < stepNumber) {
           node.classList.add("completed");

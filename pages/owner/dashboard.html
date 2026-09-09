@@ -42,6 +42,18 @@
       padding: 2px;
     }
 
+    .owner-brand-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .owner-brand-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
     .branch-status-strip {
       background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
       color: #ffffff;
@@ -139,28 +151,275 @@
       box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
       border: 1px solid var(--line);
     }
+
+    /* Table styling & horizontal scroll */
+    .table {
+      width: 100%;
+      min-width: 650px;
+      border-collapse: collapse;
+    }
+    .table th, .table td {
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .owner-table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: #ffffff;
+    }
+
+    .owner-table-hint {
+      display: none;
+    }
+
+    .owner-mobile-nav {
+      display: none;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       📱 IMK / HCI MOBILE RESPONSIVE OPTIMIZATIONS (<= 900px)
+       - Fitts's Law: Bottom Thumb-Zone Navigation Bar
+       - Miller's Law: 2x2 Metric Chunking for KPIs
+       - Hick's Law: Clean Header & Decluttered View
+       - Visibility of System Status: Distinct Active Module Pill
+       ══════════════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .owner-layout {
+        display: block;
+      }
+
+      /* Sembunyikan sidebar bertumpuk di mobile untuk membebaskan ruang */
+      .owner-sidebar {
+        display: none !important;
+      }
+
+      .owner-main {
+        padding: 14px 14px 96px 14px !important;
+      }
+
+      /* Sticky Bottom Navigation Bar (Fitts's Law & Ergonomic Thumb Zone) */
+      .owner-mobile-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        background: #ffffff;
+        border-top: 1px solid var(--line);
+        z-index: 1000;
+        box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.09);
+        padding: 4px 6px env(safe-area-inset-bottom, 6px);
+        justify-content: space-around;
+        align-items: center;
+        backdrop-filter: blur(14px);
+      }
+
+      .owner-mob-btn {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        padding: 5px 2px;
+        background: transparent;
+        border: none;
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        border-radius: 10px;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        min-height: 48px;
+        text-align: center;
+      }
+
+      .owner-mob-icon {
+        font-size: 18px;
+        line-height: 1;
+        transition: transform 0.15s ease;
+      }
+
+      .owner-mob-btn.active {
+        color: #0f766e;
+        background: #f0fdfa;
+        border: 1px solid #ccfbf1;
+        font-weight: 800;
+      }
+
+      .owner-mob-btn.active .owner-mob-icon {
+        transform: scale(1.15);
+      }
+
+      /* Top Header: Bersih & Minimalis */
+      .owner-header {
+        padding: 10px 14px !important;
+      }
+
+      .owner-brand-logo-wrap {
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 18px !important;
+        border-radius: 9px !important;
+      }
+
+      .owner-brand-title {
+        font-size: 13px !important;
+        max-width: 135px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .owner-brand-sub {
+        display: none !important;
+      }
+
+      .owner-header-sep {
+        display: none !important;
+      }
+
+      .owner-branch-pill-desktop {
+        display: none !important;
+      }
+
+      .owner-user-sub {
+        display: none !important;
+      }
+
+      .owner-preview-text {
+        display: none !important;
+      }
+
+      .owner-preview-btn {
+        padding: 6px 8px !important;
+        font-size: 13px !important;
+      }
+
+      .owner-signout-btn {
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+        white-space: nowrap;
+      }
+
+      /* Baris Konteks Cabang Aktif pada Mobile */
+      .owner-branch-context-strip-mobile {
+        margin-top: 8px;
+        padding: 6px 10px;
+        background: #f8fafc;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      /* Banner Cabang dalam Pane */
+      .branch-status-strip {
+        padding: 16px 14px !important;
+        border-radius: 14px !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+      }
+
+      .branch-status-info h2 {
+        font-size: 18px !important;
+      }
+
+      .branch-status-info p {
+        font-size: 12px !important;
+      }
+
+      .branch-switch-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 8px 14px !important;
+        font-size: 12px !important;
+      }
+
+      /* KPI Grid 2x2 Simetris (Miller's Law) */
+      .executive-kpi-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        margin-top: 14px !important;
+      }
+
+      .kpi-card {
+        padding: 14px 12px !important;
+        border-radius: 12px !important;
+      }
+
+      .kpi-title {
+        font-size: 9px !important;
+        letter-spacing: 0.2px !important;
+        margin-bottom: 4px !important;
+      }
+
+      .kpi-value {
+        font-size: 20px !important;
+        letter-spacing: -0.5px !important;
+      }
+
+      .kpi-meta {
+        font-size: 10px !important;
+        margin-top: 4px !important;
+      }
+
+      /* Hint Affordance untuk Tabel */
+      .owner-table-hint {
+        display: flex !important;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      /* Form Fields Stacking */
+      .field-row {
+        flex-direction: column !important;
+        gap: 12px !important;
+      }
+
+      .panel-top {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+      }
+
+      .panel-top button {
+        width: 100% !important;
+        justify-content: center !important;
+      }
+    }
   </style>
 </head>
 
 <body>
   <!-- Header Topbar -->
-  <header style="background:#fff; border-bottom:1px solid var(--line); padding:12px 28px; position:sticky; top:0; z-index:100;">
-    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+  <header class="owner-header" style="background:#fff; border-bottom:1px solid var(--line); padding:12px 28px; position:sticky; top:0; z-index:100;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
       
       <!-- Brand & Active Branch Info -->
-      <div style="display:flex; align-items:center; gap:20px;">
+      <div style="display:flex; align-items:center; gap:16px;">
         <div class="owner-brand-badge">
           <div class="owner-brand-logo-wrap" id="topbarBrandLogo">🌿</div>
           <div>
-            <div style="font-size:15px; font-weight:900; color:var(--text); line-height:1.2;" id="topbarBrandName">Cliniva Health Hub</div>
-            <div style="font-size:11px; color:var(--muted);" id="topbarBrandTagline">Holistic Recovery &amp; Vitality</div>
+            <div class="owner-brand-title" id="topbarBrandName">Cliniva Health Hub</div>
+            <div class="owner-brand-sub" id="topbarBrandTagline">Holistic Recovery &amp; Vitality</div>
           </div>
         </div>
 
-        <div style="height:28px; width:1px; background:var(--line);"></div>
+        <div class="owner-header-sep" style="height:28px; width:1px; background:var(--line);"></div>
 
-        <!-- Active Branch Pill -->
-        <div style="display:flex; align-items:center; gap:10px; background:#f8fafc; border:1px solid var(--line); border-radius:999px; padding:4px 12px;">
+        <!-- Active Branch Pill (Desktop View) -->
+        <div class="owner-branch-pill-desktop" style="display:flex; align-items:center; gap:10px; background:#f8fafc; border:1px solid var(--line); border-radius:999px; padding:4px 12px;">
           <span style="font-size:12px; font-weight:800; color:var(--text);" id="topbarActiveBranchName">Paragon Flagship (Cabang 1)</span>
           <span class="pill" style="font-size:11px; padding:2px 8px; background:#ccfbf1; color:#0f766e; font-weight:800;" id="topbarActiveBranchTemplateBadge">
             🏃 Fisioterapi
@@ -172,25 +431,37 @@
       </div>
 
       <!-- Right Profile & Quick Actions -->
-      <div style="display:flex; gap:12px; align-items:center;">
+      <div style="display:flex; gap:10px; align-items:center; margin-left:auto;">
         <div class="notif-bar-slot" id="notificationBarContainer"></div>
 
-        <div style="text-align:right; margin-right:8px;">
+        <div style="text-align:right; margin-right:4px;">
           <div style="display:flex; align-items:center; justify-content:flex-end; gap:4px;">
             <span id="ownerUserName" style="font-size:13px; font-weight:800; color:var(--text);">Dennis Pratama</span>
             <span style="font-size:12px;">💼</span>
           </div>
-          <div style="font-size:11px; color:var(--muted);">Clinic Owner &amp; Director</div>
+          <div class="owner-user-sub" style="font-size:11px; color:var(--muted);">Clinic Owner &amp; Director</div>
         </div>
 
-        <a href="../../pages/public/booking.html" target="_blank" class="btn btn-sm btn-white" style="text-decoration:none;" title="Lihat alur reservasi pasien untuk cabang ini">
-          👁️ Pratinjau Booking Pasien ↗
+        <a href="../../pages/public/booking.html" target="_blank" class="btn btn-sm btn-white owner-preview-btn" style="text-decoration:none;" title="Lihat alur reservasi pasien untuk cabang ini">
+          <span>👁️</span> <span class="owner-preview-text">Pratinjau Booking Pasien ↗</span>
         </a>
 
-        <button type="button" class="btn btn-sm btn-primary" id="ownerSignOutBtn">
+        <button type="button" class="btn btn-sm btn-primary owner-signout-btn" id="ownerSignOutBtn">
           Sign Out
         </button>
       </div>
+    </div>
+
+    <!-- Active Branch Context Strip (Mobile View Only) -->
+    <div class="owner-branch-context-strip-mobile" style="display:none;">
+      <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
+        <span style="font-size:12px;">📍</span>
+        <span style="font-size:12px; font-weight:800; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="mobileActiveBranchName">Paragon Flagship (Cabang 1)</span>
+        <span class="pill" style="font-size:10px; padding:2px 6px; background:#ccfbf1; color:#0f766e; font-weight:800; white-space:nowrap;" id="mobileActiveBranchBadge">🏃 Fisioterapi</span>
+      </div>
+      <a href="../../pages/owner/branch-select.html" style="font-size:11px; font-weight:700; color:#0f766e; text-decoration:none; padding:3px 8px; background:#ffffff; border:1px solid var(--line); border-radius:999px; white-space:nowrap;">
+        Ganti 🔄
+      </a>
     </div>
   </header>
 
@@ -320,7 +591,11 @@
             </div>
           </div>
 
-          <div style="overflow-x:auto;">
+          <div class="owner-table-hint">
+            <span>👆 Geser antrean ke samping untuk melihat seluruh kolom</span>
+          </div>
+
+          <div class="owner-table-wrapper">
             <table class="table" id="branchQueueTable">
               <thead>
                 <tr>
@@ -431,7 +706,10 @@
         </div>
 
         <div style="background:#ffffff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:24px;">
-          <div style="overflow-x:auto;">
+          <div class="owner-table-hint">
+            <span>👆 Geser tabel ke samping untuk melihat data staf</span>
+          </div>
+          <div class="owner-table-wrapper">
             <table class="table" id="branchStaffTable">
               <thead>
                 <tr>
@@ -494,7 +772,10 @@
         </div>
 
         <div style="background:#ffffff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:24px;">
-          <div style="overflow-x:auto;">
+          <div class="owner-table-hint">
+            <span>👆 Geser tabel ke samping untuk melihat seluruh data stok</span>
+          </div>
+          <div class="owner-table-wrapper">
             <table class="table" id="branchInventoryTable">
               <thead>
                 <tr>
@@ -532,7 +813,10 @@
         </div>
 
         <div style="background:#ffffff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:24px;">
-          <div style="overflow-x:auto;">
+          <div class="owner-table-hint">
+            <span>👆 Geser tabel ke samping untuk melihat seluruh jadwal praktisi</span>
+          </div>
+          <div class="owner-table-wrapper">
             <table class="table" id="branchPractitionersTable">
               <thead>
                 <tr>
@@ -693,6 +977,30 @@
       </form>
     </div>
   </div>
+
+  <!-- Mobile Bottom Navigation Bar (Fitts's Law & Ergonomic Thumb Zone) -->
+  <nav class="owner-mobile-nav" aria-label="Owner Dashboard Mobile Navigation">
+    <button class="owner-mob-btn owner-tab-btn active" data-pane="paneOverview" id="mobTabOverview" title="Ringkasan & Antrean">
+      <span class="owner-mob-icon">📊</span>
+      <span>Ringkasan</span>
+    </button>
+    <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchSettings" id="mobTabSettings" title="Pengaturan Cabang">
+      <span class="owner-mob-icon">🏢</span>
+      <span>Cabang</span>
+    </button>
+    <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchStaff" id="mobTabStaff" title="Staf Cabang">
+      <span class="owner-mob-icon">👥</span>
+      <span>Staf</span>
+    </button>
+    <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchInventory" id="mobTabInventory" title="Inventaris Spesifik Template">
+      <span class="owner-mob-icon">📦</span>
+      <span>Stok</span>
+    </button>
+    <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchPractitioners" id="mobTabPractitioners" title="Terapis & Praktisi">
+      <span class="owner-mob-icon">🧑‍⚕️</span>
+      <span>Praktisi</span>
+    </button>
+  </nav>
 
   <!-- Page Script Bootstrap -->
   <script type="module" src="../../js/pages/owner-dashboard.js"></script>

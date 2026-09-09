@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Cliniva — Dedicated Clinic Owner Dashboard Controller
  * SOLID: Single Responsibility for Branch Operations, Modul 1 (Branch), Modul 2 (Staff),
  * Modul 3 (Template Inventory), and Modul 4 (Practitioners)
@@ -292,19 +292,27 @@ export class OwnerDashboardController {
       }
     }
 
-    // Topbar active branch pill
+    // Topbar active branch pill (Desktop & Mobile)
     const branchNameEl = document.getElementById("topbarActiveBranchName");
     const branchPillEl = document.getElementById("topbarActiveBranchTemplateBadge");
+    const mobBranchName = document.getElementById("mobileActiveBranchName");
+    const mobBranchPill = document.getElementById("mobileActiveBranchBadge");
 
-    if (branchNameEl && this.activeBranch) {
-      branchNameEl.textContent = this.activeBranch.name;
-    }
+    if (this.activeBranch) {
+      if (branchNameEl) branchNameEl.textContent = this.activeBranch.name;
+      if (mobBranchName) mobBranchName.textContent = this.activeBranch.name;
 
-    if (branchPillEl && this.activeBranch) {
       const meta = this.getTemplateMeta(this.activeBranch.template);
-      branchPillEl.textContent = meta.label;
-      branchPillEl.style.color = meta.color;
-      branchPillEl.style.background = meta.bg;
+      if (branchPillEl) {
+        branchPillEl.textContent = meta.label;
+        branchPillEl.style.color = meta.color;
+        branchPillEl.style.background = meta.bg;
+      }
+      if (mobBranchPill) {
+        mobBranchPill.textContent = meta.label;
+        mobBranchPill.style.color = meta.color;
+        mobBranchPill.style.background = meta.bg;
+      }
     }
   }
 
@@ -314,14 +322,27 @@ export class OwnerDashboardController {
 
     buttons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        buttons.forEach((b) => b.classList.remove("active"));
-        panes.forEach((p) => p.classList.remove("active"));
-
-        btn.classList.add("active");
         const paneId = btn.dataset.pane;
+        if (!paneId) return;
+        soundService.playClickTone && soundService.playClickTone();
+
+        // Synchronize active states across sidebar and mobile bottom navigation
+        buttons.forEach((b) => {
+          if (b.dataset.pane === paneId) {
+            b.classList.add("active");
+          } else {
+            b.classList.remove("active");
+          }
+        });
+
+        panes.forEach((p) => p.classList.remove("active"));
         const target = document.getElementById(paneId);
         if (target) {
           target.classList.add("active");
+          // Smooth scroll to top on tab change for ergonomic flow
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          const mainEl = document.querySelector(".owner-main");
+          if (mainEl) mainEl.scrollTop = 0;
         }
       });
     });

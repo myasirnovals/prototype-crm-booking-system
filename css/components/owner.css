@@ -309,14 +309,12 @@
 
 @media (max-width: 900px) {
   .owner-layout {
-    flex-direction: column;
+    display: block;
   }
   .owner-sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--line);
+    display: none !important;
   }
   .owner-main {
-    padding: 20px 16px;
+    padding: 16px 14px 96px 14px !important;
   }
 }

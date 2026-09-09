@@ -10,26 +10,70 @@
   flex-direction: column;
 }
 
+/* ==========================================================================
+   Header Topbar
+   ========================================================================== */
+.patient-header {
+  background: #ffffff;
+  border-bottom: 1px solid var(--line, #e2e8f0);
+  padding: 14px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+
+.patient-header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1120px;
+  margin: 0 auto;
+  width: 100%;
+  gap: 16px;
+}
+
+.patient-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.patient-header-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.patient-user-info {
+  text-align: right;
+}
+
+/* Container */
 .patient-container {
   max-width: 1120px;
   margin: 0 auto;
-  padding: 36px 20px;
+  padding: 32px 20px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 /* Patient Top Profile Banner */
 .patient-welcome-banner {
   background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
   color: #ffffff;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-xl, 24px);
   padding: 32px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: var(--shadow-lg);
   position: relative;
   overflow: hidden;
+  gap: 20px;
 }
 
 .patient-welcome-banner::after {
@@ -45,10 +89,10 @@
 /* Live Queue Status Box */
 .patient-queue-tracker {
   background: #ffffff;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: var(--radius-lg, 16px);
   padding: 24px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   box-shadow: var(--shadow-md);
   display: flex;
   align-items: center;
@@ -56,42 +100,61 @@
   gap: 20px;
 }
 
+.patient-queue-tracker-main {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .queue-badge-giant {
   font-size: 38px;
   font-weight: 900;
-  color: var(--primary);
+  color: var(--primary, #0f766e);
   letter-spacing: -1px;
   background: #f0fdfa;
-  border: 1px solid #ccfbf1;
-  padding: 12px 24px;
-  border-radius: var(--radius-md);
+  border: 1.5px solid #ccfbf1;
+  padding: 10px 24px;
+  border-radius: var(--radius-md, 12px);
   text-align: center;
-  min-width: 120px;
+  white-space: nowrap !important;
+  flex-shrink: 0;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .queue-status-text h3 {
   font-size: 18px;
   font-weight: 800;
-  margin-bottom: 4px;
+  margin: 0 0 4px;
+  color: var(--text, #0f172a);
 }
 
 .queue-status-text p {
   font-size: 14px;
-  color: var(--muted);
+  color: var(--muted, #64748b);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.patient-queue-tracker-side {
+  text-align: right;
+  flex-shrink: 0;
 }
 
 /* Portal Grid Layout */
 .portal-grid {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 28px;
+  gap: 24px;
 }
 
 /* History List Card */
 .portal-card {
   background: #ffffff;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: var(--radius-lg, 16px);
   padding: 24px;
   box-shadow: var(--shadow-sm);
   margin-bottom: 24px;
@@ -101,8 +164,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--line);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line, #e2e8f0);
+  gap: 12px;
 }
 
 .history-item:last-child {
@@ -111,29 +175,178 @@
 
 .history-meta strong {
   display: block;
-  font-size: 15px;
-  color: var(--text);
+  font-size: 14px;
+  color: var(--text, #0f172a);
+  margin-bottom: 2px;
 }
 
 .history-meta span {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--muted, #64748b);
 }
 
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
 @media (max-width: 900px) {
-  .patient-welcome-banner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 24px;
+  .patient-header {
+    padding: 8px 14px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
   }
 
+  .patient-header-inner {
+    gap: 8px;
+  }
+
+  .patient-header-left {
+    gap: 8px;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .patient-header-left .logo {
+    font-size: 15px;
+    white-space: nowrap;
+  }
+
+  .patient-header-left .pill {
+    font-size: 10px;
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+
+  .patient-header-right {
+    gap: 8px;
+  }
+
+  .patient-header-right .lang-switcher-wrap {
+    display: none;
+  }
+
+  .patient-user-info {
+    display: none;
+  }
+
+  .patient-header-right .btn {
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+    height: 34px !important;
+    border-radius: 8px !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .patient-container {
+    padding: 16px 14px 36px;
+  }
+
+  .patient-welcome-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 20px 18px;
+    margin-bottom: 16px;
+    border-radius: var(--radius-lg, 16px);
+  }
+
+  .patient-welcome-banner h1 {
+    font-size: 21px !important;
+    line-height: 1.25;
+    margin: 2px 0 6px !important;
+  }
+
+  .patient-welcome-banner p {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .patient-welcome-banner .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+
+  /* Queue Tracker Card Mobile */
   .patient-queue-tracker {
     flex-direction: column;
-    text-align: center;
+    align-items: stretch;
+    text-align: left;
+    gap: 14px;
+    padding: 18px 16px;
+    margin-bottom: 16px;
+  }
+
+  .patient-queue-tracker-main {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .queue-badge-giant {
+    font-size: 28px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    min-width: auto;
+  }
+
+  .queue-status-text h3 {
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+
+  .queue-status-text p {
+    font-size: 12.5px;
+  }
+
+  .patient-queue-tracker-side {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--line, #e2e8f0);
+    padding-top: 12px;
+    text-align: left;
   }
 
   .portal-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .portal-card {
+    padding: 18px 16px;
+    margin-bottom: 16px;
+    border-radius: var(--radius-lg, 16px);
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
   }
 }
+
+@media (max-width: 430px) {
+  .patient-header-left .pill {
+    max-width: 75px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .patient-queue-tracker-main {
+    gap: 10px;
+  }
+
+  .queue-badge-giant {
+    font-size: 26px;
+    padding: 6px 12px;
+  }
+}
+

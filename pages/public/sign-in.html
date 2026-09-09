@@ -52,48 +52,59 @@
 
           <div class="quick-demo-container">
             <div class="quick-demo-header">
-              <div class="quick-demo-title" data-i18n="auth.quickLoginTitle">⚡ 1-Click Demo Login</div>
+              <div class="quick-demo-title" data-i18n="auth.quickLoginTitle">⚡ 1-Click Quick Demo Login</div>
               <span class="pill" style="font-size:10px; padding:2px 8px;">Pilih Peran</span>
             </div>
-            <div class="quick-demo-grid">
-              <button type="button" class="demo-role-card" data-role="SUPER_ADMIN" title="Sign in as Super Admin">
-                <div class="demo-role-icon role-icon-owner">👑</div>
-                <div class="demo-role-info">
-                  <div class="demo-role-name" data-i18n="auth.quickOwner">Super Admin</div>
-                  <div class="demo-role-sub">HQ Console</div>
+
+            <div class="quick-demo-dropdown" id="quickDemoDropdown">
+              <button type="button" class="quick-demo-trigger" id="quickDemoTrigger" aria-expanded="false" aria-haspopup="listbox" title="Klik untuk memilih peran demo">
+                <div class="quick-demo-trigger-content">
+                  <span class="quick-demo-trigger-icon">⚡</span>
+                  <span class="quick-demo-trigger-text" id="quickDemoTriggerText">Pilih peran demo untuk masuk cepat...</span>
                 </div>
+                <span class="quick-demo-chevron" id="quickDemoChevron">▾</span>
               </button>
-              <button type="button" class="demo-role-card" data-role="OWNER" data-user-email="dennis@cliniva.com"
-                id="quickDennisBtn" title="Sign in as Clinic Owner (Dennis Pratama)">
-                <div class="demo-role-icon" style="background:#fef3c7; border:1px solid #fde68a;">💼</div>
-                <div class="demo-role-info">
-                  <div class="demo-role-name" style="color:#b45309; font-weight:800;">Owner</div>
-                  <div class="demo-role-sub">Multi-Branch</div>
-                </div>
-              </button>
-              <button type="button" class="demo-role-card" data-role="BRANCH_ADMIN"
-                title="Sign in as Admin Cabang (Siti Rahmah)">
-                <div class="demo-role-icon" style="background:#e0f2fe; border:1px solid #bae6fd;">🏪</div>
-                <div class="demo-role-info">
-                  <div class="demo-role-name" style="color:#0369a1; font-weight:800;">Admin Cabang</div>
-                  <div class="demo-role-sub">Meja Depan &amp; Antrean</div>
-                </div>
-              </button>
-              <button type="button" class="demo-role-card" data-role="PRACTITIONER"
-                title="Sign in as Doctor / Specialist">
-                <div class="demo-role-icon role-icon-doctor">🩺</div>
-                <div class="demo-role-info">
-                  <div class="demo-role-name" data-i18n="auth.quickDoctor">Dokter / Praktisi</div>
-                  <div class="demo-role-sub">Antrean &amp; Asesmen</div>
-                </div>
-              </button>
-              <button type="button" class="demo-role-card" data-role="USER" title="Sign in as Patient">
-                <div class="demo-role-icon role-icon-patient">👤</div>
-                <div class="demo-role-info">
-                  <div class="demo-role-name" data-i18n="auth.quickPatient">Pasien</div>
-                  <div class="demo-role-sub">E-Tiket &amp; Janji Temu</div>
-                </div>
-              </button>
+
+              <div class="quick-demo-menu" id="quickDemoMenu" role="listbox" style="display:none;">
+                <button type="button" class="demo-role-card" data-role="SUPER_ADMIN" title="Sign in as Super Admin">
+                  <div class="demo-role-icon role-icon-owner">👑</div>
+                  <div class="demo-role-info">
+                    <div class="demo-role-name" data-i18n="auth.quickOwner">Super Admin</div>
+                    <div class="demo-role-sub">HQ Console · Dr. Hendra</div>
+                  </div>
+                </button>
+                <button type="button" class="demo-role-card" data-role="OWNER" data-user-email="dennis@cliniva.com"
+                  id="quickDennisBtn" title="Sign in as Clinic Owner (Dennis Pratama)">
+                  <div class="demo-role-icon" style="background:#fef3c7; border:1px solid #fde68a;">💼</div>
+                  <div class="demo-role-info">
+                    <div class="demo-role-name" style="color:#b45309; font-weight:800;">Owner</div>
+                    <div class="demo-role-sub">Multi-Branch · Dennis Pratama</div>
+                  </div>
+                </button>
+                <button type="button" class="demo-role-card" data-role="BRANCH_ADMIN"
+                  title="Sign in as Admin Cabang (Siti Rahmah)">
+                  <div class="demo-role-icon" style="background:#e0f2fe; border:1px solid #bae6fd;">🏪</div>
+                  <div class="demo-role-info">
+                    <div class="demo-role-name" style="color:#0369a1; font-weight:800;">Admin Cabang</div>
+                    <div class="demo-role-sub">Meja Depan &amp; Antrean · Siti Rahmah</div>
+                  </div>
+                </button>
+                <button type="button" class="demo-role-card" data-role="PRACTITIONER"
+                  title="Sign in as Doctor / Specialist">
+                  <div class="demo-role-icon role-icon-doctor">🩺</div>
+                  <div class="demo-role-info">
+                    <div class="demo-role-name" data-i18n="auth.quickDoctor">Dokter / Praktisi</div>
+                    <div class="demo-role-sub">Antrean &amp; Asesmen · Dr. Lim</div>
+                  </div>
+                </button>
+                <button type="button" class="demo-role-card" data-role="USER" title="Sign in as Patient">
+                  <div class="demo-role-icon role-icon-patient">👤</div>
+                  <div class="demo-role-info">
+                    <div class="demo-role-name" data-i18n="auth.quickPatient">Pasien</div>
+                    <div class="demo-role-sub">E-Tiket &amp; Reservasi · Amanda Tan</div>
+                  </div>
+                </button>
+              </div>
             </div>
           </div>
 

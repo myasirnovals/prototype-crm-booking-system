@@ -93,18 +93,62 @@ export class AuthController {
    * 1-Click Fast Demo Login for all 4 roles
    */
   setupQuickDemoLogin() {
+    const dropdownWrap = document.getElementById("quickDemoDropdown");
+    const triggerBtn = document.getElementById("quickDemoTrigger");
+    const dropdownMenu = document.getElementById("quickDemoMenu");
+    const triggerText = document.getElementById("quickDemoTriggerText");
+
+    if (triggerBtn && dropdownMenu) {
+      const toggleDropdown = (forceState) => {
+        const isOpening = forceState !== undefined ? forceState : dropdownMenu.style.display === "none";
+        dropdownMenu.style.display = isOpening ? "flex" : "none";
+        triggerBtn.classList.toggle("active", isOpening);
+        triggerBtn.setAttribute("aria-expanded", isOpening ? "true" : "false");
+        if (isOpening) soundService.playClickTone?.();
+      };
+
+      triggerBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleDropdown();
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", (e) => {
+        if (dropdownWrap && !dropdownWrap.contains(e.target)) {
+          toggleDropdown(false);
+        }
+      });
+
+      // Close dropdown on ESC
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && dropdownMenu.style.display !== "none") {
+          toggleDropdown(false);
+        }
+      });
+    }
+
     this.quickRoleCards.forEach((card) => {
       card.addEventListener("click", async () => {
         const roleKey = card.dataset.role;
         const userEmail = card.dataset.userEmail;
         soundService.playQueueChime?.();
 
+        // Close dropdown menu immediately
+        if (dropdownMenu) dropdownMenu.style.display = "none";
+        if (triggerBtn) triggerBtn.classList.remove("active");
+
+        const roleNameEl = card.querySelector(".demo-role-name");
+        const roleName = roleNameEl ? roleNameEl.textContent.trim() : roleKey;
+        if (triggerText) {
+          triggerText.innerHTML = `⚡ Masuk sebagai: <strong>${roleName}</strong>...`;
+        }
+
         card.style.transform = "scale(0.96)";
         setTimeout(() => (card.style.transform = ""), 200);
 
         const activeStatus = document.querySelector(".form.active .status-box") || this.staffStatus;
         if (activeStatus) {
-          this.showSuccess(activeStatus, `⏳ Sedang memproses login...`);
+          this.showSuccess(activeStatus, `⏳ Sedang memproses login ${roleName}...`);
         }
 
         try {

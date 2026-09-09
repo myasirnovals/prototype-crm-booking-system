@@ -1,7 +1,7 @@
 /**
  * Cliniva — Dedicated Clinic Owner Dashboard Controller
  * SOLID: Single Responsibility for Branch Operations, Modul 1 (Branch), Modul 2 (Staff),
- * Modul 3 (Template Inventory), and Modul 4 (Practitioners)
+ * and Modul 3 (Practitioners)
  * Adheres strictly to Scraping Data/alur aplikasi booking system.xml
  */
 
@@ -20,7 +20,6 @@ export class OwnerDashboardController {
 
     // Local data state for active branch
     this.activeBranchStaff = [];
-    this.activeBranchInventory = [];
     this.activeBranchPractitioners = [];
     this.activeBranchQueue = [];
   }
@@ -49,7 +48,6 @@ export class OwnerDashboardController {
     this.renderPaneOverview();
     this.renderPaneBranchSettings();
     this.renderPaneBranchStaff();
-    this.renderPaneBranchInventory();
     this.renderPaneBranchPractitioners();
     this.setupModals();
     this.setupSignOut();
@@ -142,16 +140,7 @@ export class OwnerDashboardController {
     }
     this.activeBranchStaff = staff;
 
-    // 2. Inventory (Template Adaptive)
-    const invKey = `cliniva_inventory_${branchId}`;
-    let inventory = storageService.get(invKey, null);
-    if (!inventory || !Array.isArray(inventory) || inventory.length === 0) {
-      inventory = this.getDefaultInventoryForTemplate(template);
-      storageService.set(invKey, inventory);
-    }
-    this.activeBranchInventory = inventory;
-
-    // 3. Practitioners
+    // 2. Practitioners
     const pracKey = `cliniva_practitioners_${branchId}`;
     let pracs = storageService.get(pracKey, null);
     if (!pracs || !Array.isArray(pracs) || pracs.length === 0) {
@@ -160,7 +149,7 @@ export class OwnerDashboardController {
     }
     this.activeBranchPractitioners = pracs;
 
-    // 4. Live Queue / Appointments
+    // 3. Live Queue / Appointments
     this.activeBranchQueue = this.getDefaultQueueForTemplate(template);
   }
 
@@ -175,44 +164,6 @@ export class OwnerDashboardController {
       case "physio":
       default:
         return { label: "🏃 Fisioterapi & Rehab", color: "#0f766e", bg: "#ccfbf1" };
-    }
-  }
-
-  getDefaultInventoryForTemplate(template) {
-    switch (template) {
-      case "tcm":
-        return [
-          { id: "inv-1", name: "Jarum Akupunktur Seirin 0.25x40mm", category: "Peralatan Akupunktur", stock: 120, min: 30, price: "SGD 18.00", unit: "Kotak (100 pcs)" },
-          { id: "inv-2", name: "Minyak Herbal Moxibustion Concentrated", category: "Minyak Terapi", stock: 22, min: 10, price: "SGD 32.50", unit: "Botol 250ml" },
-          { id: "inv-3", name: "Cangkir Bekam Silikon Vakum Set", category: "Alat Bekam", stock: 14, min: 5, price: "SGD 45.00", unit: "Set 12 pcs" },
-          { id: "inv-4", name: "Ginseng Radix Grade A Slice", category: "Bahan Herbal", stock: 6, min: 10, price: "SGD 88.00", unit: "Toples 100g" },
-          { id: "inv-5", name: "Kertas Meja Terapi Disposable Roll", category: "Perlengkapan Higienis", stock: 35, min: 15, price: "SGD 12.00", unit: "Roll" }
-        ];
-      case "wellness":
-        return [
-          { id: "inv-1", name: "Pure French Lavender Essential Oil 500ml", category: "Aromaterapi", stock: 25, min: 8, price: "SGD 42.00", unit: "Botol 500ml" },
-          { id: "inv-2", name: "Lemongrass & Ginger Massage Oil Blend", category: "Minyak Pijat", stock: 7, min: 10, price: "SGD 28.00", unit: "Botol 1 Liter" },
-          { id: "inv-3", name: "Organic Himalayan Pink Salt Body Scrub", category: "Body Care", stock: 18, min: 5, price: "SGD 35.00", unit: "Jar 500g" },
-          { id: "inv-4", name: "Premium Basalt Volcanic Hot Stone Set", category: "Alat Spa", stock: 9, min: 4, price: "SGD 120.00", unit: "Set 16 pcs" },
-          { id: "inv-5", name: "Soft Microfiber Therapy Towel Set", category: "Linen & Towels", stock: 48, min: 20, price: "SGD 15.00", unit: "Pak (6 pcs)" }
-        ];
-      case "nutrition":
-        return [
-          { id: "inv-1", name: "Clean Whey Isolate Protein Powder 1kg", category: "Suplemen Protein", stock: 34, min: 10, price: "SGD 65.00", unit: "Tub 1kg" },
-          { id: "inv-2", name: "Multivitamin & Trace Mineral Daily", category: "Mikronutrien", stock: 8, min: 15, price: "SGD 38.00", unit: "Botol 90 Kapsul" },
-          { id: "inv-3", name: "Bio-Impedance Sensor Replacement Pads", category: "Alat Analisis Tubuh", stock: 85, min: 25, price: "SGD 22.00", unit: "Pack 50 lembar" },
-          { id: "inv-4", name: "Cliniva Ergonomic Shaker Bottle 750ml", category: "Merchandise Klinis", stock: 42, min: 15, price: "SGD 14.00", unit: "Unit" },
-          { id: "inv-5", name: "Plant-Based Omega-3 DHA/EPA Capsules", category: "Asam Lemak Esensial", stock: 19, min: 8, price: "SGD 45.00", unit: "Botol 60 Softgel" }
-        ];
-      case "physio":
-      default:
-        return [
-          { id: "inv-1", name: "Kinesiology Tape Pro Water-Resistant 5cm", category: "Consumable Taping", stock: 45, min: 15, price: "SGD 14.50", unit: "Roll" },
-          { id: "inv-2", name: "Resistance Band 5-Level Loop Set", category: "Alat Latihan Gerak", stock: 16, min: 8, price: "SGD 26.00", unit: "Set 5 pcs" },
-          { id: "inv-3", name: "Ultrasound Transmission Gel 5 Liter", category: "Elektroterapi", stock: 4, min: 6, price: "SGD 38.00", unit: "Galon 5L" },
-          { id: "inv-4", name: "Reusable Ice & Hot Compression Wrap", category: "Cryotherapy", stock: 24, min: 10, price: "SGD 32.00", unit: "Unit" },
-          { id: "inv-5", name: "Disinfectant Spray & Mat Sanitizer", category: "Higienitas Ruang", stock: 15, min: 5, price: "SGD 18.00", unit: "Botol 1L" }
-        ];
     }
   }
 
@@ -546,117 +497,6 @@ export class OwnerDashboardController {
     });
   }
 
-  renderPaneBranchInventory() {
-    const tbody = document.getElementById("branchInventoryTableBody");
-    if (!tbody) return;
-
-    const lblTemplate = document.getElementById("inventoryTemplateLabel");
-    if (lblTemplate && this.activeBranch) {
-      const meta = this.getTemplateMeta(this.activeBranch.template);
-      lblTemplate.textContent = meta.label;
-      lblTemplate.style.color = meta.color;
-      lblTemplate.style.background = meta.bg;
-    }
-
-    let safeCount = 0;
-    let lowCount = 0;
-    let criticalCount = 0;
-
-    if (!this.activeBranchInventory || this.activeBranchInventory.length === 0) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="7" class="owner-table-empty">
-            <div class="owner-table-empty-icon">📦</div>
-            <div class="owner-table-empty-title">Katalog inventaris masih kosong</div>
-            <div class="owner-table-empty-desc">Tambahkan perlengkapan atau barang inventaris baru khusus cabang ini.</div>
-          </td>
-        </tr>
-      `;
-      const elTotal = document.getElementById("invTotalItems");
-      const elSafe = document.getElementById("invSafeItems");
-      const elLow = document.getElementById("invLowItems");
-      const elCrit = document.getElementById("invCriticalItems");
-      if (elTotal) elTotal.textContent = 0;
-      if (elSafe) elSafe.textContent = 0;
-      if (elLow) elLow.textContent = 0;
-      if (elCrit) elCrit.textContent = 0;
-      return;
-    }
-
-    tbody.innerHTML = this.activeBranchInventory.map((item, idx) => {
-      let statusClass = "success";
-      let statusText = "● Stok Aman";
-
-      if (item.stock === 0) {
-        statusClass = "danger";
-        statusText = "✕ Stok Habis (Kritis)";
-        criticalCount++;
-      } else if (item.stock <= item.min) {
-        statusClass = "warning";
-        statusText = "⚠️ Stok Menipis";
-        lowCount++;
-      } else {
-        safeCount++;
-      }
-
-      return `
-        <tr>
-          <td>
-            <div class="item-info">
-              <span class="primary-text">${item.name}</span>
-              <span class="unit-tag">${item.unit || "Satuan"}</span>
-            </div>
-          </td>
-          <td><span class="pill" style="background:#f1f5f9; color:#475569; font-size:11px; font-weight:600;">${item.category}</span></td>
-          <td class="col-right">
-            <span class="tabular-num" style="font-size:14px; font-weight:800; color:${item.stock <= item.min ? '#b91c1c' : 'var(--text)'};">
-              ${item.stock}
-            </span>
-          </td>
-          <td class="col-right">
-            <span class="tabular-num secondary-text">Min. ${item.min}</span>
-          </td>
-          <td class="col-right">
-            <span class="price-text">${item.price}</span>
-          </td>
-          <td class="col-center">
-            <span class="owner-status-badge ${statusClass}">
-              ${statusText}
-            </span>
-          </td>
-          <td class="col-right">
-            <button class="btn-table-action btn-table-primary btn-add-stock" data-index="${idx}" title="Tambah 10 stok otomatis">
-              ＋ 10 Stok
-            </button>
-          </td>
-        </tr>
-      `;
-    }).join("");
-
-    // Update inventory summary counters
-    const elTotal = document.getElementById("invTotalItems");
-    const elSafe = document.getElementById("invSafeItems");
-    const elLow = document.getElementById("invLowItems");
-    const elCrit = document.getElementById("invCriticalItems");
-
-    if (elTotal) elTotal.textContent = this.activeBranchInventory.length;
-    if (elSafe) elSafe.textContent = safeCount;
-    if (elLow) elLow.textContent = lowCount;
-    if (elCrit) elCrit.textContent = criticalCount;
-
-    tbody.querySelectorAll(".btn-add-stock").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const idx = parseInt(btn.dataset.index, 10);
-        if (this.activeBranchInventory[idx]) {
-          this.activeBranchInventory[idx].stock += 10;
-          storageService.set(`cliniva_inventory_${this.activeBranch.id}`, this.activeBranchInventory);
-          soundService.playSuccess();
-          notificationService.success(`Stok ${this.activeBranchInventory[idx].name} ditambah 10 unit.`);
-          this.renderPaneBranchInventory();
-        }
-      });
-    });
-  }
 
   renderPaneBranchPractitioners() {
     const tbody = document.getElementById("branchPractitionersTableBody");
@@ -743,41 +583,7 @@ export class OwnerDashboardController {
       });
     }
 
-    // 2. Inventory Modal
-    const btnOpenInv = document.getElementById("btnOpenAddInventoryModal");
-    const invOverlay = document.getElementById("addInventoryModalOverlay");
-    const btnCloseInv = document.getElementById("btnCloseInventoryModal");
-    const btnCancelInv = document.getElementById("btnCancelInventoryModal");
-    const invForm = document.getElementById("addInventoryForm");
-
-    if (btnOpenInv) btnOpenInv.addEventListener("click", () => invOverlay.style.display = "flex");
-    const closeInvModal = () => invOverlay.style.display = "none";
-    if (btnCloseInv) btnCloseInv.addEventListener("click", closeInvModal);
-    if (btnCancelInv) btnCancelInv.addEventListener("click", closeInvModal);
-
-    if (invForm) {
-      invForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const newItem = {
-          id: `inv-${Date.now()}`,
-          name: document.getElementById("newInvName").value.trim(),
-          category: document.getElementById("newInvCategory").value.trim(),
-          stock: parseInt(document.getElementById("newInvStock").value, 10) || 0,
-          min: parseInt(document.getElementById("newInvMinAlert").value, 10) || 10,
-          price: document.getElementById("newInvPrice").value.trim() || "SGD 25.00",
-          unit: "Unit"
-        };
-        this.activeBranchInventory.push(newItem);
-        storageService.set(`cliniva_inventory_${this.activeBranch.id}`, this.activeBranchInventory);
-        soundService.playSuccess();
-        notificationService.success(`Barang ${newItem.name} berhasil ditambahkan ke inventaris!`);
-        invForm.reset();
-        closeInvModal();
-        this.renderPaneBranchInventory();
-      });
-    }
-
-    // 3. Practitioner Modal
+    // 2. Practitioner Modal
     const btnOpenPrac = document.getElementById("btnOpenAddPractitionerModal");
     const pracOverlay = document.getElementById("addPractitionerModalOverlay");
     const btnClosePrac = document.getElementById("btnClosePractitionerModal");

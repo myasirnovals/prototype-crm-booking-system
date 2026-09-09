@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Owner — Cliniva Clinic Operations</title>
   <meta name="description"
-    content="Dedicated operations dashboard for clinic owners: manage branch operational settings, staff, template-adaptive inventory, and practitioners." />
+    content="Dedicated operations dashboard for clinic owners: manage branch operational settings, staff, and practitioners.">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -465,13 +465,9 @@
           style="border:0;background:transparent;width:100%;text-align:left;">
           👥 Modul 2: Manajemen Staf Cabang
         </button>
-        <button class="side-link owner-tab-btn" data-pane="paneBranchInventory"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          📦 Modul 3: Inventaris Spesifik Template
-        </button>
         <button class="side-link owner-tab-btn" data-pane="paneBranchPractitioners"
           style="border:0;background:transparent;width:100%;text-align:left;">
-          🧑‍⚕️ Modul 4: Terapis &amp; Praktisi
+          🧑‍⚕️ Modul 3: Terapis &amp; Praktisi
         </button>
       </div>
 
@@ -483,7 +479,7 @@
           <span>🛡️ ISOLASI DATA AKTIF</span>
         </div>
         <p style="font-size:11px; color:var(--muted); margin:0 0 10px; line-height:1.4;">
-          Data antrean, staf, dan stok terisolasi secara ketat untuk cabang ini guna mencegah <em>margin error</em>
+          Data antrean, staf, dan jadwal praktisi terisolasi secara ketat untuk cabang ini guna mencegah <em>margin error</em>
           operasional.
         </p>
         <a href="../../pages/owner/branch-select.html" class="btn btn-sm btn-white full"
@@ -714,77 +710,7 @@
       </section>
 
       <!-- ========================================================
-           PANE 4: MODUL 3 — INVENTARIS SPESIFIK TEMPLATE
-           ======================================================== -->
-      <section class="owner-tab-pane" id="paneBranchInventory">
-        <div class="panel-top" style="margin-bottom:20px;">
-          <div>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;">📦 Modul 3: Inventaris Spesifik
-                Template</h2>
-              <span class="pill" style="background:#ccfbf1; color:#0f766e; font-weight:800;"
-                id="inventoryTemplateLabel">
-                Fisioterapi
-              </span>
-            </div>
-            <p style="color:var(--muted); font-size:14px; margin-top:4px;">
-              Katalog perlengkapan, obat herbal, jarum, minyak terapi, atau suplemen yang otomatis menyesuaikan
-              spesialisasi lini bisnis cabang aktif.
-            </p>
-          </div>
-          <button type="button" class="btn btn-primary" id="btnOpenAddInventoryModal">
-            ＋ Tambah Barang Inventaris
-          </button>
-        </div>
-
-        <!-- Inventory Summary Cards -->
-        <div
-          style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:20px;">
-          <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-md); padding:16px;">
-            <div style="font-size:11px; font-weight:800; color:var(--muted);">TOTAL ITEM KATALOG</div>
-            <div style="font-size:24px; font-weight:900; color:var(--text); margin-top:4px;" id="invTotalItems">0</div>
-          </div>
-          <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-md); padding:16px;">
-            <div style="font-size:11px; font-weight:800; color:#15803d;">STOK AMAN</div>
-            <div style="font-size:24px; font-weight:900; color:#15803d; margin-top:4px;" id="invSafeItems">0</div>
-          </div>
-          <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-md); padding:16px;">
-            <div style="font-size:11px; font-weight:800; color:#b45309;">PERINGATAN STOK MENIPIS</div>
-            <div style="font-size:24px; font-weight:900; color:#b45309; margin-top:4px;" id="invLowItems">0</div>
-          </div>
-          <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-md); padding:16px;">
-            <div style="font-size:11px; font-weight:800; color:#b91c1c;">STOK KRITIS / HABIS</div>
-            <div style="font-size:24px; font-weight:900; color:#b91c1c; margin-top:4px;" id="invCriticalItems">0</div>
-          </div>
-        </div>
-
-        <div class="owner-table-card">
-          <div class="owner-table-hint">
-            <span>↔️ Geser tabel ke samping untuk melihat seluruh data stok</span>
-          </div>
-          <div class="owner-table-wrapper">
-            <table class="owner-table table" id="branchInventoryTable">
-              <thead>
-                <tr>
-                  <th>Nama Barang &amp; Spesifikasi</th>
-                  <th>Kategori Template</th>
-                  <th class="col-right">Stok Saat Ini</th>
-                  <th class="col-right">Batas Minimum</th>
-                  <th class="col-right">Harga Satuan</th>
-                  <th class="col-center">Status Persediaan</th>
-                  <th class="col-right">Aksi Tambah Stok</th>
-                </tr>
-              </thead>
-              <tbody id="branchInventoryTableBody">
-                <!-- Dynamically Rendered -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ========================================================
-           PANE 5: MODUL 4 — TERAPIS & PRAKTISI CABANG
+           PANE 4: MODUL 3 — TERAPIS & PRAKTISI CABANG
            ======================================================== -->
       <section class="owner-tab-pane" id="paneBranchPractitioners">
         <div class="panel-top" style="margin-bottom:20px;">
@@ -873,53 +799,6 @@
   </div>
 
   <!-- ========================================================
-       MODAL: TAMBAH INVENTARIS BARU
-       ======================================================== -->
-  <div class="modal-overlay" id="addInventoryModalOverlay">
-    <div class="modal-content-card">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h3 style="margin:0; font-size:18px; font-weight:800;">Tambah Barang Inventaris Baru</h3>
-        <button type="button" id="btnCloseInventoryModal"
-          style="background:none; border:none; font-size:20px; cursor:pointer; color:var(--muted);">✕</button>
-      </div>
-
-      <form id="addInventoryForm">
-        <div class="field">
-          <label for="newInvName">Nama Barang / Produk <span style="color:#ef4444;">*</span></label>
-          <input type="text" id="newInvName" placeholder="misal: Kinesiology Tape Pro Water-Resistant" required>
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label for="newInvCategory">Kategori Item</label>
-            <input type="text" id="newInvCategory" placeholder="misal: Consumables / Alat Medis" required>
-          </div>
-          <div class="field">
-            <label for="newInvStock">Jumlah Stok Awal</label>
-            <input type="number" id="newInvStock" min="0" value="50" required>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label for="newInvMinAlert">Batas Peringatan Minimum</label>
-            <input type="number" id="newInvMinAlert" min="1" value="15" required>
-          </div>
-          <div class="field">
-            <label for="newInvPrice">Harga / Biaya Unit</label>
-            <input type="text" id="newInvPrice" placeholder="SGD 24.50" required>
-          </div>
-        </div>
-
-        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:24px;">
-          <button type="button" class="btn btn-soft" id="btnCancelInventoryModal">Batal</button>
-          <button type="submit" class="btn btn-primary">Simpan Barang Inventaris</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ========================================================
        MODAL: JADWALKAN PRAKTISI BARU
        ======================================================== -->
   <div class="modal-overlay" id="addPractitionerModalOverlay">
@@ -981,11 +860,6 @@
     <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchStaff" id="mobTabStaff" title="Staf Cabang">
       <span class="owner-mob-icon">👥</span>
       <span>Staf</span>
-    </button>
-    <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchInventory" id="mobTabInventory"
-      title="Inventaris Spesifik Template">
-      <span class="owner-mob-icon">📦</span>
-      <span>Stok</span>
     </button>
     <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchPractitioners" id="mobTabPractitioners"
       title="Terapis & Praktisi">

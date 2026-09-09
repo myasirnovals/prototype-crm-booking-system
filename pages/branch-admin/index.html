@@ -190,6 +190,290 @@
       color: var(--primary, #0f766e);
     }
 
+    /* ── Timeline Calendar Board Styles ────────────────────────── */
+    .calendar-board {
+      background: #ffffff;
+      border-radius: var(--radius-lg, 16px);
+      border: 1px solid var(--line, #e2e8f0);
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+      overflow: hidden;
+      margin-top: 16px;
+    }
+
+    .calendar-board-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line, #e2e8f0);
+      background: #f8fafc;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .calendar-board-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text, #0f172a);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .calendar-legend-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted, #64748b);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .legend-dot.b1 { background: #0f766e; }
+    .legend-dot.b2 { background: #2563eb; }
+    .legend-dot.b3 { background: #d97706; }
+    .legend-dot.b4 { background: #7c3aed; }
+
+    .cal-swipe-hint {
+      display: none;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary, #0f766e);
+      background: rgba(15, 118, 110, 0.08);
+      padding: 4px 10px;
+      border-radius: 6px;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .calendar-scroll-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 16px 18px 20px;
+      box-sizing: border-box;
+    }
+
+    .calendar-table {
+      display: grid !important;
+      grid-template-columns: 76px repeat(4, minmax(180px, 1fr)) !important;
+      gap: 10px !important;
+      min-width: 800px !important;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .calendar-table .cell {
+      min-height: 84px;
+      border-radius: 12px;
+      padding: 8px;
+      background: #f8fafc;
+      border: 1px solid #edf2f7;
+      color: var(--muted, #64748b);
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .calendar-table .cell.head {
+      min-height: auto;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: var(--text, #0f172a);
+      padding: 12px 10px;
+      text-align: left;
+      font-weight: 800;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+
+    /* Sticky Time Column */
+    .calendar-table .cell.head:first-child,
+    .calendar-table .cell.time-cell {
+      position: sticky;
+      left: 0;
+      z-index: 5;
+      background: #ffffff;
+      box-shadow: 2px 0 8px rgba(15, 23, 42, 0.05);
+      border-color: #e2e8f0;
+    }
+
+    .calendar-table .cell.head:first-child {
+      background: #f1f5f9;
+      z-index: 6;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calendar-table .cell.time-cell {
+      color: #0f172a;
+      font-size: 14px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #e2e8f0;
+    }
+
+    .calendar-table .cell.slot-empty {
+      background: #fafafa;
+      border: 1px dashed #e2e8f0;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .calendar-table .cell.slot-empty:hover {
+      background: #f0fdfa;
+      border-color: #99f6e4;
+    }
+
+    .slot-add-btn {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: color 0.2s ease;
+    }
+
+    .calendar-table .cell.slot-empty:hover .slot-add-btn {
+      color: var(--primary, #0f766e);
+    }
+
+    /* Column Header Doctor / Room Badge */
+    .doc-col-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .doc-col-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .doc-col-info {
+      min-width: 0;
+    }
+
+    .doc-col-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .doc-col-role {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted, #64748b);
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Booking Block Cards */
+    .calendar-table .booking-block {
+      border-radius: 10px;
+      padding: 8px 10px;
+      color: #ffffff;
+      font-size: 12px;
+      line-height: 1.35;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+      box-sizing: border-box;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .calendar-table .booking-block:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(15, 23, 42, 0.18);
+    }
+
+    .calendar-table .booking-block .bb-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+
+    .calendar-table .booking-block .bb-name {
+      font-weight: 900;
+      font-size: 12.5px;
+      letter-spacing: -0.1px;
+    }
+
+    .calendar-table .booking-block .bb-tag {
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.25);
+      white-space: nowrap;
+    }
+
+    .calendar-table .booking-block .bb-status {
+      font-size: 11px;
+      font-weight: 700;
+      opacity: 0.95;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .calendar-table .booking-block.b1 {
+      background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+    }
+
+    .calendar-table .booking-block.b2 {
+      background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+    }
+
+    .calendar-table .booking-block.b3 {
+      background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
+      color: #ffffff;
+    }
+
+    .calendar-table .booking-block.b4 {
+      background: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%);
+    }
+
     /* ── Modal ───────────────────────────────────────────────────── */
     .add-practitioner-modal {
       display: none;
@@ -390,17 +674,24 @@
         white-space: nowrap;
       }
 
-      /* Calendar board: horizontal scroll */
+      /* Calendar board: horizontal scroll on mobile */
       .calendar-board {
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
         border-radius: 14px !important;
-        padding: 14px !important;
+        margin-top: 12px !important;
+      }
+
+      .cal-swipe-hint {
+        display: inline-flex !important;
+      }
+
+      .calendar-scroll-wrap {
+        padding: 12px 10px 16px !important;
       }
 
       .calendar-table {
-        min-width: 520px;
-        gap: 6px !important;
+        grid-template-columns: 68px repeat(4, minmax(170px, 1fr)) !important;
+        gap: 8px !important;
+        min-width: 748px !important;
       }
 
       /* Modal: full screen friendly */
@@ -623,42 +914,148 @@
         </div>
 
         <div class="calendar-board">
-          <div class="calendar-table">
-            <div class="cell head">Waktu</div>
-            <div class="cell head">Dr. Lim (Physio)</div>
-            <div class="cell head">Dr. Wong (TCM)</div>
-            <div class="cell head">Therapist Sarah (Spa)</div>
-            <div class="cell head">Ruang Bed A2</div>
-
-            <div class="cell time-cell">09:00</div>
-            <div class="cell">
-              <div class="booking-block b1">Amanda Tan<br><small>Terkonfirmasi</small></div>
-            </div>
-            <div class="cell"></div>
-            <div class="cell">
-              <div class="booking-block b2">Jason Lee<br><small>Checked-in</small></div>
-            </div>
-            <div class="cell"></div>
-
-            <div class="cell time-cell">10:00</div>
-            <div class="cell"></div>
-            <div class="cell">
-              <div class="booking-block b3">Nur Aisyah<br><small>Menunggu Selesai</small></div>
-            </div>
-            <div class="cell"></div>
-            <div class="cell">
-              <div class="booking-block b4">Sedang Dipakai<br><small>Bed A2</small></div>
+          <div class="calendar-board-toolbar">
+            <div class="calendar-board-title">
+              <span>📅 Rabu, 9 September 2026</span>
+              <span class="status-pill active" style="font-size:10px; padding:2px 8px;">Master Timeline</span>
             </div>
 
-            <div class="cell time-cell">11:00</div>
-            <div class="cell">
-              <div class="booking-block b2">S. Raj<br><small>Terkonfirmasi</small></div>
+            <div class="cal-swipe-hint">
+              <span>↔ Geser jadwal untuk melihat semua praktisi</span>
             </div>
-            <div class="cell"></div>
-            <div class="cell">
-              <div class="booking-block b1">M. Chan<br><small>Terkonfirmasi</small></div>
+
+            <div class="calendar-legend-wrap">
+              <span class="legend-item"><span class="legend-dot b1"></span> Terkonfirmasi</span>
+              <span class="legend-item"><span class="legend-dot b2"></span> Checked-in</span>
+              <span class="legend-item"><span class="legend-dot b3"></span> Dalam Terapi</span>
+              <span class="legend-item"><span class="legend-dot b4"></span> Ruangan Aktif</span>
             </div>
-            <div class="cell"></div>
+          </div>
+
+          <div class="calendar-scroll-wrap">
+            <div class="calendar-table">
+              <!-- Column Headers -->
+              <div class="cell head">
+                <span style="font-size:12px; font-weight:800; color:var(--muted);">Waktu</span>
+              </div>
+              <div class="cell head">
+                <div class="doc-col-head">
+                  <span class="doc-col-icon" style="background:#e0f2fe; color:#0369a1;">🧑‍⚕️</span>
+                  <div class="doc-col-info">
+                    <div class="doc-col-name">Dr. Lim Wei Han</div>
+                    <div class="doc-col-role">Physiotherapy &amp; Spine</div>
+                  </div>
+                </div>
+              </div>
+              <div class="cell head">
+                <div class="doc-col-head">
+                  <span class="doc-col-icon" style="background:#f0fdfa; color:#0f766e;">🩺</span>
+                  <div class="doc-col-info">
+                    <div class="doc-col-name">Physician Wong S.</div>
+                    <div class="doc-col-role">TCM &amp; Akupunktur</div>
+                  </div>
+                </div>
+              </div>
+              <div class="cell head">
+                <div class="doc-col-head">
+                  <span class="doc-col-icon" style="background:#fef3c7; color:#b45309;">💆</span>
+                  <div class="doc-col-info">
+                    <div class="doc-col-name">Therapist Sarah</div>
+                    <div class="doc-col-role">Wellness &amp; Spa</div>
+                  </div>
+                </div>
+              </div>
+              <div class="cell head">
+                <div class="doc-col-head">
+                  <span class="doc-col-icon" style="background:#f5f3ff; color:#7c3aed;">🛏️</span>
+                  <div class="doc-col-info">
+                    <div class="doc-col-name">Ruang Bed A2</div>
+                    <div class="doc-col-role">Bed Perawatan Cabang</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Row 09:00 -->
+              <div class="cell time-cell">09:00</div>
+              <div class="cell">
+                <div class="booking-block b1" onclick="alert('Jadwal: Amanda Tan (09:00)\nLayanan: Fisioterapi Tulang Belakang\nDokter: Dr. Lim Wei Han\nStatus: Terkonfirmasi')">
+                  <div class="bb-top">
+                    <span class="bb-name">Amanda Tan</span>
+                    <span class="bb-tag">09:00</span>
+                  </div>
+                  <div class="bb-status">✓ Terkonfirmasi</div>
+                </div>
+              </div>
+              <div class="cell slot-empty" onclick="alert('Slot 09:00 Physician Wong kosong. Klik untuk menambahkan booking.')">
+                <span class="slot-add-btn">+ Kosong</span>
+              </div>
+              <div class="cell">
+                <div class="booking-block b2" onclick="alert('Jadwal: Jason Lee (09:00)\nLayanan: Wellness Aromatherapy Spa\nPraktisi: Therapist Sarah\nStatus: Checked-in')">
+                  <div class="bb-top">
+                    <span class="bb-name">Jason Lee</span>
+                    <span class="bb-tag">09:00</span>
+                  </div>
+                  <div class="bb-status">● Checked-in</div>
+                </div>
+              </div>
+              <div class="cell slot-empty" onclick="alert('Slot 09:00 Ruang Bed A2 kosong.')">
+                <span class="slot-add-btn">+ Kosong</span>
+              </div>
+
+              <!-- Row 10:00 -->
+              <div class="cell time-cell">10:00</div>
+              <div class="cell slot-empty" onclick="alert('Slot 10:00 Dr. Lim kosong.')">
+                <span class="slot-add-btn">+ Kosong</span>
+              </div>
+              <div class="cell">
+                <div class="booking-block b3" onclick="alert('Jadwal: Nur Aisyah (10:00)\nLayanan: TCM Herbal &amp; Akupunktur\nDokter: Physician Wong S.\nStatus: Menunggu Selesai')">
+                  <div class="bb-top">
+                    <span class="bb-name">Nur Aisyah</span>
+                    <span class="bb-tag">10:00</span>
+                  </div>
+                  <div class="bb-status">⏳ Menunggu Selesai</div>
+                </div>
+              </div>
+              <div class="cell slot-empty" onclick="alert('Slot 10:00 Therapist Sarah kosong.')">
+                <span class="slot-add-btn">+ Kosong</span>
+              </div>
+              <div class="cell">
+                <div class="booking-block b4" onclick="alert('Ruang Bed A2: Sedang Dipakai untuk Sesi Terapi Pasien (10:00 - 11:00)')">
+                  <div class="bb-top">
+                    <span class="bb-name">Sedang Dipakai</span>
+                    <span class="bb-tag">10:00</span>
+                  </div>
+                  <div class="bb-status">🔒 Ruang Bed A2</div>
+                </div>
+              </div>
+
+              <!-- Row 11:00 -->
+              <div class="cell time-cell">11:00</div>
+              <div class="cell">
+                <div class="booking-block b2" onclick="alert('Jadwal: S. Raj (11:00)\nLayanan: Konsultasi Postur &amp; Sendi\nDokter: Dr. Lim Wei Han\nStatus: Terkonfirmasi')">
+                  <div class="bb-top">
+                    <span class="bb-name">S. Raj</span>
+                    <span class="bb-tag">11:00</span>
+                  </div>
+                  <div class="bb-status">✓ Terkonfirmasi</div>
+                </div>
+              </div>
+              <div class="cell slot-empty" onclick="alert('Slot 11:00 Physician Wong kosong.')">
+                <span class="slot-add-btn">+ Kosong</span>
+              </div>
+              <div class="cell">
+                <div class="booking-block b1" onclick="alert('Jadwal: M. Chan (11:00)\nLayanan: Deep Tissue Massage Therapy\nPraktisi: Therapist Sarah\nStatus: Terkonfirmasi')">
+                  <div class="bb-top">
+                    <span class="bb-name">M. Chan</span>
+                    <span class="bb-tag">11:00</span>
+                  </div>
+                  <div class="bb-status">✓ Terkonfirmasi</div>
+                </div>
+              </div>
+              <div class="cell slot-empty" onclick="alert('Slot 11:00 Ruang Bed A2 kosong.')">
+                <span class="slot-add-btn">+ Kosong</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

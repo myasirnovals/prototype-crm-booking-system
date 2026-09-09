@@ -114,8 +114,13 @@ export class BranchAdminController {
         const target = btn.dataset.pane;
         soundService.playClickTone?.();
 
-        this.tabButtons.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
+        this.tabButtons.forEach((b) => {
+          if (b.dataset.pane === target) {
+            b.classList.add("active");
+          } else {
+            b.classList.remove("active");
+          }
+        });
 
         this.tabPanes.forEach((pane) => {
           pane.style.display = pane.id === target ? "block" : "none";
@@ -379,7 +384,7 @@ export class BranchAdminController {
 
     if (activeDocsCountEl) {
       const activeCount = practitioners.filter(p => p.status !== "OFF").length;
-      activeDocsCountEl.textContent = `${activeCount} Dokter Bertugas`;
+      activeDocsCountEl.textContent = `${activeCount}`;
     }
 
     tbody.innerHTML = "";

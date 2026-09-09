@@ -88,42 +88,103 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: #ffffff;
-      border-top: 1px solid var(--line);
-      z-index: 200;
-      padding: 4px 0 env(safe-area-inset-bottom, 4px);
-      box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
+      width: 100%;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(226, 232, 240, 0.9);
+      z-index: 500;
+      padding: 0;
+      box-shadow: 0 -4px 24px rgba(15, 23, 42, 0.06);
     }
 
     .ba-mobile-nav-inner {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
       display: flex;
+      align-items: center;
       justify-content: space-around;
+      padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 4px));
+      box-sizing: border-box;
     }
 
     .ba-mob-btn {
       flex: 1;
+      min-width: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 3px;
-      padding: 8px 4px;
+      padding: 6px 2px 4px;
       background: transparent;
       border: none;
       cursor: pointer;
-      font-size: 10px;
-      font-weight: 800;
-      color: var(--muted);
-      transition: color 0.2s ease;
-      border-radius: 0;
+      font-family: inherit;
+      color: #64748b;
+      position: relative;
+      border-radius: 12px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .ba-mob-btn.active {
-      color: var(--primary);
+    .ba-mob-btn:active {
+      transform: scale(0.93);
     }
 
+    .ba-mob-icon-wrap,
     .ba-mob-icon {
-      font-size: 20px;
-      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 30px;
+      border-radius: 15px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      color: inherit;
+    }
+
+    .ba-mob-icon-wrap svg,
+    .ba-mob-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2.1;
+      display: block;
+      transition: transform 0.2s ease;
+    }
+
+    .ba-mob-label,
+    .ba-mob-btn span:not(.ba-mob-icon):not(.ba-mob-icon-wrap) {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: -0.1px;
+      line-height: 1.2;
+      white-space: nowrap;
+      color: inherit;
+      transition: all 0.2s ease;
+    }
+
+    /* Active State: Modern pill highlight + primary color accent */
+    .ba-mob-btn.active {
+      color: var(--primary, #0f766e);
+    }
+
+    .ba-mob-btn.active .ba-mob-icon-wrap,
+    .ba-mob-btn.active .ba-mob-icon {
+      background: rgba(15, 118, 110, 0.12);
+      color: var(--primary, #0f766e);
+    }
+
+    .ba-mob-btn.active .ba-mob-icon-wrap svg,
+    .ba-mob-btn.active .ba-mob-icon svg {
+      transform: scale(1.05);
+    }
+
+    .ba-mob-btn.active .ba-mob-label,
+    .ba-mob-btn.active span:not(.ba-mob-icon):not(.ba-mob-icon-wrap) {
+      font-weight: 800;
+      color: var(--primary, #0f766e);
     }
 
     /* ── Modal ───────────────────────────────────────────────────── */
@@ -229,7 +290,7 @@
 
       /* Bottom nav: show on mobile */
       .ba-mobile-nav {
-        display: flex;
+        display: block !important;
       }
 
       /* Panel top: stack vertically */
@@ -677,21 +738,50 @@
   <!-- Mobile Bottom Navigation Bar (shown on mobile only, replaces sidebar) -->
   <nav class="ba-mobile-nav" aria-label="Branch Admin Mobile Navigation">
     <div class="ba-mobile-nav-inner">
-      <button class="ba-mob-btn admin-tab-btn active" data-pane="paneOverview" id="mobTabOverview" title="Antrean & Meja Depan">
-        <span class="ba-mob-icon">📊</span>
-        <span>Antrean</span>
+      <button class="ba-mob-btn admin-tab-btn active" data-pane="paneOverview" id="mobTabOverview" title="Antrean &amp; Meja Depan">
+        <span class="ba-mob-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+            <line x1="8" y1="17" x2="8" y2="12"></line>
+            <line x1="12" y1="17" x2="12" y2="8"></line>
+            <line x1="16" y1="17" x2="16" y2="14"></line>
+          </svg>
+        </span>
+        <span class="ba-mob-label">Antrean</span>
       </button>
-      <button class="ba-mob-btn admin-tab-btn" data-pane="panePractitioners" id="mobTabPractitioners" title="Praktisi & Dokter">
-        <span class="ba-mob-icon">🧑‍⚕️</span>
-        <span>Praktisi</span>
+
+      <button class="ba-mob-btn admin-tab-btn" data-pane="panePractitioners" id="mobTabPractitioners" title="Praktisi &amp; Dokter">
+        <span class="ba-mob-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <line x1="19" y1="8" x2="19" y2="14"></line>
+            <line x1="16" y1="11" x2="22" y2="11"></line>
+          </svg>
+        </span>
+        <span class="ba-mob-label">Praktisi</span>
       </button>
-      <button class="ba-mob-btn admin-tab-btn" data-pane="paneCalendar" id="mobTabCalendar" title="Jadwal & Ruangan">
-        <span class="ba-mob-icon">📅</span>
-        <span>Jadwal</span>
+
+      <button class="ba-mob-btn admin-tab-btn" data-pane="paneCalendar" id="mobTabCalendar" title="Jadwal &amp; Ruangan">
+        <span class="ba-mob-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+        </span>
+        <span class="ba-mob-label">Jadwal</span>
       </button>
+
       <button class="ba-mob-btn admin-tab-btn" data-pane="paneClinicSettings" id="mobTabSettings" title="Profil Cabang">
-        <span class="ba-mob-icon">⚙️</span>
-        <span>Profil</span>
+        <span class="ba-mob-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </span>
+        <span class="ba-mob-label">Profil</span>
       </button>
     </div>
   </nav>

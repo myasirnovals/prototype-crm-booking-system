@@ -142,31 +142,30 @@ export class SuperAdminController {
 
     container.innerHTML = owners.map(owner => `
       <tr>
-        <td>
+        <td style="white-space:nowrap;">
           <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:20px;">${owner.avatar || "💼"}</span>
             <div>
-              <div style="font-weight:700; font-size:13px;">${owner.name}</div>
+              <div style="font-weight:700; font-size:13px; color:var(--text);">${owner.name}</div>
               <div style="font-size:11px; color:var(--muted);">${owner.email}</div>
             </div>
           </div>
         </td>
-        <td style="font-size:12px;">${owner.phone || "—"}</td>
-        <td>
-          <span class="pill" style="font-size:11px; padding:3px 8px; background:${owner.brandName ? "#f0fdfa" : "#fef3c7"}; color:${owner.brandName ? "#0f766e" : "#92400e"}; font-weight:700;">
+        <td style="font-size:13px; font-weight:600; white-space:nowrap; letter-spacing:0.2px; color:var(--text);">${owner.phone || "—"}</td>
+        <td style="white-space:nowrap;">
+          <span class="pill" style="font-size:11px; padding:4px 10px; background:${owner.brandName ? "#f0fdfa" : "#fef3c7"}; color:${owner.brandName ? "#0f766e" : "#92400e"}; font-weight:700; white-space:nowrap;">
             ${owner.brandName || "Not Set Up"}
           </span>
         </td>
-        <td>
-          <span class="pill" style="font-size:11px; padding:3px 8px; background:${owner.onboardingCompleted ? "#dcfce7" : "#fee2e2"}; color:${owner.onboardingCompleted ? "#166534" : "#991b1b"}; font-weight:700;">
+        <td style="white-space:nowrap;">
+          <span class="pill" style="font-size:11px; padding:4px 10px; background:${owner.onboardingCompleted ? "#dcfce7" : "#fee2e2"}; color:${owner.onboardingCompleted ? "#166534" : "#991b1b"}; font-weight:700; white-space:nowrap;">
             ${owner.onboardingCompleted ? "✓ Active" : "⏳ Pending"}
           </span>
         </td>
-        <td style="font-size:11px; color:var(--muted);">${owner.createdAt ? new Date(owner.createdAt).toLocaleDateString() : "—"}</td>
-        <td>
-          <div style="display:flex; gap:6px;">
-            <button class="btn btn-sm btn-soft" onclick="window.superAdminCtrl.loginAsOwner('${owner.id}')" title="Login as this Owner">🔑 Login As</button>
-            <button class="btn btn-sm btn-danger" onclick="window.superAdminCtrl.deleteOwner('${owner.id}', '${owner.name}')" title="Delete Owner Account">🗑️</button>
+        <td style="white-space:nowrap;">
+          <div style="display:flex; gap:6px; align-items:center;">
+            <button class="btn btn-sm btn-soft" onclick="window.superAdminCtrl.loginAsOwner('${owner.id}')" title="Login as this Owner" style="padding:6px 12px; font-size:12px; font-weight:600; white-space:nowrap;">🔑 Login As</button>
+            <button class="btn btn-sm btn-danger" onclick="window.superAdminCtrl.deleteOwner('${owner.id}', '${owner.name}')" title="Delete Owner Account" style="padding:6px 10px; font-size:12px; white-space:nowrap;">🗑️</button>
           </div>
         </td>
       </tr>

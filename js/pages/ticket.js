@@ -64,6 +64,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     brandEl.textContent = `CLINIVA HEALTHCARE • ${activeBooking.branchName.toUpperCase()}`;
   }
 
+  // Arrival Notice Card elements
+  const noticeClinicEl = document.getElementById("noticeClinicName");
+  const noticeScheduleEl = document.getElementById("noticeScheduleVal");
+  if (noticeClinicEl && activeBooking.branchName) {
+    noticeClinicEl.textContent = activeBooking.branchName;
+  }
+  if (noticeScheduleEl && activeBooking.schedule) {
+    noticeScheduleEl.textContent = activeBooking.schedule;
+  }
+
   // Render Intake Notes if available
   const updateIntakeLabel = () => {
     if (activeBooking.intakeData && intakeRow && intakeEl) {

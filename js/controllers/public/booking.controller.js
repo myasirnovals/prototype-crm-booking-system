@@ -899,7 +899,9 @@ export class PatientBookingController {
         // Save directly via bookingService (Supabase SSOT)
         await bookingService.createBooking(newBooking);
 
-        alert(i18nService.t("booking.confirmedAlert", `✓ Appointment ${bookingCode} confirmed! Deposit verified. Redirecting to your digital E-Ticket.`));
+        const clinicName = this.bookingDraft.branchName || "Klinik Cliniva";
+        const arrivalTime = this.bookingDraft.scheduleSlot || "jam yang dipilih";
+        alert(`✅ Booking Anda sudah terkonfirmasi!\nSilakan datang ke ${clinicName} pada jam ${arrivalTime}.\n\n(Menampilkan E-Tiket resmi Anda...)`);
         window.location.href = `ticket.html?code=${encodeURIComponent(bookingCode)}`;
       }, 1000);
     });

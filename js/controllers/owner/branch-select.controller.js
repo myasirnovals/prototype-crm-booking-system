@@ -176,11 +176,13 @@ export class BranchSelectController {
       const isActive = b.id === activeBranchId;
       const roomsCount = Array.isArray(b.rooms) ? b.rooms.length : (b.rooms || "4");
 
-      const logoSrc = b.logo || this.brandProfile?.logo;
+      // Isolasi logo cabang: Hanya cabang primer yang menggunakan fallback Brand Profile.
+      // Cabang kedua dan seterusnya memprioritaskan b.logo mandiri atau default ikon template (anti-duplikasi foto cabang 1).
+      const logoSrc = b.isPrimary ? (b.logo || this.brandProfile?.logo) : b.logo;
       const hasImageLogo = logoSrc && (logoSrc.startsWith("data:image") || logoSrc.startsWith("http") || logoSrc.includes("/"));
       const logoContent = hasImageLogo
         ? `<img src="${logoSrc}" alt="${b.name}">`
-        : `<span>${meta.icon || "🌿"}</span>`;
+        : `<span>${b.logo || meta.icon || "🌿"}</span>`;
 
       return `
         <div class="gateway-header-card branch-card-row ${isActive ? "is-active" : ""}" data-branch-id="${b.id}">
@@ -290,6 +292,7 @@ export class BranchSelectController {
           return;
         }
 
+        const meta = this.getTemplateMeta(template);
         const newBranchId = `br-sg-${Date.now().toString().slice(-4)}`;
         const newBranch = {
           id: newBranchId,
@@ -300,6 +303,7 @@ export class BranchSelectController {
           hours,
           rooms,
           template,
+          logo: meta.icon, // Tetapkan ikon template cabang mandiri agar tidak menduplikasi foto cabang 1
           currency: "SGD",
           revenue: "SGD 0.00",
           occupancy: "0.0%",

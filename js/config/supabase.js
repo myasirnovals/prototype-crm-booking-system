@@ -74,6 +74,32 @@ export function setSupabaseCredentials(url, anonKey) {
   }
 }
 
+// Supabase JS ESM CDN URLs with fallback mirrors
+const SUPABASE_CDN_URLS = [
+  "https://esm.sh/@supabase/supabase-js@2.39.8",
+  "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
+];
+
+/**
+ * Load Supabase library dynamically with timeout protection
+ */
+async function loadSupabaseModule() {
+  for (const cdnUrl of SUPABASE_CDN_URLS) {
+    try {
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(`Timeout loading from ${cdnUrl}`)), 3500)
+      );
+      const mod = await Promise.race([import(cdnUrl), timeoutPromise]);
+      if (mod && mod.createClient) {
+        return mod;
+      }
+    } catch (cdnErr) {
+      console.warn(`[Cliniva Supabase] Failed loading from ${cdnUrl}:`, cdnErr.message || cdnErr);
+    }
+  }
+  throw new Error("All Supabase CDN mirrors failed or timed out.");
+}
+
 /**
  * Initialize and get Supabase client instance (Asynchronous)
  * Returns null if Supabase is not configured or fails to load from CDN.
@@ -90,7 +116,7 @@ export async function getSupabaseClient() {
   isInitializing = true;
   initPromise = (async () => {
     try {
-      const { createClient } = await import(SUPABASE_CDN_URL);
+      const { createClient } = await loadSupabaseModule();
       const { url, anonKey } = getActiveSupabaseConfig();
 
       supabaseInstance = createClient(url, anonKey, {

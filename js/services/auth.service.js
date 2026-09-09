@@ -235,9 +235,15 @@ class AuthService {
 
     storageService.set(this.SESSION_KEY, session);
 
-    // Audit log in cloud
+    // Audit log in cloud (non-blocking)
     if (supabaseService.isAvailable()) {
-      supabaseService.logAudit("LOGIN", `User ${user.email} (${user.role}) logged in`, user);
+      try {
+        supabaseService.logAudit?.("LOGIN", `User ${user.email} (${user.role}) logged in`, user)?.catch?.((err) => {
+          console.warn("[AuthService] Background audit log error:", err);
+        });
+      } catch (err) {
+        console.warn("[AuthService] Failed to record audit log:", err);
+      }
     }
 
     return { success: true, session, targetRoute };
@@ -296,7 +302,13 @@ class AuthService {
     storageService.set(this.SESSION_KEY, session);
 
     if (supabaseService.isAvailable()) {
-      supabaseService.logAudit("DEMO_LOGIN", `1-Click login as ${roleKey} (${user.name})`, user);
+      try {
+        supabaseService.logAudit?.("DEMO_LOGIN", `1-Click login as ${roleKey} (${user.name})`, user)?.catch?.((err) => {
+          console.warn("[AuthService] Background audit log error:", err);
+        });
+      } catch (err) {
+        console.warn("[AuthService] Failed to record audit log:", err);
+      }
     }
 
     return { success: true, session, targetRoute };

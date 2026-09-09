@@ -514,26 +514,6 @@ export class BranchAdminController {
     });
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // POS ACTIONS & SETTLEMENT
-  // ─────────────────────────────────────────────────────────────────────────
-
-  openPOSModal(queueNo) {
-    soundService.playClickTone?.();
-    const confirmed = confirm(`Proses checkout kasir untuk antrean ${queueNo}?\nDeposit online telah diverifikasi.`);
-    if (confirmed) {
-      soundService.playSuccessChime?.();
-      if (notificationService && typeof notificationService.addSystemNotification === "function") {
-        notificationService.addSystemNotification({
-          title: `Kasir POS: Antrean ${queueNo} Lunas`,
-          message: `Pelunasan tagihan checkout antrean ${queueNo} berhasil diselesaikan.`,
-          category: "SESSION",
-          type: "success"
-        });
-      }
-      alert(`✓ Transaksi kasir untuk antrean ${queueNo} berhasil diselesaikan!\nStruk pembayaran telah dicetak.`);
-    }
-  }
 
   // ─────────────────────────────────────────────────────────────────────────
   // BRANCH CONFIGURATION

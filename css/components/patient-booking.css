@@ -787,3 +787,116 @@
     width: 100%;
   }
 }
+
+/* ── AGGRESSIVE MOBILE OPTIMIZATION (< 640px) ─────────────────────────── */
+@media (max-width: 640px) {
+  .booking-page-container {
+    padding: 12px 10px 40px !important;
+  }
+  .booking-wizard-steps {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+    margin-bottom: 16px !important;
+  }
+  .wizard-step-node {
+    padding: 8px 4px !important;
+    border-radius: 10px !important;
+    text-align: center !important;
+    align-items: center !important;
+  }
+  .wizard-step-node .step-tag {
+    font-size: 9px !important;
+    letter-spacing: 0 !important;
+    margin-bottom: 2px !important;
+  }
+  .wizard-step-node .step-name {
+    font-size: 10.5px !important;
+    line-height: 1.15 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .wizard-step-pane {
+    padding: 16px 12px !important;
+    border-radius: 16px !important;
+  }
+  .wizard-pane-header {
+    margin-bottom: 14px !important;
+    padding-bottom: 10px !important;
+  }
+  .wizard-pane-header h2 {
+    font-size: 16.5px !important;
+    line-height: 1.25 !important;
+    margin-bottom: 4px !important;
+  }
+  .wizard-pane-header p {
+    font-size: 11.5px !important;
+    line-height: 1.35 !important;
+  }
+  .clinic-region-filters {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 6px !important;
+    padding-bottom: 4px !important;
+    scrollbar-width: none;
+  }
+  .clinic-region-filters::-webkit-scrollbar {
+    display: none;
+  }
+  .clinic-filter-chip {
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    padding: 6px 10px !important;
+  }
+  #clinicInteractiveMap {
+    height: 190px !important;
+    border-radius: 12px !important;
+  }
+  .clinic-pills-horizontal {
+    max-height: 220px !important;
+  }
+  .clinic-map-pill {
+    padding: 10px 12px !important;
+  }
+  .selected-clinic-card {
+    padding: 12px !important;
+  }
+  .practitioner-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+  .practitioner-select-card {
+    padding: 12px !important;
+    min-height: 48px !important;
+  }
+  .slot-pills-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+  }
+  .slot-pill {
+    padding: 8px 4px !important;
+    font-size: 12px !important;
+    min-height: 44px !important;
+  }
+  .wizard-footer-nav {
+    flex-direction: column-reverse !important;
+    gap: 8px !important;
+    margin-top: 20px !important;
+  }
+  .wizard-footer-nav button {
+    width: 100% !important;
+    min-height: 46px !important;
+    font-size: 13.5px !important;
+    justify-content: center !important;
+    padding: 10px !important;
+  }
+  .booking-summary-card {
+    padding: 14px !important;
+  }
+  .booking-summary-row {
+    font-size: 12px !important;
+    padding: 6px 0 !important;
+  }
+}

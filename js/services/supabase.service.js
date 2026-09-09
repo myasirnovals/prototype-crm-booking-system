@@ -678,6 +678,39 @@ class SupabaseService {
   // ─────────────────────────────────────────────────────────────────────────
 
   /**
+   * Log action to audit trail in Supabase
+   * @param {string} action
+   * @param {string} details
+   * @param {object} actor
+   * @returns {Promise<boolean>}
+   */
+  async logAudit(action, details = "", actor = {}) {
+    const supabase = await getSupabaseClient();
+    if (!supabase) return false;
+
+    try {
+      const actorName = actor?.name || actor?.email || "System User";
+      const actorRole = actor?.role || "UNKNOWN";
+      const target = actor?.branchName || actor?.branchId || null;
+
+      await supabase.from("audit_logs").insert([
+        {
+          action: action || "ACTION",
+          details: details || "",
+          actor_name: actorName,
+          actor_role: actorRole,
+          target: target,
+          created_at: new Date().toISOString()
+        }
+      ]);
+      return true;
+    } catch (err) {
+      console.warn("[SupabaseService] logAudit failed:", err);
+      return false;
+    }
+  }
+
+  /**
    * Fetch audit trail logs from Supabase
    * @param {number} limit
    * @returns {Promise<Array<object>>}

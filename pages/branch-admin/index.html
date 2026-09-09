@@ -116,9 +116,6 @@
         <button class="side-link admin-tab-btn" data-pane="paneCalendar" style="border:0;background:transparent;width:100%;text-align:left;">
           📅 Jadwal &amp; Ruang Praktik
         </button>
-        <button class="side-link admin-tab-btn" data-pane="panePOS" style="border:0;background:transparent;width:100%;text-align:left;">
-          💳 Kasir POS &amp; Billing
-        </button>
         <button class="side-link admin-tab-btn" data-pane="paneInventory" style="border:0;background:transparent;width:100%;text-align:left;">
           📦 Stok &amp; Inventaris Cabang
         </button>
@@ -263,63 +260,6 @@
         </div>
       </section>
 
-      <!-- ── PANE 4: POS CASHIER & BILLING ─────────────────────────────────── -->
-      <section class="admin-tab-pane" id="panePOS" style="display:none;">
-        <div class="panel-top">
-          <div>
-            <h2>Kasir POS &amp; Pelunasan Tagihan (*Checkout Settlement*)</h2>
-            <p>Pelunasan tagihan layanan/produk dengan pengurangan otomatis dari deposit reservasi online.</p>
-          </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:1.3fr 0.9fr; gap:20px;">
-          <div class="data-table-container">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>No Antrean</th>
-                  <th>Pasien</th>
-                  <th>Layanan</th>
-                  <th>Sisa Tagihan</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="posCheckoutTableBody">
-                <tr>
-                  <td><strong>A-01</strong></td>
-                  <td>Rendra Pratama</td>
-                  <td>Clinical Acupuncture</td>
-                  <td style="color:var(--primary); font-weight:800;">SGD 65.00</td>
-                  <td><button class="btn btn-sm btn-primary" onclick="window.branchAdminInstance?.openPOSModal('A-01')">Checkout POS</button></td>
-                </tr>
-                <tr>
-                  <td><strong>B-02</strong></td>
-                  <td>Amanda Tan</td>
-                  <td>Physiotherapy &amp; Spine</td>
-                  <td style="color:var(--primary); font-weight:800;">SGD 90.00</td>
-                  <td><button class="btn btn-sm btn-primary" onclick="window.branchAdminInstance?.openPOSModal('B-02')">Checkout POS</button></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:22px;">
-            <h3 style="font-size:16px; margin-bottom:14px;">Ringkasan Pemasukan Hari Ini</h3>
-            <div class="summary-row">
-              <span style="color:var(--muted);">Total Deposit Online:</span>
-              <strong>SGD 1,260.00</strong>
-            </div>
-            <div class="summary-row">
-              <span style="color:var(--muted);">Pelunasan Kasir POS:</span>
-              <strong>SGD 2,480.00</strong>
-            </div>
-            <div class="summary-row total" style="display:flex; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:1px solid var(--line); font-size:15px; font-weight:800;">
-              <span>Total Pemasukan Cabang:</span>
-              <span style="color:var(--primary);">SGD 3,740.00</span>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <!-- ── PANE 5: STOK & INVENTARIS CABANG ─────────────────────────────── -->
       <section class="admin-tab-pane" id="paneInventory" style="display:none;">

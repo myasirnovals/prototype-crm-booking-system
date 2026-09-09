@@ -97,34 +97,49 @@ export class AuthController {
       card.addEventListener("click", async () => {
         const roleKey = card.dataset.role;
         const userEmail = card.dataset.userEmail;
-        soundService.playQueueChime();
+        soundService.playQueueChime?.();
 
         card.style.transform = "scale(0.96)";
         setTimeout(() => (card.style.transform = ""), 200);
 
-        let result;
-        if (userEmail) {
-          result = await authService.loginWithCredentials(userEmail, "cliniva2026");
-        } else {
-          result = await authService.loginByRoleKey(roleKey);
-        }
-
-        if (!result.success) {
-          alert(result.error);
-          return;
-        }
-
         const activeStatus = document.querySelector(".form.active .status-box") || this.staffStatus;
         if (activeStatus) {
-          this.showSuccess(
-            activeStatus,
-            `⚡ Signed in as <strong>${result.session.user.name}</strong> (${result.session.user.title})! Redirecting to ${result.targetRoute}...`
-          );
+          this.showSuccess(activeStatus, `⏳ Sedang memproses login...`);
         }
 
-        setTimeout(() => {
-          window.location.href = this.resolveRedirect(result.targetRoute);
-        }, 800);
+        try {
+          let result;
+          if (userEmail) {
+            result = await authService.loginWithCredentials(userEmail, "cliniva2026");
+          } else {
+            result = await authService.loginByRoleKey(roleKey);
+          }
+
+          if (!result || !result.success) {
+            const errMsg = result?.error || "Gagal melakukan demo login.";
+            if (activeStatus) this.showError(activeStatus, errMsg);
+            else alert(errMsg);
+            return;
+          }
+
+          if (activeStatus) {
+            this.showSuccess(
+              activeStatus,
+              `⚡ Signed in as <strong>${result.session.user.name}</strong> (${result.session.user.title})! Redirecting to ${result.targetRoute}...`
+            );
+          }
+
+          setTimeout(() => {
+            window.location.href = this.resolveRedirect(result.targetRoute);
+          }, 700);
+        } catch (err) {
+          console.error("[AuthController] Quick demo login error:", err);
+          if (activeStatus) {
+            this.showError(activeStatus, `Terjadi kesalahan saat masuk: ${err.message || err}`);
+          } else {
+            alert(`Terjadi kesalahan saat masuk: ${err.message || err}`);
+          }
+        }
       });
     });
   }
@@ -155,6 +170,25 @@ export class AuthController {
       });
     }
 
+    // Quick action buttons (WhatsApp OTP & Email Magic Link)
+    const quickActionBtns = document.querySelectorAll(".quick-actions .btn");
+    quickActionBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        soundService.playClickTone?.();
+        const patientTab = document.querySelector('.mode-btn[data-mode="patient"]');
+        if (patientTab) patientTab.click();
+
+        const channelSelect = document.getElementById("patientChannel");
+        if (channelSelect) {
+          if (btn.textContent.includes("WhatsApp")) {
+            channelSelect.value = "whatsapp";
+          } else if (btn.textContent.includes("Email")) {
+            channelSelect.value = "email";
+          }
+        }
+      });
+    });
+
     this.staffForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -163,23 +197,29 @@ export class AuthController {
       const role = document.getElementById("staffRole")?.value || null;
 
       this.resetStatus(this.staffStatus);
+      this.showSuccess(this.staffStatus, "⏳ Memverifikasi akun...");
 
-      const result = await authService.loginWithCredentials(email, password, role, this.selectedRegion);
+      try {
+        const result = await authService.loginWithCredentials(email, password, role, this.selectedRegion);
 
-      if (!result.success) {
-        this.showError(this.staffStatus, result.error);
-        return;
+        if (!result || !result.success) {
+          this.showError(this.staffStatus, result?.error || "Gagal masuk.");
+          return;
+        }
+
+        soundService.playQueueChime?.();
+        this.showSuccess(
+          this.staffStatus,
+          `✓ Success! Signed in as <strong>${result.session.user.name}</strong>. Redirecting to ${result.targetRoute}...`
+        );
+
+        setTimeout(() => {
+          window.location.href = this.resolveRedirect(result.targetRoute);
+        }, 800);
+      } catch (err) {
+        console.error("[AuthController] Staff submit error:", err);
+        this.showError(this.staffStatus, `Gagal masuk: ${err.message || err}`);
       }
-
-      soundService.playQueueChime();
-      this.showSuccess(
-        this.staffStatus,
-        `✓ Success! Signed in as <strong>${result.session.user.name}</strong>. Redirecting to ${result.targetRoute}...`
-      );
-
-      setTimeout(() => {
-        window.location.href = this.resolveRedirect(result.targetRoute);
-      }, 900);
     });
   }
 
@@ -403,7 +443,7 @@ export class AuthController {
     const keyInput = document.getElementById("inputSupabaseKey");
     const statusBox = document.getElementById("cloudModalStatus");
 
-    if (!banner || !modal) return;
+    if (!modal) return;
 
     const updateStatusDisplay = () => {
       const isCloud = isSupabaseConfigured();

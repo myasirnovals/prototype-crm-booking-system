@@ -68,7 +68,8 @@
   flex-shrink: 0;
 }
 
-.patient-header-left .logo [data-i18n="portal.topbar"] {
+.patient-header-left .logo [data-i18n="portal.topbar"],
+.patient-header-left .logo [data-i18n="booking.headerTitle"] {
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
@@ -291,7 +292,8 @@
   }
 
   /* Prevent logo text from overflowing or colliding with right buttons */
-  .patient-header-left .logo [data-i18n="portal.topbar"] {
+  .patient-header-left .logo [data-i18n="portal.topbar"],
+  .patient-header-left .logo [data-i18n="booking.headerTitle"] {
     max-width: 160px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -425,12 +427,14 @@
 
 @media (max-width: 600px) {
   /* On small mobile screens, replace long "Patient Self-Service Portal" with clean "Cliniva" so it never clips */
-  .patient-header-left .logo [data-i18n="portal.topbar"] {
+  .patient-header-left .logo [data-i18n="portal.topbar"],
+  .patient-header-left .logo [data-i18n="booking.headerTitle"] {
     font-size: 0 !important;
     line-height: 0 !important;
   }
 
-  .patient-header-left .logo [data-i18n="portal.topbar"]::before {
+  .patient-header-left .logo [data-i18n="portal.topbar"]::before,
+  .patient-header-left .logo [data-i18n="booking.headerTitle"]::before {
     content: "Cliniva";
     font-size: 15px !important;
     line-height: 1.2 !important;

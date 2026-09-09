@@ -26,21 +26,20 @@
 
 <body style="background:var(--bg); min-height:100vh; display:flex; flex-direction:column;">
   <!-- Header Topbar -->
-  <header
-    style="background:#fff; border-bottom:1px solid var(--line); padding:16px 28px; position:sticky; top:0; z-index:100;">
-    <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
-      <div style="display:flex; align-items:center; gap:16px;">
-        <a href="../../index.html" class="logo">
+  <header class="patient-header">
+    <div class="patient-header-inner">
+      <div class="patient-header-left">
+        <a href="../../index.html" class="logo" title="Cliniva Patient Portal">
           <span class="logo-mark">✦</span>
           <span data-i18n="booking.headerTitle">Cliniva Patient Portal</span>
         </a>
-        <span class="pill" style="font-size:11px; padding:4px 10px; background:#f0fdf4; color:#16a34a; font-weight:800;"
+        <span class="pill" style="font-size:11px; padding:3px 8px; background:#f0fdf4; color:#16a34a; font-weight:800;"
           data-i18n="nav.verifiedPdpa">
           ● PDPA Compliant
         </span>
       </div>
 
-      <div style="display:flex; gap:14px; align-items:center;">
+      <div class="patient-header-right">
         <!-- Language Switcher -->
         <div class="lang-switcher-wrap">
           <select class="lang-select" aria-label="Select Language"
@@ -51,13 +50,12 @@
           </select>
         </div>
 
-        <div style="text-align:right;">
+        <div class="patient-user-info">
           <div id="bookingPatientName" style="font-size:13px; font-weight:800; color:var(--text);">Amanda Tan</div>
           <div id="bookingPatientContact" style="font-size:11px; color:var(--muted);">+65 8123 4567</div>
         </div>
         <a href="../../pages/patient/index.html" class="btn btn-sm btn-soft" data-i18n="nav.patientPortal">← Patient Portal</a>
-        <button type="button" class="btn btn-sm btn-soft" id="bookingSignOutBtn" data-i18n="nav.signOut">Sign
-          Out</button>
+        <button type="button" class="btn btn-sm btn-soft" id="bookingSignOutBtn" data-i18n="nav.signOut">Sign Out</button>
       </div>
     </div>
   </header>

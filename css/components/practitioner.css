@@ -645,26 +645,40 @@
     white-space: nowrap;
   }
 
-  .practitioner-header-left .pill {
+  .practitioner-header-left [data-i18n="practitioner.topbar"] {
+    display: none !important;
+  }
+
+  .practitioner-header-left #mobileDoctorRoomBadge {
+    display: inline-flex !important;
     font-size: 10.5px;
     padding: 3px 8px;
-    max-width: 110px;
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   /* Declutter secondary items on mobile */
   .practitioner-header-right {
     gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
   }
 
-  .lang-switcher-wrap {
-    display: none;
+  .practitioner-header .lang-switcher-wrap,
+  .practitioner-header-right .lang-switcher-wrap {
+    display: none !important;
+  }
+
+  .practitioner-header .notif-bar-slot,
+  .practitioner-header-right .notif-bar-slot {
+    display: none !important;
   }
 
   .practitioner-user-detail {
-    display: none;
+    display: none !important;
+  }
+
+  #editProfileBtnMob {
+    display: inline-flex !important;
   }
 
   #doctorSignOutBtn {

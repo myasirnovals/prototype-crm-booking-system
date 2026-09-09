@@ -4,24 +4,24 @@
    ========================================================================== */
 
 /* 1. Tokens & Base Foundation */
-@import "variables.css";
-@import "base.css";
-@import "layout.css";
+@import "variables.css?v=3";
+@import "base.css?v=3";
+@import "layout.css?v=3";
 
 /* 2. Modular UI Components */
-@import "components/hero.css";
-@import "components/features.css";
-@import "components/showcase.css";
-@import "components/booking.css";
-@import "components/notifications.css";
-@import "components/markets.css";
-@import "components/auth.css";
-@import "components/receptionist.css";
-@import "components/ticket.css";
-@import "components/demo.css";
-@import "components/onboarding.css";
-@import "components/owner.css";
-@import "components/practitioner.css";
-@import "components/patient-portal.css";
-@import "components/patient-booking.css";
+@import "components/hero.css?v=3";
+@import "components/features.css?v=3";
+@import "components/showcase.css?v=3";
+@import "components/booking.css?v=3";
+@import "components/notifications.css?v=3";
+@import "components/markets.css?v=3";
+@import "components/auth.css?v=3";
+@import "components/receptionist.css?v=3";
+@import "components/ticket.css?v=3";
+@import "components/demo.css?v=3";
+@import "components/onboarding.css?v=3";
+@import "components/owner.css?v=3";
+@import "components/practitioner.css?v=3";
+@import "components/patient-portal.css?v=3";
+@import "components/patient-booking.css?v=3";
 

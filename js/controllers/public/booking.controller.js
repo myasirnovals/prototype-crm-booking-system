@@ -104,6 +104,14 @@ export class PatientBookingController {
         this.renderSummaryStep();
       }
     });
+
+    // Ensure window scroll is always reset to top-left on initial load and prevent browser restoring scroll
+    if ("scrollRestoration" in history) {
+      try {
+        history.scrollRestoration = "manual";
+      } catch (e) {}
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }
 
   loadBranches(templateId = null) {
@@ -251,7 +259,8 @@ export class PatientBookingController {
         const sgBranches = this.branches.filter((b) => b.regionCode === "sg");
         if (sgBranches.length > 0 && window.L) {
           const bounds = window.L.latLngBounds(sgBranches.map((b) => [b.lat, b.lng]));
-          this.map.fitBounds(bounds, { padding: [48, 48] });
+          const pad = window.innerWidth < 640 ? [16, 16] : [48, 48];
+          this.map.fitBounds(bounds, { padding: pad });
         }
       } catch (e) {
         console.warn("Leaflet map initialization warning:", e);
@@ -293,14 +302,14 @@ export class PatientBookingController {
 
       // Popup content fully derived from the CURRENT branch data (b is from the snapshot)
       const popupContent = `
-        <div style="font-family:inherit; min-width:200px;">
-          <strong style="font-size:13px; color:var(--text); display:block; margin-bottom:2px;">${b.name}</strong>
-          <div style="font-size:11px; color:var(--muted); line-height:1.3;">${b.address}</div>
+        <div style="font-family:inherit; min-width:180px; max-width:240px; box-sizing:border-box;">
+          <strong style="font-size:13px; color:var(--text); display:block; margin-bottom:2px; word-break:break-word;">${b.name}</strong>
+          <div style="font-size:11px; color:var(--muted); line-height:1.3; word-break:break-word;">${b.address}</div>
           <div style="margin-top:6px; font-size:10px; font-weight:800; color:var(--primary);">${b.badge}</div>
         </div>
       `;
 
-      marker.bindPopup(popupContent, { className: "cliniva-map-popup" });
+      marker.bindPopup(popupContent, { className: "cliniva-map-popup", autoPan: false });
 
       marker.on("click", () => {
         soundService.playClickTone();
@@ -699,6 +708,10 @@ export class PatientBookingController {
         node.classList.remove("active", "completed");
         if (i === stepNumber) {
           node.classList.add("active");
+          // Smoothly scroll active step into view on mobile wizard bar
+          try {
+            node.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+          } catch (e) {}
         } else if (i < stepNumber) {
           node.classList.add("completed");
         }
@@ -719,7 +732,7 @@ export class PatientBookingController {
       this.renderDynamicIntakeForm();
     }
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }
 
   /* ------------------------------------------------------------------

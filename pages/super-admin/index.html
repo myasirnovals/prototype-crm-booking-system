@@ -82,6 +82,7 @@
       border: 1px solid var(--line, #e2e8f0);
       border-radius: 14px;
       padding: 20px 24px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .sa-stat-label {
@@ -173,30 +174,237 @@
       color: var(--muted, #64748b);
       margin: 0;
     }
+
+    /* ── Mobile Navigation Bar (Desktop Default: Hidden) ── */
+    .sa-mobile-nav {
+      display: none;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       📱 IMK / HCI MOBILE RESPONSIVE OPTIMIZATIONS (<= 768px)
+       - Fitts's Law: Bottom Thumb-Zone Navigation Bar
+       - Miller's Law: 2x2 Metric Chunking
+       - Hick's Law: Declutter Header & Single Column Form
+       - Visibility of System Status: Clear Active Indicator
+       ══════════════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .sa-layout {
+        display: block;
+        min-height: calc(100vh - 56px);
+      }
+
+      /* Sembunyikan sidebar vertikal pada mobile untuk membebaskan ruang */
+      .sa-sidebar {
+        display: none !important;
+      }
+
+      /* Main container memanfaatkan 100% lebar layar dengan padding bawah untuk bottom nav */
+      .sa-main {
+        padding: 16px 14px 96px 14px;
+      }
+
+      /* Sticky Bottom Navigation Bar (Fitts's Law & Ergonomic Thumb Reach) */
+      .sa-mobile-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        background: #1e1b4b;
+        border-top: 1px solid #312e81;
+        z-index: 1000;
+        box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.28);
+        padding: 4px 10px env(safe-area-inset-bottom, 6px);
+        justify-content: space-around;
+        align-items: center;
+        backdrop-filter: blur(16px);
+      }
+
+      .sa-mob-btn {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        padding: 6px 4px;
+        background: transparent;
+        border: none;
+        color: #94a3b8;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 12px;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        min-height: 48px;
+        text-align: center;
+      }
+
+      .sa-mob-btn .sa-mob-icon {
+        font-size: 19px;
+        line-height: 1;
+        transition: transform 0.15s ease;
+      }
+
+      .sa-mob-btn.active {
+        color: #ffffff;
+        background: rgba(79, 70, 229, 0.4);
+        border: 1px solid rgba(165, 180, 252, 0.35);
+        font-weight: 800;
+      }
+
+      .sa-mob-btn.active .sa-mob-icon {
+        transform: scale(1.15);
+      }
+
+      /* Top Header: Bersih & Minimalis (Aesthetic & Minimalist Design) */
+      .sa-header {
+        padding: 10px 14px !important;
+      }
+
+      .sa-badge-sub {
+        display: none !important;
+      }
+
+      .sa-user-sub {
+        display: none !important;
+      }
+
+      .sa-user-name {
+        font-size: 12px !important;
+        max-width: 115px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* 2x2 Clean Chunking Grid for Key Metrics (Miller's Law) */
+      .sa-stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        margin-bottom: 20px !important;
+      }
+
+      .sa-stat-card {
+        padding: 14px 14px !important;
+        border-radius: 12px !important;
+      }
+
+      .sa-stat-label {
+        font-size: 10px !important;
+        letter-spacing: 0.3px !important;
+        margin-bottom: 6px !important;
+        line-height: 1.25 !important;
+      }
+
+      .sa-stat-value {
+        font-size: 26px !important;
+        letter-spacing: -0.5px !important;
+      }
+
+      /* Page Header & Actions */
+      .sa-page-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+        margin-bottom: 18px !important;
+      }
+
+      .sa-page-title {
+        font-size: 20px !important;
+      }
+
+      .sa-page-sub {
+        font-size: 12px !important;
+        line-height: 1.4 !important;
+      }
+
+      .sa-page-action-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 11px 16px !important;
+        font-size: 13px !important;
+        border-radius: 10px !important;
+      }
+
+      /* Quick Actions: Full-Width Touch Friendly */
+      .sa-quick-actions-box {
+        padding: 18px 16px !important;
+        border-radius: 12px !important;
+      }
+
+      .sa-quick-actions-btns {
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
+
+      .sa-quick-actions-btns .sa-tab-btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 12px 16px !important;
+        font-size: 13px !important;
+        border-radius: 10px !important;
+      }
+
+      /* Single Column Form for Smooth Mobile Typing */
+      .sa-form-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+
+      .create-owner-panel {
+        padding: 16px 14px !important;
+        border-radius: 12px !important;
+      }
+
+      .sa-form-actions {
+        flex-direction: column-reverse !important;
+        gap: 8px !important;
+      }
+
+      .sa-form-actions button {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 11px 16px !important;
+      }
+
+      /* Mobile Affordance for Tables */
+      .sa-table-helper {
+        display: flex !important;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: var(--muted, #64748b);
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+    }
   </style>
 </head>
 
 <body>
   <!-- ── Header ──────────────────────────────────────────────────────────── -->
-  <header style="background:#1e1b4b; border-bottom:1px solid #312e81; padding:14px 28px; position:sticky; top:0; z-index:100;">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <div style="display:flex; align-items:center; gap:16px;">
-        <a href="../../index.html" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
+  <header class="sa-header" style="background:#1e1b4b; border-bottom:1px solid #312e81; padding:14px 28px; position:sticky; top:0; z-index:100;">
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="../../index.html" style="display:flex; align-items:center; gap:6px; text-decoration:none;">
           <span style="font-size:18px; color:#a5b4fc;">✦</span>
           <span style="font-size:15px; font-weight:800; color:#fff; letter-spacing:-0.5px;">Cliniva</span>
         </a>
-        <span style="font-size:11px; padding:4px 10px; background:#312e81; color:#a5b4fc; border-radius:20px; font-weight:800; border: 1px solid #4f46e5;">
-          👑 Super Admin — Platform Management
+        <span class="sa-badge" style="font-size:11px; padding:4px 10px; background:#312e81; color:#a5b4fc; border-radius:20px; font-weight:800; border: 1px solid #4f46e5; display:inline-flex; align-items:center; gap:4px; white-space:nowrap;">
+          <span>👑 Super Admin</span>
+          <span class="sa-badge-sub">— Platform Management</span>
         </span>
       </div>
 
-      <div style="display:flex; gap:12px; align-items:center;">
+      <div style="display:flex; gap:10px; align-items:center;">
         <div style="text-align:right;">
-          <div style="font-size:13px; font-weight:800; color:#fff;" id="superAdminName">Loading…</div>
-          <div style="font-size:11px; color:#a5b4fc;" id="superAdminRole">Super Administrator</div>
+          <div class="sa-user-name" style="font-size:13px; font-weight:800; color:#fff;" id="superAdminName">Loading…</div>
+          <div class="sa-user-sub" style="font-size:11px; color:#a5b4fc;" id="superAdminRole">Super Administrator</div>
         </div>
         <button type="button" class="btn btn-sm" id="saSignOutBtn"
-          style="background:#312e81; color:#a5b4fc; border:1px solid #4f46e5; font-weight:700;">
+          style="background:#312e81; color:#a5b4fc; border:1px solid #4f46e5; font-weight:700; padding:6px 12px; border-radius:8px; white-space:nowrap;">
           Sign Out
         </button>
       </div>
@@ -206,7 +414,7 @@
   <!-- ── Layout ──────────────────────────────────────────────────────────── -->
   <div class="sa-layout">
 
-    <!-- Sidebar -->
+    <!-- Sidebar (Desktop View) -->
     <aside class="sa-sidebar">
       <div class="sa-sidebar-label">Platform</div>
       <button class="sa-tab-btn active" data-pane="paneStats" id="tabStats">
@@ -266,9 +474,9 @@
         </div>
 
         <!-- Quick Actions -->
-        <div style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px;">
+        <div class="sa-quick-actions-box" style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px;">
           <h3 style="font-size:16px; font-weight:800; margin:0 0 16px;">Quick Actions</h3>
-          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <div class="sa-quick-actions-btns" style="display:flex; gap:12px; flex-wrap:wrap;">
             <button class="btn btn-primary sa-tab-btn" data-pane="paneOwners"
               style="background:#4f46e5; border-color:#4f46e5; color:#fff; width:auto; display:inline-flex; padding:10px 20px;">
               💼 Manage Owner Accounts
@@ -288,7 +496,7 @@
             <h1 class="sa-page-title">Owner Accounts</h1>
             <p class="sa-page-sub">Create and manage clinic Owner accounts. Owners will set up their own branches after account creation.</p>
           </div>
-          <button class="btn btn-primary" id="showCreateOwnerBtn" style="background:#4f46e5; border-color:#4f46e5; white-space:nowrap;">
+          <button class="btn btn-primary sa-page-action-btn" id="showCreateOwnerBtn" style="background:#4f46e5; border-color:#4f46e5; white-space:nowrap;">
             + Add Owner Account
           </button>
         </div>
@@ -317,7 +525,7 @@
             </div>
           </div>
 
-          <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
+          <div class="sa-form-actions" style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
             <button class="btn btn-soft" id="cancelCreateOwnerBtn"
               onclick="document.getElementById('createOwnerPanel').style.display='none'; document.getElementById('showCreateOwnerBtn').textContent='+ Add Owner Account';">
               Cancel
@@ -329,17 +537,22 @@
           </div>
         </div>
 
+        <!-- Touch Affordance Helper for Mobile -->
+        <div class="sa-table-helper" style="display:none;">
+          <span>👆 Geser tabel ke samping untuk melihat seluruh data</span>
+        </div>
+
         <!-- Owner Table -->
-        <div style="overflow-x:auto; border-radius:14px; border:1px solid var(--line);">
+        <div style="overflow-x:auto; border-radius:14px; border:1px solid var(--line); -webkit-overflow-scrolling:touch;">
           <table class="sa-table">
             <thead>
               <tr>
-                <th>Owner</th>
-                <th>Phone</th>
-                <th>Brand / Clinic</th>
-                <th>Status</th>
-                <th>Joined</th>
-                <th>Actions</th>
+                <th style="white-space:nowrap;">Owner</th>
+                <th style="white-space:nowrap;">Phone</th>
+                <th style="white-space:nowrap;">Brand / Clinic</th>
+                <th style="white-space:nowrap;">Status</th>
+                <th style="white-space:nowrap;">Joined</th>
+                <th style="white-space:nowrap;">Actions</th>
               </tr>
             </thead>
             <tbody id="ownerTableBody">
@@ -356,7 +569,7 @@
             <h1 class="sa-page-title">Audit Logs</h1>
             <p class="sa-page-sub">Record of all Super Admin actions on the platform.</p>
           </div>
-          <button class="btn btn-soft" onclick="window.superAdminCtrl?.renderAuditLogs()">↻ Refresh</button>
+          <button class="btn btn-soft sa-page-action-btn" onclick="window.superAdminCtrl?.renderAuditLogs()">↻ Refresh</button>
         </div>
 
         <div class="audit-log-box" id="auditLogsList">
@@ -366,6 +579,22 @@
 
     </main>
   </div>
+
+  <!-- Mobile Bottom Navigation Bar (Fitts's Law & Ergonomic Thumb Zone) -->
+  <nav class="sa-mobile-nav" aria-label="Super Admin Mobile Navigation">
+    <button class="sa-mob-btn sa-tab-btn active" data-pane="paneStats" id="mobTabStats" title="Platform Overview">
+      <span class="sa-mob-icon">📊</span>
+      <span>Overview</span>
+    </button>
+    <button class="sa-mob-btn sa-tab-btn" data-pane="paneOwners" id="mobTabOwners" title="Owner Accounts">
+      <span class="sa-mob-icon">💼</span>
+      <span>Owners</span>
+    </button>
+    <button class="sa-mob-btn sa-tab-btn" data-pane="paneAudit" id="mobTabAudit" title="Audit Logs">
+      <span class="sa-mob-icon">🛡️</span>
+      <span>Audit</span>
+    </button>
+  </nav>
 
   <!-- Controller -->
   <script type="module" src="../../js/controllers/super-admin/super-admin.controller.js"></script>

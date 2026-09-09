@@ -62,14 +62,27 @@ export class SuperAdminController {
     btns.forEach((btn) => {
       btn.addEventListener("click", () => {
         const target = btn.dataset.pane;
+        if (!target) return;
         soundService.playClickTone && soundService.playClickTone();
 
-        btns.forEach((b)  => b.classList.remove("active"));
-        panes.forEach((p) => p.classList.remove("active"));
+        // Synchronize active states across sidebar and mobile bottom navigation
+        btns.forEach((b) => {
+          if (b.dataset.pane === target && (b.id?.startsWith("tab") || b.id?.startsWith("mobTab"))) {
+            b.classList.add("active");
+          } else if (b.id?.startsWith("tab") || b.id?.startsWith("mobTab")) {
+            b.classList.remove("active");
+          }
+        });
 
-        btn.classList.add("active");
+        panes.forEach((p) => p.classList.remove("active"));
         const pane = document.getElementById(target);
-        if (pane) pane.classList.add("active");
+        if (pane) {
+          pane.classList.add("active");
+          // Smooth scroll to top on tab switch for better mobile ergonomic flow
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          const mainEl = document.querySelector(".sa-main");
+          if (mainEl) mainEl.scrollTop = 0;
+        }
       });
     });
   }

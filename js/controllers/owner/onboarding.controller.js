@@ -33,6 +33,34 @@ export class AdminOnboardingController {
     this.setupLaunchButton();
     this.setupSignOut();
     this.updateReviewSummary();
+
+    // AWAL MODIFIKASI: Logika Harga Dinamis Langganan B2B
+    const subsRadios = document.querySelectorAll('input[name="wizardSubsPlan"]');
+    const totalBillingAmount = document.getElementById('wizardTotalBillingAmount');
+
+    subsRadios.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        const price = parseFloat(e.target.dataset.price).toFixed(2);
+        if (totalBillingAmount) totalBillingAmount.textContent = `SGD ${price}`;
+
+        document.querySelectorAll('.subs-radio-label-wizard').forEach(label => {
+          label.style.borderColor = 'var(--line)';
+          label.style.background = '#f8fafc';
+          const title = label.querySelector('span:first-of-type');
+          if (title) title.style.color = 'var(--text)';
+        });
+
+        const selectedLabel = e.target.closest('.subs-radio-label-wizard');
+        if (selectedLabel) {
+          selectedLabel.style.borderColor = 'var(--primary)';
+          selectedLabel.style.background = '#f0fdfa';
+          const title = selectedLabel.querySelector('span:first-of-type');
+          if (title) title.style.color = 'var(--primary)';
+        }
+      });
+    });
+    // AKHIR MODIFIKASI
+
     this.goToStep(1, false);
   }
 
@@ -321,7 +349,7 @@ export class AdminOnboardingController {
     launchBtn.addEventListener("click", () => {
       soundService.playQueueChime();
       launchBtn.disabled = true;
-      launchBtn.innerHTML = "⏳ Provisioning Tenant & Setting Up First Branch...";
+      launchBtn.innerHTML = "⏳ Memproses Pembayaran & Menyiapkan Tenant...";
 
       const brandName = document.getElementById("brandNameInput")?.value.trim() || "My Clinic";
       const brandTagline = document.getElementById("brandTaglineInput")?.value.trim() || "";
@@ -395,10 +423,10 @@ export class AdminOnboardingController {
 
       setTimeout(() => {
         alert(
-          `🎉 ONBOARDING SELESAI!\n\nBrand: ${brandName}\nTemplate Lini Bisnis: ${this.getTemplateLabel(this.selectedTemplate)}\nCabang 1: ${branchName}\n\nSistem mengalihkan Anda ke Dashboard Owner...`
+          `🎉 PEMBAYARAN BERHASIL & ONBOARDING SELESAI!\n\nBrand: ${brandName}\nTemplate Lini Bisnis: ${this.getTemplateLabel(this.selectedTemplate)}\nCabang 1: ${branchName}\n\nSistem mengalihkan Anda ke Dashboard Owner...`
         );
         window.location.href = "../../pages/owner/dashboard.html";
-      }, 900);
+      }, 1500);
     });
   }
 

@@ -402,12 +402,19 @@
       </div>
 
       <div style="display:flex; gap:10px; align-items:center;">
+        <div class="lang-switcher-wrap" style="display:inline-block;">
+          <select class="lang-dropdown lang-select" aria-label="Language selection" style="padding: 6px 10px; font-size: 12px; font-weight: 700; border: 1px solid #4f46e5; border-radius: 8px; background: #312e81; cursor: pointer; color: #a5b4fc;">
+            <option value="en">🇬🇧 English</option>
+            <option value="zh">🇸🇬 新加坡 (华语)</option>
+            <option value="ms">🇲🇾 Malaysia (Melayu)</option>
+          </select>
+        </div>
         <div style="text-align:right;">
           <div class="sa-user-name" style="font-size:13px; font-weight:800; color:#fff;" id="superAdminName">Loading…</div>
-          <div class="sa-user-sub" style="font-size:11px; color:#a5b4fc;" id="superAdminRole">Super Administrator</div>
+          <div class="sa-user-sub" style="font-size:11px; color:#a5b4fc;" id="superAdminRole" data-i18n="superAdmin.role">Super Administrator</div>
         </div>
         <button type="button" class="btn btn-sm" id="saSignOutBtn"
-          style="background:#312e81; color:#a5b4fc; border:1px solid #4f46e5; font-weight:700; padding:6px 12px; border-radius:8px; white-space:nowrap;">
+          style="background:#312e81; color:#a5b4fc; border:1px solid #4f46e5; font-weight:700; padding:6px 12px; border-radius:8px; white-space:nowrap;" data-i18n="nav.signOut">
           Sign Out
         </button>
       </div>
@@ -420,17 +427,17 @@
     <!-- Sidebar (Desktop View) -->
     <aside class="sa-sidebar">
       <div class="sa-sidebar-label">Platform</div>
-      <button class="sa-tab-btn active" data-pane="paneStats" id="tabStats">
+      <button class="sa-tab-btn active" data-pane="paneStats" id="tabStats" data-i18n="superAdmin.nav.overview">
         📊 Platform Overview
       </button>
 
       <div class="sa-sidebar-label">Owner Management</div>
-      <button class="sa-tab-btn" data-pane="paneOwners" id="tabOwners">
+      <button class="sa-tab-btn" data-pane="paneOwners" id="tabOwners" data-i18n="superAdmin.nav.owners">
         💼 Owner Accounts
       </button>
 
       <div class="sa-sidebar-label">System</div>
-      <button class="sa-tab-btn" data-pane="paneAudit" id="tabAudit">
+      <button class="sa-tab-btn" data-pane="paneAudit" id="tabAudit" data-i18n="superAdmin.nav.audit">
         🛡️ Audit Logs
       </button>
 
@@ -459,19 +466,19 @@
 
         <div class="sa-stats-grid">
           <div class="sa-stat-card">
-            <div class="sa-stat-label">Total Owner Accounts</div>
+            <div class="sa-stat-label" data-i18n="superAdmin.statTotalOwners">Total Owner Accounts</div>
             <div class="sa-stat-value" id="statTotalOwners">—</div>
           </div>
           <div class="sa-stat-card">
-            <div class="sa-stat-label">Active Owners</div>
+            <div class="sa-stat-label" data-i18n="superAdmin.statActiveOwners">Active Owners</div>
             <div class="sa-stat-value" id="statActiveOwners" style="color:#0f766e;">—</div>
           </div>
           <div class="sa-stat-card">
-            <div class="sa-stat-label">Pending Setup</div>
+            <div class="sa-stat-label" data-i18n="superAdmin.statPendingOwners">Pending Setup</div>
             <div class="sa-stat-value" id="statPendingOwners" style="color:#d97706;">—</div>
           </div>
           <div class="sa-stat-card">
-            <div class="sa-stat-label">Total Branches</div>
+            <div class="sa-stat-label" data-i18n="superAdmin.statTotalBranches">Total Branches</div>
             <div class="sa-stat-value" id="statTotalBranches" style="color:#4f46e5;">—</div>
           </div>
         </div>
@@ -542,7 +549,7 @@
 
         <!-- Touch Affordance Helper for Mobile -->
         <div class="sa-table-helper" style="display:none;">
-          <span>👆 Geser tabel ke samping untuk melihat seluruh data</span>
+          <span data-i18n="superAdmin.tableScrollHint">👆 Swipe table horizontally to view all data</span>
         </div>
 
         <!-- Owner Table -->
@@ -587,15 +594,15 @@
   <nav class="sa-mobile-nav" aria-label="Super Admin Mobile Navigation">
     <button class="sa-mob-btn sa-tab-btn active" data-pane="paneStats" id="mobTabStats" title="Platform Overview">
       <span class="sa-mob-icon">📊</span>
-      <span>Overview</span>
+      <span data-i18n="superAdmin.mobNavOverview">Overview</span>
     </button>
     <button class="sa-mob-btn sa-tab-btn" data-pane="paneOwners" id="mobTabOwners" title="Owner Accounts">
       <span class="sa-mob-icon">💼</span>
-      <span>Owners</span>
+      <span data-i18n="superAdmin.mobNavOwners">Owners</span>
     </button>
     <button class="sa-mob-btn sa-tab-btn" data-pane="paneAudit" id="mobTabAudit" title="Audit Logs">
       <span class="sa-mob-icon">🛡️</span>
-      <span>Audit</span>
+      <span data-i18n="superAdmin.mobNavAudit">Audit</span>
     </button>
   </nav>
 

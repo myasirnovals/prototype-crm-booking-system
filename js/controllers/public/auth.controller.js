@@ -551,7 +551,7 @@ export class AuthController {
     });
 
     disconnectBtn?.addEventListener("click", () => {
-      if (confirm("Putuskan koneksi Supabase dan kembali ke Local Storage mode?")) {
+      if (confirm("Disconnect from Supabase and switch back to Local Storage mode?")) {
         setSupabaseCredentials("", "");
         soundService.playClickTone?.();
         window.location.reload();

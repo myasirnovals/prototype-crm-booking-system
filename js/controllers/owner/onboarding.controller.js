@@ -8,6 +8,7 @@ import { authService, USER_ROLES } from "../../services/auth.service.js";
 import { storageService } from "../../services/storage.service.js";
 import { soundService } from "../../services/sound.service.js";
 import { bookingService } from "../../services/booking.service.js";
+import { i18nService } from "../../services/i18n.service.js";
 
 export class AdminOnboardingController {
   constructor() {
@@ -34,6 +35,10 @@ export class AdminOnboardingController {
     this.setupSignOut();
     this.updateReviewSummary();
     this.goToStep(1, false);
+
+    window.addEventListener("cliniva:languageChanged", () => {
+      this.updateReviewSummary();
+    });
   }
 
   renderUserInfo() {
@@ -153,7 +158,7 @@ export class AdminOnboardingController {
         }
         if (previewEmoji) previewEmoji.style.display = "none";
         if (btnRemove) btnRemove.style.display = "inline-flex";
-        if (uploadTitle) uploadTitle.textContent = "Logo gambar berhasil diunggah (Klik untuk mengganti)";
+        if (uploadTitle) uploadTitle.textContent = i18nService.t("onboarding.logoUploaded", "Logo image uploaded successfully (Click to replace)");
         presetButtons.forEach((b) => b.classList.remove("active"));
       } else {
         if (previewImage) {
@@ -165,7 +170,7 @@ export class AdminOnboardingController {
           previewEmoji.style.display = "block";
         }
         if (btnRemove) btnRemove.style.display = "none";
-        if (uploadTitle) uploadTitle.textContent = "Klik untuk Mengunggah Logo atau Tarik File Gambar ke Sini";
+        if (uploadTitle) uploadTitle.textContent = i18nService.t("onboarding.logoUploadTitle", "Click to Upload Logo or Drag Image File Here");
         presetButtons.forEach((b) => {
           b.classList.toggle("active", b.dataset.emoji === logoVal);
         });
@@ -177,11 +182,11 @@ export class AdminOnboardingController {
     const processFile = (file) => {
       if (!file) return;
       if (!file.type.startsWith("image/")) {
-        alert("Mohon pilih file gambar yang valid (PNG, JPG, WebP, SVG).");
+        alert(i18nService.t("owner.invalidImage", "Please select a valid image file (PNG, JPG, WebP, SVG)."));
         return;
       }
       if (file.size > 3 * 1024 * 1024) {
-        alert("Ukuran gambar maksimal 3MB.");
+        alert(i18nService.t("owner.imageSize", "Maximum image size is 3MB."));
         return;
       }
 
@@ -268,22 +273,22 @@ export class AdminOnboardingController {
   getTemplateLabel(templateId) {
     switch (templateId) {
       case "tcm":
-        return "🌿 Traditional Chinese Medicine (TCM)";
+        return `🌿 ${i18nService.t("template.tcm.title", "Traditional Chinese Medicine (TCM)")}`;
       case "wellness":
-        return "🌸 Wellness & Spa Care";
+        return `🌸 ${i18nService.t("template.wellness.title", "Wellness & Spa Care")}`;
       case "physio":
-        return "🏃 Physiotherapy & Sports Rehab";
+        return `🏃 ${i18nService.t("template.physio.title", "Physiotherapy & Sports Rehab")}`;
       case "nutrition":
-        return "🥗 Clinical Nutrition & Dietetics";
+        return `🥗 ${i18nService.t("template.nutrition.title", "Clinical Nutrition & Dietetics")}`;
       default:
-        return "🏃 Physiotherapy & Sports Rehab";
+        return `🏃 ${i18nService.t("template.physio.title", "Physiotherapy & Sports Rehab")}`;
     }
   }
 
   updateReviewSummary() {
     const brandName = document.getElementById("brandNameInput")?.value.trim() || "My Clinic Hub";
     const brandTagline = document.getElementById("brandTaglineInput")?.value.trim() || "Excellence in Clinical Care";
-    const branchName = document.getElementById("branchNameInput")?.value.trim() || "Cabang 1";
+    const branchName = document.getElementById("branchNameInput")?.value.trim() || "Branch 1";
     const branchAddress = document.getElementById("branchAddressInput")?.value.trim() || "Singapore";
     const region = document.getElementById("brandRegionSelect")?.value || "sg";
 
@@ -327,7 +332,7 @@ export class AdminOnboardingController {
       const brandTagline = document.getElementById("brandTaglineInput")?.value.trim() || "";
       const brandDesc = document.getElementById("brandDescInput")?.value.trim() || "";
       const region = document.getElementById("brandRegionSelect")?.value || "sg";
-      const branchName = document.getElementById("branchNameInput")?.value.trim() || "Cabang 1";
+      const branchName = document.getElementById("branchNameInput")?.value.trim() || "Branch 1";
       const branchAddress = document.getElementById("branchAddressInput")?.value.trim() || "Clinic Address";
       const branchPhone = document.getElementById("branchPhoneInput")?.value.trim() || "+65 6733 8899";
       const branchHours = document.getElementById("branchHoursInput")?.value.trim() || "09:00 - 20:00";
@@ -394,9 +399,11 @@ export class AdminOnboardingController {
       });
 
       setTimeout(() => {
-        alert(
-          `🎉 ONBOARDING SELESAI!\n\nBrand: ${brandName}\nTemplate Lini Bisnis: ${this.getTemplateLabel(this.selectedTemplate)}\nCabang 1: ${branchName}\n\nSistem mengalihkan Anda ke Dashboard Owner...`
-        );
+        const alertMsg = (i18nService.t("onboarding.completeAlert", "🎉 ONBOARDING COMPLETE!\n\nBrand: {brand}\nTemplate: {template}\nBranch 1: {branch}\n\nRedirecting to Owner Dashboard..."))
+          .replace("{brand}", brandName)
+          .replace("{template}", this.getTemplateLabel(this.selectedTemplate))
+          .replace("{branch}", branchName);
+        alert(alertMsg);
         window.location.href = "../../pages/owner/dashboard.html";
       }, 900);
     });

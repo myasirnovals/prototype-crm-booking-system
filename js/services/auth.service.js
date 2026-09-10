@@ -578,7 +578,7 @@ class AuthService {
       title: userData.title || (userData.role === USER_ROLES.OWNER ? "Clinic Partner & Owner" : "Clinic Staff"),
       specialty: userData.specialty || null,
       room: userData.room || null,
-      status: userData.status || "BERTUGAS",
+      status: userData.status || "ON_DUTY",
       branchId: userData.branchId || null,
       branchName: userData.branchName || "Pending Setup",
       brandName: userData.brandName || null,

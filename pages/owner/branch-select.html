@@ -144,8 +144,17 @@
         <span class="pill" style="font-size:11px; padding:3px 8px; background:#f0fdfa; color:var(--primary-dark); font-weight:800;">Branch Selector</span>
       </div>
       <div style="display:flex; align-items:center; gap:14px;">
+        <!-- Language Switcher -->
+        <div class="lang-switcher-wrap" style="position:relative;">
+          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+            <option value="en">🇬🇧 English</option>
+            <option value="zh">🇸🇬 华语 (Singapura)</option>
+            <option value="ms">🇲🇾 Bahasa Melayu (Malaysia)</option>
+          </select>
+        </div>
+
         <span id="gatewayLoggedInAs" style="font-size:12px; color:var(--muted); font-weight:600;">Signed in as <strong>Dennis Pratama</strong> (Owner)</span>
-        <button type="button" class="btn btn-sm btn-white" id="gatewaySignOutBtn">Sign Out</button>
+        <button type="button" class="btn btn-sm btn-white" id="gatewaySignOutBtn" data-i18n="nav.signOut">Sign Out</button>
       </div>
     </div>
   </header>
@@ -154,22 +163,22 @@
     <!-- Section Heading & Global Action Bar -->
     <div style="margin-bottom:24px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
       <div>
-        <div class="pill" style="font-size:11px; padding:3px 10px; background:#e0f2fe; color:#0369a1; font-weight:800; margin-bottom:8px;">
-          🏢 Pintu Masuk Owner · Pemilihan Cabang Operasional
+        <div class="pill" style="font-size:11px; padding:3px 10px; background:#e0f2fe; color:#0369a1; font-weight:800; margin-bottom:8px;" data-i18n="owner.gateway.badge">
+          🏢 Owner Gateway · Operational Branch Selection
         </div>
-        <h1 style="font-size:24px; font-weight:900; margin:0 0 4px; letter-spacing:-0.5px; color:var(--text);">
-          Pilih Cabang Operasional Aktif
+        <h1 style="font-size:24px; font-weight:900; margin:0 0 4px; letter-spacing:-0.5px; color:var(--text);" data-i18n="owner.gateway.title">
+          Select Active Operational Branch
         </h1>
-        <p style="font-size:13px; color:var(--muted); margin:0;">
-          Pilih cabang klinik yang ingin Anda kelola saat ini untuk membuka dashboard operasional spesifik cabang.
+        <p style="font-size:13px; color:var(--muted); margin:0;" data-i18n="owner.gateway.desc">
+          Choose the clinic branch you wish to manage to access its branch-specific operations console.
         </p>
       </div>
       <div style="display:flex; align-items:center; gap:12px;">
         <span class="pill" id="branchCountBadge" style="font-size:12px; padding:7px 14px; background:#e2e8f0; font-weight:700; color:#334155;">
-          -- Cabang Terdaftar
+          -- Registered Branches
         </span>
         <button type="button" class="btn btn-primary" id="btnOpenNewBranchModal" style="padding:10px 18px; font-weight:800; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(15,118,110,0.25);">
-          <span>➕</span> <span>Daftarkan Cabang Baru</span>
+          <span>➕</span> <span data-i18n="owner.gateway.btnNewBranch">Register New Branch</span>
         </button>
       </div>
     </div>
@@ -184,18 +193,18 @@
   <div id="newBranchModalOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center; backdrop-filter:blur(3px);">
     <div style="background:#ffffff; border-radius:var(--radius-xl); max-width:560px; width:90%; padding:32px; box-shadow:0 20px 40px rgba(0,0,0,0.2); position:relative;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid #e2e8f0; padding-bottom:14px;">
-        <h3 style="margin:0; font-size:18px; font-weight:800;">🏢 Daftarkan Cabang Baru</h3>
+        <h3 style="margin:0; font-size:18px; font-weight:800;">🏢 Register New Branch</h3>
         <button type="button" id="btnCloseNewBranchModal" style="background:none; border:none; font-size:20px; cursor:pointer; color:var(--muted);">&times;</button>
       </div>
 
       <form id="createBranchForm">
         <div class="field">
-          <label for="newBranchName">Nama Cabang Klinik <span style="color:#ef4444;">*</span></label>
-          <input type="text" id="newBranchName" placeholder="e.g. Marina Bay Wellness Center (Cabang 2)" required>
+          <label for="newBranchName">Clinic Branch Name <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="newBranchName" placeholder="e.g. Marina Bay Wellness Center (Branch 2)" required>
         </div>
 
         <div class="field">
-          <label for="newBranchTemplate">Template Lini Bisnis Cabang</label>
+          <label for="newBranchTemplate">Branch Business Template</label>
           <select id="newBranchTemplate">
             <option value="physio" selected>🏃 Physiotherapy &amp; Sports Rehab</option>
             <option value="wellness">🌸 Wellness &amp; Spa Care</option>
@@ -205,34 +214,34 @@
         </div>
 
         <div class="field">
-          <label for="newBranchAddress">Alamat Lengkap Cabang <span style="color:#ef4444;">*</span></label>
-          <input type="text" id="newBranchAddress" placeholder="Gedung, Jalan, Nomor Unit, Kode Pos" required>
+          <label for="newBranchAddress">Full Branch Address <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="newBranchAddress" placeholder="Building, Street, Unit No., Postal Code" required>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="newBranchPhone">WhatsApp / Telepon Cabang</label>
+            <label for="newBranchPhone">Branch WhatsApp / Phone</label>
             <input type="tel" id="newBranchPhone" placeholder="+65 6888 1234" required>
           </div>
           <div class="field">
-            <label for="newBranchHours">Jam Operasional</label>
-            <input type="text" id="newBranchHours" placeholder="09:00 - 20:00 (Sen - Sab)" value="09:00 - 20:00 (Sen - Sab)">
+            <label for="newBranchHours">Operating Hours</label>
+            <input type="text" id="newBranchHours" placeholder="09:00 - 20:00 (Mon - Sat)" value="09:00 - 20:00 (Mon - Sat)">
           </div>
         </div>
 
         <div class="field">
-          <label for="newBranchRooms">Jumlah Ruang Terapi / Bays</label>
+          <label for="newBranchRooms">Treatment Rooms / Bays</label>
           <select id="newBranchRooms">
-            <option value="2">2 Ruang Terapi Privat</option>
-            <option value="4" selected>4 Ruang Terapi Standar</option>
-            <option value="6">6 Ruang Terapi &amp; Bay</option>
-            <option value="8">8+ Ruangan Multi-Spesialisasi</option>
+            <option value="2">2 Private Therapy Rooms</option>
+            <option value="4" selected>4 Standard Therapy Rooms</option>
+            <option value="6">6 Therapy Rooms &amp; Bays</option>
+            <option value="8">8+ Multi-Specialty Treatment Rooms</option>
           </select>
         </div>
 
         <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:24px;">
-          <button type="button" class="btn btn-soft" id="btnCancelNewBranch">Batal</button>
-          <button type="submit" class="btn btn-primary">🚀 Buat Cabang Baru</button>
+          <button type="button" class="btn btn-soft" id="btnCancelNewBranch" data-i18n="branchAdmin.modalBtnCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">🚀 Create Branch</button>
         </div>
       </form>
     </div>

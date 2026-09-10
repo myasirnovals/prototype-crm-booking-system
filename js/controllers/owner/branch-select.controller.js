@@ -8,6 +8,7 @@ import { authService, USER_ROLES } from "../../services/auth.service.js";
 import { storageService } from "../../services/storage.service.js";
 import { soundService } from "../../services/sound.service.js";
 import { bookingService } from "../../services/booking.service.js";
+import { i18nService } from "../../services/i18n.service.js";
 
 export class BranchSelectController {
   constructor() {
@@ -38,6 +39,11 @@ export class BranchSelectController {
     this.renderBranchCards();
     this.setupModal();
     this.setupSignOut();
+
+    document.addEventListener("cliniva:languageChanged", () => {
+      this.renderHeader();
+      this.renderBranchCards();
+    });
   }
 
   loadBrandProfile() {
@@ -147,21 +153,21 @@ export class BranchSelectController {
 
     const countBadge = document.getElementById("branchCountBadge");
     if (countBadge) {
-      countBadge.textContent = `${this.branches.length} Cabang Terdaftar`;
+      countBadge.textContent = `${this.branches.length} ${i18nService.t("owner.gateway.branchCount", "Registered Branches")}`;
     }
   }
 
   getTemplateMeta(templateId) {
     switch (templateId) {
       case "tcm":
-        return { label: "🌿 TCM & Akupunktur", color: "#065f46", bg: "#d1fae5", icon: "🌿" };
+        return { label: i18nService.t("template.tcm.name", "🌿 TCM & Acupuncture"), color: "#065f46", bg: "#d1fae5", icon: "🌿" };
       case "wellness":
-        return { label: "🌸 Wellness & Spa", color: "#9d174d", bg: "#fce7f3", icon: "🌸" };
+        return { label: i18nService.t("template.wellness.name", "🌸 Wellness & Spa"), color: "#9d174d", bg: "#fce7f3", icon: "🌸" };
       case "nutrition":
-        return { label: "🥗 Klinik Nutrisi & Diet", color: "#166534", bg: "#dcfce7", icon: "🥗" };
+        return { label: i18nService.t("template.nutrition.name", "🥗 Nutrition & Dietetics"), color: "#166534", bg: "#dcfce7", icon: "🥗" };
       case "physio":
       default:
-        return { label: "🏃 Fisioterapi & Rehab", color: "#0f766e", bg: "#ccfbf1", icon: "🏃" };
+        return { label: i18nService.t("template.physio.name", "🏃 Physiotherapy & Rehab"), color: "#0f766e", bg: "#ccfbf1", icon: "🏃" };
     }
   }
 
@@ -196,23 +202,23 @@ export class BranchSelectController {
                   ${meta.label}
                 </span>
                 <span class="pill" style="background:#dcfce7; color:#15803d; font-weight:800; font-size:10px; padding:2px 6px;">
-                  ● AKTIF
+                  ${i18nService.t("owner.activeBranchBadge", "● ACTIVE")}
                 </span>
-                ${isActive ? `<span class="pill" style="background:#0f766e; color:#ffffff; font-weight:800; font-size:10px; padding:2px 6px;">SEDANG DIBUKA</span>` : ""}
+                ${isActive ? `<span class="pill" style="background:#0f766e; color:#ffffff; font-weight:800; font-size:10px; padding:2px 6px;">${i18nService.t("owner.gateway.openNow", "OPEN NOW")}</span>` : ""}
               </div>
               <h2>${b.name}</h2>
               <p>📍 ${b.address}</p>
               <div class="branch-meta-row">
                 <span class="branch-meta-item">📞 <strong>${b.phone || "-"}</strong></span>
                 <span class="branch-meta-item">⏰ <strong>${b.hours || "09:00 - 20:00"}</strong></span>
-                <span class="branch-meta-item">🚪 <strong>${roomsCount} Ruang Terapi</strong></span>
+                <span class="branch-meta-item">🚪 <strong>${roomsCount} Rooms</strong></span>
               </div>
             </div>
           </div>
 
           <div class="branch-action-wrap">
             <button type="button" class="btn btn-primary select-branch-btn" data-branch-id="${b.id}" style="padding:12px 24px; font-weight:800; white-space:nowrap; border-radius:12px; font-size:13px; ${isActive ? 'background:#0f766e; border-color:#0f766e;' : ''}">
-              ${isActive ? "Buka Dashboard Cabang Aktif →" : "Pilih &amp; Masuk Dashboard →"}
+              ${isActive ? i18nService.t("owner.gateway.openActive", "Open Active Branch Dashboard →") : i18nService.t("owner.gateway.chooseAndEnter", "Select & Open Dashboard →")}
             </button>
           </div>
         </div>
@@ -288,7 +294,7 @@ export class BranchSelectController {
         const rooms = document.getElementById("newBranchRooms")?.value || "4";
 
         if (!name || !address) {
-          alert("Mohon lengkapi nama dan alamat cabang baru.");
+          alert(i18nService.t("owner.gateway.branchNameAddressRequired", "Please fill in the new branch name and address."));
           return;
         }
 
@@ -330,7 +336,7 @@ export class BranchSelectController {
     const nameInput = document.getElementById("newBranchName");
     if (nameInput && !nameInput.value) {
       const nextNum = this.branches.length + 1;
-      nameInput.placeholder = `e.g. Marina Bay Clinic (Cabang ${nextNum})`;
+      nameInput.placeholder = `e.g. Marina Bay Clinic (Branch ${nextNum})`;
     }
     if (modalOverlay) {
       modalOverlay.style.display = "flex";

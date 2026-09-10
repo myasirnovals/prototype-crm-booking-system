@@ -10,6 +10,7 @@ import { storageService } from "../../services/storage.service.js";
 import { notificationService } from "../../services/notification.service.js";
 import { soundService } from "../../services/sound.service.js";
 import { bookingService } from "../../services/booking.service.js";
+import { i18nService } from "../../services/i18n.service.js";
 
 export class OwnerDashboardController {
   constructor() {
@@ -51,6 +52,14 @@ export class OwnerDashboardController {
     this.renderPaneBranchPractitioners();
     this.setupModals();
     this.setupSignOut();
+
+    document.addEventListener("cliniva:languageChanged", () => {
+      this.renderHeader();
+      this.renderPaneOverview();
+      this.renderPaneBranchSettings();
+      this.renderPaneBranchStaff();
+      this.renderPaneBranchPractitioners();
+    });
   }
 
   loadBrandProfile() {
@@ -156,14 +165,14 @@ export class OwnerDashboardController {
   getTemplateMeta(templateId) {
     switch (templateId) {
       case "tcm":
-        return { label: "🌿 TCM & Akupunktur", color: "#065f46", bg: "#d1fae5" };
+        return { label: i18nService.t("template.tcm.name", "🌿 TCM & Acupuncture"), color: "#065f46", bg: "#d1fae5" };
       case "wellness":
-        return { label: "🌸 Wellness & Spa", color: "#9d174d", bg: "#fce7f3" };
+        return { label: i18nService.t("template.wellness.name", "🌸 Wellness & Spa"), color: "#9d174d", bg: "#fce7f3" };
       case "nutrition":
-        return { label: "🥗 Klinik Nutrisi & Diet", color: "#166534", bg: "#dcfce7" };
+        return { label: i18nService.t("template.nutrition.name", "🥗 Nutrition & Dietetics"), color: "#166534", bg: "#dcfce7" };
       case "physio":
       default:
-        return { label: "🏃 Fisioterapi & Rehab", color: "#0f766e", bg: "#ccfbf1" };
+        return { label: i18nService.t("template.physio.name", "🏃 Physiotherapy & Rehab"), color: "#0f766e", bg: "#ccfbf1" };
     }
   }
 
@@ -313,10 +322,10 @@ export class OwnerDashboardController {
     if (kpiRev) kpiRev.textContent = this.activeBranch.revenue || "SGD 18,450";
     if (kpiCurr) kpiCurr.textContent = this.activeBranch.currency || "SGD";
     if (kpiOcc) kpiOcc.textContent = this.activeBranch.occupancy || "82%";
-    if (kpiRooms) kpiRooms.textContent = `${this.activeBranch.rooms || "4"} Ruangan Aktif`;
+    if (kpiRooms) kpiRooms.textContent = `${this.activeBranch.rooms || "4"} ` + i18nService.t("owner.activeRooms", "Active Rooms");
 
     const totalStaffCount = this.activeBranchStaff.length + this.activeBranchPractitioners.length;
-    if (kpiStaff) kpiStaff.textContent = `${totalStaffCount} Anggota`;
+    if (kpiStaff) kpiStaff.textContent = `${totalStaffCount} ` + i18nService.t("owner.members", "Members");
 
     // Render Queue Table
     this.renderQueueTable();
@@ -325,7 +334,7 @@ export class OwnerDashboardController {
     if (btnRefresh) {
       btnRefresh.addEventListener("click", () => {
         soundService.playSuccess();
-        notificationService.info("Data antrean cabang dimuat ulang secara real-time.");
+        notificationService.info(i18nService.t("owner.queueRefreshed", "Branch queue data refreshed in real-time."));
         this.renderQueueTable();
       });
     }
@@ -340,8 +349,8 @@ export class OwnerDashboardController {
         <tr>
           <td colspan="8" class="owner-table-empty">
             <div class="owner-table-empty-icon">📅</div>
-            <div class="owner-table-empty-title">Tidak ada antrean hari ini</div>
-            <div class="owner-table-empty-desc">Semua sesi pasien untuk cabang ini telah selesai atau belum dijadwalkan.</div>
+            <div class="owner-table-empty-title">${i18nService.t("owner.table.emptyQueueTitle", "No appointments today")}</div>
+            <div class="owner-table-empty-desc">${i18nService.t("owner.table.emptyQueueDesc", "All patient sessions for this branch are completed or not yet scheduled.")}</div>
           </td>
         </tr>
       `;
@@ -350,12 +359,12 @@ export class OwnerDashboardController {
 
     tbody.innerHTML = this.activeBranchQueue.map((item, idx) => {
       let statusBadge = `<span class="owner-status-badge neutral">● ${item.status}</span>`;
-      if (item.status === "SELESAI") {
-        statusBadge = `<span class="owner-status-badge success">● Selesai</span>`;
-      } else if (item.status === "SEDANG SESI") {
-        statusBadge = `<span class="owner-status-badge teal">● Sedang Sesi</span>`;
-      } else if (item.status === "MENUNGGU") {
-        statusBadge = `<span class="owner-status-badge warning">⏳ Menunggu</span>`;
+      if (item.status === "SELESAI" || item.status === "COMPLETED") {
+        statusBadge = `<span class="owner-status-badge success">${i18nService.t("owner.table.finished", "✓ Finished")}</span>`;
+      } else if (item.status === "SEDANG SESI" || item.status === "IN_CONSULTATION") {
+        statusBadge = `<span class="owner-status-badge teal">${i18nService.t("owner.table.inSession", "● In Session")}</span>`;
+      } else if (item.status === "MENUNGGU" || item.status === "WAITING") {
+        statusBadge = `<span class="owner-status-badge warning">${i18nService.t("owner.table.waiting", "⏳ Waiting")}</span>`;
       }
 
       return `
@@ -368,9 +377,9 @@ export class OwnerDashboardController {
           <td class="col-center"><span style="font-size:12px; color:var(--text); font-variant-numeric:tabular-nums; font-weight:600;">🕒 ${item.time}</span></td>
           <td class="col-center">${statusBadge}</td>
           <td class="col-right">
-            ${item.status !== "SELESAI" 
-              ? `<button class="btn-table-action btn-table-success btn-finish-session" data-index="${idx}" title="Tandai sesi telah tuntas">Tandai Selesai ✓</button>`
-              : `<span style="font-size:11.5px; font-weight:700; color:var(--muted); display:inline-flex; align-items:center; gap:4px;">✓ Tuntas</span>`}
+            ${item.status !== "SELESAI" && item.status !== "COMPLETED"
+              ? `<button class="btn-table-action btn-table-success btn-finish-session" data-index="${idx}" title="${i18nService.t("owner.table.markFinished", "Mark Finished ✓")}">${i18nService.t("owner.table.markFinished", "Mark Finished ✓")}</button>`
+              : `<span style="font-size:11.5px; font-weight:700; color:var(--muted); display:inline-flex; align-items:center; gap:4px;">${i18nService.t("owner.table.finished", "✓ Finished")}</span>`}
           </td>
         </tr>
       `;
@@ -382,7 +391,7 @@ export class OwnerDashboardController {
         if (this.activeBranchQueue[idx]) {
           this.activeBranchQueue[idx].status = "SELESAI";
           soundService.playSuccess();
-          notificationService.success(`Sesi pasien ${this.activeBranchQueue[idx].patient} berhasil diselesaikan.`);
+          notificationService.success(`Session for ${this.activeBranchQueue[idx].patient} completed successfully.`);
           this.renderQueueTable();
         }
       });
@@ -432,7 +441,7 @@ export class OwnerDashboardController {
         }
 
         soundService.playSuccess();
-        notificationService.success("Pengaturan cabang berhasil diperbarui!");
+        notificationService.success(i18nService.t("owner.branchSettingsSaved", "Branch settings updated successfully!"));
         this.renderHeader();
         this.renderPaneOverview();
       });
@@ -448,8 +457,8 @@ export class OwnerDashboardController {
         <tr>
           <td colspan="7" class="owner-table-empty">
             <div class="owner-table-empty-icon">👥</div>
-            <div class="owner-table-empty-title">Belum ada staf terdaftar</div>
-            <div class="owner-table-empty-desc">Tambahkan staf resepsionis atau admin untuk cabang aktif ini.</div>
+            <div class="owner-table-empty-title">${i18nService.t("owner.table.emptyStaffTitle", "No staff registered yet")}</div>
+            <div class="owner-table-empty-desc">${i18nService.t("owner.table.emptyStaffDesc", "Add receptionists or admin staff for this active branch.")}</div>
           </td>
         </tr>
       `;
@@ -467,9 +476,9 @@ export class OwnerDashboardController {
         <td><span style="font-family:ui-monospace, monospace; font-size:12px; color:var(--muted);">${stf.email}</span></td>
         <td><span style="font-size:12px; font-weight:600; font-variant-numeric:tabular-nums;">${stf.phone}</span></td>
         <td><span style="font-size:12px; color:#0f766e; font-weight:700;">🏢 ${stf.branchName}</span></td>
-        <td class="col-center"><span class="owner-status-badge success">● ${stf.status}</span></td>
+        <td class="col-center"><span class="owner-status-badge success">● ${stf.status === "AKTIF" ? "ACTIVE" : stf.status}</span></td>
         <td class="col-right">
-          <button class="btn-table-action btn-table-danger btn-delete-staff" data-index="${idx}" title="Hapus staf dari cabang">🗑️ Hapus</button>
+          <button class="btn-table-action btn-table-danger btn-delete-staff" data-index="${idx}" title="Delete staff">🗑️ Delete</button>
         </td>
       </tr>
     `).join("");
@@ -478,11 +487,11 @@ export class OwnerDashboardController {
       btn.addEventListener("click", () => {
         const idx = parseInt(btn.dataset.index, 10);
         const name = this.activeBranchStaff[idx]?.name;
-        if (confirm(`Hapus staf ${name} dari cabang ini?`)) {
+        if (confirm(`Remove staff member ${name} from this branch?`)) {
           this.activeBranchStaff.splice(idx, 1);
           storageService.set(`cliniva_staff_${this.activeBranch.id}`, this.activeBranchStaff);
           soundService.playDelete();
-          notificationService.info(`Staf ${name} berhasil dihapus dari cabang.`);
+          notificationService.info(`Staff member ${name} removed from branch.`);
           this.renderPaneBranchStaff();
         }
       });
@@ -499,8 +508,8 @@ export class OwnerDashboardController {
         <tr>
           <td colspan="7" class="owner-table-empty">
             <div class="owner-table-empty-icon">🧑‍⚕️</div>
-            <div class="owner-table-empty-title">Belum ada praktisi yang bertugas</div>
-            <div class="owner-table-empty-desc">Jadwalkan dokter atau praktisi klinis untuk cabang aktif ini.</div>
+            <div class="owner-table-empty-title">${i18nService.t("owner.table.emptyPracTitle", "No practitioners on duty yet")}</div>
+            <div class="owner-table-empty-desc">${i18nService.t("owner.table.emptyPracDesc", "Schedule clinical practitioners or therapists for this active branch.")}</div>
           </td>
         </tr>
       `;
@@ -518,9 +527,9 @@ export class OwnerDashboardController {
         <td class="col-center"><span class="pill" style="background:#f1f5f9; color:#334155; font-size:11px; font-weight:700;">${prac.room}</span></td>
         <td><span style="font-size:12px; color:var(--text); font-variant-numeric:tabular-nums; font-weight:500;">${prac.shift}</span></td>
         <td class="col-right"><span class="price-text">${prac.fee}</span></td>
-        <td class="col-center"><span class="owner-status-badge success">● ${prac.status}</span></td>
+        <td class="col-center"><span class="owner-status-badge success">● ${prac.status === "AKTIF" ? "ACTIVE" : prac.status}</span></td>
         <td class="col-right">
-          <button class="btn-table-action btn-table-danger btn-delete-prac" data-index="${idx}" title="Hapus praktisi dari jadwal cabang">🗑️ Hapus</button>
+          <button class="btn-table-action btn-table-danger btn-delete-prac" data-index="${idx}" title="Remove practitioner">🗑️ Delete</button>
         </td>
       </tr>
     `).join("");
@@ -529,11 +538,11 @@ export class OwnerDashboardController {
       btn.addEventListener("click", () => {
         const idx = parseInt(btn.dataset.index, 10);
         const name = this.activeBranchPractitioners[idx]?.name;
-        if (confirm(`Hapus praktisi ${name} dari cabang ini?`)) {
+        if (confirm(`Remove practitioner ${name} from branch schedule?`)) {
           this.activeBranchPractitioners.splice(idx, 1);
           storageService.set(`cliniva_practitioners_${this.activeBranch.id}`, this.activeBranchPractitioners);
           soundService.playDelete();
-          notificationService.info(`Praktisi ${name} berhasil dihapus dari jadwal cabang.`);
+          notificationService.info(`Practitioner ${name} removed from branch schedule.`);
           this.renderPaneBranchPractitioners();
         }
       });

@@ -59,8 +59,45 @@ export class PatientBookingController {
     const session = authService.requireAuth([USER_ROLES.USER]);
     if (!session) return;
 
-    // Read latest template set by Super Admin
-    this.activeTemplateId = bookingService.getActiveTemplateId() || "wellness";
+    // --- AWAL MODIFIKASI: BACA PARAMETER URL ---
+    // 1. Ambil parameter URL '?branch=...'
+    const urlParams = new URLSearchParams(window.location.search);
+    const branchParam = urlParams.get('branch');
+
+    // 2. Jika ada branch dari URL, set cabang dan templatenya
+    if (branchParam) {
+      // Ambil semua daftar cabang dari seluruh template
+      const allTemplates = ['wellness', 'physio', 'tcm', 'nutrition'];
+      let foundBranch = null;
+      let foundTemplate = null;
+
+      for (const tmpl of allTemplates) {
+        const branchesInTmpl = bookingService.getBranches(tmpl);
+        const branch = branchesInTmpl.find(b => b.id === branchParam);
+        if (branch) {
+          foundBranch = branch;
+          foundTemplate = tmpl;
+          break; // Berhenti mencari jika sudah ketemu
+        }
+      }
+
+      if (foundBranch && foundTemplate) {
+        // Set template aktif berdasarkan URL
+        this.activeTemplateId = foundTemplate;
+        bookingService.setActiveTemplate(foundTemplate);
+
+        // Set cabang yang aktif
+        this.selectedBranch = foundBranch;
+      } else {
+        // Fallback jika id branch tidak ditemukan (kembali ke default)
+        this.activeTemplateId = bookingService.getActiveTemplateId() || "wellness";
+      }
+    } else {
+      // Fallback jika tidak ada parameter branch di URL
+      this.activeTemplateId = bookingService.getActiveTemplateId() || "wellness";
+    }
+    // --- AKHIR MODIFIKASI ---
+
     this.bookingDraft.templateType = this.activeTemplateId;
 
     this.branches = this.loadBranches(this.activeTemplateId);
@@ -109,7 +146,7 @@ export class PatientBookingController {
     if ("scrollRestoration" in history) {
       try {
         history.scrollRestoration = "manual";
-      } catch (e) {}
+      } catch (e) { }
     }
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     setTimeout(() => {
@@ -281,7 +318,7 @@ export class PatientBookingController {
       Object.values(this.markers).forEach((marker) => {
         try {
           this.map.removeLayer(marker);
-        } catch (e) {}
+        } catch (e) { }
       });
     }
     this.markers = {};
@@ -489,9 +526,9 @@ export class PatientBookingController {
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return Math.round(R * c * 10) / 10;
   }
@@ -727,7 +764,7 @@ export class PatientBookingController {
               const targetLeft = node.offsetLeft - (wizardBar.clientWidth / 2) + (node.clientWidth / 2);
               wizardBar.scrollTo({ left: Math.max(0, targetLeft), behavior: "smooth" });
             }
-          } catch (e) {}
+          } catch (e) { }
         } else if (i < stepNumber) {
           node.classList.add("completed");
         }
@@ -904,7 +941,7 @@ export class PatientBookingController {
         const now = new Date();
         const codeSuffix = Math.floor(1000 + Math.random() * 9000);
         const bookingCode = `BK-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}-${codeSuffix}`;
-        
+
         // Generate daily clinic queue letter & number (e.g. A-08, B-03)
         const prefixChar = (this.activeTemplateId === "tcm" ? "A" : this.activeTemplateId === "physio" ? "B" : this.activeTemplateId === "nutrition" ? "D" : "C");
         const queueNum = Math.floor(1 + Math.random() * 15);

@@ -57,8 +57,8 @@ export class BranchSelectController {
       // Default initial branch for Dennis if not created yet
       const defaultBranch = {
         id: "br-sg-orchard-01",
-        name: this.currentUser.branchName && this.currentUser.branchName !== "Setup Pending" 
-          ? this.currentUser.branchName 
+        name: this.currentUser.branchName && this.currentUser.branchName !== "Setup Pending"
+          ? this.currentUser.branchName
           : "Paragon Medical Flagship (Cabang 1)",
         code: "SG-01",
         address: "290 Orchard Road, #09-12 Paragon Medical Suites, Singapore 238859",
@@ -264,6 +264,69 @@ export class BranchSelectController {
     const btnClose = document.getElementById("btnCloseNewBranchModal");
     const btnCancel = document.getElementById("btnCancelNewBranch");
     const form = document.getElementById("createBranchForm");
+    const logoInput = document.getElementById("newBranchLogoFileInput");
+    const dropZone = document.getElementById("newBranchLogoDropZone");
+    const previewEmoji = document.getElementById("newBranchLogoPreviewEmoji");
+    const previewImage = document.getElementById("newBranchLogoPreviewImage");
+    const hiddenLogoVal = document.getElementById("newBranchSelectedLogoInput");
+    const btnRemoveLogo = document.getElementById("btnRemoveNewBranchLogo");
+    const uploadTitle = document.getElementById("newBranchLogoUploadTitle");
+    const postalInput = document.getElementById("newBranchPostal");
+    const addressInput = document.getElementById("newBranchAddress");
+    const postalFeedback = document.getElementById("postalFeedback");
+
+    // AWAL MODIFIKASI: OneMap API Auto-fill
+    if (postalInput && addressInput) {
+      postalInput.addEventListener("input", async (e) => {
+        const postalCode = e.target.value.trim();
+
+        // Cek jika input persis 6 digit angka (Format Kode Pos Singapura)
+        if (/^\d{6}$/.test(postalCode)) {
+          if (postalFeedback) {
+            postalFeedback.textContent = "⏳ Mencari alamat...";
+            postalFeedback.style.display = "block";
+            postalFeedback.style.color = "#0f766e";
+          }
+
+          try {
+            // Memanggil endpoint pencarian dari OneMap API
+            const response = await fetch(`https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${postalCode}&returnGeom=N&getAddrDetails=Y&pageNum=1`);
+            const data = await response.json();
+
+            if (data.found > 0) {
+              const result = data.results[0];
+              // Format alamat yang umum: BLK_NO ROAD_NAME, BUILDING_NAME, SINGAPORE POSTAL_CODE
+              const blk = result.BLK_NO === "NIL" ? "" : `${result.BLK_NO} `;
+              const road = result.ROAD_NAME === "NIL" ? "" : result.ROAD_NAME;
+              const building = result.BUILDING === "NIL" ? "" : `, ${result.BUILDING}`;
+
+              // Masukkan hasil ke input Alamat Lengkap
+              addressInput.value = `${blk}${road}${building}, Singapore ${result.POSTAL}`;
+
+              if (postalFeedback) {
+                postalFeedback.textContent = "✅ Alamat ditemukan";
+                postalFeedback.style.color = "#16a34a";
+              }
+            } else {
+              if (postalFeedback) {
+                postalFeedback.textContent = "❌ Kode pos tidak valid";
+                postalFeedback.style.color = "#ef4444";
+              }
+            }
+          } catch (error) {
+            console.error("Error fetching OneMap API:", error);
+            if (postalFeedback) {
+              postalFeedback.textContent = "⚠️ Gagal koneksi ke server";
+              postalFeedback.style.color = "#ef4444";
+            }
+          }
+        } else {
+          // Sembunyikan pesan jika kurang atau lebih dari 6 digit
+          if (postalFeedback) postalFeedback.style.display = "none";
+        }
+      });
+    }
+    // AKHIR MODIFIKASI
 
     if (btnOpen) {
       btnOpen.addEventListener("click", () => this.openNewBranchModal());
@@ -273,8 +336,59 @@ export class BranchSelectController {
       if (modalOverlay) modalOverlay.style.display = "none";
     };
 
+    // AWAL MODIFIKASI: Logika Upload Logo Cabang
+    if (dropZone && logoInput) {
+      dropZone.addEventListener("click", () => logoInput.click());
+
+      logoInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Validasi ukuran gambar maksimal 3MB
+        if (file.size > 3 * 1024 * 1024) {
+          alert("Ukuran gambar maksimal 3MB.");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const dataUrl = ev.target.result;
+          hiddenLogoVal.value = dataUrl;
+          previewImage.src = dataUrl;
+          previewImage.style.display = "block";
+          previewEmoji.style.display = "none";
+          btnRemoveLogo.style.display = "inline-block";
+          uploadTitle.textContent = "Logo berhasil diunggah";
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    if (btnRemoveLogo) {
+      btnRemoveLogo.addEventListener("click", (e) => {
+        e.stopPropagation(); // Mencegah klik menembus ke dropZone
+        logoInput.value = "";
+        hiddenLogoVal.value = "";
+        previewImage.src = "";
+        previewImage.style.display = "none";
+        previewEmoji.style.display = "block";
+        btnRemoveLogo.style.display = "none";
+        uploadTitle.textContent = "Klik untuk unggah logo cabang";
+      });
+    }
+    // AKHIR MODIFIKASI
+
     if (btnClose) btnClose.addEventListener("click", closeModal);
     if (btnCancel) btnCancel.addEventListener("click", closeModal);
+
+    if (modalOverlay) {
+      modalOverlay.addEventListener("click", (e) => {
+        // Pastikan yang diklik adalah background gelapnya, bukan area dalam form
+        if (e.target === modalOverlay) {
+          closeModal();
+        }
+      });
+    }
 
     if (form) {
       form.addEventListener("submit", (e) => {
@@ -303,7 +417,7 @@ export class BranchSelectController {
           hours,
           rooms,
           template,
-          logo: meta.icon, // Tetapkan ikon template cabang mandiri agar tidak menduplikasi foto cabang 1
+          logo: document.getElementById("newBranchSelectedLogoInput")?.value || meta.icon,
           currency: "SGD",
           revenue: "SGD 0.00",
           occupancy: "0.0%",

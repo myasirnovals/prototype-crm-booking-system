@@ -1130,6 +1130,18 @@ export const ms = {
   "superAdmin.templates.toggleActive": "Tukar Status Aktif",
   "superAdmin.templates.deleteBtn": "Padam",
   "superAdmin.templates.noTemplates": "Tiada templat didaftarkan lagi. Klik Tambah Templat Baharu di atas.",
+  "superAdmin.quickActions.title": "Tindakan & Navigasi Pantas",
+  "superAdmin.quickActions.sub": "Akses terus ke modul pengurusan platform utama.",
+  "superAdmin.quickActions.ownersTitle": "Urus Pemilik",
+  "superAdmin.quickActions.ownersDesc": "Daftar & urus pemilik klinik",
+  "superAdmin.quickActions.templatesTitle": "Templat & Tawaran",
+  "superAdmin.quickActions.templatesDesc": "Konfigurasi templat & harga",
+  "superAdmin.quickActions.tenantsTitle": "Penyewa & Cawangan",
+  "superAdmin.quickActions.tenantsDesc": "Pantau operasi cawangan",
+  "superAdmin.quickActions.subsTitle": "Langganan & Bil",
+  "superAdmin.quickActions.subsDesc": "Jejak hasil lesen B2B",
+  "superAdmin.quickActions.auditTitle": "Log Audit Keselamatan",
+  "superAdmin.quickActions.auditDesc": "Periksa log akses & aktiviti",
 
   // Digital Ticket & Self-Service Portal (Bahasa Melayu Malaysia)
   "ticket.pageTitle": "E-Tiket Janji Temu Digital — Cliniva",

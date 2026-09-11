@@ -1147,6 +1147,18 @@ export const en = {
   "superAdmin.templates.toggleActive": "Toggle Active",
   "superAdmin.templates.deleteBtn": "Delete",
   "superAdmin.templates.noTemplates": "No templates registered yet. Click Add New Template above.",
+  "superAdmin.quickActions.title": "Quick Navigation & Actions",
+  "superAdmin.quickActions.sub": "Direct access to core platform management modules.",
+  "superAdmin.quickActions.ownersTitle": "Manage Owners",
+  "superAdmin.quickActions.ownersDesc": "Onboard & manage clinic owners",
+  "superAdmin.quickActions.templatesTitle": "Templates & Offerings",
+  "superAdmin.quickActions.templatesDesc": "Configure templates & pricing",
+  "superAdmin.quickActions.tenantsTitle": "Tenants & Branches",
+  "superAdmin.quickActions.tenantsDesc": "Monitor branch operations",
+  "superAdmin.quickActions.subsTitle": "Subscriptions & Billing",
+  "superAdmin.quickActions.subsDesc": "Track B2B license revenue",
+  "superAdmin.quickActions.auditTitle": "Security Audit Logs",
+  "superAdmin.quickActions.auditDesc": "Inspect access & activity logs",
 
   // Digital Ticket & Self-Service Portal
   "ticket.pageTitle": "Digital Appointment E-Ticket — Cliniva",

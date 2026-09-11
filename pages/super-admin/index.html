@@ -298,6 +298,64 @@
       margin: 16px 0;
     }
 
+    /* ── Quick Actions Grid & Tile ────────────────────────── */
+    .sa-quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .sa-action-tile.sa-tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+      color: var(--text, #0f172a);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      box-sizing: border-box;
+    }
+
+    .sa-action-tile.sa-tab-btn:hover {
+      background: #ffffff;
+      border-color: #c7d2fe;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.12), 0 4px 6px -2px rgba(79, 70, 229, 0.04);
+      color: var(--text, #0f172a);
+    }
+
+    .sa-action-tile-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .sa-action-tile-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #1e293b;
+      line-height: 1.3;
+    }
+
+    .sa-action-tile-desc {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 3px;
+      line-height: 1.3;
+    }
+
     /* ── Page Header ─────────────────────────────────────── */
     .sa-page-header {
       display: flex;
@@ -647,16 +705,51 @@
 
         <!-- Quick Actions -->
         <div class="sa-quick-actions-box"
-          style="background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px;">
-          <h3 style="font-size:16px; font-weight:800; margin:0 0 16px;">Quick Actions</h3>
-          <div class="sa-quick-actions-btns" style="display:flex; gap:12px; flex-wrap:wrap;">
-            <button class="btn btn-primary sa-tab-btn" data-pane="paneOwners"
-              style="background:#4f46e5; border-color:#4f46e5; color:#fff; width:auto; display:inline-flex; padding:10px 20px;">
-              💼 Manage Owner Accounts
+          style="background:#fff; border:1px solid var(--line); border-radius:16px; padding:24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);">
+          <div style="margin-bottom:16px;">
+            <h3 style="font-size:16px; font-weight:800; color:var(--text); margin:0 0 4px;" data-i18n="superAdmin.quickActions.title">Quick Navigation &amp; Actions</h3>
+            <p style="font-size:12px; color:var(--muted); margin:0;" data-i18n="superAdmin.quickActions.sub">Direct access to core platform management modules.</p>
+          </div>
+
+          <div class="sa-quick-actions-grid">
+            <button type="button" class="sa-action-tile sa-tab-btn" data-pane="paneOwners">
+              <div class="sa-action-tile-icon" style="background:#e0e7ff; color:#4338ca;">💼</div>
+              <div>
+                <div class="sa-action-tile-title" data-i18n="superAdmin.quickActions.ownersTitle">Manage Owners</div>
+                <div class="sa-action-tile-desc" data-i18n="superAdmin.quickActions.ownersDesc">Onboard &amp; manage clinic owners</div>
+              </div>
             </button>
-            <button class="btn btn-soft sa-tab-btn" data-pane="paneAudit"
-              style="width:auto; display:inline-flex; padding:10px 20px;">
-              🛡️ View Audit Logs
+
+            <button type="button" class="sa-action-tile sa-tab-btn" data-pane="paneTemplates">
+              <div class="sa-action-tile-icon" style="background:#f3e8ff; color:#7e22ce;">📦</div>
+              <div>
+                <div class="sa-action-tile-title" data-i18n="superAdmin.quickActions.templatesTitle">Templates &amp; Offerings</div>
+                <div class="sa-action-tile-desc" data-i18n="superAdmin.quickActions.templatesDesc">Configure templates &amp; pricing</div>
+              </div>
+            </button>
+
+            <button type="button" class="sa-action-tile sa-tab-btn" data-pane="paneTenants">
+              <div class="sa-action-tile-icon" style="background:#ccfbf1; color:#0f766e;">🏢</div>
+              <div>
+                <div class="sa-action-tile-title" data-i18n="superAdmin.quickActions.tenantsTitle">Tenants &amp; Branches</div>
+                <div class="sa-action-tile-desc" data-i18n="superAdmin.quickActions.tenantsDesc">Monitor branch operations</div>
+              </div>
+            </button>
+
+            <button type="button" class="sa-action-tile sa-tab-btn" data-pane="paneSubscriptions">
+              <div class="sa-action-tile-icon" style="background:#fef3c7; color:#b45309;">💳</div>
+              <div>
+                <div class="sa-action-tile-title" data-i18n="superAdmin.quickActions.subsTitle">Subscriptions &amp; Billing</div>
+                <div class="sa-action-tile-desc" data-i18n="superAdmin.quickActions.subsDesc">Track B2B license revenue</div>
+              </div>
+            </button>
+
+            <button type="button" class="sa-action-tile sa-tab-btn" data-pane="paneAudit">
+              <div class="sa-action-tile-icon" style="background:#fee2e2; color:#b91c1c;">🛡️</div>
+              <div>
+                <div class="sa-action-tile-title" data-i18n="superAdmin.quickActions.auditTitle">Security Audit Logs</div>
+                <div class="sa-action-tile-desc" data-i18n="superAdmin.quickActions.auditDesc">Inspect access &amp; activity logs</div>
+              </div>
             </button>
           </div>
         </div>

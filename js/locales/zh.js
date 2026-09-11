@@ -1147,6 +1147,18 @@ export const zh = {
   "superAdmin.templates.toggleActive": "切换营运状态",
   "superAdmin.templates.deleteBtn": "删除",
   "superAdmin.templates.noTemplates": "暂无已注册的业务模板，请点击上方按钮创建。",
+  "superAdmin.quickActions.title": "快捷导航与操作",
+  "superAdmin.quickActions.sub": "直达平台核心管理模块。",
+  "superAdmin.quickActions.ownersTitle": "管理总监账户",
+  "superAdmin.quickActions.ownersDesc": "入驻与管理诊所总监",
+  "superAdmin.quickActions.templatesTitle": "模板与方案",
+  "superAdmin.quickActions.templatesDesc": "配置行业模板与资费",
+  "superAdmin.quickActions.tenantsTitle": "租户与分院",
+  "superAdmin.quickActions.tenantsDesc": "监控分院运营状态",
+  "superAdmin.quickActions.subsTitle": "订阅与账单",
+  "superAdmin.quickActions.subsDesc": "追踪B2B软件授权营收",
+  "superAdmin.quickActions.auditTitle": "安全审计日志",
+  "superAdmin.quickActions.auditDesc": "检查访问与操作记录",
 
   // Digital Ticket & Self-Service Portal (新加坡华语)
   "ticket.pageTitle": "数字就诊电子凭证 — Cliniva",

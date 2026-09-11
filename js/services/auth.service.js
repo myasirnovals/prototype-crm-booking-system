@@ -436,6 +436,59 @@ class AuthService {
   }
 
   /**
+   * Register a new Owner account (created by Super Admin)
+   */
+  registerOwner(data) {
+    if (!data || !data.name || !data.email) {
+      return { success: false, error: "Name and Email are required." };
+    }
+    const users = this.getUsers();
+    if (users.some((u) => u.email && u.email.toLowerCase() === data.email.toLowerCase())) {
+      return { success: false, error: "An account with this email already exists." };
+    }
+    const newOwner = {
+      id: "usr-owner-" + Date.now(),
+      name: data.name.trim(),
+      email: data.email.trim().toLowerCase(),
+      phone: data.phone ? data.phone.trim() : "",
+      password: data.password || "cliniva2026",
+      role: USER_ROLES.OWNER,
+      title: data.title || "Clinic Owner",
+      avatar: data.avatar || "💼",
+      branchId: null,
+      branchName: "Setup Pending",
+      brandName: null,
+      brandLogo: null,
+      region: data.region || "sg",
+      onboardingCompleted: false,
+      createdAt: new Date().toISOString()
+    };
+    users.push(newOwner);
+    this.saveUsers(users);
+    return { success: true, user: newOwner };
+  }
+
+  /**
+   * Delete user account from registry
+   */
+  deleteUserAccount(userId) {
+    if (!userId) {
+      return { success: false, error: "User ID is required." };
+    }
+    let users = this.getUsers();
+    const target = users.find((u) => u.id === userId);
+    if (!target) {
+      return { success: false, error: "User not found in registry." };
+    }
+    if (target.role === USER_ROLES.SUPER_ADMIN) {
+      return { success: false, error: "Super Admin accounts cannot be deleted." };
+    }
+    users = users.filter((u) => u.id !== userId);
+    this.saveUsers(users);
+    return { success: true, message: `Account for ${target.name} deleted.` };
+  }
+
+  /**
    * Generate & Request Patient OTP
    */
   requestPatientOtp(contact, channel = "whatsapp", countryCode = "+65") {

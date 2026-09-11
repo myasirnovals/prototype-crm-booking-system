@@ -178,8 +178,11 @@ export class SuperAdminController {
             ${owner.onboardingCompleted ? i18nService.t("superAdmin.statusActive", "✓ Active") : i18nService.t("superAdmin.statusPending", "⏳ Pending")}
           </span>
         </td>
-        <td style="white-space:nowrap;">
-          <div style="display:flex; gap:6px; align-items:center;">
+        <td style="font-size:12px; color:var(--muted); font-weight:500; white-space:nowrap;">
+          ${owner.createdAt ? new Date(owner.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "Recent"}
+        </td>
+        <td style="white-space:nowrap; text-align:right;">
+          <div style="display:flex; gap:6px; align-items:center; justify-content:flex-end;">
             <button class="btn btn-sm btn-soft" onclick="window.superAdminCtrl.loginAsOwner('${owner.id}')" title="Login as this Owner" style="padding:6px 12px; font-size:12px; font-weight:600; white-space:nowrap;">🔑 ${i18nService.t("superAdmin.btnLoginAs", "Login As")}</button>
             <button class="btn btn-sm btn-danger" onclick="window.superAdminCtrl.deleteOwner('${owner.id}', '${owner.name}')" title="Delete Owner Account" style="padding:6px 10px; font-size:12px; white-space:nowrap;">🗑️</button>
           </div>

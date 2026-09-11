@@ -547,18 +547,22 @@
 
       <div style="display:flex; gap:10px; align-items:center;">
         <div class="lang-switcher-wrap" style="display:inline-block;">
-          <select class="lang-dropdown lang-select" aria-label="Language selection" style="padding: 6px 10px; font-size: 12px; font-weight: 700; border: 1px solid #4f46e5; border-radius: 8px; background: #312e81; cursor: pointer; color: #a5b4fc;">
+          <select class="lang-dropdown lang-select" aria-label="Language selection"
+            style="padding: 6px 10px; font-size: 12px; font-weight: 700; border: 1px solid #4f46e5; border-radius: 8px; background: #312e81; cursor: pointer; color: #a5b4fc;">
             <option value="en">🇬🇧 English</option>
             <option value="zh">🇸🇬 新加坡 (华语)</option>
             <option value="ms">🇲🇾 Malaysia (Melayu)</option>
           </select>
         </div>
         <div style="text-align:right;">
-          <div class="sa-user-name" style="font-size:13px; font-weight:800; color:#fff;" id="superAdminName">Loading…</div>
-          <div class="sa-user-sub" style="font-size:11px; color:#a5b4fc;" id="superAdminRole" data-i18n="superAdmin.role">Super Administrator</div>
+          <div class="sa-user-name" style="font-size:13px; font-weight:800; color:#fff;" id="superAdminName">Loading…
+          </div>
+          <div class="sa-user-sub" style="font-size:11px; color:#a5b4fc;" id="superAdminRole"
+            data-i18n="superAdmin.role">Super Administrator</div>
         </div>
         <button type="button" class="btn btn-sm" id="saSignOutBtn"
-          style="background:#312e81; color:#a5b4fc; border:1px solid #4f46e5; font-weight:700; padding:6px 12px; border-radius:8px; white-space:nowrap;" data-i18n="nav.signOut">
+          style="background:#312e81; color:#a5b4fc; border:1px solid #4f46e5; font-weight:700; padding:6px 12px; border-radius:8px; white-space:nowrap;"
+          data-i18n="nav.signOut">
           Sign Out
         </button>
       </div>
@@ -587,7 +591,8 @@
       <button class="sa-tab-btn" data-pane="paneTenants" id="tabTenants" data-i18n="superAdmin.nav.tenants">
         🏢 Tenants &amp; Branches
       </button>
-      <button class="sa-tab-btn" data-pane="paneSubscriptions" id="tabSubscriptions" data-i18n="superAdmin.nav.subscriptions">
+      <button class="sa-tab-btn" data-pane="paneSubscriptions" id="tabSubscriptions"
+        data-i18n="superAdmin.nav.subscriptions">
         💳 Subscription &amp; Billing
       </button>
 
@@ -676,37 +681,40 @@
           <div class="create-owner-header">
             <div class="create-owner-icon">👤</div>
             <div>
-              <h3 style="font-size:16px; font-weight:700; margin:0 0 4px; color:#1e293b;" data-i18n="superAdmin.createOwnerTitle">Create New Owner Account</h3>
-              <p style="font-size:13px; color:#64748b; margin:0;" data-i18n="superAdmin.createOwnerDesc">The Owner will receive their credentials and complete branch setup on first login.</p>
+              <h3 style="font-size:16px; font-weight:700; margin:0 0 4px; color:#1e293b;"
+                data-i18n="superAdmin.createOwnerTitle">Create New Owner Account</h3>
+              <p style="font-size:13px; color:#64748b; margin:0;" data-i18n="superAdmin.createOwnerDesc">The Owner will
+                receive their credentials and complete branch setup on first login.</p>
             </div>
           </div>
 
           <div class="sa-form-grid">
             <div class="sa-form-group">
               <label class="form-label" data-i18n="superAdmin.fullName">Full Name *</label>
-              <input type="text" id="newOwnerName" class="input" placeholder="e.g. Ahmad bin Hassan" data-i18n-placeholder="superAdmin.namePlaceholder" />
+              <input type="text" id="newOwnerName" class="input" placeholder="e.g. Ahmad bin Hassan"
+                data-i18n-placeholder="superAdmin.namePlaceholder" />
             </div>
             <div class="sa-form-group">
               <label class="form-label" data-i18n="superAdmin.emailAddress">Email Address *</label>
-              <input type="email" id="newOwnerEmail" class="input" placeholder="e.g. ahmad@clinicname.com" data-i18n-placeholder="superAdmin.emailPlaceholder" />
+              <input type="email" id="newOwnerEmail" class="input" placeholder="e.g. ahmad@clinicname.com"
+                data-i18n-placeholder="superAdmin.emailPlaceholder" />
             </div>
             <div class="sa-form-group">
               <label class="form-label" data-i18n="superAdmin.phoneNumber">Phone Number</label>
-              <input type="tel" id="newOwnerPhone" class="input" placeholder="e.g. +60 12 345 6789" data-i18n-placeholder="superAdmin.phonePlaceholder" />
+              <input type="tel" id="newOwnerPhone" class="input" placeholder="e.g. +60 12 345 6789"
+                data-i18n-placeholder="superAdmin.phonePlaceholder" />
             </div>
             <div class="sa-form-group">
               <label class="form-label" data-i18n="superAdmin.initialPassword">Initial Password</label>
-              <input type="text" id="newOwnerPass" class="input" placeholder="Default: cliniva2026" data-i18n-placeholder="superAdmin.passPlaceholder" />
+              <input type="text" id="newOwnerPass" class="input" placeholder="Default: cliniva2026"
+                data-i18n-placeholder="superAdmin.passPlaceholder" />
             </div>
           </div>
 
-          <div class="sa-form-actions" style="margin-top:24px; padding-top:16px; border-top:1px solid #f1f5f9; display:flex; gap:12px; justify-content:flex-end;">
-            <button class="btn btn-soft" id="cancelCreateOwnerBtn" style="padding:10px 18px; font-weight:600; border-radius:8px;"
-              onclick="document.getElementById('createOwnerPanel').style.display='none'; document.getElementById('showCreateOwnerBtn').textContent='+ Add Owner Account';"
-              data-i18n="common.cancel">
-              Cancel
-            </button>
-            <button class="btn btn-primary" id="createOwnerSubmitBtn" style="background:#4f46e5; border-color:#4f46e5; padding:10px 20px; font-weight:600; border-radius:8px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);"
+          <div class="sa-form-actions"
+            style="margin-top:24px; padding-top:16px; border-top:1px solid #f1f5f9; display:flex; gap:12px; justify-content:flex-end;">
+            <button class="btn btn-primary" id="createOwnerSubmitBtn"
+              style="background:#4f46e5; border-color:#4f46e5; padding:10px 20px; font-weight:600; border-radius:8px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);"
               data-i18n="superAdmin.createOwnerSubmitBtn">
               ✓ Create Owner Account
             </button>
@@ -762,7 +770,8 @@
         <div class="sa-page-header">
           <div>
             <h1 class="sa-page-title" data-i18n="superAdmin.tenants.title">Tenant &amp; Branch Control</h1>
-            <p class="sa-page-sub" data-i18n="superAdmin.tenants.sub">Monitor all active clinic branches across the platform and manage operational status.</p>
+            <p class="sa-page-sub" data-i18n="superAdmin.tenants.sub">Monitor all active clinic branches across the
+              platform and manage operational status.</p>
           </div>
         </div>
         <div style="overflow-x:auto; border-radius:14px; border:1px solid var(--line);">
@@ -791,7 +800,8 @@
         <div class="sa-page-header">
           <div>
             <h1 class="sa-page-title" data-i18n="superAdmin.subs.title">Subscription &amp; Billing Management</h1>
-            <p class="sa-page-sub" data-i18n="superAdmin.subs.sub">Track B2B software license subscriptions (1, 6, and 12-month plans) for all branches.</p>
+            <p class="sa-page-sub" data-i18n="superAdmin.subs.sub">Track B2B software license subscriptions (1, 6, and
+              12-month plans) for all branches.</p>
           </div>
         </div>
         <div class="sa-stats-grid" style="margin-bottom:24px;">
@@ -811,10 +821,12 @@
         <div class="sa-page-header">
           <div>
             <h1 class="sa-page-title" data-i18n="superAdmin.templates.title">Template &amp; Offering Management</h1>
-            <p class="sa-page-sub" data-i18n="superAdmin.templates.sub">Configure industry templates, live prototype links, and subscription pricing for clinic owners.</p>
+            <p class="sa-page-sub" data-i18n="superAdmin.templates.sub">Configure industry templates, live prototype
+              links, and subscription pricing for clinic owners.</p>
           </div>
           <button class="btn btn-primary sa-page-action-btn" id="showCreateTemplateBtn"
-            style="background:#4f46e5; border-color:#4f46e5; white-space:nowrap;" data-i18n="superAdmin.templates.addBtn">
+            style="background:#4f46e5; border-color:#4f46e5; white-space:nowrap;"
+            data-i18n="superAdmin.templates.addBtn">
             + Add New Template
           </button>
         </div>
@@ -824,23 +836,29 @@
           <div class="create-owner-header">
             <div class="create-owner-icon">📦</div>
             <div>
-              <h3 style="font-size:16px; font-weight:700; margin:0 0 4px; color:#1e293b;" data-i18n="superAdmin.templates.formTitle">Create New Offering Template</h3>
-              <p style="font-size:13px; color:#64748b; margin:0;" data-i18n="superAdmin.templates.formDesc">Add a specialized business template for clinic owners to purchase and deploy.</p>
+              <h3 style="font-size:16px; font-weight:700; margin:0 0 4px; color:#1e293b;"
+                data-i18n="superAdmin.templates.formTitle">Create New Offering Template</h3>
+              <p style="font-size:13px; color:#64748b; margin:0;" data-i18n="superAdmin.templates.formDesc">Add a
+                specialized business template for clinic owners to purchase and deploy.</p>
             </div>
           </div>
 
           <div class="sa-form-grid">
             <div class="sa-form-group">
               <label class="form-label" data-i18n="superAdmin.templates.nameLabel">Template Name *</label>
-              <input type="text" id="newTemplateName" class="input" placeholder="e.g. Pilates & Core Studio" data-i18n-placeholder="superAdmin.templates.namePlaceholder" />
+              <input type="text" id="newTemplateName" class="input" placeholder="e.g. Pilates & Core Studio"
+                data-i18n-placeholder="superAdmin.templates.namePlaceholder" />
             </div>
             <div class="sa-form-group">
               <label class="form-label" data-i18n="superAdmin.templates.categoryLabel">Industry Category *</label>
-              <input type="text" id="newTemplateCategory" class="input" placeholder="e.g. Fitness & Physical Rehabilitation" />
+              <input type="text" id="newTemplateCategory" class="input"
+                placeholder="e.g. Fitness & Physical Rehabilitation" />
             </div>
             <div class="sa-form-group">
               <label class="form-label" data-i18n="superAdmin.templates.demoUrlLabel">Prototype / Demo URL</label>
-              <input type="url" id="newTemplateDemoUrl" class="input" placeholder="e.g. https://prototype-application.vercel.app" data-i18n-placeholder="superAdmin.templates.demoUrlPlaceholder" />
+              <input type="url" id="newTemplateDemoUrl" class="input"
+                placeholder="e.g. https://prototype-application.vercel.app"
+                data-i18n-placeholder="superAdmin.templates.demoUrlPlaceholder" />
             </div>
             <div class="sa-form-group">
               <label class="form-label" data-i18n="superAdmin.templates.monthlyPriceLabel">Monthly Price (SGD) *</label>
@@ -848,15 +866,17 @@
             </div>
             <div class="sa-form-group" style="grid-column: 1 / -1;">
               <label class="form-label" data-i18n="superAdmin.templates.taglineLabel">Tagline &amp; Summary</label>
-              <input type="text" id="newTemplateTagline" class="input" placeholder="e.g. Postural alignment and reformer strength therapy" data-i18n-placeholder="superAdmin.templates.taglinePlaceholder" />
+              <input type="text" id="newTemplateTagline" class="input"
+                placeholder="e.g. Postural alignment and reformer strength therapy"
+                data-i18n-placeholder="superAdmin.templates.taglinePlaceholder" />
             </div>
           </div>
 
-          <div class="sa-form-actions" style="margin-top:24px; padding-top:16px; border-top:1px solid #f1f5f9; display:flex; gap:12px; justify-content:flex-end;">
-            <button class="btn btn-soft" id="cancelCreateTemplateBtn" style="padding:10px 18px; font-weight:600; border-radius:8px;" data-i18n="common.cancel">
-              Cancel
-            </button>
-            <button class="btn btn-primary" id="createTemplateSubmitBtn" style="background:#4f46e5; border-color:#4f46e5; padding:10px 20px; font-weight:600; border-radius:8px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);" data-i18n="superAdmin.templates.saveBtn">
+          <div class="sa-form-actions"
+            style="margin-top:24px; padding-top:16px; border-top:1px solid #f1f5f9; display:flex; gap:12px; justify-content:flex-end;">
+            <button class="btn btn-primary" id="createTemplateSubmitBtn"
+              style="background:#4f46e5; border-color:#4f46e5; padding:10px 20px; font-weight:600; border-radius:8px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);"
+              data-i18n="superAdmin.templates.saveBtn">
               ✓ Save Template Offering
             </button>
           </div>
@@ -894,4 +914,5 @@
   <!-- Controller -->
   <script type="module" src="../../js/controllers/super-admin/super-admin.controller.js"></script>
 </body>
+
 </html>

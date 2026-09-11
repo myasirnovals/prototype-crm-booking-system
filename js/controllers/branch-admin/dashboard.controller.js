@@ -10,6 +10,7 @@ import { storageService } from "../../services/storage.service.js";
 import { bookingService } from "../../services/booking.service.js";
 import { notificationService } from "../../services/notification.service.js";
 import { supabaseService } from "../../services/supabase.service.js";
+import { i18nService } from "../../services/i18n.service.js";
 
 export class BranchAdminController {
   constructor() {
@@ -128,37 +129,49 @@ export class BranchAdminController {
         this.tabPanes.forEach((pane) => {
           pane.style.display = pane.id === target ? "block" : "none";
         });
+        const paneId = btn.dataset.pane;
+        this.tabButtons.forEach((b) => b.classList.remove("active"));
+        this.tabPanes.forEach((p) => (p.style.display = "none"));
+
+        btn.classList.add("active");
+        const targetPane = document.getElementById(paneId);
+        if (targetPane) targetPane.style.display = "block";
+
+        // Sync mobile bottom navigation bar active button
+        const mobBtns = document.querySelectorAll(".ba-mob-btn");
+        mobBtns.forEach((mb) => {
+          if (mb.dataset.pane === paneId) mb.classList.add("active");
+          else mb.classList.remove("active");
+        });
+      });
+    });
+
+    // Mobile Navigation Button Handler
+    const mobBtns = document.querySelectorAll(".ba-mob-btn");
+    mobBtns.forEach((mb) => {
+      mb.addEventListener("click", () => {
+        const paneId = mb.dataset.pane;
+        const matchingDesktopBtn = Array.from(this.tabButtons).find(b => b.dataset.pane === paneId);
+        if (matchingDesktopBtn) matchingDesktopBtn.click();
       });
     });
   }
 
   // ─────────────────────────────────────────────────────────────────────────
-  // AUDIO CHIME
+  // CHIME AUDIO SYNTHESIZER
   // ─────────────────────────────────────────────────────────────────────────
 
   setupChimeSound() {
-    const testBtn = document.getElementById("btnTestChime");
-    if (testBtn) {
-      testBtn.addEventListener("click", () => {
+    const btn = document.getElementById("btnTestChime");
+    if (btn) {
+      btn.addEventListener("click", () => {
         soundService.playQueueChime();
-      });
-    }
-
-    const refreshBtn = document.getElementById("btnRefreshQueue");
-    if (refreshBtn) {
-      refreshBtn.addEventListener("click", () => {
-        this.renderLiveQueue();
-        soundService.playClickTone?.();
       });
     }
   }
 
   // ─────────────────────────────────────────────────────────────────────────
-  // LIVE QUEUE
-  // ─────────────────────────────────────────────────────────────────────────
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // LIVE QUEUE (TODAY ACTIVE QUEUE)
+  // LIVE QUEUE OPERATIONS
   // ─────────────────────────────────────────────────────────────────────────
 
   getDefaultTodayQueue() {
@@ -166,37 +179,37 @@ export class BranchAdminController {
       {
         id: "q-01",
         queue: "A-01",
-        patient: "Rendra Pratama",
+        patient: "Amanda Tan",
         regNo: "REG-2026-0901",
-        service: "Clinical Acupuncture · Physician Huang Wei",
-        doctor: "Physician Huang Wei",
-        time: "09:00",
-        room: "Ruang A1",
-        statusBadge: "READY",
+        service: "Physiotherapy & Spine Rehab · Dr. Lim Wei Han",
+        doctor: "Dr. Lim Wei Han",
+        time: "10:30",
+        room: "Room A2",
+        statusBadge: "WAITING",
         badgeColor: "#0f766e",
         badgeBg: "#f0fdfa"
       },
       {
         id: "q-02",
         queue: "B-02",
-        patient: "Amanda Tan",
+        patient: "Jason Lee",
         regNo: "REG-2026-0902",
-        service: "Physiotherapy & Spine · Dr. Lim",
-        doctor: "Dr. Lim Wei Han",
-        time: "09:30",
-        room: "Ruang Bed A2",
-        statusBadge: "WAITING",
-        badgeColor: "#b45309",
-        badgeBg: "#fef3c7"
+        service: "Aromatherapy Body Therapy · Sarah Tan",
+        doctor: "Therapist Sarah Tan",
+        time: "11:00",
+        room: "VIP Suite 2",
+        statusBadge: "READY",
+        badgeColor: "#d97706",
+        badgeBg: "#fffbeb"
       },
       {
         id: "q-03",
         queue: "C-03",
-        patient: "Jason Lee",
+        patient: "Nur Aisyah",
         regNo: "REG-2026-0903",
-        service: "Wellness Spa Aromatherapy · Therapist Sarah",
-        doctor: "Therapist Sarah",
-        time: "10:00",
+        service: "TCM Herbal & Acupuncture · Dr. Wong",
+        doctor: "Physician Wong",
+        time: "11:30",
         room: "Suite 1",
         statusBadge: "CHECKED-IN",
         badgeColor: "#0369a1",
@@ -207,10 +220,10 @@ export class BranchAdminController {
         queue: "A-04",
         patient: "Siti Rahmawati",
         regNo: "REG-2026-0904",
-        service: "Konsultasi Dokter Umum · Dr. Kevin Wijaya",
+        service: "General Consultation · Dr. Kevin Wijaya",
         doctor: "Dr. Kevin Wijaya",
         time: "10:15",
-        room: "Ruang Konsul 1",
+        room: "Room 1",
         statusBadge: "WAITING",
         badgeColor: "#b45309",
         badgeBg: "#fef3c7"
@@ -220,10 +233,10 @@ export class BranchAdminController {
         queue: "B-05",
         patient: "Dewi Lestari",
         regNo: "REG-2026-0905",
-        service: "Fisioterapi & Rehabilitasi · Dr. Lim",
+        service: "Physiotherapy Rehab · Dr. Lim",
         doctor: "Dr. Lim Wei Han",
         time: "10:45",
-        room: "Ruang Bed A2",
+        room: "Bed A2",
         statusBadge: "IN_CONSULT",
         badgeColor: "#7c3aed",
         badgeBg: "#f5f3ff"
@@ -263,6 +276,11 @@ export class BranchAdminController {
     if (inConsultEl) inConsultEl.textContent = items.filter(q => q.statusBadge === "CHECKED-IN" || q.statusBadge === "IN_CONSULT").length;
     if (totalTodayEl) totalTodayEl.textContent = items.length + 37;
 
+    const labelCall = i18nService.t("branchAdmin.btnCallPatient", "🔊 Call Patient (Chime)");
+    const labelStart = i18nService.t("branchAdmin.btnStartConsult", "🩺 Start Consultation");
+    const labelComplete = i18nService.t("branchAdmin.btnCompleteQueue", "✅ Complete & Approve");
+    const labelFinished = i18nService.t("branchAdmin.btnFinishedQueue", "✓ Appointment Completed");
+
     // 1. Render Cards Grid
     if (this.queueGrid) {
       this.queueGrid.innerHTML = "";
@@ -272,13 +290,13 @@ export class BranchAdminController {
         
         let actionBtnHtml = "";
         if (item.statusBadge === "WAITING") {
-          actionBtnHtml = `<button type="button" class="btn btn-sm btn-primary full btn-action-step" data-action="call">🔊 Panggil Pasien (Chime)</button>`;
+          actionBtnHtml = `<button type="button" class="btn btn-sm btn-primary full btn-action-step" data-action="call">${labelCall}</button>`;
         } else if (item.statusBadge === "READY") {
-          actionBtnHtml = `<button type="button" class="btn btn-sm btn-secondary full btn-action-step" data-action="start" style="background:#7c3aed; color:#fff;">🩺 Mulai Konsultasi (Masuk)</button>`;
+          actionBtnHtml = `<button type="button" class="btn btn-sm btn-secondary full btn-action-step" data-action="start" style="background:#7c3aed; color:#fff;">${labelStart}</button>`;
         } else if (item.statusBadge === "IN_CONSULT") {
-          actionBtnHtml = `<button type="button" class="btn btn-sm btn-success full btn-action-step" data-action="complete" style="background:#16a34a; color:#fff;">✅ Selesaikan &amp; Approve</button>`;
+          actionBtnHtml = `<button type="button" class="btn btn-sm btn-success full btn-action-step" data-action="complete" style="background:#16a34a; color:#fff;">${labelComplete}</button>`;
         } else {
-          actionBtnHtml = `<button type="button" class="btn btn-sm btn-soft full" disabled style="opacity:0.75; font-weight:700;">✓ Janji Temu Selesai</button>`;
+          actionBtnHtml = `<button type="button" class="btn btn-sm btn-soft full" disabled style="opacity:0.75; font-weight:700;">${labelFinished}</button>`;
         }
 
         card.innerHTML = `
@@ -305,20 +323,25 @@ export class BranchAdminController {
     // 2. Render Today's Active Queue Table
     if (this.queueTableBody) {
       this.queueTableBody.innerHTML = "";
+      const tabCall = i18nService.t("branchAdmin.tabActionCall", "🔊 Call");
+      const tabStart = i18nService.t("branchAdmin.tabActionStart", "🩺 Start");
+      const tabComplete = i18nService.t("branchAdmin.tabActionComplete", "✅ Complete");
+      const tabFinished = i18nService.t("branchAdmin.tabActionFinished", "✓ Finished");
+
       items.forEach((item) => {
         const tr = document.createElement("tr");
-        const serviceName = item.service ? item.service.split("·")[0].trim() : "Konsultasi";
-        const doctorName = item.doctor || (item.service && item.service.includes("·") ? item.service.split("·")[1].trim() : "Dokter Bertugas");
+        const serviceName = item.service ? item.service.split("·")[0].trim() : "Consultation";
+        const doctorName = item.doctor || (item.service && item.service.includes("·") ? item.service.split("·")[1].trim() : "Specialist on Duty");
 
         let tableActionHtml = "";
         if (item.statusBadge === "WAITING") {
-          tableActionHtml = `<button type="button" class="btn btn-sm btn-primary btn-tab-action" data-action="call" style="padding:4px 8px; font-size:11px;">🔊 Panggil</button>`;
+          tableActionHtml = `<button type="button" class="btn btn-sm btn-primary btn-tab-action" data-action="call" style="padding:4px 8px; font-size:11px;">${tabCall}</button>`;
         } else if (item.statusBadge === "READY") {
-          tableActionHtml = `<button type="button" class="btn btn-sm btn-tab-action" data-action="start" style="padding:4px 8px; font-size:11px; background:#7c3aed; color:#fff;">🩺 Mulai</button>`;
+          tableActionHtml = `<button type="button" class="btn btn-sm btn-tab-action" data-action="start" style="padding:4px 8px; font-size:11px; background:#7c3aed; color:#fff;">${tabStart}</button>`;
         } else if (item.statusBadge === "IN_CONSULT") {
-          tableActionHtml = `<button type="button" class="btn btn-sm btn-tab-action" data-action="complete" style="padding:4px 8px; font-size:11px; background:#16a34a; color:#fff;">✅ Selesai</button>`;
+          tableActionHtml = `<button type="button" class="btn btn-sm btn-tab-action" data-action="complete" style="padding:4px 8px; font-size:11px; background:#16a34a; color:#fff;">${tabComplete}</button>`;
         } else {
-          tableActionHtml = `<span style="font-size:11px; color:#16a34a; font-weight:800;">✓ Selesai</span>`;
+          tableActionHtml = `<span style="font-size:11px; color:#16a34a; font-weight:800;">${tabFinished}</span>`;
         }
 
         tr.innerHTML = `
@@ -332,7 +355,7 @@ export class BranchAdminController {
             <small style="color:var(--muted); font-size:11px;">${doctorName}</small>
           </td>
           <td><span style="font-weight:700; font-size:12px;">${item.time || '09:00'}</span></td>
-          <td><span style="font-size:12px;">${item.room || 'Ruang Konsul'}</span></td>
+          <td><span style="font-size:12px;">${item.room || 'Room A1'}</span></td>
           <td>
             <span class="status-pill" style="background:${item.badgeBg || '#f1f5f9'}; color:${item.badgeColor || '#0f766e'}; font-size:11px; padding:3px 8px; border:1px solid ${item.badgeColor || '#cbd5e1'}40;">
               ● ${item.statusBadge}
@@ -390,9 +413,13 @@ export class BranchAdminController {
     }
 
     if (newStatus === "COMPLETED") {
-      alert(`✅ Janji Temu [${item.queue}] ${item.patient} telah disetujui & diselesaikan di klinik.`);
+      const msg = i18nService.t("branchAdmin.alertCompleted", "✅ Appointment [{queue}] {patient} approved & completed on-site.")
+        .replace("{queue}", item.queue).replace("{patient}", item.patient);
+      alert(msg);
     } else if (newStatus === "IN_CONSULT") {
-      alert(`🩺 Pasien [${item.queue}] ${item.patient} telah masuk ke ${item.room || 'Ruang Praktik'} untuk sesi konsultasi.`);
+      const msg = i18nService.t("branchAdmin.alertInConsult", "🩺 Patient [{queue}] {patient} entered {room} for consultation.")
+        .replace("{queue}", item.queue).replace("{patient}", item.patient).replace("{room}", item.room || "Room");
+      alert(msg);
     }
 
     this.renderLiveQueue();
@@ -404,13 +431,15 @@ export class BranchAdminController {
 
     if (notificationService && typeof notificationService.addSystemNotification === "function") {
       notificationService.addSystemNotification({
-        title: `Panggilan Pasien ${item.queue}`,
-        message: `[${item.queue}] ${item.patient} silakan menuju ke ${item.room || 'Ruang Praktik'}.`,
+        title: i18nService.t("branchAdmin.callPatientTitle", "Calling Patient") + ` ${item.queue}`,
+        message: i18nService.t("branchAdmin.callPatientMsg", "[{queue}] {patient} — please proceed to {room}.")
+          .replace("{queue}", item.queue).replace("{patient}", item.patient).replace("{room}", item.room || i18nService.t("branchAdmin.practiceRoom", "Practice Room")),
         category: "QUEUE",
         type: "info"
       });
     }
-    alert(`🔊 Memanggil Nomor Antrean [${item.queue}]: ${item.patient} silakan masuk ke ${item.room || 'Ruang Praktik'}.`);
+    alert(i18nService.t("branchAdmin.callPatientAlert", "🔊 Calling Queue [{queue}]: {patient} — please enter {room}.")
+      .replace("{queue}", item.queue).replace("{patient}", item.patient).replace("{room}", item.room || i18nService.t("branchAdmin.practiceRoom", "Practice Room")));
   }
 
   /**
@@ -442,10 +471,10 @@ export class BranchAdminController {
     if (!walkInBtn) return;
 
     walkInBtn.addEventListener("click", async () => {
-      const name = prompt("Nama Pasien Datang Langsung (Walk-In):", "Pasien Walk-In");
+      const name = prompt(i18nService.t("branchAdmin.walkInNamePrompt", "Walk-In Patient Name:"), i18nService.t("branchAdmin.walkInNameDefault", "Walk-In Patient"));
       if (!name) return;
 
-      const service = prompt("Layanan yang Dibutuhkan:", "Konsultasi Fisioterapi / Akupunktur") || "Konsultasi Umum";
+      const service = prompt(i18nService.t("branchAdmin.walkInServicePrompt", "Service Required:"), i18nService.t("branchAdmin.walkInServiceDefault", "General Consultation / Physiotherapy")) || i18nService.t("branchAdmin.walkInServiceDefault", "General Consultation");
 
       const queueStorageKey = `cliniva_queue_${this.branchId}`;
       const queueItems = storageService.get(queueStorageKey, []) || [];
@@ -457,9 +486,9 @@ export class BranchAdminController {
         patient: name,
         regNo: `WALKIN-${Date.now().toString().slice(-4)}`,
         service: service,
-        doctor: "Dokter Jaga (Walk-In)",
+        doctor: i18nService.t("branchAdmin.walkInDoctor", "Duty Doctor (Walk-In)"),
         time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        room: "Ruang Meja Depan",
+        room: i18nService.t("branchAdmin.frontDeskRoom", "Front Desk"),
         statusBadge: "READY",
         badgeColor: "#0f766e",
         badgeBg: "#f0fdfa"
@@ -486,13 +515,14 @@ export class BranchAdminController {
       soundService.playSuccessChime?.();
       if (notificationService && typeof notificationService.addSystemNotification === "function") {
         notificationService.addSystemNotification({
-          title: "Pasien Walk-In Terdaftar",
-          message: `${name} (${newQueueNumber}) berhasil didaftarkan untuk ${service}.`,
+          title: i18nService.t("branchAdmin.walkInRegistered", "Walk-In Patient Registered"),
+          message: i18nService.t("branchAdmin.walkInRegisteredMsg", "{name} ({queue}) successfully registered for {service}.")
+            .replace("{name}", name).replace("{queue}", newQueueNumber).replace("{service}", service),
           category: "QUEUE",
           type: "info"
         });
       }
-      alert(`✓ Pasien walk-in berhasil didaftarkan dengan Nomor Antrean: ${newQueueNumber}`);
+      alert(i18nService.t("branchAdmin.walkInSuccess", "✓ Walk-in patient registered. Queue Number: {queue}").replace("{queue}", newQueueNumber));
     });
   }
 
@@ -550,25 +580,25 @@ export class BranchAdminController {
       tr.innerHTML = `
         <td>
           <div style="font-weight:700; color:var(--text);">${doc.name}</div>
-          <small style="color:var(--muted);">${doc.title || "Praktisi Klinik"}</small>
+          <small style="color:var(--muted);">${doc.title || i18nService.t("branchAdmin.clinicPractitioner", "Clinic Practitioner")}</small>
         </td>
         <td><span class="pill" style="font-size:11px;">${doc.specialty || "General Specialist"}</span></td>
-        <td>${doc.room || "Ruang Konsultasi"}</td>
+        <td>${doc.room || i18nService.t("branchAdmin.consultationRoom", "Consultation Room")}</td>
         <td style="font-family:monospace; font-size:12px;">${doc.email}</td>
         <td>
           <span class="status-pill ${isOff ? "cancelled" : "confirmed"}">
-            ${isOff ? "● OFF" : "● BERTUGAS"}
+            ${isOff ? "● " + i18nService.t("branchAdmin.statusOff", "OFF") : "● " + i18nService.t("branchAdmin.statusOnDuty", "ON DUTY")}
           </span>
         </td>
         <td>
           <button type="button" class="btn btn-sm btn-soft btn-toggle-doc-status">
-            ${isOff ? "Aktifkan Shift" : "Tandai Istirahat"}
+            ${isOff ? i18nService.t("branchAdmin.activateShift", "Activate Shift") : i18nService.t("branchAdmin.markBreak", "Mark as Break")}
           </button>
         </td>
       `;
 
       tr.querySelector(".btn-toggle-doc-status")?.addEventListener("click", () => {
-        doc.status = isOff ? "BERTUGAS" : "OFF";
+        doc.status = isOff ? "ON_DUTY" : "OFF";
         soundService.playClickTone?.();
         this.renderBranchPractitioners();
       });
@@ -606,7 +636,7 @@ export class BranchAdminController {
       const phone = document.getElementById("pracPhone")?.value.trim();
 
       if (!name || !email) {
-        alert("Nama dan email dokter wajib diisi.");
+        alert(i18nService.t("branchAdmin.practitionerNameEmailRequired", "Practitioner name and email are required."));
         return;
       }
 
@@ -614,15 +644,15 @@ export class BranchAdminController {
       const newDoc = {
         name,
         specialty,
-        room: room || "Ruang Konsultasi",
+        room: room || i18nService.t("branchAdmin.consultationRoom", "Consultation Room"),
         email,
         phone,
         password: "cliniva2026",
         role: USER_ROLES.PRACTITIONER,
         branchId: this.branchId,
         branchName: this.currentUser?.branchName || "Orchard Wellness Clinic",
-        title: "Dokter / Praktisi Cabang",
-        status: "BERTUGAS",
+        title: i18nService.t("branchAdmin.practitionerTitle", "Branch Doctor / Practitioner"),
+        status: "ON_DUTY",
         onboardingCompleted: true
       };
 
@@ -634,7 +664,7 @@ export class BranchAdminController {
       soundService.playSuccessChime?.();
       closeModal();
       this.renderBranchPractitioners();
-      alert(`✓ Berhasil menambahkan ${name} sebagai praktisi di cabang ini!`);
+      alert(i18nService.t("branchAdmin.practitionerAdded", "✓ {name} has been successfully added as a practitioner at this branch.").replace("{name}", name));
     });
   }
 
@@ -647,11 +677,11 @@ export class BranchAdminController {
     if (!tbody) return;
 
     const stockItems = [
-      { name: "Jarum Akupunktur Steril (Box 100 pcs)", cat: "TCM Consumables", qty: 48, min: 20, status: "AMAN" },
-      { name: "Minyak Aromaterapi Lavender Herbal (500ml)", cat: "Wellness / Spa", qty: 8, min: 10, status: "MENIPIS" },
-      { name: "Kinesio Tape Medical Grade (Roll)", cat: "Physiotherapy", qty: 32, min: 15, status: "AMAN" },
-      { name: "Sachet Herbal Rendam Kaki Tradisional", cat: "TCM Therapy", qty: 120, min: 30, status: "AMAN" },
-      { name: "Kertas Bed Terapi Disposable (Roll)", cat: "Clinic Supplies", qty: 6, min: 5, status: "PERLU RESTOK" }
+      { name: "Sterile Acupuncture Needles (Box 100 pcs)", cat: "TCM Consumables", qty: 48, min: 20, status: i18nService.t("branchAdmin.stockSafe", "SAFE") },
+      { name: "Lavender Herbal Aromatherapy Oil (500ml)", cat: "Wellness / Spa", qty: 8, min: 10, status: i18nService.t("branchAdmin.stockLow", "LOW STOCK") },
+      { name: "Medical Grade Kinesio Tape (Roll)", cat: "Physiotherapy", qty: 32, min: 15, status: i18nService.t("branchAdmin.stockSafe", "SAFE") },
+      { name: "Traditional Herbal Foot Soak Sachet", cat: "TCM Therapy", qty: 120, min: 30, status: i18nService.t("branchAdmin.stockSafe", "SAFE") },
+      { name: "Disposable Therapy Bed Paper Roll", cat: "Clinic Supplies", qty: 6, min: 5, status: i18nService.t("branchAdmin.stockRestock", "RESTOCK NEEDED") }
     ];
 
     tbody.innerHTML = "";
@@ -696,7 +726,8 @@ export class BranchAdminController {
       }
 
       soundService.playClickTone?.();
-      alert(`✓ Informasi cabang berhasil disimpan:\n${branchName}\n${branchPhone}\n${branchAddress}`);
+      alert(i18nService.t("branchAdmin.branchConfigSaved", "✓ Branch information saved:\n{name}\n{phone}\n{address}")
+        .replace("{name}", branchName).replace("{phone}", branchPhone).replace("{address}", branchAddress));
     });
   }
 

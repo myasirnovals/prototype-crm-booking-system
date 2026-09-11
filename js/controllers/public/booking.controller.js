@@ -960,7 +960,7 @@ export class PatientBookingController {
           schedule: this.bookingDraft.scheduleSlot,
           room: this.bookingDraft.room || "Private Consultation Suite 01",
           depositPaid: "0.00",
-          paymentStatus: "TERKONFIRMASI (Bayar di Klinik / On-Site Settlement)",
+          paymentStatus: i18nService.t("booking.paymentStatusConfirmed", "CONFIRMED (Pay at Clinic / On-Site Settlement)"),
           complaint: this.bookingDraft.chiefComplaint,
           templateType: this.activeTemplateId,
           intakeData: this.bookingDraft.intakeData,
@@ -971,9 +971,10 @@ export class PatientBookingController {
         // Save directly via bookingService (Supabase SSOT & LocalStorage)
         await bookingService.createBooking(newBooking);
 
-        const clinicName = this.bookingDraft.branchName || "Klinik Cliniva";
-        const arrivalTime = this.bookingDraft.scheduleSlot || "jam yang dipilih";
-        alert(`✅ Booking Anda sudah terkonfirmasi!\n\n🎫 Nomor Antrean Klinik: [${queueCode}]\n🏥 Lokasi: ${clinicName}\n⏰ Jadwal Kedatangan: ${arrivalTime}\n\nCatatan: Pembayaran konsultasi/tindakan diselesaikan langsung di kasir klinik saat kunjungan selesai.\n\n(Menampilkan E-Tiket resmi Anda...)`);
+        const clinicName = this.bookingDraft.branchName || "Cliniva Clinic";
+        const arrivalTime = this.bookingDraft.scheduleSlot || "your selected time";
+        alert(i18nService.t("booking.confirmAlert", "✅ Your booking is confirmed!\n\n🎫 Clinic Queue Number: [{queue}]\n🏥 Location: {clinic}\n⏰ Scheduled Arrival: {time}\n\nNote: Consultation/treatment fees are settled directly at the clinic cashier after your session.\n\n(Displaying your official E-Ticket...)")
+          .replace("{queue}", queueCode).replace("{clinic}", clinicName).replace("{time}", arrivalTime));
         window.location.href = `ticket.html?code=${encodeURIComponent(bookingCode)}`;
       }, 1000);
     });

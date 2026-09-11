@@ -257,8 +257,8 @@
     <!-- STEP 4 PANE: SUMMARY & DIGITAL E-TICKET CONFIRMATION -->
     <section class="wizard-step-pane" id="bookingStepPane4">
       <div class="wizard-pane-header">
-        <h2 data-i18n="booking.step4.title">Review &amp; Konfirmasi Janji Temu</h2>
-        <p data-i18n="booking.step4.desc">Periksa kembali detail reservasi konsultasi Anda. Tiket janji temu digital akan diterbitkan langsung untuk check-in di klinik.</p>
+        <h2 data-i18n="booking.step4.reviewTitle">Review &amp; Confirm Appointment</h2>
+        <p data-i18n="booking.step4.reviewDesc">Please review your appointment details. Your digital e-ticket will be issued instantly for clinic check-in.</p>
       </div>
 
       <div class="booking-summary-card">
@@ -296,20 +296,20 @@
         <div class="booking-summary-row"
           style="background:#f0fdf4; padding:12px; border-radius:var(--radius-sm); margin-top:8px; border:1px solid #bbf7d0;">
           <div>
-            <div style="color:#16a34a; font-weight:800; font-size:13px;" data-i18n="booking.step4.reservationFee">Biaya Reservasi Online:</div>
-            <small style="color:var(--muted); font-size:11px;">Bebas Biaya di Awal · Reservasi Mandiri</small>
+            <div style="color:#16a34a; font-weight:800; font-size:13px;" data-i18n="booking.step4.feeLabel">Online Booking Fee:</div>
+            <small style="color:var(--muted); font-size:11px;" data-i18n="booking.step4.feeSub">No upfront payment · Direct self-service reservation</small>
           </div>
-          <strong class="pill" style="font-size:12px; background:#16a34a; color:#fff; font-weight:800; padding:4px 10px;">GRATIS (SGD 0.00)</strong>
+          <strong class="pill" style="font-size:12px; background:#16a34a; color:#fff; font-weight:800; padding:4px 10px;" data-i18n="booking.step4.feeVal">FREE (SGD 0.00)</strong>
         </div>
       </div>
 
       <div
         style="background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-sm); padding:16px; margin-bottom:24px;">
         <div style="font-size:12px; font-weight:800; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-          <span>🏥</span> <span data-i18n="booking.step4.paymentMethod">INFORMASI PEMBAYARAN DI KLINIK (ON-SITE PAYMENT):</span>
+          <span>🏥</span> <span data-i18n="booking.step4.onSiteTitle">CLINIC ON-SITE PAYMENT INFORMATION:</span>
         </div>
-        <p style="font-size:12px; color:var(--muted); margin:0 0 10px; line-height:1.5;">
-          Aplikasi ini murni sebagai sistem reservasi janji temu dan antrean. Seluruh pembayaran biaya konsultasi, tindakan dokter, dan obat diselesaikan langsung di kasir klinik saat kunjungan Anda selesai.
+        <p style="font-size:12px; color:var(--muted); margin:0 0 10px; line-height:1.5;" data-i18n="booking.step4.onSiteDesc">
+          This application serves as an appointment reservation and queue management system. All consultation, medical procedure, and medication fees are settled directly at the clinic cashier after your appointment.
         </p>
         <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
           <span class="pill" style="font-size:11px; background:#fff; border:1px solid var(--line); color:var(--text);">
@@ -319,10 +319,10 @@
             🇲🇾 DuitNow QR
           </span>
           <span class="pill" style="font-size:11px; background:#fff; border:1px solid var(--line); color:var(--text);">
-            💳 Kartu Debit / Kredit
+            💳 Debit / Credit Card
           </span>
           <span class="pill" style="font-size:11px; background:#fff; border:1px solid var(--line); color:var(--text);">
-            💵 Tunai di Kasir Klinik
+            💵 Cash at Clinic Counter
           </span>
         </div>
       </div>
@@ -332,7 +332,7 @@
           Information</button>
         <button type="button" class="btn btn-primary" id="confirmBookingCheckoutBtn"
           style="font-size:15px; padding:12px 24px;" data-i18n="booking.step4.confirmBtn">
-          Konfirmasi Reservasi &amp; Terbitkan E-Tiket 🎟️
+          Confirm Reservation &amp; Issue E-Ticket 🎟️
         </button>
       </div>
     </section>

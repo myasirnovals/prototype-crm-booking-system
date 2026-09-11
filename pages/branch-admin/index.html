@@ -739,7 +739,7 @@
           <span style="font-size:17px; font-weight:900; white-space:nowrap;">Cliniva Operations</span>
         </a><br>
         <span class="ba-stat-pill" id="branchAdminBadge">
-          🏪 <span id="branchNameHeader">Orchard Wellness Clinic (SG)</span>
+          🏪 <span id="branchNameHeader" data-i18n="branchAdmin.badge">Orchard Wellness Clinic (SG)</span>
         </span>
       </div>
 
@@ -748,12 +748,11 @@
         <!-- Global Notification Bar Slot -->
         <div class="notif-bar-slot" id="notificationBarContainer"></div>
 
-        <!-- Language Switcher -->
+        <!-- Language Switcher (Strictly 3 Languages: EN, ZH, MS) -->
         <div class="lang-switcher-wrap">
           <select class="lang-select" aria-label="Select Language"
             style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
-            <option value="en">🇬🇧 English</option>
-            <option value="id" selected>🇮🇩 Bahasa Indonesia</option>
+            <option value="en" selected>🇬🇧 English</option>
             <option value="zh">🇸🇬 华语 (Singapura)</option>
             <option value="ms">🇲🇾 Bahasa Melayu (Malaysia)</option>
           </select>
@@ -766,11 +765,11 @@
             <button type="button" class="profile-edit-trigger" id="editProfileBtn" title="Edit Profile"
               aria-label="Edit Profile">✏️</button>
           </div>
-          <div style="font-size:11px; color:var(--muted);" id="adminStaffTitle">Lead Branch Admin &amp; Front Desk</div>
+          <div style="font-size:11px; color:var(--muted);" id="adminStaffTitle" data-i18n="branchAdmin.title">Lead Branch Admin &amp; Front Desk</div>
         </div>
 
         <a href="../../pages/owner/dashboard.html" class="btn btn-sm btn-soft" id="adminOwnerPanelLink"
-          data-role-access="OWNER" style="display:none;">Owner HQ →</a>
+          data-role-access="OWNER" style="display:none;" data-i18n="branchAdmin.ownerLink">Owner HQ →</a>
         <button type="button" class="btn btn-sm btn-primary" id="adminSignOutBtn" data-i18n="nav.signOut">Sign
           Out</button>
       </div>
@@ -781,46 +780,53 @@
     <!-- Sidebar Navigation -->
     <aside class="admin-sidebar">
       <div
-        style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted); margin:0 0 10px 8px;">
-        Operasional Cabang
+        style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted); margin:0 0 10px 8px;"
+        data-i18n="branchAdmin.nav.heading">
+        Branch Operations
       </div>
 
       <div class="side-menu">
         <button class="side-link admin-tab-btn active" data-pane="paneOverview"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          📊 Antrean &amp; Meja Depan
+          style="border:0;background:transparent;width:100%;text-align:left;"
+          data-i18n="branchAdmin.nav.overview">
+          📊 Queue &amp; Front Desk
         </button>
         <button class="side-link admin-tab-btn" data-pane="panePractitioners"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          🧑‍⚕️ Praktisi &amp; Dokter Cabang
+          style="border:0;background:transparent;width:100%;text-align:left;"
+          data-i18n="branchAdmin.nav.practitioners">
+          🧑‍⚕️ Practitioners &amp; Doctors
         </button>
         <button class="side-link admin-tab-btn" data-pane="paneCalendar"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          📅 Jadwal &amp; Ruang Praktik
+          style="border:0;background:transparent;width:100%;text-align:left;"
+          data-i18n="branchAdmin.nav.calendar">
+          📅 Schedules &amp; Treatment Rooms
         </button>
         <button class="side-link admin-tab-btn" data-pane="paneInventory"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          📦 Stok &amp; Inventaris Cabang
+          style="border:0;background:transparent;width:100%;text-align:left;"
+          data-i18n="branchAdmin.nav.inventory">
+          📦 Stock &amp; Branch Inventory
         </button>
         <button class="side-link admin-tab-btn" data-pane="paneClinicSettings"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          ⚙️ Profil &amp; Identitas Cabang
+          style="border:0;background:transparent;width:100%;text-align:left;"
+          data-i18n="branchAdmin.nav.settings">
+          ⚙️ Profile &amp; Branch Settings
         </button>
         <button class="side-link admin-tab-btn" data-pane="paneSIMRS"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          🔁 Bridge SIMRS / Rujukan
+          style="border:0;background:transparent;width:100%;text-align:left;"
+          data-i18n="branchAdmin.nav.simrs">
+          🔁 SIMRS / Referral Bridge
         </button>
       </div>
 
       <div class="side-card" style="margin-top:auto;">
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
           <span style="font-size:16px;">🔊</span>
-          <h4 style="margin:0; font-size:13px; font-weight:800;">Chime Synthesizer</h4>
+          <h4 style="margin:0; font-size:13px; font-weight:800;" data-i18n="branchAdmin.chimeTitle">Chime Synthesizer</h4>
         </div>
-        <p style="font-size:11px; color:var(--muted); line-height:1.4; margin-bottom:10px;">
-          Web Audio API Synthesizer aktif untuk memanggil nomor antrean pasien di ruang tunggu.
+        <p style="font-size:11px; color:var(--muted); line-height:1.4; margin-bottom:10px;" data-i18n="branchAdmin.chimeDesc">
+          Web Audio API active for calling patient queue numbers in the waiting lounge.
         </p>
-        <button type="button" class="btn btn-white btn-sm full" id="btnTestChime">Tes Bunyi Chime (Ding-Dong)</button>
+        <button type="button" class="btn btn-white btn-sm full" id="btnTestChime" data-i18n="branchAdmin.chimeBtn">Test Chime Sound (Ding-Dong)</button>
       </div>
     </aside>
 
@@ -831,41 +837,41 @@
       <section class="admin-tab-pane" id="paneOverview" style="display:block;">
         <div class="panel-top">
           <div>
-            <h2>Papan Antrean Ruang Tunggu</h2>
+            <h2 data-i18n="branchAdmin.paneOverviewTitle">Waiting Lounge Queue Board</h2>
           </div>
           <div style="display:flex; gap:8px;">
-            <button class="btn btn-primary" id="adminWalkInBtn">+ Daftarkan Pasien Datang (*Walk-in*)</button>
-            <button class="btn btn-white" id="btnRefreshQueue">↻ Muat Ulang Antrean</button>
+            <button class="btn btn-primary" id="adminWalkInBtn" data-i18n="branchAdmin.btnWalkIn">+ Register Walk-In Patient</button>
+            <button class="btn btn-white" id="btnRefreshQueue" data-i18n="branchAdmin.btnRefreshQueue">↻ Reload Queue</button>
           </div>
         </div>
 
         <!-- Metric Cards -->
         <div class="dashboard-grid">
           <div class="metric-card">
-            <span>PASIEN HARI INI</span>
+            <span data-i18n="branchAdmin.statTodayPatients">PATIENTS TODAY</span>
             <strong id="statPatientsToday">42</strong>
-            <small>↑ 12% vs minggu lalu</small>
+            <small data-i18n="branchAdmin.statTodaySub">↑ 12% vs last week</small>
           </div>
           <div class="metric-card">
-            <span>MENUNGGU DI RUANG TUNGGU</span>
+            <span data-i18n="branchAdmin.statWaiting">WAITING IN LOUNGE</span>
             <strong id="statWaitingCount">3</strong>
-            <small style="color:var(--warning);">Lounge Depan</small>
+            <small style="color:var(--warning);" data-i18n="branchAdmin.statWaitingSub">Front Lounge</small>
           </div>
           <div class="metric-card">
-            <span>SEDANG KONSULTASI / TERAPI</span>
+            <span data-i18n="branchAdmin.statInConsult">IN CONSULTATION / THERAPY</span>
             <strong id="statInConsultCount">4</strong>
-            <small>Ruang 1, 2, Bed 3</small>
+            <small data-i18n="branchAdmin.statInConsultSub">Rooms 1, 2, Bed 3</small>
           </div>
           <div class="metric-card">
-            <span>DOKTER / PRAKTISI BERTUGAS</span>
-            <strong id="statActiveDocs" style="color:var(--primary);">3 Dokter</strong>
-            <small style="color:var(--success);">Shift Pagi &amp; Siang</small>
+            <span data-i18n="branchAdmin.statActiveDoctors">DUTY SPECIALISTS</span>
+            <strong id="statActiveDocs" style="color:var(--primary);">3 Doctors</strong>
+            <small style="color:var(--success);" data-i18n="branchAdmin.statActiveDoctorsSub">Morning &amp; Afternoon Shift</small>
           </div>
         </div>
 
         <h3 style="margin-top:28px; font-size:18px; display:flex; justify-content:space-between; align-items:center;">
-          <span>Antrean Pasien</span>
-          <span style="font-size:12px; font-weight:600; color:var(--muted);">Terhubung ke Cabang Aktif</span>
+          <span data-i18n="branchAdmin.queueListTitle">Patient Queue</span>
+          <span style="font-size:12px; font-weight:600; color:var(--muted);" data-i18n="branchAdmin.queueListSub">Connected to Active Branch</span>
         </h3>
 
         <div class="queue-card-grid" id="receptionistLiveQueueGrid">
@@ -877,11 +883,11 @@
       <section class="admin-tab-pane" id="panePractitioners" style="display:none;">
         <div class="panel-top">
           <div>
-            <h2>Manajemen Praktisi &amp; Dokter Cabang</h2>
+            <h2 data-i18n="branchAdmin.panePractitionersTitle">Branch Practitioners &amp; Specialists</h2>
           </div>
           <div>
-            <button class="btn btn-primary" id="btnOpenAddPractitionerModal">
-              + Tambah Dokter / Praktisi Baru
+            <button class="btn btn-primary" id="btnOpenAddPractitionerModal" data-i18n="branchAdmin.btnAddPractitioner">
+              + Add New Doctor / Practitioner
             </button>
           </div>
         </div>
@@ -890,12 +896,12 @@
           <table class="data-table">
             <thead>
               <tr>
-                <th>Nama Dokter / Terapis</th>
-                <th>Spesialisasi</th>
-                <th>Ruangan Praktik</th>
-                <th>Email Login</th>
-                <th>Status Shift</th>
-                <th>Aksi</th>
+                <th data-i18n="branchAdmin.thDocName">Doctor / Therapist Name</th>
+                <th data-i18n="branchAdmin.thSpecialty">Specialty</th>
+                <th data-i18n="branchAdmin.thRoom">Treatment Room</th>
+                <th data-i18n="branchAdmin.thEmail">Login Email</th>
+                <th data-i18n="branchAdmin.thShift">Shift Status</th>
+                <th data-i18n="branchAdmin.thAction">Action</th>
               </tr>
             </thead>
             <tbody id="branchPractitionersTableBody">
@@ -909,26 +915,26 @@
       <section class="admin-tab-pane" id="paneCalendar" style="display:none;">
         <div class="panel-top">
           <div>
-            <h2>Master Timeline Jadwal Dokter &amp; Ruangan</h2>
+            <h2 data-i18n="branchAdmin.paneCalendarTitle">Master Schedule Timeline for Doctors &amp; Rooms</h2>
           </div>
         </div>
 
         <div class="calendar-board">
           <div class="calendar-board-toolbar">
             <div class="calendar-board-title">
-              <span>📅 Rabu, 9 September 2026</span>
+              <span>📅 Wednesday, 9 September 2026</span>
               <span class="status-pill active" style="font-size:10px; padding:2px 8px;">Master Timeline</span>
             </div>
 
             <div class="cal-swipe-hint">
-              <span>↔ Geser jadwal untuk melihat semua praktisi</span>
+              <span data-i18n="branchAdmin.calSwipeHint">↔ Scroll schedule to view all specialists</span>
             </div>
 
             <div class="calendar-legend-wrap">
-              <span class="legend-item"><span class="legend-dot b1"></span> Terkonfirmasi</span>
-              <span class="legend-item"><span class="legend-dot b2"></span> Checked-in</span>
-              <span class="legend-item"><span class="legend-dot b3"></span> Dalam Terapi</span>
-              <span class="legend-item"><span class="legend-dot b4"></span> Ruangan Aktif</span>
+              <span class="legend-item"><span class="legend-dot b1"></span> <span data-i18n="branchAdmin.legendConfirmed">Confirmed</span></span>
+              <span class="legend-item"><span class="legend-dot b2"></span> <span data-i18n="branchAdmin.legendCheckedIn">Checked-in</span></span>
+              <span class="legend-item"><span class="legend-dot b3"></span> <span data-i18n="branchAdmin.legendInTherapy">In Therapy</span></span>
+              <span class="legend-item"><span class="legend-dot b4"></span> <span data-i18n="branchAdmin.legendActiveRoom">Active Room</span></span>
             </div>
           </div>
 
@@ -978,19 +984,19 @@
               <!-- Row 09:00 -->
               <div class="cell time-cell">09:00</div>
               <div class="cell">
-                <div class="booking-block b1" onclick="alert('Jadwal: Amanda Tan (09:00)\nLayanan: Fisioterapi Tulang Belakang\nDokter: Dr. Lim Wei Han\nStatus: Terkonfirmasi')">
+                <div class="booking-block b1" onclick="alert('Schedule: Amanda Tan (09:00)\nService: Physiotherapy & Spine Rehab\nDoctor: Dr. Lim Wei Han\nStatus: Confirmed')">
                   <div class="bb-top">
                     <span class="bb-name">Amanda Tan</span>
                     <span class="bb-tag">09:00</span>
                   </div>
-                  <div class="bb-status">✓ Terkonfirmasi</div>
+                  <div class="bb-status" data-i18n="branchAdmin.statusConfirmed">✓ Confirmed</div>
                 </div>
               </div>
-              <div class="cell slot-empty" onclick="alert('Slot 09:00 Physician Wong kosong. Klik untuk menambahkan booking.')">
-                <span class="slot-add-btn">+ Kosong</span>
+              <div class="cell slot-empty" onclick="alert('Slot 09:00 Physician Wong is available. Click to add a booking.')">
+                <span class="slot-add-btn" data-i18n="branchAdmin.slotEmpty">+ Available</span>
               </div>
               <div class="cell">
-                <div class="booking-block b2" onclick="alert('Jadwal: Jason Lee (09:00)\nLayanan: Wellness Aromatherapy Spa\nPraktisi: Therapist Sarah\nStatus: Checked-in')">
+                <div class="booking-block b2" onclick="alert('Schedule: Jason Lee (09:00)\nService: Wellness Aromatherapy Spa\nPractitioner: Therapist Sarah\nStatus: Checked-in')">
                   <div class="bb-top">
                     <span class="bb-name">Jason Lee</span>
                     <span class="bb-tag">09:00</span>
@@ -998,62 +1004,62 @@
                   <div class="bb-status">● Checked-in</div>
                 </div>
               </div>
-              <div class="cell slot-empty" onclick="alert('Slot 09:00 Ruang Bed A2 kosong.')">
-                <span class="slot-add-btn">+ Kosong</span>
+              <div class="cell slot-empty" onclick="alert('Slot 09:00 Therapy Bed A2 is available.')">
+                <span class="slot-add-btn" data-i18n="branchAdmin.slotEmpty">+ Available</span>
               </div>
 
               <!-- Row 10:00 -->
               <div class="cell time-cell">10:00</div>
-              <div class="cell slot-empty" onclick="alert('Slot 10:00 Dr. Lim kosong.')">
-                <span class="slot-add-btn">+ Kosong</span>
+              <div class="cell slot-empty" onclick="alert('Slot 10:00 Dr. Lim is available.')">
+                <span class="slot-add-btn" data-i18n="branchAdmin.slotEmpty">+ Available</span>
               </div>
               <div class="cell">
-                <div class="booking-block b3" onclick="alert('Jadwal: Nur Aisyah (10:00)\nLayanan: TCM Herbal &amp; Akupunktur\nDokter: Physician Wong S.\nStatus: Menunggu Selesai')">
+                <div class="booking-block b3" onclick="alert('Schedule: Nur Aisyah (10:00)\nService: TCM Herbal &amp; Acupuncture\nDoctor: Physician Wong S.\nStatus: Pending Completion')">
                   <div class="bb-top">
                     <span class="bb-name">Nur Aisyah</span>
                     <span class="bb-tag">10:00</span>
                   </div>
-                  <div class="bb-status">⏳ Menunggu Selesai</div>
+                  <div class="bb-status" data-i18n="branchAdmin.statusPending">⏳ Pending Completion</div>
                 </div>
               </div>
-              <div class="cell slot-empty" onclick="alert('Slot 10:00 Therapist Sarah kosong.')">
-                <span class="slot-add-btn">+ Kosong</span>
+              <div class="cell slot-empty" onclick="alert('Slot 10:00 Therapist Sarah is available.')">
+                <span class="slot-add-btn" data-i18n="branchAdmin.slotEmpty">+ Available</span>
               </div>
               <div class="cell">
-                <div class="booking-block b4" onclick="alert('Ruang Bed A2: Sedang Dipakai untuk Sesi Terapi Pasien (10:00 - 11:00)')">
+                <div class="booking-block b4" onclick="alert('Therapy Bed A2: Currently in use for patient therapy session (10:00 - 11:00)')">
                   <div class="bb-top">
-                    <span class="bb-name">Sedang Dipakai</span>
+                    <span class="bb-name" data-i18n="branchAdmin.inUse">In Use</span>
                     <span class="bb-tag">10:00</span>
                   </div>
-                  <div class="bb-status">🔒 Ruang Bed A2</div>
+                  <div class="bb-status">🔒 Therapy Bed A2</div>
                 </div>
               </div>
 
               <!-- Row 11:00 -->
               <div class="cell time-cell">11:00</div>
               <div class="cell">
-                <div class="booking-block b2" onclick="alert('Jadwal: S. Raj (11:00)\nLayanan: Konsultasi Postur &amp; Sendi\nDokter: Dr. Lim Wei Han\nStatus: Terkonfirmasi')">
+                <div class="booking-block b2" onclick="alert('Schedule: S. Raj (11:00)\nService: Posture &amp; Joint Consultation\nDoctor: Dr. Lim Wei Han\nStatus: Confirmed')">
                   <div class="bb-top">
                     <span class="bb-name">S. Raj</span>
                     <span class="bb-tag">11:00</span>
                   </div>
-                  <div class="bb-status">✓ Terkonfirmasi</div>
+                  <div class="bb-status" data-i18n="branchAdmin.statusConfirmed">✓ Confirmed</div>
                 </div>
               </div>
-              <div class="cell slot-empty" onclick="alert('Slot 11:00 Physician Wong kosong.')">
-                <span class="slot-add-btn">+ Kosong</span>
+              <div class="cell slot-empty" onclick="alert('Slot 11:00 Physician Wong is available.')">
+                <span class="slot-add-btn" data-i18n="branchAdmin.slotEmpty">+ Available</span>
               </div>
               <div class="cell">
-                <div class="booking-block b1" onclick="alert('Jadwal: M. Chan (11:00)\nLayanan: Deep Tissue Massage Therapy\nPraktisi: Therapist Sarah\nStatus: Terkonfirmasi')">
+                <div class="booking-block b1" onclick="alert('Schedule: M. Chan (11:00)\nService: Deep Tissue Massage Therapy\nPractitioner: Therapist Sarah\nStatus: Confirmed')">
                   <div class="bb-top">
                     <span class="bb-name">M. Chan</span>
                     <span class="bb-tag">11:00</span>
                   </div>
-                  <div class="bb-status">✓ Terkonfirmasi</div>
+                  <div class="bb-status" data-i18n="branchAdmin.statusConfirmed">✓ Confirmed</div>
                 </div>
               </div>
-              <div class="cell slot-empty" onclick="alert('Slot 11:00 Ruang Bed A2 kosong.')">
-                <span class="slot-add-btn">+ Kosong</span>
+              <div class="cell slot-empty" onclick="alert('Slot 11:00 Therapy Bed A2 is available.')">
+                <span class="slot-add-btn" data-i18n="branchAdmin.slotEmpty">+ Available</span>
               </div>
             </div>
           </div>
@@ -1065,23 +1071,22 @@
       <section class="admin-tab-pane" id="paneInventory" style="display:none;">
         <div class="panel-top">
           <div>
-            <h2>Inventaris Stok Bahan &amp; Perlengkapan Cabang</h2>
-            <p>Disesuaikan secara adaptif dengan lini template klinik (TCM, Fisioterapi, Wellness/Spa, atau Nutrisi).
+            <h2 data-i18n="branchAdmin.paneInventoryTitle">Branch Stock &amp; Supplies Inventory</h2>
+            <p data-i18n="branchAdmin.paneInventoryDesc">Adaptively customized based on clinic practice template (TCM, Physio, Wellness, or Nutrition).
             </p>
           </div>
-          <button class="btn btn-soft" onclick="alert('Sinkronisasi data stok cabang berhasil.')">↻ Sinkronkan
-            Stok</button>
+          <button class="btn btn-soft" id="btnSyncStock" data-i18n="branchAdmin.btnSyncStock">↻ Sync Stock</button>
         </div>
 
         <div class="data-table-container">
           <table class="data-table">
             <thead>
               <tr>
-                <th>Nama Produk / Bahan</th>
-                <th>Kategori Template</th>
-                <th>Stok Fisik Tersedia</th>
-                <th>Batas Minimum (*Threshold*)</th>
-                <th>Status</th>
+                <th data-i18n="branchAdmin.thItemName">Item / Product Name</th>
+                <th data-i18n="branchAdmin.thCategory">Template Category</th>
+                <th data-i18n="branchAdmin.thStock">Available Physical Stock</th>
+                <th data-i18n="branchAdmin.thThreshold">Minimum Threshold</th>
+                <th data-i18n="branchAdmin.thStatus">Status</th>
               </tr>
             </thead>
             <tbody id="branchStockTableBody">
@@ -1095,7 +1100,7 @@
       <section class="admin-tab-pane" id="paneClinicSettings" style="display:none;">
         <div class="panel-top">
           <div>
-            <h2>Profil &amp; Konfigurasi Cabang</h2>
+            <h2 data-i18n="branchAdmin.paneSettingsTitle">Branch Profile &amp; Operational Configuration</h2>
           </div>
         </div>
 
@@ -1103,23 +1108,23 @@
           style="background:#fff; border:1px solid var(--line); border-radius:var(--radius-lg); padding:24px; max-width:700px;">
           <form id="branchConfigForm">
             <div class="field" style="margin-bottom:16px;">
-              <label for="cfgBranchName">Nama Cabang Klinik</label>
+              <label for="cfgBranchName" data-i18n="branchAdmin.labelBranchName">Clinic Branch Name</label>
               <input type="text" id="cfgBranchName" value="Orchard Wellness Clinic" class="input" style="width:100%;"
                 required />
             </div>
 
             <div class="field" style="margin-bottom:16px;">
-              <label for="cfgBranchPhone">Kontak WhatsApp / Layanan Pasien</label>
+              <label for="cfgBranchPhone" data-i18n="branchAdmin.labelBranchPhone">WhatsApp / Patient Service Contact</label>
               <input type="text" id="cfgBranchPhone" value="+65 6738 8899" class="input" style="width:100%;" />
             </div>
 
             <div class="field" style="margin-bottom:20px;">
-              <label for="cfgBranchAddress">Alamat Fisik Cabang</label>
+              <label for="cfgBranchAddress" data-i18n="branchAdmin.labelBranchAddress">Physical Branch Address</label>
               <textarea id="cfgBranchAddress" rows="2" class="input"
                 style="width:100%;">290 Orchard Road, Paragon Medical #14-02, Singapore 238859</textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary">Simpan Perubahan Cabang</button>
+            <button type="submit" class="btn btn-primary" data-i18n="branchAdmin.btnSaveSettings">Save Branch Configuration</button>
           </form>
         </div>
       </section>
@@ -1128,8 +1133,8 @@
       <section class="admin-tab-pane" id="paneSIMRS" style="display:none;">
         <div class="panel-top">
           <div>
-            <h2>SIMRS Referral Ephemeral Proxy Hub</h2>
-            <p>Non-EMR Ephemeral Storage: Dokumen rujukan pasien dijembatani ke SIMRS dan dihapus otomatis dalam 72 jam.
+            <h2 data-i18n="branchAdmin.paneSimrsTitle">SIMRS Referral Ephemeral Proxy Hub</h2>
+            <p data-i18n="branchAdmin.paneSimrsDesc">Non-EMR Ephemeral Storage: Patient referral documents bridged to SIMRS and auto-deleted in 72 hours.
             </p>
           </div>
         </div>
@@ -1138,12 +1143,12 @@
           <table class="data-table">
             <thead>
               <tr>
-                <th>Booking Code</th>
-                <th>Nama Pasien</th>
-                <th>Dokumen Rujukan</th>
-                <th>Status Bridge</th>
-                <th>Masa Aktif (TTL)</th>
-                <th>Aksi</th>
+                <th data-i18n="branchAdmin.thBookingCode">Booking Code</th>
+                <th data-i18n="branchAdmin.thPatientName">Patient Name</th>
+                <th data-i18n="branchAdmin.thReferralDoc">Referral Document</th>
+                <th data-i18n="branchAdmin.thBridgeStatus">Bridge Status</th>
+                <th data-i18n="branchAdmin.thTtl">Active TTL</th>
+                <th data-i18n="branchAdmin.thAction">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -1152,18 +1157,16 @@
                 <td>Rendra Pratama</td>
                 <td>Hospital_Referral.pdf</td>
                 <td><span class="status-pill confirmed">✓ FORWARDED</span></td>
-                <td>70 Jam tersisa</td>
-                <td><button class="btn btn-sm btn-soft" onclick="alert('Memeriksa payload SIMRS...')">Periksa
-                    Payload</button></td>
+                <td>70 Hours left</td>
+                <td><button class="btn btn-sm btn-soft" data-i18n="branchAdmin.btnInspectPayload">Inspect Payload</button></td>
               </tr>
               <tr>
                 <td><strong>BK-20260901-0945</strong></td>
                 <td>Nur Aisyah</td>
                 <td>Clinical_Letter.jpg</td>
                 <td><span class="status-pill confirmed">✓ FORWARDED</span></td>
-                <td>71 Jam tersisa</td>
-                <td><button class="btn btn-sm btn-soft" onclick="alert('Memeriksa payload SIMRS...')">Periksa
-                    Payload</button></td>
+                <td>71 Hours left</td>
+                <td><button class="btn btn-sm btn-soft" data-i18n="branchAdmin.btnInspectPayload">Inspect Payload</button></td>
               </tr>
             </tbody>
           </table>
@@ -1177,7 +1180,7 @@
   <nav class="ba-mobile-nav" aria-label="Branch Admin Mobile Navigation">
     <div class="ba-mobile-nav-inner">
       <button class="ba-mob-btn admin-tab-btn active" data-pane="paneOverview" id="mobTabOverview"
-        title="Antrean &amp; Meja Depan">
+        title="Queue &amp; Front Desk">
         <span class="ba-mob-icon-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="3" width="18" height="18" rx="2"></rect>
@@ -1186,11 +1189,11 @@
             <line x1="16" y1="17" x2="16" y2="14"></line>
           </svg>
         </span>
-        <span class="ba-mob-label">Antrean</span>
+        <span class="ba-mob-label" data-i18n="branchAdmin.mobNavQueue">Queue</span>
       </button>
 
       <button class="ba-mob-btn admin-tab-btn" data-pane="panePractitioners" id="mobTabPractitioners"
-        title="Praktisi &amp; Dokter">
+        title="Practitioners &amp; Doctors">
         <span class="ba-mob-icon-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
@@ -1199,11 +1202,11 @@
             <line x1="16" y1="11" x2="22" y2="11"></line>
           </svg>
         </span>
-        <span class="ba-mob-label">Praktisi</span>
+        <span class="ba-mob-label" data-i18n="branchAdmin.mobNavPractitioners">Practitioners</span>
       </button>
 
       <button class="ba-mob-btn admin-tab-btn" data-pane="paneCalendar" id="mobTabCalendar"
-        title="Jadwal &amp; Ruangan">
+        title="Schedules &amp; Rooms">
         <span class="ba-mob-icon-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -1212,10 +1215,10 @@
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
         </span>
-        <span class="ba-mob-label">Jadwal</span>
+        <span class="ba-mob-label" data-i18n="branchAdmin.mobNavCalendar">Schedule</span>
       </button>
 
-      <button class="ba-mob-btn admin-tab-btn" data-pane="paneClinicSettings" id="mobTabSettings" title="Profil Cabang">
+      <button class="ba-mob-btn admin-tab-btn" data-pane="paneClinicSettings" id="mobTabSettings" title="Branch Settings">
         <span class="ba-mob-icon-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
@@ -1224,7 +1227,7 @@
             </path>
           </svg>
         </span>
-        <span class="ba-mob-label">Profil</span>
+        <span class="ba-mob-label" data-i18n="branchAdmin.mobNavSettings">Settings</span>
       </button>
     </div>
   </nav>
@@ -1233,57 +1236,53 @@
   <div class="add-practitioner-modal" id="addPractitionerModal">
     <div class="modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
-        <h3 style="margin:0; font-size:18px; font-weight:800;">+ Tambah Praktisi / Dokter Cabang</h3>
+        <h3 style="margin:0; font-size:18px; font-weight:800;" data-i18n="branchAdmin.modalAddDocTitle">+ Add New Doctor / Practitioner</h3>
         <button type="button" class="btn btn-soft btn-sm" id="btnClosePractitionerModal"
           style="padding:4px 8px;">✕</button>
       </div>
 
       <p style="font-size:12px; color:var(--muted); margin:0 0 16px;">
-        Dokter/terapis baru ini akan langsung ditugaskan ke cabang aktif dan memiliki akun login sistem.
+        This new specialist will be assigned to this active branch and receive login credentials.
       </p>
 
       <form id="addPractitionerForm">
         <div class="field" style="margin-bottom:14px;">
-          <label for="pracName" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;">Nama Lengkap
-            Dokter <span style="color:#ef4444;">*</span></label>
-          <input type="text" id="pracName" class="input" placeholder="misal: Dr. Kevin Wijaya, Sp.KFR"
+          <label for="pracName" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;" data-i18n="branchAdmin.modalLabelName">Doctor Full Name <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="pracName" class="input" placeholder="e.g. Dr. Kevin Wijaya, Sp.KFR"
             style="width:100%;" required />
         </div>
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
           <div class="field">
             <label for="pracSpecialty"
-              style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;">Spesialisasi <span
+              style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;" data-i18n="branchAdmin.modalLabelSpecialty">Clinical Specialty <span
                 style="color:#ef4444;">*</span></label>
-            <input type="text" id="pracSpecialty" class="input" placeholder="misal: Akupunktur / Physio"
+            <input type="text" id="pracSpecialty" class="input" placeholder="e.g. Acupuncture / Physio"
               style="width:100%;" required />
           </div>
           <div class="field">
-            <label for="pracRoom" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;">Ruangan
-              Praktik</label>
-            <input type="text" id="pracRoom" class="input" placeholder="misal: Ruang A1 / Suite 2" value="Ruang A1"
+            <label for="pracRoom" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;" data-i18n="branchAdmin.modalLabelRoom">Practice Room</label>
+            <input type="text" id="pracRoom" class="input" placeholder="e.g. Room A1 / Suite 2" value="Room A1"
               style="width:100%;" />
           </div>
         </div>
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
           <div class="field">
-            <label for="pracEmail" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;">Email
-              Login <span style="color:#ef4444;">*</span></label>
+            <label for="pracEmail" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;" data-i18n="branchAdmin.modalLabelEmail">Login Email <span style="color:#ef4444;">*</span></label>
             <input type="email" id="pracEmail" class="input" placeholder="dr.kevin@orchardclinic.sg" style="width:100%;"
               required />
           </div>
           <div class="field">
-            <label for="pracPhone" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;">WhatsApp /
-              Telepon</label>
+            <label for="pracPhone" style="font-size:12px; font-weight:700; display:block; margin-bottom:4px;" data-i18n="branchAdmin.modalLabelPhone">WhatsApp / Phone</label>
             <input type="tel" id="pracPhone" class="input" placeholder="+65 9123 4567" value="+65 9123 4567"
               style="width:100%;" />
           </div>
         </div>
 
         <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
-          <button type="button" class="btn btn-soft" id="btnCancelAddPractitioner">Batal</button>
-          <button type="submit" class="btn btn-primary" id="btnSubmitAddPractitioner">Simpan Dokter Baru</button>
+          <button type="button" class="btn btn-soft" id="btnCancelAddPractitioner" data-i18n="branchAdmin.modalBtnCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitAddPractitioner" data-i18n="branchAdmin.modalBtnSubmit">Save New Doctor</button>
         </div>
       </form>
     </div>

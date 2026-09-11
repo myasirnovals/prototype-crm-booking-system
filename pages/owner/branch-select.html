@@ -151,9 +151,17 @@
           Selector</span>
       </div>
       <div style="display:flex; align-items:center; gap:14px;">
-        <span id="gatewayLoggedInAs" style="font-size:12px; color:var(--muted); font-weight:600;">Signed in as
-          <strong>Dennis Pratama</strong> (Owner)</span>
-        <button type="button" class="btn btn-sm btn-white" id="gatewaySignOutBtn">Sign Out</button>
+        <!-- Language Switcher -->
+        <div class="lang-switcher-wrap" style="position:relative;">
+          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+            <option value="en">🇬🇧 English</option>
+            <option value="zh">🇸🇬 华语 (Singapura)</option>
+            <option value="ms">🇲🇾 Bahasa Melayu (Malaysia)</option>
+          </select>
+        </div>
+
+        <span id="gatewayLoggedInAs" style="font-size:12px; color:var(--muted); font-weight:600;">Signed in as <strong>Dennis Pratama</strong> (Owner)</span>
+        <button type="button" class="btn btn-sm btn-white" id="gatewaySignOutBtn" data-i18n="nav.signOut">Sign Out</button>
       </div>
     </div>
   </header>
@@ -163,25 +171,22 @@
     <div
       style="margin-bottom:24px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
       <div>
-        <div class="pill"
-          style="font-size:11px; padding:3px 10px; background:#e0f2fe; color:#0369a1; font-weight:800; margin-bottom:8px;">
-          🏢 Pintu Masuk Owner · Pemilihan Cabang Operasional
+        <div class="pill" style="font-size:11px; padding:3px 10px; background:#e0f2fe; color:#0369a1; font-weight:800; margin-bottom:8px;" data-i18n="owner.gateway.badge">
+          🏢 Owner Gateway · Operational Branch Selection
         </div>
-        <h1 style="font-size:24px; font-weight:900; margin:0 0 4px; letter-spacing:-0.5px; color:var(--text);">
-          Pilih Cabang Operasional Aktif
+        <h1 style="font-size:24px; font-weight:900; margin:0 0 4px; letter-spacing:-0.5px; color:var(--text);" data-i18n="owner.gateway.title">
+          Select Active Operational Branch
         </h1>
-        <p style="font-size:13px; color:var(--muted); margin:0;">
-          Pilih cabang klinik yang ingin Anda kelola saat ini untuk membuka dashboard operasional spesifik cabang.
+        <p style="font-size:13px; color:var(--muted); margin:0;" data-i18n="owner.gateway.desc">
+          Choose the clinic branch you wish to manage to access its branch-specific operations console.
         </p>
       </div>
       <div style="display:flex; align-items:center; gap:12px;">
-        <span class="pill" id="branchCountBadge"
-          style="font-size:12px; padding:7px 14px; background:#e2e8f0; font-weight:700; color:#334155;">
-          -- Cabang Terdaftar
+        <span class="pill" id="branchCountBadge" style="font-size:12px; padding:7px 14px; background:#e2e8f0; font-weight:700; color:#334155;">
+          -- Registered Branches
         </span>
-        <button type="button" class="btn btn-primary" id="btnOpenNewBranchModal"
-          style="padding:10px 18px; font-weight:800; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(15,118,110,0.25);">
-          <span>➕</span> <span>Daftarkan Cabang Baru</span>
+        <button type="button" class="btn btn-primary" id="btnOpenNewBranchModal" style="padding:10px 18px; font-weight:800; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(15,118,110,0.25);">
+          <span>➕</span> <span data-i18n="owner.gateway.btnNewBranch">Register New Branch</span>
         </button>
       </div>
     </div>
@@ -235,20 +240,20 @@
       style="background:#ffffff; border-radius:var(--radius-xl); max-width:560px; width:90%; max-height: 90vh; overflow-y: auto; padding:32px; box-shadow:0 20px 40px rgba(0,0,0,0.2); position:relative;">
       <div
         style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid #e2e8f0; padding-bottom:14px;">
-        <h3 style="margin:0; font-size:18px; font-weight:800;">🏢 Daftarkan Cabang Baru</h3>
-        <button type="button" id="btnCloseNewBranchModal" class="btn-close-modal" title="Tutup">&times;</button>
+        <h3 style="margin:0; font-size:18px; font-weight:800;" data-i18n="owner.gateway.modalTitle">🏢 Register New Branch</h3>
+        <button type="button" id="btnCloseNewBranchModal" class="btn-close-modal" title="Close">&times;</button>
       </div>
 
       <form id="createBranchForm">
         <div class="field">
-          <label for="newBranchName">Nama Cabang Klinik <span style="color:#ef4444;">*</span></label>
-          <input type="text" id="newBranchName" placeholder="e.g. Marina Bay Wellness Center (Cabang 2)" required>
+          <label for="newBranchName">Clinic Branch Name <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="newBranchName" placeholder="e.g. Marina Bay Wellness Center (Branch 2)" required>
         </div>
 
-        <!-- AWAL MODIFIKASI: Uploader Logo Cabang -->
+        <!-- Uploader Logo Cabang -->
         <div class="field">
-          <label for="newBranchLogoFileInput">Logo Cabang <span
-              style="font-weight:400; color:var(--muted); font-size:12px;">(Opsional, maks 3MB)</span></label>
+          <label for="newBranchLogoFileInput">Branch Logo <span
+              style="font-weight:400; color:var(--muted); font-size:12px;">(Optional, max 3MB)</span></label>
 
           <input type="file" id="newBranchLogoFileInput" accept="image/png, image/jpeg, image/webp, image/svg+xml"
             style="display:none;">
@@ -262,16 +267,14 @@
               <img id="newBranchLogoPreviewImage" src="" alt="Branch Logo"
                 style="display:none; width: 100%; height: 100%; object-fit: contain; padding:2px;">
             </div>
-            <div style="font-size: 12px; color: var(--muted);" id="newBranchLogoUploadTitle">Klik untuk unggah logo
-              cabang</div>
+            <div style="font-size: 12px; color: var(--muted);" id="newBranchLogoUploadTitle">Click to upload branch logo</div>
             <button type="button" class="btn btn-sm btn-soft" id="btnRemoveNewBranchLogo"
-              style="display:none; color:#ef4444; font-size: 11px; padding: 4px 8px;">✕ Hapus</button>
+              style="display:none; color:#ef4444; font-size: 11px; padding: 4px 8px;">✕ Remove</button>
           </div>
         </div>
-        <!-- AKHIR MODIFIKASI -->
 
         <div class="field">
-          <label for="newBranchTemplate">Template Lini Bisnis Cabang</label>
+          <label for="newBranchTemplate">Branch Business Template</label>
           <select id="newBranchTemplate">
             <option value="physio" selected>🏃 Physiotherapy &amp; Sports Rehab</option>
             <option value="wellness">🌸 Wellness &amp; Spa Care</option>
@@ -280,70 +283,67 @@
           </select>
         </div>
 
-        <!-- AWAL MODIFIKASI: Input Kode Pos & Alamat -->
+        <!-- Input Kode Pos & Alamat -->
         <div class="field-row">
           <div class="field" style="flex: 0 0 130px;">
-            <label for="newBranchPostal">Kode Pos (SG)</label>
-            <input type="text" id="newBranchPostal" placeholder="Misal: 238859" maxlength="6" autocomplete="off">
+            <label for="newBranchPostal">Postal Code (SG)</label>
+            <input type="text" id="newBranchPostal" placeholder="e.g. 238859" maxlength="6" autocomplete="off">
             <small id="postalFeedback"
-              style="font-size:10px; font-weight:700; color:var(--primary); display:none; margin-top:4px;">Mencari...</small>
+              style="font-size:10px; font-weight:700; color:var(--primary); display:none; margin-top:4px;">Searching...</small>
           </div>
           <div class="field" style="flex: 1;">
-            <label for="newBranchAddress">Alamat Lengkap Cabang <span style="color:#ef4444;">*</span></label>
-            <input type="text" id="newBranchAddress" placeholder="Gedung, Jalan, Nomor Unit, Kode Pos" required="">
+            <label for="newBranchAddress">Full Branch Address <span style="color:#ef4444;">*</span></label>
+            <input type="text" id="newBranchAddress" placeholder="Building, Street, Unit No., Postal Code" required="">
           </div>
         </div>
-        <!-- AKHIR MODIFIKASI -->
 
         <div class="field-row">
           <div class="field">
-            <label for="newBranchPhone">WhatsApp / Telepon Cabang</label>
+            <label for="newBranchPhone">Branch WhatsApp / Phone</label>
             <input type="tel" id="newBranchPhone" placeholder="+65 6888 1234" required>
           </div>
           <div class="field">
-            <label for="newBranchHours">Jam Operasional</label>
-            <input type="text" id="newBranchHours" placeholder="09:00 - 20:00 (Sen - Sab)"
-              value="09:00 - 20:00 (Sen - Sab)">
+            <label for="newBranchHours">Operating Hours</label>
+            <input type="text" id="newBranchHours" placeholder="09:00 - 20:00 (Mon - Sat)" value="09:00 - 20:00 (Mon - Sat)">
           </div>
         </div>
 
         <div class="field">
-          <label for="newBranchRooms">Jumlah Ruang Terapi / Bays</label>
+          <label for="newBranchRooms">Treatment Rooms / Bays</label>
           <select id="newBranchRooms">
-            <option value="2">2 Ruang Terapi Privat</option>
-            <option value="4" selected>4 Ruang Terapi Standar</option>
-            <option value="6">6 Ruang Terapi &amp; Bay</option>
-            <option value="8">8+ Ruangan Multi-Spesialisasi</option>
+            <option value="2">2 Private Therapy Rooms</option>
+            <option value="4" selected>4 Standard Therapy Rooms</option>
+            <option value="6">6 Therapy Rooms &amp; Bays</option>
+            <option value="8">8+ Multi-Specialty Treatment Rooms</option>
           </select>
         </div>
 
-        <!-- AWAL MODIFIKASI: PENAGIHAN LANGGANAN CABANG B2B -->
+        <!-- PENAGIHAN LANGGANAN CABANG B2B -->
         <hr style="border:0; border-top:1px dashed #cbd5e1; margin:24px 0;">
-        <h4 style="margin:0 0 16px; font-size:15px; font-weight:800; color:var(--text);">💳 Pilih Paket Langganan Cabang
-        </h4>
+        <h4 style="margin:0 0 16px; font-size:15px; font-weight:800; color:var(--text);">💳 Select Branch Subscription Plan</h4>
 
         <div class="field" style="margin-bottom: 8px;">
           <div style="display:flex; gap:12px; flex-wrap:wrap;">
 
-            <!-- 1 Bulan -->
+            <!-- 1 Month -->
             <label
               style="flex:1; border:1.5px solid var(--line); border-radius:10px; padding:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
               class="subs-radio-label">
               <input type="radio" name="subsPlan" value="1" data-price="99" style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--text);">1 Bulan</span>
-              <span style="color:var(--muted); font-size:12px;">SGD 99/bln</span>
+              <span style="font-weight:800; font-size:14px; color:var(--text);">1 Month</span>
+              <span style="color:var(--muted); font-size:12px;">SGD 99/mo</span>
             </label>
 
-            <!-- 6 Bulan -->
+            <!-- 6 Months -->
             <label
               style="flex:1; border:1.5px solid var(--line); border-radius:10px; padding:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
               class="subs-radio-label">
               <input type="radio" name="subsPlan" value="6" data-price="534" style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--text);">6 Bulan</span>
-              <span style="color:var(--muted); font-size:12px;">SGD 89/bln (Hemat 10%)</span>
+              <span style="font-weight:800; font-size:14px; color:var(--text);">6 Months</span>
+              <span style="color:var(--muted); font-size:12px;">SGD 89/mo (Save 10%)</span>
             </label>
 
-            <!-- 1 Tahun (Decoy / Best Value) -->
+            <!-- 1 Year -->
             <label
               style="flex:1; border:1.5px solid var(--primary); border-radius:10px; padding:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f0fdfa; position:relative;"
               class="subs-radio-label">
@@ -351,8 +351,8 @@
                 style="position:absolute; top:-10px; background:var(--primary); color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:0.5px;">
                 BEST VALUE</div>
               <input type="radio" name="subsPlan" value="12" data-price="948" checked style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--primary);">1 Tahun</span>
-              <span style="color:var(--primary-dark); font-size:12px;">SGD 79/bln (Hemat 20%)</span>
+              <span style="font-weight:800; font-size:14px; color:var(--primary);">1 Year</span>
+              <span style="color:var(--primary-dark); font-size:12px;">SGD 79/mo (Save 20%)</span>
             </label>
 
           </div>
@@ -361,17 +361,15 @@
         <div
           style="background:#f1f5f9; padding:16px; border-radius:10px; margin-bottom:16px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
           <div>
-            <div style="font-size:12px; color:var(--muted); font-weight:600;">Total Tagihan Sistem:</div>
-            <div style="font-size:11px; color:#64748b; margin-top:2px;">Akan ditagih ke Kartu Kredit tersimpan</div>
+            <div style="font-size:12px; color:var(--muted); font-weight:600;">Total System Bill:</div>
+            <div style="font-size:11px; color:#64748b; margin-top:2px;">Will be billed to saved Credit Card</div>
           </div>
           <div style="font-size:22px; font-weight:900; color:var(--text);" id="totalBillingAmount">SGD 948.00</div>
         </div>
-        <!-- AKHIR MODIFIKASI -->
 
         <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:24px;">
-          <button type="button" class="btn btn-soft" id="btnCancelNewBranch">Batal</button>
-          <button type="submit" class="btn btn-primary" id="btnSubmitBranch" style="width:100%;">+ Buat Cabang
-            Baru</button>
+          <button type="button" class="btn btn-soft" id="btnCancelNewBranch" data-i18n="branchAdmin.modalBtnCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitBranch" style="width:100%;">🚀 Create Branch</button>
         </div>
       </form>
     </div>

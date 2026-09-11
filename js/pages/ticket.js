@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       room: "Room B1 (TCM Suite)",
       queueNumber: "A-01",
       depositPaid: "0.00",
-      paymentStatus: "TERKONFIRMASI (Bayar di Klinik / On-Site)",
+      paymentStatus: "CONFIRMED (Pay at Clinic / On-Site)",
       intakeData: "Pain Areas: Lower Back / Lumbar | Intensity: Moderate"
     };
   }
@@ -60,11 +60,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (practitionerEl) practitionerEl.textContent = activeBooking.practitionerName;
   if (scheduleEl) scheduleEl.textContent = activeBooking.schedule;
   if (roomEl && activeBooking.room) roomEl.textContent = activeBooking.room;
-  if (paymentEl) {
-    paymentEl.textContent = activeBooking.paymentStatus && !activeBooking.paymentStatus.includes("DEPOSIT") 
-      ? activeBooking.paymentStatus 
-      : "TERKONFIRMASI (Bayar di Klinik / On-Site Settlement)";
-  }
+  
+  const updatePaymentStatus = () => {
+    if (paymentEl) {
+      paymentEl.textContent = i18nService.t("ticket.paymentVal", "CONFIRMED (Pay at Clinic / On-Site)");
+    }
+  };
+  updatePaymentStatus();
+  document.addEventListener("cliniva:languageChanged", updatePaymentStatus);
   if (brandEl && activeBooking.branchName) {
     brandEl.textContent = `CLINIVA HEALTHCARE • ${activeBooking.branchName.toUpperCase()}`;
   }

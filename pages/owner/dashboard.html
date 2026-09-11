@@ -537,23 +537,32 @@
 
         <!-- Active Branch Pill (Desktop View) -->
         <div class="owner-branch-pill-desktop">
-          <span style="font-size:12px; font-weight:800; color:var(--text);" id="topbarActiveBranchName">Paragon Flagship
-            (Cabang 1)</span>
+          <span style="font-size:12px; font-weight:800; color:var(--text);" id="topbarActiveBranchName">Paragon Flagship (Branch 1)</span>
           <span class="pill"
             style="font-size:11px; padding:2px 8px; background:#ccfbf1; color:#0f766e; font-weight:800;"
             id="topbarActiveBranchTemplateBadge">
-            🏃 Fisioterapi
+            🏃 Physiotherapy
           </span>
           <a href="../../pages/owner/branch-select.html" class="btn btn-sm btn-soft"
             style="padding:2px 8px; font-size:11px; border-radius:999px; text-decoration:none;"
-            title="Ganti ke cabang lain">
-            Ganti Cabang 🔄
+            title="Switch to another branch" data-i18n="owner.switchBranch">
+            Switch Branch 🔄
           </a>
         </div>
       </div>
 
       <!-- Right Profile & Quick Actions -->
       <div class="owner-header-right">
+        <!-- Language Switcher -->
+        <div class="lang-switcher-wrap" style="position:relative; margin-right:4px;">
+          <select class="lang-select" aria-label="Select Language"
+            style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+            <option value="en">🇬🇧 English</option>
+            <option value="zh">🇸🇬 华语 (Singapura)</option>
+            <option value="ms">🇲🇾 Bahasa Melayu (Malaysia)</option>
+          </select>
+        </div>
+
         <div class="notif-bar-slot" id="notificationBarContainer"></div>
 
         <div class="owner-user-profile">
@@ -561,10 +570,10 @@
             <span id="ownerUserName">Dennis Pratama</span>
             <span style="font-size:12px;">💼</span>
           </div>
-          <div class="owner-user-sub">Clinic Owner &amp; Director</div>
+          <div class="owner-user-sub" data-i18n="owner.roleTitle">Clinic Owner &amp; Director</div>
         </div>
 
-        <button type="button" class="btn btn-sm btn-primary owner-signout-btn" id="ownerSignOutBtn">
+        <button type="button" class="btn btn-sm btn-primary owner-signout-btn" id="ownerSignOutBtn" data-i18n="nav.signOut">
           Sign Out
         </button>
       </div>
@@ -577,20 +586,20 @@
     <aside class="owner-sidebar">
       <div class="side-menu">
         <button class="side-link owner-tab-btn active" data-pane="paneOverview"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          📊 Ringkasan &amp; Antrean Cabang
+          style="border:0;background:transparent;width:100%;text-align:left;" data-i18n="owner.nav.overview">
+          📊 Summary &amp; Branch Queue
         </button>
         <button class="side-link owner-tab-btn" data-pane="paneBranchSettings"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          🏢 Modul 1: Pengaturan Cabang
+          style="border:0;background:transparent;width:100%;text-align:left;" data-i18n="owner.nav.branchSettings">
+          🏢 Module 1: Branch Settings
         </button>
         <button class="side-link owner-tab-btn" data-pane="paneBranchStaff"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          👥 Modul 2: Manajemen Staf Cabang
+          style="border:0;background:transparent;width:100%;text-align:left;" data-i18n="owner.nav.branchStaff">
+          👥 Module 2: Branch Staff Management
         </button>
         <button class="side-link owner-tab-btn" data-pane="paneBranchPractitioners"
-          style="border:0;background:transparent;width:100%;text-align:left;">
-          🧑‍⚕️ Modul 3: Terapis &amp; Praktisi
+          style="border:0;background:transparent;width:100%;text-align:left;" data-i18n="owner.nav.practitioners">
+          🧑‍⚕️ Module 3: Therapists &amp; Practitioners
         </button>
       </div>
 
@@ -599,16 +608,14 @@
         style="margin-top:auto; background:#f8fafc; border:1px solid var(--line); border-radius:var(--radius-lg); padding:16px;">
         <div
           style="display:flex; align-items:center; gap:6px; font-size:11px; font-weight:800; color:#0f766e; margin-bottom:6px;">
-          <span>🛡️ ISOLASI DATA AKTIF</span>
+          <span data-i18n="owner.isolationTitle">🛡️ ACTIVE DATA ISOLATION</span>
         </div>
-        <p style="font-size:11px; color:var(--muted); margin:0 0 10px; line-height:1.4;">
-          Data antrean, staf, dan jadwal praktisi terisolasi secara ketat untuk cabang ini guna mencegah <em>margin
-            error</em>
-          operasional.
+        <p style="font-size:11px; color:var(--muted); margin:0 0 10px; line-height:1.4;" data-i18n="owner.isolationDesc">
+          Queue data, staff, and practitioner schedules are strictly isolated to this branch to prevent operational error margins.
         </p>
         <a href="../../pages/owner/branch-select.html" class="btn btn-sm btn-white full"
-          style="font-size:11px; text-decoration:none; text-align:center; padding:6px;">
-          Pilih Cabang Lain ➔
+          style="font-size:11px; text-decoration:none; text-align:center; padding:6px;" data-i18n="owner.switchBranch">
+          Switch Branch 🔄
         </a>
       </div>
     </aside>
@@ -627,19 +634,19 @@
               <span class="pill"
                 style="background:rgba(255,255,255,0.2); color:#ffffff; font-size:11px; font-weight:800;"
                 id="bannerTemplatePill">
-                Template: Fisioterapi
+                Template: Physiotherapy
               </span>
-              <span class="pill" style="background:#22c55e; color:#ffffff; font-size:10px; font-weight:800;">
-                ● CABANG AKTIF
+              <span class="pill" style="background:#22c55e; color:#ffffff; font-size:10px; font-weight:800;" data-i18n="owner.activeBranchBadge">
+                ● ACTIVE BRANCH
               </span>
             </div>
-            <h2 id="bannerBranchName">Paragon Medical Flagship (Cabang 1)</h2>
+            <h2 id="bannerBranchName">Paragon Medical Flagship (Branch 1)</h2>
             <p id="bannerBranchAddress">290 Orchard Road, #09-12 Paragon Medical Suites, Singapore 238859</p>
           </div>
 
           <div>
-            <a href="../../pages/owner/branch-select.html" class="branch-switch-btn">
-              <span>🔄</span> Ganti Cabang Operasional
+            <a href="../../pages/owner/branch-select.html" class="branch-switch-btn" data-i18n="owner.switchBranch">
+              <span>🔄</span> Switch Operational Branch
             </a>
           </div>
         </div>
@@ -648,34 +655,34 @@
         <div class="executive-kpi-grid">
           <div class="kpi-card gold">
             <div class="kpi-title">
-              <span>TINGKAT OKUPANSI RUANGAN</span>
+              <span data-i18n="owner.overview.kpiRooms">ROOM OCCUPANCY RATE</span>
               <span style="font-size:11px; font-weight:800; color:#d97706;">OPTIMAL</span>
             </div>
             <div class="kpi-value" id="kpiOccupancy">82%</div>
             <div class="kpi-meta" style="color:var(--warning-dark); font-weight:700;">
-              Kapasitas: <span id="kpiRoomsText">4 Ruangan Aktif</span>
+              Capacity: <span id="kpiRoomsText">4 Active Rooms</span>
             </div>
           </div>
 
           <div class="kpi-card blue">
             <div class="kpi-title">
-              <span>JANJI TEMU HARI INI</span>
+              <span data-i18n="owner.overview.kpiBookings">APPOINTMENTS TODAY</span>
               <span style="font-size:11px; font-weight:800; color:#0284c7;">LIVE</span>
             </div>
-            <div class="kpi-value" id="kpiAppointmentsToday">8 Pasien</div>
+            <div class="kpi-value" id="kpiAppointmentsToday">8 Patients</div>
             <div class="kpi-meta" style="color:var(--text); font-weight:600;">
-              4 Selesai, 2 Sedang Sesi, 2 Menunggu
+              4 Completed, 2 In Session, 2 Waiting
             </div>
           </div>
 
           <div class="kpi-card">
             <div class="kpi-title">
-              <span>STAF &amp; PRAKTISI BERTUGAS</span>
-              <span style="font-size:11px; font-weight:800; color:var(--muted);">SHIFT PAGI/SIANG</span>
+              <span data-i18n="owner.overview.kpiStaff">STAFF &amp; PRACTITIONERS ON DUTY</span>
+              <span style="font-size:11px; font-weight:800; color:var(--muted);">ACTIVE SHIFT</span>
             </div>
-            <div class="kpi-value" id="kpiStaffCount">5 Anggota</div>
+            <div class="kpi-value" id="kpiStaffCount">5 Members</div>
             <div class="kpi-meta" style="color:var(--muted); font-weight:600;">
-              3 Praktisi + 2 Resepsionis
+              3 Practitioners + 2 Receptionists
             </div>
           </div>
         </div>
@@ -684,32 +691,32 @@
         <div class="owner-table-card">
           <div class="owner-table-card-header">
             <div>
-              <h3 class="owner-table-card-title">📅 Antrean Pasien Cabang Ini Hari Ini</h3>
-              <p class="owner-table-card-sub">
-                Daftar pasien terjadwal khusus untuk cabang aktif. Tidak bercampur dengan cabang lain.
+              <h3 class="owner-table-card-title" data-i18n="owner.overview.queueTitle">📅 Today's Live Branch Queue</h3>
+              <p class="owner-table-card-sub" data-i18n="owner.overview.queueSub">
+                Scheduled patient list dedicated strictly to the active branch. Isolated from other branches.
               </p>
             </div>
             <div style="display:flex; gap:8px;">
-              <button type="button" class="btn btn-sm btn-white" id="btnRefreshQueue">🔄 Muat Ulang</button>
+              <button type="button" class="btn btn-sm btn-white" id="btnRefreshQueue" data-i18n="owner.overview.btnRefresh">🔄 Reload Queue</button>
             </div>
           </div>
 
           <div class="owner-table-hint">
-            <span>↔️ Geser antrean ke samping untuk melihat seluruh kolom</span>
+            <span>↔️ Scroll table sideways to view all columns</span>
           </div>
 
           <div class="owner-table-wrapper">
             <table class="owner-table table" id="branchQueueTable">
               <thead>
                 <tr>
-                  <th class="col-center" style="width:110px;">No. Antrean</th>
-                  <th>Nama Pasien</th>
-                  <th>Layanan Terapi</th>
-                  <th>Praktisi Bertugas</th>
-                  <th class="col-center">Ruangan</th>
-                  <th class="col-center">Waktu</th>
-                  <th class="col-center">Status</th>
-                  <th class="col-right">Aksi</th>
+                  <th class="col-center" style="width:110px;" data-i18n="branchAdmin.thQueueNo">Queue No.</th>
+                  <th data-i18n="branchAdmin.thPatientName">Patient Name</th>
+                  <th data-i18n="branchAdmin.thService">Therapy Service</th>
+                  <th data-i18n="branchAdmin.thDoctor">Assigned Practitioner</th>
+                  <th class="col-center" data-i18n="branchAdmin.thRoom">Room</th>
+                  <th class="col-center" data-i18n="branchAdmin.thTime">Time</th>
+                  <th class="col-center" data-i18n="branchAdmin.thStatus">Status</th>
+                  <th class="col-right" data-i18n="branchAdmin.thActions">Actions</th>
                 </tr>
               </thead>
               <tbody id="branchQueueTableBody">
@@ -721,12 +728,12 @@
       </section>
 
       <!-- ========================================================
-           PANE 2: MODUL 1 — PENGATURAN CABANG (BRANCH SETTINGS)
+           PANE 2: MODUL 1 — BRANCH SETTINGS
            ======================================================== -->
       <section class="owner-tab-pane" id="paneBranchSettings">
         <div class="panel-top" style="margin-bottom:24px;">
           <div>
-            <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;">Pengaturan Cabang Operasional</h2>
+            <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;" data-i18n="owner.settings.title">Operational Branch Settings</h2>
           </div>
         </div>
 
@@ -735,60 +742,58 @@
           <form id="branchSettingsForm">
             <div class="field-row">
               <div class="field">
-                <label for="settingBranchName">Nama Cabang Klinik <span style="color:#ef4444;">*</span></label>
+                <label for="settingBranchName"><span data-i18n="owner.settings.name">Clinic Branch Name</span> <span style="color:#ef4444;">*</span></label>
                 <input type="text" id="settingBranchName" required>
               </div>
               <div class="field">
-                <label for="settingBranchCode">Kode / ID Cabang</label>
+                <label for="settingBranchCode" data-i18n="owner.settings.code">Branch Code / ID</label>
                 <input type="text" id="settingBranchCode" readonly style="background:#f8fafc; font-family:monospace;">
               </div>
             </div>
 
             <div class="field">
-              <label>Lini Bisnis &amp; Template Cabang Ini</label>
+              <label data-i18n="owner.settings.template">Business Line &amp; Branch Template</label>
               <div
                 style="padding:12px 16px; background:#f0fdfa; border:1px solid #99f6e4; border-radius:var(--radius-md); display:flex; justify-content:space-between; align-items:center;">
                 <div>
-                  <strong style="color:#0f766e; font-size:14px;" id="settingTemplateName">🏃 Fisioterapi &amp;
-                    Rehabilitasi Gerak</strong>
-                  <p style="margin:2px 0 0; font-size:12px; color:var(--muted);">Template disesuaikan saat pembuatan
-                    cabang guna memastikan formulir dan modul sesuai spesialisasi.</p>
+                  <strong style="color:#0f766e; font-size:14px;" id="settingTemplateName">🏃 Physiotherapy &amp; Motion Rehab</strong>
+                  <p style="margin:2px 0 0; font-size:12px; color:var(--muted);" data-i18n="owner.settings.templateSub">Template is tailored during branch setup to ensure clinical modules match your medical specialty.</p>
                 </div>
-                <span class="pill" style="background:#ccfbf1; color:#0f766e; font-weight:800;">TERKONFIGURASI</span>
+                <span class="pill" style="background:#ccfbf1; color:#0f766e; font-weight:800;" data-i18n="owner.settings.configured">CONFIGURED</span>
               </div>
             </div>
 
             <div class="field">
-              <label for="settingBranchAddress">Alamat Lengkap Cabang <span style="color:#ef4444;">*</span></label>
+              <label for="settingBranchAddress"><span data-i18n="owner.settings.address">Full Physical Address</span> <span style="color:#ef4444;">*</span></label>
               <textarea id="settingBranchAddress" rows="2" required></textarea>
             </div>
 
             <div class="field-row">
               <div class="field">
-                <label for="settingBranchPhone">Nomor WhatsApp / Telepon Cabang <span
+                <label for="settingBranchPhone"><span data-i18n="owner.settings.phone">WhatsApp / Branch Phone</span> <span
                     style="color:#ef4444;">*</span></label>
                 <input type="tel" id="settingBranchPhone" required>
               </div>
               <div class="field">
-                <label for="settingBranchHours">Jam Operasional Harian <span style="color:#ef4444;">*</span></label>
+                <label for="settingBranchHours"><span data-i18n="owner.settings.hours">Daily Operational Hours</span> <span style="color:#ef4444;">*</span></label>
                 <input type="text" id="settingBranchHours" required>
               </div>
             </div>
 
             <div class="field">
-              <label for="settingBranchRooms">Jumlah Ruang Terapi / Bays Tersedia</label>
+              <label for="settingBranchRooms" data-i18n="owner.settings.rooms">Treatment Rooms / Bays Available</label>
               <select id="settingBranchRooms">
-                <option value="2">2 Ruang Terapi Privat</option>
-                <option value="4">4 Ruang Terapi Standar</option>
-                <option value="6">6 Ruang Terapi &amp; Bay</option>
-                <option value="8">8+ Ruang Perawatan Multi-Spesialis</option>
+                <option value="2">2 Private Therapy Rooms</option>
+                <option value="4">4 Standard Therapy Rooms</option>
+                <option value="6">6 Therapy Rooms &amp; Bays</option>
+                <option value="8">8+ Multi-Specialty Treatment Rooms</option>
               </select>
             </div>
 
             <div
               style="display:flex; justify-content:flex-end; gap:12px; margin-top:28px; padding-top:20px; border-top:1px solid var(--line);">
-              <button type="submit" class="btn btn-primary" id="btnSaveBranchSettings" style="font-weight:800;">
-                💾 Simpan Perubahan Pengaturan Cabang
+              <button type="submit" class="btn btn-primary" id="btnSaveBranchSettings" style="font-weight:800;" data-i18n="owner.settings.save">
+                💾 Save Branch Settings
               </button>
             </div>
           </form>
@@ -796,33 +801,33 @@
       </section>
 
       <!-- ========================================================
-           PANE 3: MODUL 2 — MANAJEMEN STAF CABANG (BRANCH STAFF)
+           PANE 3: MODUL 2 — BRANCH STAFF MANAGEMENT
            ======================================================== -->
       <section class="owner-tab-pane" id="paneBranchStaff">
         <div class="panel-top" style="margin-bottom:20px;">
           <div>
-            <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;">Manajemen Staf</h2>
+            <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;" data-i18n="owner.staff.title">Staff Management</h2>
           </div>
-          <button type="button" class="btn btn-primary" id="btnOpenAddStaffModal">
-            ＋ Tambah Staf Cabang Baru
+          <button type="button" class="btn btn-primary" id="btnOpenAddStaffModal" data-i18n="owner.staff.addBtn">
+            ＋ Add New Branch Staff
           </button>
         </div>
 
         <div class="owner-table-card">
           <div class="owner-table-hint">
-            <span>↔️ Geser tabel ke samping untuk melihat seluruh data staf</span>
+            <span>↔️ Scroll table sideways to view all staff records</span>
           </div>
           <div class="owner-table-wrapper">
             <table class="owner-table table" id="branchStaffTable">
               <thead>
                 <tr>
-                  <th>Nama Staf</th>
-                  <th>Peran / Posisi</th>
-                  <th>Email Akses</th>
+                  <th data-i18n="branchAdmin.thStaffName">Staff Name</th>
+                  <th>Role / Position</th>
+                  <th>Login Email</th>
                   <th>WhatsApp</th>
-                  <th>Penugasan Cabang</th>
-                  <th class="col-center">Status</th>
-                  <th class="col-right">Aksi</th>
+                  <th>Branch Assigned</th>
+                  <th class="col-center" data-i18n="branchAdmin.thStatus">Status</th>
+                  <th class="col-right" data-i18n="branchAdmin.thActions">Actions</th>
                 </tr>
               </thead>
               <tbody id="branchStaffTableBody">
@@ -834,33 +839,33 @@
       </section>
 
       <!-- ========================================================
-           PANE 4: MODUL 3 — TERAPIS & PRAKTISI CABANG
+           PANE 4: MODUL 3 — THERAPISTS & PRACTITIONERS
            ======================================================== -->
       <section class="owner-tab-pane" id="paneBranchPractitioners">
         <div class="panel-top" style="margin-bottom:20px;">
           <div>
-            <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;">Manajemen Terapis / Praktisi</h2>
+            <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;" data-i18n="owner.practitioners.title">Therapist &amp; Practitioner Management</h2>
           </div>
-          <button type="button" class="btn btn-primary" id="btnOpenAddPractitionerModal">
-            ＋ Jadwalkan Praktisi Baru
+          <button type="button" class="btn btn-primary" id="btnOpenAddPractitionerModal" data-i18n="owner.practitioners.addBtn">
+            ＋ Schedule New Practitioner
           </button>
         </div>
 
         <div class="owner-table-card">
           <div class="owner-table-hint">
-            <span>↔️ Geser tabel ke samping untuk melihat seluruh jadwal praktisi</span>
+            <span>↔️ Scroll table sideways to view all practitioner schedules</span>
           </div>
           <div class="owner-table-wrapper">
             <table class="owner-table table" id="branchPractitionersTable">
               <thead>
                 <tr>
-                  <th>Nama Praktisi</th>
-                  <th>Spesialisasi &amp; Gelar</th>
-                  <th class="col-center">Alokasi Ruangan</th>
-                  <th>Jadwal Shift</th>
-                  <th class="col-right">Biaya Konsultasi</th>
-                  <th class="col-center">Status</th>
-                  <th class="col-right">Aksi</th>
+                  <th data-i18n="branchAdmin.thDoctor">Practitioner Name</th>
+                  <th data-i18n="branchAdmin.thSpecialty">Specialty &amp; Degree</th>
+                  <th class="col-center" data-i18n="branchAdmin.thRoom">Allocated Room</th>
+                  <th data-i18n="branchAdmin.thShift">Shift Hours</th>
+                  <th class="col-right">Consultation Fee</th>
+                  <th class="col-center" data-i18n="branchAdmin.thStatus">Status</th>
+                  <th class="col-right" data-i18n="branchAdmin.thActions">Actions</th>
                 </tr>
               </thead>
               <tbody id="branchPractitionersTableBody">
@@ -875,95 +880,95 @@
   </div>
 
   <!-- ========================================================
-       MODAL: TAMBAH STAF CABANG BARU
+       MODAL: ADD NEW BRANCH STAFF
        ======================================================== -->
   <div class="modal-overlay" id="addStaffModalOverlay">
     <div class="modal-content-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h3 style="margin:0; font-size:18px; font-weight:800;">Tambah Staf Resepsionis / Admin</h3>
+        <h3 style="margin:0; font-size:18px; font-weight:800;" data-i18n="owner.staff.modalTitle">Add Receptionist / Admin Staff</h3>
         <button type="button" id="btnCloseStaffModal"
           style="background:none; border:none; font-size:20px; cursor:pointer; color:var(--muted);">✕</button>
       </div>
 
       <form id="addStaffForm">
         <div class="field">
-          <label for="newStaffName">Nama Lengkap Staf <span style="color:#ef4444;">*</span></label>
-          <input type="text" id="newStaffName" placeholder="misal: Siti Nurhaliza" required>
+          <label for="newStaffName">Full Staff Name <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="newStaffName" placeholder="e.g. Siti Nurhaliza" required>
         </div>
 
         <div class="field">
-          <label for="newStaffEmail">Alamat Email Login <span style="color:#ef4444;">*</span></label>
+          <label for="newStaffEmail">Login Email Address <span style="color:#ef4444;">*</span></label>
           <input type="email" id="newStaffEmail" placeholder="siti@cliniva.com" required>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="newStaffPhone">Nomor WhatsApp</label>
+            <label for="newStaffPhone">WhatsApp Number</label>
             <input type="tel" id="newStaffPhone" placeholder="+65 9123 4567" required>
           </div>
           <div class="field">
-            <label for="newStaffRole">Peran di Cabang</label>
+            <label for="newStaffRole">Branch Role</label>
             <select id="newStaffRole">
-              <option value="BRANCH_ADMIN" selected>Admin Cabang (Branch Admin / Front Desk)</option>
+              <option value="BRANCH_ADMIN" selected>Branch Admin (Front Desk / Receptionist)</option>
             </select>
           </div>
         </div>
 
         <div class="field">
-          <label for="newStaffPassword">Kata Sandi Sementara</label>
+          <label for="newStaffPassword">Temporary Password</label>
           <input type="text" id="newStaffPassword" value="cliniva2026" required>
         </div>
 
         <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:24px;">
-          <button type="button" class="btn btn-soft" id="btnCancelStaffModal">Batal</button>
-          <button type="submit" class="btn btn-primary">Simpan &amp; Daftarkan Staf</button>
+          <button type="button" class="btn btn-soft" id="btnCancelStaffModal" data-i18n="branchAdmin.modalBtnCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save &amp; Register Staff</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- ========================================================
-       MODAL: JADWALKAN PRAKTISI BARU
+       MODAL: SCHEDULE NEW PRACTITIONER
        ======================================================== -->
   <div class="modal-overlay" id="addPractitionerModalOverlay">
     <div class="modal-content-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h3 style="margin:0; font-size:18px; font-weight:800;">Jadwalkan Praktisi / Terapis di Cabang</h3>
+        <h3 style="margin:0; font-size:18px; font-weight:800;" data-i18n="owner.practitioners.modalTitle">Schedule Practitioner / Therapist at Branch</h3>
         <button type="button" id="btnClosePractitionerModal"
           style="background:none; border:none; font-size:20px; cursor:pointer; color:var(--muted);">✕</button>
       </div>
 
       <form id="addPractitionerForm">
         <div class="field">
-          <label for="newPracName">Nama Lengkap Praktisi <span style="color:#ef4444;">*</span></label>
-          <input type="text" id="newPracName" placeholder="misal: Dr. Sarah Tan, M.Sc" required>
+          <label for="newPracName">Full Practitioner Name <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="newPracName" placeholder="e.g. Dr. Sarah Tan, M.Sc" required>
         </div>
 
         <div class="field">
-          <label for="newPracSpecialty">Spesialisasi Klinis <span style="color:#ef4444;">*</span></label>
-          <input type="text" id="newPracSpecialty" placeholder="misal: Spesialis Cedera Bahu &amp; Tulang Belakang"
+          <label for="newPracSpecialty">Clinical Specialty <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="newPracSpecialty" placeholder="e.g. Shoulder &amp; Spine Rehabilitation"
             required>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="newPracRoom">Alokasi Ruangan</label>
+            <label for="newPracRoom">Room Allocation</label>
             <input type="text" id="newPracRoom" placeholder="Room 2 (Physio Bay)" required>
           </div>
           <div class="field">
-            <label for="newPracShift">Jadwal Giliran (Shift)</label>
-            <input type="text" id="newPracShift" value="09:00 - 17:00 (Sen - Sab)" required>
+            <label for="newPracShift">Shift Schedule</label>
+            <input type="text" id="newPracShift" value="09:00 - 17:00 (Mon - Sat)" required>
           </div>
         </div>
 
         <div class="field">
-          <label for="newPracFee">Tarif Konsultasi Standar</label>
+          <label for="newPracFee">Standard Consultation Fee</label>
           <input type="text" id="newPracFee" value="SGD 120.00" required>
         </div>
 
         <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:24px;">
-          <button type="button" class="btn btn-soft" id="btnCancelPractitionerModal">Batal</button>
-          <button type="submit" class="btn btn-primary">Daftarkan Praktisi</button>
+          <button type="button" class="btn btn-soft" id="btnCancelPractitionerModal" data-i18n="branchAdmin.modalBtnCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Register Practitioner</button>
         </div>
       </form>
     </div>
@@ -972,23 +977,23 @@
   <!-- Mobile Bottom Navigation Bar (Fitts's Law & Ergonomic Thumb Zone) -->
   <nav class="owner-mobile-nav" aria-label="Owner Dashboard Mobile Navigation">
     <button class="owner-mob-btn owner-tab-btn active" data-pane="paneOverview" id="mobTabOverview"
-      title="Ringkasan & Antrean">
+      title="Summary &amp; Queue">
       <span class="owner-mob-icon">📊</span>
-      <span>Ringkasan</span>
+      <span data-i18n="owner.mobNavOverview">Overview</span>
     </button>
     <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchSettings" id="mobTabSettings"
-      title="Pengaturan Cabang">
+      title="Branch Settings">
       <span class="owner-mob-icon">🏢</span>
-      <span>Cabang</span>
+      <span data-i18n="owner.mobNavBranch">Branch</span>
     </button>
-    <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchStaff" id="mobTabStaff" title="Staf Cabang">
+    <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchStaff" id="mobTabStaff" title="Branch Staff">
       <span class="owner-mob-icon">👥</span>
-      <span>Staf</span>
+      <span data-i18n="owner.mobNavStaff">Staff</span>
     </button>
     <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchPractitioners" id="mobTabPractitioners"
-      title="Terapis & Praktisi">
+      title="Therapists &amp; Practitioners">
       <span class="owner-mob-icon">🧑‍⚕️</span>
-      <span>Praktisi</span>
+      <span data-i18n="owner.mobNavPractitioners">Practitioners</span>
     </button>
   </nav>
 

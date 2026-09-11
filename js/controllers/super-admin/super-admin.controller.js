@@ -14,6 +14,7 @@ import { storageService } from "../../services/storage.service.js";
 import { notificationService } from "../../services/notification.service.js";
 import { soundService } from "../../services/sound.service.js";
 import { supabaseService } from "../../services/supabase.service.js";
+import { i18nService } from "../../services/i18n.service.js";
 
 export class SuperAdminController {
   constructor() {
@@ -31,6 +32,7 @@ export class SuperAdminController {
     if (!session) return;
 
     this.currentUser = session.user;
+    i18nService.init();
     this.renderUserInfo();
     this.setupTabs();
     this.setupSignOut();
@@ -38,6 +40,12 @@ export class SuperAdminController {
     await this.renderOwnerList();
     await this.renderAuditLogs();
     this.setupCreateOwnerForm();
+
+    window.addEventListener("cliniva:languageChanged", () => {
+      this.renderUserInfo();
+      this.renderOwnerList();
+      this.renderAuditLogs();
+    });
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -136,7 +144,7 @@ export class SuperAdminController {
     const owners = users.filter(u => u.role === USER_ROLES.OWNER);
 
     if (owners.length === 0) {
-      container.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:32px; color:var(--muted);">No Owner accounts found. Create one below.</td></tr>`;
+      container.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:32px; color:var(--muted);">${i18nService.t("superAdmin.noOwners", "No Owner accounts found. Create one below.")}</td></tr>`;
       return;
     }
 
@@ -154,17 +162,17 @@ export class SuperAdminController {
         <td style="font-size:13px; font-weight:600; white-space:nowrap; letter-spacing:0.2px; color:var(--text);">${owner.phone || "—"}</td>
         <td style="white-space:nowrap;">
           <span class="pill" style="font-size:11px; padding:4px 10px; background:${owner.brandName ? "#f0fdfa" : "#fef3c7"}; color:${owner.brandName ? "#0f766e" : "#92400e"}; font-weight:700; white-space:nowrap;">
-            ${owner.brandName || "Not Set Up"}
+            ${owner.brandName || i18nService.t("superAdmin.notSetUp", "Not Set Up")}
           </span>
         </td>
         <td style="white-space:nowrap;">
           <span class="pill" style="font-size:11px; padding:4px 10px; background:${owner.onboardingCompleted ? "#dcfce7" : "#fee2e2"}; color:${owner.onboardingCompleted ? "#166534" : "#991b1b"}; font-weight:700; white-space:nowrap;">
-            ${owner.onboardingCompleted ? "✓ Active" : "⏳ Pending"}
+            ${owner.onboardingCompleted ? i18nService.t("superAdmin.statusActive", "✓ Active") : i18nService.t("superAdmin.statusPending", "⏳ Pending")}
           </span>
         </td>
         <td style="white-space:nowrap;">
           <div style="display:flex; gap:6px; align-items:center;">
-            <button class="btn btn-sm btn-soft" onclick="window.superAdminCtrl.loginAsOwner('${owner.id}')" title="Login as this Owner" style="padding:6px 12px; font-size:12px; font-weight:600; white-space:nowrap;">🔑 Login As</button>
+            <button class="btn btn-sm btn-soft" onclick="window.superAdminCtrl.loginAsOwner('${owner.id}')" title="Login as this Owner" style="padding:6px 12px; font-size:12px; font-weight:600; white-space:nowrap;">🔑 ${i18nService.t("superAdmin.btnLoginAs", "Login As")}</button>
             <button class="btn btn-sm btn-danger" onclick="window.superAdminCtrl.deleteOwner('${owner.id}', '${owner.name}')" title="Delete Owner Account" style="padding:6px 10px; font-size:12px; white-space:nowrap;">🗑️</button>
           </div>
         </td>
@@ -343,7 +351,7 @@ export class SuperAdminController {
     }
 
     if (logs.length === 0) {
-      container.innerHTML = `<div style="padding:32px; text-align:center; color:var(--muted);">No audit events yet. Actions performed by Super Admin will appear here.</div>`;
+      container.innerHTML = `<div style="padding:32px; text-align:center; color:var(--muted);">${i18nService.t("superAdmin.noAudit", "No audit events yet. Actions performed by Super Admin will appear here.")}</div>`;
       return;
     }
 

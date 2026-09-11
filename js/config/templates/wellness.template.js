@@ -12,6 +12,12 @@ export const WELLNESS_TEMPLATE = {
   accentColor: "#b45309", // Warm Amber / Earthy Sand Gold
   practitionerTitle: "Senior Spa Therapist / Masseuse",
   practitionerTitleI18n: "template.wellness.practitionerTitle",
+  demoUrl: "https://prototype-application-spa.vercel.app/",
+  pricing: {
+    monthly: 99,
+    sixMonth: 534,
+    yearly: 948
+  },
 
   intakeType: "WELLNESS_PREFERENCES",
   intakeSchema: {

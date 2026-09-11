@@ -247,6 +247,57 @@
       overflow-y: auto;
     }
 
+    /* ── Template Cards & Offerings Grid ─────────────────── */
+    .sa-template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .sa-template-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+      position: relative;
+    }
+
+    .sa-template-card:hover {
+      border-color: #c7d2fe;
+      transform: translateY(-3px);
+      box-shadow: 0 14px 25px -5px rgba(79, 70, 229, 0.1), 0 8px 10px -6px rgba(79, 70, 229, 0.05);
+    }
+
+    .sa-template-card.inactive {
+      opacity: 0.65;
+      background: #f8fafc;
+      border-style: dashed;
+    }
+
+    .sa-template-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .sa-template-pricing-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin: 16px 0;
+    }
+
     /* ── Page Header ─────────────────────────────────────── */
     .sa-page-header {
       display: flex;
@@ -523,6 +574,9 @@
       <button class="sa-tab-btn active" data-pane="paneStats" id="tabStats" data-i18n="superAdmin.nav.overview">
         📊 Platform Overview
       </button>
+      <button class="sa-tab-btn" data-pane="paneTemplates" id="tabTemplates" data-i18n="superAdmin.nav.templates">
+        📦 Templates &amp; Offerings
+      </button>
 
       <div class="sa-sidebar-label" data-i18n="superAdmin.nav.labelOwner">Owner Management</div>
       <button class="sa-tab-btn" data-pane="paneOwners" id="tabOwners" data-i18n="superAdmin.nav.owners">
@@ -752,6 +806,68 @@
         </div>
       </section>
 
+      <!-- ── PANE 6: Template & Offering Management ────────────────────── -->
+      <section class="sa-tab-pane" id="paneTemplates">
+        <div class="sa-page-header">
+          <div>
+            <h1 class="sa-page-title" data-i18n="superAdmin.templates.title">Template &amp; Offering Management</h1>
+            <p class="sa-page-sub" data-i18n="superAdmin.templates.sub">Configure industry templates, live prototype links, and subscription pricing for clinic owners.</p>
+          </div>
+          <button class="btn btn-primary sa-page-action-btn" id="showCreateTemplateBtn"
+            style="background:#4f46e5; border-color:#4f46e5; white-space:nowrap;" data-i18n="superAdmin.templates.addBtn">
+            + Add New Template
+          </button>
+        </div>
+
+        <!-- Create Template Form (hidden by default) -->
+        <div class="create-owner-panel" id="createTemplatePanel" style="display:none;">
+          <div class="create-owner-header">
+            <div class="create-owner-icon">📦</div>
+            <div>
+              <h3 style="font-size:16px; font-weight:700; margin:0 0 4px; color:#1e293b;" data-i18n="superAdmin.templates.formTitle">Create New Offering Template</h3>
+              <p style="font-size:13px; color:#64748b; margin:0;" data-i18n="superAdmin.templates.formDesc">Add a specialized business template for clinic owners to purchase and deploy.</p>
+            </div>
+          </div>
+
+          <div class="sa-form-grid">
+            <div class="sa-form-group">
+              <label class="form-label" data-i18n="superAdmin.templates.nameLabel">Template Name *</label>
+              <input type="text" id="newTemplateName" class="input" placeholder="e.g. Pilates & Core Studio" data-i18n-placeholder="superAdmin.templates.namePlaceholder" />
+            </div>
+            <div class="sa-form-group">
+              <label class="form-label" data-i18n="superAdmin.templates.categoryLabel">Industry Category *</label>
+              <input type="text" id="newTemplateCategory" class="input" placeholder="e.g. Fitness & Physical Rehabilitation" />
+            </div>
+            <div class="sa-form-group">
+              <label class="form-label" data-i18n="superAdmin.templates.demoUrlLabel">Prototype / Demo URL</label>
+              <input type="url" id="newTemplateDemoUrl" class="input" placeholder="e.g. https://prototype-application.vercel.app" data-i18n-placeholder="superAdmin.templates.demoUrlPlaceholder" />
+            </div>
+            <div class="sa-form-group">
+              <label class="form-label" data-i18n="superAdmin.templates.monthlyPriceLabel">Monthly Price (SGD) *</label>
+              <input type="number" id="newTemplatePrice" class="input" placeholder="e.g. 99" min="1" />
+            </div>
+            <div class="sa-form-group" style="grid-column: 1 / -1;">
+              <label class="form-label" data-i18n="superAdmin.templates.taglineLabel">Tagline &amp; Summary</label>
+              <input type="text" id="newTemplateTagline" class="input" placeholder="e.g. Postural alignment and reformer strength therapy" data-i18n-placeholder="superAdmin.templates.taglinePlaceholder" />
+            </div>
+          </div>
+
+          <div class="sa-form-actions" style="margin-top:24px; padding-top:16px; border-top:1px solid #f1f5f9; display:flex; gap:12px; justify-content:flex-end;">
+            <button class="btn btn-soft" id="cancelCreateTemplateBtn" style="padding:10px 18px; font-weight:600; border-radius:8px;" data-i18n="common.cancel">
+              Cancel
+            </button>
+            <button class="btn btn-primary" id="createTemplateSubmitBtn" style="background:#4f46e5; border-color:#4f46e5; padding:10px 20px; font-weight:600; border-radius:8px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);" data-i18n="superAdmin.templates.saveBtn">
+              ✓ Save Template Offering
+            </button>
+          </div>
+        </div>
+
+        <!-- Templates Grid Container -->
+        <div class="sa-template-grid" id="superAdminTemplatesGrid">
+          <div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted);">Loading templates…</div>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -760,6 +876,10 @@
     <button class="sa-mob-btn sa-tab-btn active" data-pane="paneStats" id="mobTabStats" title="Platform Overview">
       <span class="sa-mob-icon">📊</span>
       <span data-i18n="superAdmin.mobNavOverview">Overview</span>
+    </button>
+    <button class="sa-mob-btn sa-tab-btn" data-pane="paneTemplates" id="mobTabTemplates" title="Templates & Offerings">
+      <span class="sa-mob-icon">📦</span>
+      <span data-i18n="superAdmin.nav.templates">Templates</span>
     </button>
     <button class="sa-mob-btn sa-tab-btn" data-pane="paneOwners" id="mobTabOwners" title="Owner Accounts">
       <span class="sa-mob-icon">💼</span>

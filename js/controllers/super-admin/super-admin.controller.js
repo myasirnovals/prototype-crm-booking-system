@@ -15,6 +15,7 @@ import { notificationService } from "../../services/notification.service.js";
 import { soundService } from "../../services/sound.service.js";
 import { supabaseService } from "../../services/supabase.service.js";
 import { i18nService } from "../../services/i18n.service.js";
+import { getAllTemplates, savePlatformTemplates } from "../../config/templates/index.js";
 
 export class SuperAdminController {
   constructor() {
@@ -41,7 +42,9 @@ export class SuperAdminController {
     await this.renderAllBranches();
     this.renderSubscriptions();
     await this.renderAuditLogs();
+    await this.renderTemplates();
     this.setupCreateOwnerForm();
+    this.setupCreateTemplateForm();
 
     window.addEventListener("cliniva:languageChanged", () => {
       this.renderUserInfo();
@@ -49,6 +52,7 @@ export class SuperAdminController {
       this.renderAllBranches();
       this.renderSubscriptions();
       this.renderAuditLogs();
+      this.renderTemplates();
     });
   }
 
@@ -432,6 +436,239 @@ export class SuperAdminController {
     });
     storageService.set(this.AUDIT_KEY, logs);
     this.renderAuditLogs();
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // TEMPLATES & OFFERING MANAGEMENT
+  // ─────────────────────────────────────────────────────────────────────────
+
+  async renderTemplates() {
+    const container = document.getElementById("superAdminTemplatesGrid");
+    if (!container) return;
+
+    const templates = getAllTemplates();
+    if (!templates || templates.length === 0) {
+      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--muted);">${i18nService.t("superAdmin.templates.noTemplates", "No templates registered yet. Click Add New Template above.")}</div>`;
+      return;
+    }
+
+    container.innerHTML = templates.map(t => {
+      const isActive = t.isActive !== false;
+      const monthly = t.pricing?.monthly || 99;
+      const sixMonth = t.pricing?.sixMonth || Math.round(monthly * 6 * 0.9);
+      const yearly = t.pricing?.yearly || Math.round(monthly * 12 * 0.8);
+
+      const statusBg = isActive ? "#dcfce7" : "#f1f5f9";
+      const statusColor = isActive ? "#166534" : "#64748b";
+      const statusText = isActive 
+        ? i18nService.t("superAdmin.templates.activeBadge", "● Active Offering")
+        : i18nService.t("superAdmin.templates.inactiveBadge", "○ Inactive");
+
+      const demoBtn = t.demoUrl ? `
+        <a href="${t.demoUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-soft" style="padding:6px 12px; font-size:12px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+          ${i18nService.t("superAdmin.templates.previewBtn", "Preview Prototype ↗")}
+        </a>
+      ` : "";
+
+      const deleteBtn = !["wellness", "physio", "nutrition", "tcm", "personal-trainer"].includes(t.id) ? `
+        <button class="btn btn-sm btn-danger" onclick="window.superAdminCtrl.deleteTemplate('${t.id}')" title="Delete Template" style="padding:6px 10px; font-size:12px;">🗑️</button>
+      ` : "";
+
+      return `
+        <div class="sa-template-card ${!isActive ? "inactive" : ""}">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; gap:8px;">
+              <span class="sa-template-badge" style="background:${statusBg}; color:${statusColor};">
+                ${statusText}
+              </span>
+              <span style="font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;">
+                ${t.category || "Healthcare / Wellness"}
+              </span>
+            </div>
+
+            <h3 style="font-size:16px; font-weight:800; color:var(--text); margin:0 0 6px;">${t.name}</h3>
+            <p style="font-size:12px; color:var(--muted); margin:0 0 14px; line-height:1.5;">${t.tagline || t.description || "Specialized clinic business model & appointment engine."}</p>
+
+            <div class="sa-template-pricing-box">
+              <div style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; margin-bottom:6px;">
+                ${i18nService.t("superAdmin.templates.pricingTitle", "B2B Subscription Pricing:")}
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px;">
+                <span style="font-size:12px; color:var(--text); font-weight:600;">1 Month:</span>
+                <span style="font-size:14px; font-weight:800; color:#4f46e5;">SGD ${monthly} <span style="font-size:11px; font-weight:600; color:var(--muted);">${i18nService.t("superAdmin.templates.perMonth", "/ mo")}</span></span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px;">
+                <span style="font-size:12px; color:var(--text); font-weight:600;">${i18nService.t("superAdmin.templates.sixMonth", "6 Months:")}</span>
+                <span style="font-size:12px; font-weight:700; color:#0f766e;">SGD ${sixMonth} <span style="font-size:10px; background:#ccfbf1; color:#0f766e; padding:1px 5px; border-radius:4px; font-weight:800;">-10%</span></span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                <span style="font-size:12px; color:var(--text); font-weight:600;">${i18nService.t("superAdmin.templates.yearly", "1 Year:")}</span>
+                <span style="font-size:12px; font-weight:700; color:#0f766e;">SGD ${yearly} <span style="font-size:10px; background:#dcfce7; color:#166534; padding:1px 5px; border-radius:4px; font-weight:800;">-20%</span></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:14px; border-top:1px solid #f1f5f9; gap:8px; flex-wrap:wrap;">
+            <div style="display:flex; gap:6px; align-items:center;">
+              ${demoBtn}
+              <button class="btn btn-sm btn-soft" onclick="window.superAdminCtrl.editTemplatePricing('${t.id}')" title="Configure Pricing" style="padding:6px 10px; font-size:12px; font-weight:700;">
+                💳 Pricing
+              </button>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <button class="btn btn-sm btn-soft" onclick="window.superAdminCtrl.toggleTemplateStatus('${t.id}')" title="Toggle Offering Active/Inactive" style="padding:6px 10px; font-size:12px; font-weight:700;">
+                ${isActive ? "Pause" : "Activate"}
+              </button>
+              ${deleteBtn}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  setupCreateTemplateForm() {
+    const btn = document.getElementById("showCreateTemplateBtn");
+    const panel = document.getElementById("createTemplatePanel");
+    const cancelBtn = document.getElementById("cancelCreateTemplateBtn");
+    const submitBtn = document.getElementById("createTemplateSubmitBtn");
+
+    if (btn && panel) {
+      btn.addEventListener("click", () => {
+        panel.style.display = panel.style.display === "none" ? "block" : "none";
+        btn.textContent = panel.style.display === "none" ? "+ Add New Template" : "✕ Cancel";
+      });
+    }
+
+    if (cancelBtn && panel) {
+      cancelBtn.addEventListener("click", () => {
+        panel.style.display = "none";
+        if (btn) btn.textContent = "+ Add New Template";
+      });
+    }
+
+    if (submitBtn) {
+      submitBtn.addEventListener("click", () => this._createTemplate());
+    }
+  }
+
+  _createTemplate() {
+    const name = document.getElementById("newTemplateName")?.value?.trim();
+    const category = document.getElementById("newTemplateCategory")?.value?.trim();
+    const demoUrl = document.getElementById("newTemplateDemoUrl")?.value?.trim();
+    const price = document.getElementById("newTemplatePrice")?.value?.trim();
+    const tagline = document.getElementById("newTemplateTagline")?.value?.trim();
+
+    if (!name || !category || !price) {
+      alert("Please fill in Template Name, Category, and Monthly Price.");
+      return;
+    }
+
+    const monthly = parseFloat(price) || 99;
+    const id = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+    const all = getAllTemplates();
+    if (all.some(t => t.id === id)) {
+      alert("A template with this name or ID already exists.");
+      return;
+    }
+
+    const newTemplate = {
+      id,
+      name,
+      shortName: name,
+      category,
+      tagline: tagline || `${name} specialized healthcare & consultation suite`,
+      demoUrl: demoUrl || "",
+      accentColor: "#4f46e5",
+      practitionerTitle: "Specialist Practitioner",
+      isActive: true,
+      pricing: {
+        monthly,
+        sixMonth: Math.round(monthly * 6 * 0.9),
+        yearly: Math.round(monthly * 12 * 0.8)
+      },
+      createdAt: new Date().toISOString()
+    };
+
+    all.push(newTemplate);
+    savePlatformTemplates(all);
+
+    this._logAudit(`Super Admin registered new business template: ${name} (Monthly: SGD ${monthly})`);
+    soundService.playClickTone && soundService.playClickTone();
+
+    // Clear form
+    ["newTemplateName", "newTemplateCategory", "newTemplateDemoUrl", "newTemplatePrice", "newTemplateTagline"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+
+    const panel = document.getElementById("createTemplatePanel");
+    if (panel) panel.style.display = "none";
+    const btn = document.getElementById("showCreateTemplateBtn");
+    if (btn) btn.textContent = "+ Add New Template";
+
+    this.renderTemplates();
+    notificationService.showToast?.(`Template ${name} added successfully!`, "success");
+  }
+
+  toggleTemplateStatus(templateId) {
+    const all = getAllTemplates();
+    const target = all.find(t => t.id === templateId);
+    if (!target) return;
+
+    target.isActive = target.isActive === false ? true : false;
+    savePlatformTemplates(all);
+
+    const statusLabel = target.isActive ? "Activated" : "Paused";
+    this._logAudit(`Super Admin ${statusLabel} template offering: ${target.name}`);
+    soundService.playClickTone && soundService.playClickTone();
+    this.renderTemplates();
+    notificationService.showToast?.(`Template ${target.name} ${statusLabel}`, "success");
+  }
+
+  editTemplatePricing(templateId) {
+    const all = getAllTemplates();
+    const target = all.find(t => t.id === templateId);
+    if (!target) return;
+
+    const currentMonthly = target.pricing?.monthly || 99;
+    const input = prompt(`Update Monthly Pricing (SGD) for "${target.name}":`, currentMonthly);
+    if (input === null) return;
+
+    const newMonthly = parseFloat(input);
+    if (isNaN(newMonthly) || newMonthly <= 0) {
+      alert("Please enter a valid positive number for pricing.");
+      return;
+    }
+
+    target.pricing = {
+      monthly: newMonthly,
+      sixMonth: Math.round(newMonthly * 6 * 0.9),
+      yearly: Math.round(newMonthly * 12 * 0.8)
+    };
+
+    savePlatformTemplates(all);
+    this._logAudit(`Super Admin updated pricing for template ${target.name} to SGD ${newMonthly}/mo`);
+    soundService.playClickTone && soundService.playClickTone();
+    this.renderTemplates();
+    notificationService.showToast?.(`Pricing for ${target.name} updated to SGD ${newMonthly}/mo`, "success");
+  }
+
+  deleteTemplate(templateId) {
+    const all = getAllTemplates();
+    const target = all.find(t => t.id === templateId);
+    if (!target) return;
+
+    const confirmed = confirm(`Are you sure you want to delete template "${target.name}"?`);
+    if (!confirmed) return;
+
+    const filtered = all.filter(t => t.id !== templateId);
+    savePlatformTemplates(filtered);
+    this._logAudit(`Super Admin deleted custom template: ${target.name}`);
+    soundService.playClickTone && soundService.playClickTone();
+    this.renderTemplates();
+    notificationService.showToast?.(`Template ${target.name} removed`, "info");
   }
 
   // ─────────────────────────────────────────────────────────────────────────

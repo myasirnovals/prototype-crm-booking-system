@@ -601,6 +601,14 @@
           style="border:0;background:transparent;width:100%;text-align:left;" data-i18n="owner.nav.practitioners">
           🧑‍⚕️ Module 3: Therapists &amp; Practitioners
         </button>
+        <button class="side-link owner-tab-btn" data-pane="paneBranchServices"
+          style="border:0;background:transparent;width:100%;text-align:left;" data-i18n="owner.nav.branchServices">
+          🩺 Module 4: Services &amp; Treatments
+        </button>
+        <button class="side-link owner-tab-btn" data-pane="paneBranchSubscription"
+          style="border:0;background:transparent;width:100%;text-align:left;" data-i18n="owner.nav.branchSubscription">
+          💳 Module 5: Subscription &amp; Billing
+        </button>
       </div>
 
       <!-- Active Branch Isolation Info Card -->
@@ -879,6 +887,98 @@
         </div>
       </section>
 
+      <!-- ========================================================
+           PANE 5: MODUL 4 — SERVICES & TREATMENTS CATALOG
+           ======================================================== -->
+      <section class="owner-tab-pane" id="paneBranchServices">
+        <div class="panel-top" style="margin-bottom:20px;">
+          <div>
+            <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;" data-i18n="owner.services.title">Services &amp; Treatment Catalog</h2>
+            <p style="font-size:13px; color:var(--muted); margin:4px 0 0;" data-i18n="owner.services.desc">
+              Manage clinical treatment packages, therapy sessions, and diagnostic assessment fees offered at this branch.
+            </p>
+          </div>
+          <button type="button" class="btn btn-primary" id="btnOpenAddServiceModal" data-i18n="owner.services.addBtn">
+            ＋ Add Custom Service
+          </button>
+        </div>
+
+        <div class="owner-table-card">
+          <div class="owner-table-hint">
+            <span>↔️ Scroll table sideways to view service durations and pricing</span>
+          </div>
+          <div class="owner-table-wrapper">
+            <table class="owner-table table" id="branchServicesTable">
+              <thead>
+                <tr>
+                  <th data-i18n="owner.services.thName">Service / Treatment</th>
+                  <th data-i18n="owner.services.thCategory">Category</th>
+                  <th class="col-center" data-i18n="owner.services.thDuration">Duration</th>
+                  <th class="col-right" data-i18n="owner.services.thPrice">Price</th>
+                  <th data-i18n="owner.services.thDesc">Description</th>
+                  <th class="col-center" data-i18n="owner.services.thStatus">Status</th>
+                  <th class="col-right" data-i18n="owner.services.thActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="branchServicesTableBody">
+                <!-- Dynamically Rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           PANE 6: MODUL 5 — SUBSCRIPTION & BILLING MANAGEMENT
+           ======================================================== -->
+      <section class="owner-tab-pane" id="paneBranchSubscription">
+        <div class="panel-top" style="margin-bottom:20px;">
+          <div>
+            <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.5px;" data-i18n="owner.subs.title">Subscription &amp; Billing Management</h2>
+            <p style="font-size:13px; color:var(--muted); margin:4px 0 0;" data-i18n="owner.subs.desc">
+              Monitor active SaaS enterprise licenses, branch operational quotas, renewal schedules, and official payment receipts.
+            </p>
+          </div>
+          <button type="button" class="btn btn-primary" id="btnOpenRenewModal" style="background:#0f766e; border-color:#0f766e;" data-i18n="owner.subs.renewBtn">
+            ⚡ Renew / Upgrade License
+          </button>
+        </div>
+
+        <!-- License Overview Card -->
+        <div id="branchLicenseCardContainer" style="margin-bottom:24px;">
+          <!-- Dynamically Rendered License Card -->
+        </div>
+
+        <!-- Invoices & Billing History -->
+        <div class="panel-top" style="margin-bottom:14px;">
+          <h3 style="font-size:16px; font-weight:800; margin:0;" data-i18n="owner.subs.invoicesTitle">Invoicing &amp; Transaction Receipts</h3>
+        </div>
+
+        <div class="owner-table-card">
+          <div class="owner-table-hint">
+            <span>↔️ Scroll table sideways to view billing and invoice records</span>
+          </div>
+          <div class="owner-table-wrapper">
+            <table class="owner-table table" id="branchInvoicesTable">
+              <thead>
+                <tr>
+                  <th data-i18n="owner.subs.thInvoice">Invoice #</th>
+                  <th data-i18n="owner.subs.thProduct">Product / Template</th>
+                  <th class="col-center" data-i18n="owner.subs.thDuration">Duration</th>
+                  <th class="col-right" data-i18n="owner.subs.thAmount">Amount Paid</th>
+                  <th data-i18n="owner.subs.thDate">Payment Date</th>
+                  <th class="col-center" data-i18n="owner.subs.thStatus">License Status</th>
+                  <th class="col-right" data-i18n="owner.subs.thReceipt">Receipt / Action</th>
+                </tr>
+              </thead>
+              <tbody id="branchInvoicesTableBody">
+                <!-- Dynamically Rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -977,6 +1077,139 @@
     </div>
   </div>
 
+  <!-- ========================================================
+       MODAL: ADD CUSTOM SERVICE / TREATMENT
+       ======================================================== -->
+  <div class="modal-overlay" id="addServiceModalOverlay">
+    <div class="modal-content-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h3 style="margin:0; font-size:18px; font-weight:800;" data-i18n="owner.services.modalTitle">Add Custom Service / Treatment</h3>
+        <button type="button" id="btnCloseServiceModal"
+          style="background:none; border:none; font-size:20px; cursor:pointer; color:var(--muted);">✕</button>
+      </div>
+
+      <form id="addServiceForm">
+        <div class="field">
+          <label for="newServiceName" data-i18n="owner.services.nameLabel">Service / Treatment Name <span style="color:#ef4444;">*</span></label>
+          <input type="text" id="newServiceName" placeholder="e.g. Sports Shockwave Therapy" required>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="newServiceCategory" data-i18n="owner.services.categoryLabel">Clinical Category</label>
+            <input type="text" id="newServiceCategory" placeholder="e.g. Rehabilitation &amp; Pain" required>
+          </div>
+          <div class="field">
+            <label for="newServiceDuration" data-i18n="owner.services.durationLabel">Session Duration (Mins)</label>
+            <input type="number" id="newServiceDuration" value="45" min="15" max="180" step="5" required>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="newServicePrice" data-i18n="owner.services.priceLabel">Price (SGD) <span style="color:#ef4444;">*</span></label>
+            <input type="number" id="newServicePrice" value="120" min="0" step="1" required>
+          </div>
+          <div class="field">
+            <label for="newServiceCode">Service Code</label>
+            <input type="text" id="newServiceCode" placeholder="e.g. PT-04">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="newServiceDescription" data-i18n="owner.services.descLabel">Description</label>
+          <textarea id="newServiceDescription" rows="3" placeholder="Clinical description of the treatment..."></textarea>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:24px;">
+          <button type="button" class="btn btn-soft" id="btnCancelServiceModal" data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" data-i18n="owner.services.saveBtn">Save &amp; Publish Service</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: RENEW / UPGRADE SUBSCRIPTION
+       ======================================================== -->
+  <div class="modal-overlay" id="renewSubscriptionModalOverlay">
+    <div class="modal-content-card" style="max-width:520px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h3 style="margin:0; font-size:18px; font-weight:800;" data-i18n="owner.subs.modalTitle">Renew Branch SaaS License</h3>
+        <button type="button" id="btnCloseRenewModal"
+          style="background:none; border:none; font-size:20px; cursor:pointer; color:var(--muted);">✕</button>
+      </div>
+
+      <form id="renewSubscriptionForm">
+        <p style="font-size:13px; color:var(--muted); margin:0 0 16px;" data-i18n="owner.subs.modalDesc">
+          Extend your branch software license and patient booking quota. Renewals are processed instantly via mock gateway.
+        </p>
+
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
+          <label class="radio-card" style="display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border:2px solid #0f766e; border-radius:12px; cursor:pointer; background:#f0fdfa;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <input type="radio" name="renewPlan" value="12" data-price="948" checked>
+              <div>
+                <div style="font-weight:800; font-size:13px; color:var(--text);">Annual Plan (12 Months) <span class="pill" style="background:#0f766e; color:#fff; font-size:10px; padding:2px 6px;">Save 20%</span></div>
+                <div style="font-size:11px; color:var(--muted);">Full enterprise branch features &amp; priority updates</div>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-weight:800; font-size:14px; color:#0f766e;">SGD 948.00</div>
+              <div style="font-size:10px; color:var(--muted);">SGD 79 / mo</div>
+            </div>
+          </label>
+
+          <label class="radio-card" style="display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border:1px solid var(--line); border-radius:12px; cursor:pointer; background:#ffffff;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <input type="radio" name="renewPlan" value="6" data-price="534">
+              <div>
+                <div style="font-weight:800; font-size:13px; color:var(--text);">Semi-Annual (6 Months)</div>
+                <div style="font-size:11px; color:var(--muted);">Billed every 6 months</div>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-weight:800; font-size:14px; color:var(--text);">SGD 534.00</div>
+              <div style="font-size:10px; color:var(--muted);">SGD 89 / mo</div>
+            </div>
+          </label>
+
+          <label class="radio-card" style="display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border:1px solid var(--line); border-radius:12px; cursor:pointer; background:#ffffff;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <input type="radio" name="renewPlan" value="3" data-price="297">
+              <div>
+                <div style="font-weight:800; font-size:13px; color:var(--text);">Quarterly (3 Months)</div>
+                <div style="font-size:11px; color:var(--muted);">Flexible standard plan</div>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-weight:800; font-size:14px; color:var(--text);">SGD 297.00</div>
+              <div style="font-size:10px; color:var(--muted);">SGD 99 / mo</div>
+            </div>
+          </label>
+        </div>
+
+        <div style="background:#f8fafc; border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:6px;">
+            <span>Payment Method:</span>
+            <strong style="color:var(--text);">Corporate Credit Card / PayNow SG</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:800; color:var(--text);">
+            <span>Total Payable:</span>
+            <span id="renewTotalAmount" style="color:#0f766e; font-size:15px;">SGD 948.00</span>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="btn btn-soft" id="btnCancelRenewModal" data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnConfirmRenew" style="background:#0f766e; border-color:#0f766e;" data-i18n="owner.subs.confirmRenew">
+            💳 Process Renewal &amp; Extend License
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Mobile Bottom Navigation Bar (Fitts's Law & Ergonomic Thumb Zone) -->
   <nav class="owner-mobile-nav" aria-label="Owner Dashboard Mobile Navigation">
     <button class="owner-mob-btn owner-tab-btn active" data-pane="paneOverview" id="mobTabOverview"
@@ -997,6 +1230,16 @@
       title="Therapists &amp; Practitioners">
       <span class="owner-mob-icon">🧑‍⚕️</span>
       <span data-i18n="owner.mobNavPractitioners">Practitioners</span>
+    </button>
+    <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchServices" id="mobTabServices"
+      title="Services &amp; Treatments">
+      <span class="owner-mob-icon">🩺</span>
+      <span data-i18n="owner.mobNavServices">Services</span>
+    </button>
+    <button class="owner-mob-btn owner-tab-btn" data-pane="paneBranchSubscription" id="mobTabSubscription"
+      title="Subscription &amp; Billing">
+      <span class="owner-mob-icon">💳</span>
+      <span data-i18n="owner.mobNavSubscription">Billing</span>
     </button>
   </nav>
 

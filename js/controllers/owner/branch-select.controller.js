@@ -217,7 +217,10 @@ export class BranchSelectController {
             </div>
           </div>
 
-          <div class="branch-action-wrap">
+          <div class="branch-action-wrap" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+            <button type="button" class="btn btn-sm btn-soft copy-branch-link-btn" data-branch-id="${b.id}" style="padding:10px 16px; font-weight:700; white-space:nowrap; border-radius:12px; font-size:12px; display:inline-flex; align-items:center; gap:6px;">
+              🔗 <span data-i18n="owner.copyBookingLink">${i18nService.t("owner.copyBookingLink", "Copy Booking Link")}</span>
+            </button>
             <button type="button" class="btn btn-primary select-branch-btn" data-branch-id="${b.id}" style="padding:12px 24px; font-weight:800; white-space:nowrap; border-radius:12px; font-size:13px; ${isActive ? 'background:#0f766e; border-color:#0f766e;' : ''}">
               ${isActive ? i18nService.t("owner.gateway.openActive", "Open Active Branch Dashboard →") : i18nService.t("owner.gateway.chooseAndEnter", "Select & Open Dashboard →")}
             </button>
@@ -229,6 +232,33 @@ export class BranchSelectController {
     container.innerHTML = cardsHtml;
 
     // Attach click listeners to cards and buttons
+    container.querySelectorAll(".copy-branch-link-btn").forEach((btn) => {
+      btn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const branchId = btn.dataset.branchId;
+        const origin = window.location.origin;
+        const pathname = window.location.pathname;
+        const basePath = pathname.substring(0, pathname.lastIndexOf("/pages/"));
+        const url = `${origin}${basePath}/pages/public/booking.html?branch=${encodeURIComponent(branchId)}`;
+
+        try {
+          await navigator.clipboard.writeText(url);
+          soundService.playSuccess();
+          const originalHtml = btn.innerHTML;
+          btn.innerHTML = `✅ ${i18nService.t("owner.copied", "Copied!")}`;
+          btn.style.background = "#dcfce7";
+          btn.style.color = "#15803d";
+          setTimeout(() => {
+            btn.innerHTML = originalHtml;
+            btn.style.background = "";
+            btn.style.color = "";
+          }, 2000);
+        } catch (err) {
+          prompt(i18nService.t("owner.copyManualPrompt", "Copy this branch booking link:"), url);
+        }
+      });
+    });
+
     container.querySelectorAll(".select-branch-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -282,53 +312,48 @@ export class BranchSelectController {
     const addressInput = document.getElementById("newBranchAddress");
     const postalFeedback = document.getElementById("postalFeedback");
 
-    // AWAL MODIFIKASI: OneMap API Auto-fill
+    // OneMap API Auto-fill (Singapore Postal Code Validation)
     if (postalInput && addressInput) {
       postalInput.addEventListener("input", async (e) => {
         const postalCode = e.target.value.trim();
 
-        // Cek jika input persis 6 digit angka (Format Kode Pos Singapura)
         if (/^\d{6}$/.test(postalCode)) {
           if (postalFeedback) {
-            postalFeedback.textContent = "⏳ Mencari alamat...";
+            postalFeedback.textContent = "⏳ " + i18nService.t("owner.gateway.searchingAddress", "Searching address...");
             postalFeedback.style.display = "block";
             postalFeedback.style.color = "#0f766e";
           }
 
           try {
-            // Memanggil endpoint pencarian dari OneMap API
             const response = await fetch(`https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${postalCode}&returnGeom=N&getAddrDetails=Y&pageNum=1`);
             const data = await response.json();
 
             if (data.found > 0) {
               const result = data.results[0];
-              // Format alamat yang umum: BLK_NO ROAD_NAME, BUILDING_NAME, SINGAPORE POSTAL_CODE
               const blk = result.BLK_NO === "NIL" ? "" : `${result.BLK_NO} `;
               const road = result.ROAD_NAME === "NIL" ? "" : result.ROAD_NAME;
               const building = result.BUILDING === "NIL" ? "" : `, ${result.BUILDING}`;
 
-              // Masukkan hasil ke input Alamat Lengkap
               addressInput.value = `${blk}${road}${building}, Singapore ${result.POSTAL}`;
 
               if (postalFeedback) {
-                postalFeedback.textContent = "✅ Alamat ditemukan";
+                postalFeedback.textContent = "✅ " + i18nService.t("owner.gateway.addressFound", "Address found");
                 postalFeedback.style.color = "#16a34a";
               }
             } else {
               if (postalFeedback) {
-                postalFeedback.textContent = "❌ Kode pos tidak valid";
+                postalFeedback.textContent = "❌ " + i18nService.t("owner.gateway.invalidPostal", "Invalid postal code");
                 postalFeedback.style.color = "#ef4444";
               }
             }
           } catch (error) {
             console.error("Error fetching OneMap API:", error);
             if (postalFeedback) {
-              postalFeedback.textContent = "⚠️ Gagal koneksi ke server";
+              postalFeedback.textContent = "⚠️ " + i18nService.t("owner.gateway.connectionFailed", "Connection failed");
               postalFeedback.style.color = "#ef4444";
             }
           }
         } else {
-          // Sembunyikan pesan jika kurang atau lebih dari 6 digit
           if (postalFeedback) postalFeedback.style.display = "none";
         }
       });
@@ -351,9 +376,9 @@ export class BranchSelectController {
         const file = e.target.files[0];
         if (!file) return;
 
-        // Validasi ukuran gambar maksimal 3MB
+        // Validate image file size (max 3MB)
         if (file.size > 3 * 1024 * 1024) {
-          alert("Ukuran gambar maksimal 3MB.");
+          alert(i18nService.t("owner.gateway.maxImageSize", "Maximum image file size is 3MB."));
           return;
         }
 

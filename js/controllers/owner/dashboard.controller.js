@@ -11,6 +11,7 @@ import { notificationService } from "../../services/notification.service.js";
 import { soundService } from "../../services/sound.service.js";
 import { bookingService } from "../../services/booking.service.js";
 import { i18nService } from "../../services/i18n.service.js";
+import { getTemplateServices } from "../../config/templates/index.js";
 
 export class OwnerDashboardController {
   constructor() {
@@ -23,6 +24,9 @@ export class OwnerDashboardController {
     this.activeBranchStaff = [];
     this.activeBranchPractitioners = [];
     this.activeBranchQueue = [];
+    this.activeBranchServices = [];
+    this.activeBranchSubscription = null;
+    this.activeBranchInvoices = [];
   }
 
   init() {
@@ -44,12 +48,16 @@ export class OwnerDashboardController {
     this.loadBrandProfile();
     this.loadBranchesAndActive();
     this.loadBranchData();
+    this.loadBranchServices();
+    this.loadBranchSubscription();
     this.renderHeader();
     this.setupTabs();
     this.renderPaneOverview();
     this.renderPaneBranchSettings();
     this.renderPaneBranchStaff();
     this.renderPaneBranchPractitioners();
+    this.renderPaneBranchServices();
+    this.renderPaneBranchSubscription();
     this.setupModals();
     this.setupSignOut();
     this.setupCopyBranchLink();
@@ -60,6 +68,8 @@ export class OwnerDashboardController {
       this.renderPaneBranchSettings();
       this.renderPaneBranchStaff();
       this.renderPaneBranchPractitioners();
+      this.renderPaneBranchServices();
+      this.renderPaneBranchSubscription();
     });
   }
 
@@ -134,7 +144,7 @@ export class OwnerDashboardController {
           email: "siti.reception@cliniva.com",
           phone: "+65 9112 3344",
           branchName: this.activeBranch.name,
-          status: "AKTIF"
+          status: "ACTIVE"
         },
         {
           id: `stf-${branchId}-02`,
@@ -143,7 +153,7 @@ export class OwnerDashboardController {
           email: "ahmad.ops@cliniva.com",
           phone: "+65 9223 5566",
           branchName: this.activeBranch.name,
-          status: "AKTIF"
+          status: "ACTIVE"
         }
       ];
       storageService.set(staffKey, staff);
@@ -181,24 +191,24 @@ export class OwnerDashboardController {
     switch (template) {
       case "tcm":
         return [
-          { id: "pr-1", name: "Dr. Chen Siew Mei, TCM Ph.D", specialty: "Akupunktur Meridian & Nyeri Kronis", room: "Ruang Akupunktur A1", shift: "09:00 - 17:00 (Sen - Sab)", fee: "SGD 130.00", status: "AKTIF" },
-          { id: "pr-2", name: "Master Wang Ting", specialty: "Herbalis Klinis & Bekam Detoks", room: "Ruang Herbal B1", shift: "13:00 - 20:00 (Sel - Min)", fee: "SGD 110.00", status: "AKTIF" }
+          { id: "pr-1", name: "Dr. Chen Siew Mei, TCM Ph.D", specialty: "Meridian Acupuncture & Pain Rehab", room: "Acupuncture Suite A1", shift: "09:00 - 17:00 (Mon - Sat)", fee: "SGD 130.00", status: "ACTIVE" },
+          { id: "pr-2", name: "Master Wang Ting", specialty: "Clinical Herbalist & Detox Cupping", room: "Herbal Suite B1", shift: "13:00 - 20:00 (Tue - Sun)", fee: "SGD 110.00", status: "ACTIVE" }
         ];
       case "wellness":
         return [
-          { id: "pr-1", name: "Jessica Miller, CIDESCO", specialty: "Deep Tissue & Aromatherapy Massage", room: "Suite Spa Sakura", shift: "10:00 - 18:00 (Setiap Hari)", fee: "SGD 140.00", status: "AKTIF" },
-          { id: "pr-2", name: "Maya Putri", specialty: "Hot Stone Therapy & Relaksasi Saraf", room: "Suite Spa Lotus", shift: "12:00 - 20:00 (Rabu - Sen)", fee: "SGD 125.00", status: "AKTIF" }
+          { id: "pr-1", name: "Jessica Miller, CIDESCO", specialty: "Deep Tissue & Aromatherapy", room: "Sakura Spa Suite", shift: "10:00 - 18:00 (Daily)", fee: "SGD 140.00", status: "ACTIVE" },
+          { id: "pr-2", name: "Maya Putri", specialty: "Hot Stone Therapy & Neural Calming", room: "Lotus Spa Suite", shift: "12:00 - 20:00 (Wed - Mon)", fee: "SGD 125.00", status: "ACTIVE" }
         ];
       case "nutrition":
         return [
-          { id: "pr-1", name: "Dr. Emily Zhao, RD", specialty: "Diet Khusus Diabetes & Komposisi Tubuh", room: "Ruang Konsultasi N1", shift: "09:00 - 17:00 (Sen - Jum)", fee: "SGD 150.00", status: "AKTIF" },
-          { id: "pr-2", name: "David Kurniawan, M.Sc", specialty: "Nutrisi Performa Olahraga & Metabolik", room: "Ruang Konsultasi N2", shift: "11:00 - 19:00 (Sen - Sab)", fee: "SGD 135.00", status: "AKTIF" }
+          { id: "pr-1", name: "Dr. Emily Zhao, RD", specialty: "Clinical Diabetes & Metabolic Diet", room: "Consultation Room N1", shift: "09:00 - 17:00 (Mon - Fri)", fee: "SGD 150.00", status: "ACTIVE" },
+          { id: "pr-2", name: "David Kurniawan, M.Sc", specialty: "Sports Nutrition & Body Composition", room: "Consultation Room N2", shift: "11:00 - 19:00 (Mon - Sat)", fee: "SGD 135.00", status: "ACTIVE" }
         ];
       case "physio":
       default:
         return [
-          { id: "pr-1", name: "Dr. Lim Wei Han, PT", specialty: "Rehabilitasi Tulang Belakang & Postur", room: "Ruang Terapi A2", shift: "09:00 - 17:00 (Sen - Sab)", fee: "SGD 120.00", status: "AKTIF" },
-          { id: "pr-2", name: "Sarah Tan, B.Sc Physio", specialty: "Cedera Sendi Olahraga & Fisioterapi Gerak", room: "Ruang Terapi B1", shift: "11:00 - 19:00 (Sel - Min)", fee: "SGD 110.00", status: "AKTIF" }
+          { id: "pr-1", name: "Dr. Lim Wei Han, PT", specialty: "Spine Rehabilitation & Posture Alignment", room: "Therapy Bay A2", shift: "09:00 - 17:00 (Mon - Sat)", fee: "SGD 120.00", status: "ACTIVE" },
+          { id: "pr-2", name: "Sarah Tan, B.Sc Physio", specialty: "Sports Joint Recovery & Movement Therapy", room: "Therapy Bay B1", shift: "11:00 - 19:00 (Tue - Sun)", fee: "SGD 110.00", status: "ACTIVE" }
         ];
     }
   }
@@ -207,28 +217,28 @@ export class OwnerDashboardController {
     switch (template) {
       case "tcm":
         return [
-          { queue: "T-01", patient: "Amanda Tan", service: "Akupunktur Nyeri Leher & Punggung", prac: "Dr. Chen Siew Mei", room: "Ruang A1", time: "09:30 AM", status: "SELESAI" },
-          { queue: "T-02", patient: "Raymond Goh", service: "Terapi Bekam & Herbal Moxa", prac: "Master Wang Ting", room: "Ruang B1", time: "11:00 AM", status: "SEDANG SESI" },
-          { queue: "T-03", patient: "Faridah Binte Omar", service: "Konsultasi Nyeri Sendi & Ramuan", prac: "Dr. Chen Siew Mei", room: "Ruang A1", time: "02:15 PM", status: "MENUNGGU" }
+          { queue: "T-01", patient: "Amanda Tan", service: "Meridian Pain Acupuncture", prac: "Dr. Chen Siew Mei", room: "Suite A1", time: "09:30 AM", status: "COMPLETED" },
+          { queue: "T-02", patient: "Raymond Goh", service: "Cupping & Herbal Moxa", prac: "Master Wang Ting", room: "Suite B1", time: "11:00 AM", status: "IN_CONSULTATION" },
+          { queue: "T-03", patient: "Faridah Binte Omar", service: "Joint Mobility & Herbal Consult", prac: "Dr. Chen Siew Mei", room: "Suite A1", time: "02:15 PM", status: "WAITING" }
         ];
       case "wellness":
         return [
-          { queue: "W-01", patient: "Chloe De Silva", service: "Aromatherapy Deep Relax Massage", prac: "Jessica Miller", room: "Suite Sakura", time: "10:30 AM", status: "SELESAI" },
-          { queue: "W-02", patient: "Evelyn Lim", service: "Hot Stone Therapy 90 Menit", prac: "Maya Putri", room: "Suite Lotus", time: "01:00 PM", status: "SEDANG SESI" },
-          { queue: "W-03", patient: "Marcus Lee", service: "Detox Body Scrub & Reflexology", prac: "Jessica Miller", room: "Suite Sakura", time: "03:30 PM", status: "MENUNGGU" }
+          { queue: "W-01", patient: "Chloe De Silva", service: "Aromatherapy Deep Relax Massage", prac: "Jessica Miller", room: "Suite Sakura", time: "10:30 AM", status: "COMPLETED" },
+          { queue: "W-02", patient: "Evelyn Lim", service: "Hot Stone Therapy 90 Mins", prac: "Maya Putri", room: "Suite Lotus", time: "01:00 PM", status: "IN_CONSULTATION" },
+          { queue: "W-03", patient: "Marcus Lee", service: "Detox Body Scrub & Reflexology", prac: "Jessica Miller", room: "Suite Sakura", time: "03:30 PM", status: "WAITING" }
         ];
       case "nutrition":
         return [
-          { queue: "N-01", patient: "Kenji Sato", service: "Evaluasi Komposisi Tubuh & Diet Plan", prac: "Dr. Emily Zhao", room: "Ruang N1", time: "09:00 AM", status: "SELESAI" },
-          { queue: "N-02", patient: "Sarah Lee", service: "Konsultasi Manajemen Berat Badan", prac: "David Kurniawan", room: "Ruang N2", time: "11:30 AM", status: "SEDANG SESI" },
-          { queue: "N-03", patient: "Haji Sulaiman", service: "Program Diet Glikemik Rendah", prac: "Dr. Emily Zhao", room: "Ruang N1", time: "02:00 PM", status: "MENUNGGU" }
+          { queue: "N-01", patient: "Kenji Sato", service: "Body Composition & Diet Plan", prac: "Dr. Emily Zhao", room: "Room N1", time: "09:00 AM", status: "COMPLETED" },
+          { queue: "N-02", patient: "Sarah Lee", service: "Weight Management Consultation", prac: "David Kurniawan", room: "Room N2", time: "11:30 AM", status: "IN_CONSULTATION" },
+          { queue: "N-03", patient: "Haji Sulaiman", service: "Low Glycemic Dietary Protocol", prac: "Dr. Emily Zhao", room: "Room N1", time: "02:00 PM", status: "WAITING" }
         ];
       case "physio":
       default:
         return [
-          { queue: "P-01", patient: "Amanda Tan", service: "Rehabilitasi Nyeri Bahu & Leher", prac: "Dr. Lim Wei Han", room: "Ruang A2", time: "09:00 AM", status: "SELESAI" },
-          { queue: "P-02", patient: "David Tan", service: "Fisioterapi Cedera Lutut ACL", prac: "Sarah Tan", room: "Ruang B1", time: "11:00 AM", status: "SEDANG SESI" },
-          { queue: "P-03", patient: "Jonathan Sim", service: "Dry Needling & Myofascial Release", prac: "Dr. Lim Wei Han", room: "Ruang A2", time: "02:30 PM", status: "MENUNGGU" }
+          { queue: "P-01", patient: "Amanda Tan", service: "Shoulder & Cervical Spine Rehab", prac: "Dr. Lim Wei Han", room: "Bay A2", time: "09:00 AM", status: "COMPLETED" },
+          { queue: "P-02", patient: "David Tan", service: "Post-ACL Knee Physiotherapy", prac: "Sarah Tan", room: "Bay B1", time: "11:00 AM", status: "IN_CONSULTATION" },
+          { queue: "P-03", patient: "Jonathan Sim", service: "Dry Needling & Myofascial Release", prac: "Dr. Lim Wei Han", room: "Bay A2", time: "02:30 PM", status: "WAITING" }
         ];
     }
   }
@@ -550,6 +560,255 @@ export class OwnerDashboardController {
     });
   }
 
+  loadBranchServices() {
+    if (!this.activeBranch) return;
+    const branchId = this.activeBranch.id;
+    const template = this.activeBranch.template || "physio";
+    const key = `cliniva_services_${branchId}`;
+
+    let services = storageService.get(key, null);
+    if (!services || !Array.isArray(services) || services.length === 0) {
+      const templateServices = getTemplateServices(template);
+      services = templateServices.map((s, idx) => ({
+        id: s.id || `srv-${branchId}-${idx + 1}`,
+        name: s.name,
+        code: s.code || `SRV-0${idx + 1}`,
+        category: s.category || "Clinical Treatment",
+        durationMinutes: s.durationMinutes || 45,
+        priceSGD: s.priceSGD || 120,
+        priceMYR: s.priceMYR || 260,
+        description: s.description || "",
+        status: "ACTIVE"
+      }));
+      storageService.set(key, services);
+    }
+    this.activeBranchServices = services;
+  }
+
+  loadBranchSubscription() {
+    if (!this.activeBranch) return;
+    const branchId = this.activeBranch.id;
+    const allSubs = storageService.get("cliniva_owner_subscriptions", []);
+
+    let sub = allSubs.find((s) => s.branchId === branchId);
+    if (!sub) {
+      // Synthesize an active annual license for this branch
+      sub = {
+        id: `sub-${branchId}`,
+        invoiceNo: `INV-2026-${this.activeBranch.code || "SG01"}`,
+        ownerId: this.currentUser ? this.currentUser.id : null,
+        ownerEmail: this.currentUser ? this.currentUser.email : null,
+        template: this.activeBranch.template || "physio",
+        branchId: branchId,
+        branchName: this.activeBranch.name,
+        durationMonths: 12,
+        amount: 948.00,
+        currency: "SGD",
+        gateway: "PayNow SG / Stripe Corporate",
+        status: "ACTIVE",
+        paidAt: new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString(),
+        expiresAt: new Date(Date.now() + 337 * 24 * 60 * 60 * 1000).toISOString()
+      };
+      allSubs.unshift(sub);
+      storageService.set("cliniva_owner_subscriptions", allSubs);
+    }
+
+    this.activeBranchSubscription = sub;
+    this.activeBranchInvoices = allSubs.filter((s) => s.branchId === branchId || !s.branchId);
+  }
+
+  renderPaneBranchServices() {
+    const tbody = document.getElementById("branchServicesTableBody");
+    if (!tbody) return;
+
+    if (!this.activeBranchServices || this.activeBranchServices.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="owner-table-empty">
+            <div class="owner-table-empty-icon">🩺</div>
+            <div class="owner-table-empty-title">${i18nService.t("owner.table.emptyServicesTitle", "No services configured yet")}</div>
+            <div class="owner-table-empty-desc">${i18nService.t("owner.table.emptyServicesDesc", "Add clinical services or treatments offered at this branch.")}</div>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = this.activeBranchServices.map((srv, idx) => {
+      const isActive = srv.status === "ACTIVE";
+      const badgeClass = isActive ? "success" : "neutral";
+      const badgeText = isActive ? i18nService.t("owner.services.activeStatus", "● Active") : i18nService.t("owner.services.inactiveStatus", "○ Inactive");
+
+      return `
+        <tr>
+          <td>
+            <div style="font-weight:700; font-size:13px; color:var(--text);">${srv.name}</div>
+            <div style="font-family:ui-monospace, monospace; font-size:11px; color:var(--muted);">${srv.code || "-"}</div>
+          </td>
+          <td><span class="pill" style="background:#f1f5f9; color:#334155; font-size:11px; font-weight:700;">${srv.category}</span></td>
+          <td class="col-center"><span style="font-size:12px; font-weight:600; color:var(--text); font-variant-numeric:tabular-nums;">⏱️ ${srv.durationMinutes} mins</span></td>
+          <td class="col-right"><span class="price-text">SGD ${parseFloat(srv.priceSGD || 0).toFixed(2)}</span></td>
+          <td><span style="font-size:12px; color:var(--muted); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${srv.description || "-"}</span></td>
+          <td class="col-center">
+            <button type="button" class="btn-toggle-service-status owner-status-badge ${badgeClass}" data-index="${idx}" style="cursor:pointer; border:none; background:transparent;" title="Toggle Active / Inactive">
+              ${badgeText}
+            </button>
+          </td>
+          <td class="col-right">
+            <button type="button" class="btn-table-action btn-table-danger btn-delete-service" data-index="${idx}" title="Delete service">🗑️ Delete</button>
+          </td>
+        </tr>
+      `;
+    }).join("");
+
+    tbody.querySelectorAll(".btn-toggle-service-status").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const idx = parseInt(btn.dataset.index, 10);
+        if (this.activeBranchServices[idx]) {
+          const current = this.activeBranchServices[idx].status;
+          this.activeBranchServices[idx].status = current === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+          storageService.set(`cliniva_services_${this.activeBranch.id}`, this.activeBranchServices);
+          soundService.playSuccess();
+          notificationService.info(`Service status updated to ${this.activeBranchServices[idx].status}.`);
+          this.renderPaneBranchServices();
+        }
+      });
+    });
+
+    tbody.querySelectorAll(".btn-delete-service").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const idx = parseInt(btn.dataset.index, 10);
+        const name = this.activeBranchServices[idx]?.name;
+        if (confirm(`Remove service "${name}" from this branch catalog?`)) {
+          this.activeBranchServices.splice(idx, 1);
+          storageService.set(`cliniva_services_${this.activeBranch.id}`, this.activeBranchServices);
+          soundService.playDelete();
+          notificationService.info(`Service "${name}" removed from catalog.`);
+          this.renderPaneBranchServices();
+        }
+      });
+    });
+  }
+
+  renderPaneBranchSubscription() {
+    const cardContainer = document.getElementById("branchLicenseCardContainer");
+    const tbody = document.getElementById("branchInvoicesTableBody");
+
+    if (cardContainer && this.activeBranchSubscription) {
+      const sub = this.activeBranchSubscription;
+      const expiresAt = new Date(sub.expiresAt);
+      const now = new Date();
+      const daysLeft = Math.max(0, Math.ceil((expiresAt - now) / (1000 * 60 * 60 * 24)));
+      const meta = this.getTemplateMeta(this.activeBranch.template);
+      const isExpiringSoon = daysLeft <= 30;
+
+      cardContainer.innerHTML = `
+        <div style="background:#ffffff; border:1px solid var(--line); border-radius:16px; padding:24px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
+            <div>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span class="pill" style="background:${meta.bg}; color:${meta.color}; font-weight:800; font-size:11px; padding:3px 8px;">
+                  ${meta.label}
+                </span>
+                <span class="pill" style="background:#dcfce7; color:#15803d; font-weight:800; font-size:11px; padding:3px 8px;">
+                  ● ACTIVE LICENSE
+                </span>
+              </div>
+              <h3 style="font-size:20px; font-weight:800; margin:0 0 4px; color:var(--text);">
+                Enterprise ${sub.durationMonths}-Month SaaS License
+              </h3>
+              <p style="font-size:12px; color:var(--muted); margin:0;">
+                Assigned Branch: <strong>${sub.branchName || this.activeBranch.name}</strong> (${this.activeBranch.code || this.activeBranch.id})
+              </p>
+            </div>
+
+            <div style="text-align:right;">
+              <div style="font-size:11px; color:var(--muted); font-weight:700; text-transform:uppercase;">Days Remaining</div>
+              <div style="font-size:28px; font-weight:900; color:${isExpiringSoon ? '#ef4444' : '#0f766e'}; line-height:1.1;">
+                ${daysLeft} <span style="font-size:13px; font-weight:700; color:var(--muted);">Days</span>
+              </div>
+              <div style="font-size:11px; color:var(--muted);">Expires on ${expiresAt.toLocaleDateString('en-SG', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; padding:16px; background:#f8fafc; border-radius:12px; border:1px solid var(--line);">
+            <div>
+              <div style="font-size:11px; color:var(--muted);">Annual Plan Fee</div>
+              <div style="font-size:15px; font-weight:800; color:var(--text);">SGD ${parseFloat(sub.amount || 948).toFixed(2)}</div>
+            </div>
+            <div>
+              <div style="font-size:11px; color:var(--muted);">Included Branch Quota</div>
+              <div style="font-size:13px; font-weight:700; color:#0f766e;">✓ Unlimited Patient Bookings</div>
+            </div>
+            <div>
+              <div style="font-size:11px; color:var(--muted);">Cloud Sync &amp; Realtime</div>
+              <div style="font-size:13px; font-weight:700; color:#0f766e;">✓ PostgreSQL + Realtime Live Queue</div>
+            </div>
+            <div>
+              <div style="font-size:11px; color:var(--muted);">WhatsApp Engine</div>
+              <div style="font-size:13px; font-weight:700; color:#0f766e;">✓ 2-Way Interactive Confirmation</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    if (tbody) {
+      if (!this.activeBranchInvoices || this.activeBranchInvoices.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="owner-table-empty">
+              <div class="owner-table-empty-icon">💳</div>
+              <div class="owner-table-empty-title">No billing invoices found</div>
+              <div class="owner-table-empty-desc">Transactions and renewal invoices will appear here.</div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = this.activeBranchInvoices.map((inv, idx) => {
+        const dateStr = inv.paidAt
+          ? new Date(inv.paidAt).toLocaleDateString('en-SG', { day: 'numeric', month: 'short', year: 'numeric' })
+          : "Recently Paid";
+        const meta = this.getTemplateMeta(inv.template || this.activeBranch.template);
+
+        return `
+          <tr>
+            <td>
+              <span style="font-family:ui-monospace, monospace; font-weight:800; font-size:12px; color:var(--text);">
+                ${inv.invoiceNo || `INV-2026-${(idx + 1).toString().padStart(3, '0')}`}
+              </span>
+            </td>
+            <td>
+              <span class="pill" style="background:${meta.bg}; color:${meta.color}; font-weight:800; font-size:11px;">
+                ${meta.label}
+              </span>
+            </td>
+            <td class="col-center"><span style="font-weight:700; font-size:12px;">${inv.durationMonths || 12} Months</span></td>
+            <td class="col-right"><span class="price-text">SGD ${parseFloat(inv.amount || 948).toFixed(2)}</span></td>
+            <td><span style="font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums;">🗓️ ${dateStr}</span></td>
+            <td class="col-center"><span class="owner-status-badge success">● PAID</span></td>
+            <td class="col-right">
+              <button type="button" class="btn-table-action btn-download-receipt" data-index="${idx}" style="color:#0f766e; border-color:#99f6e4; background:#f0fdfa;" title="View Official Receipt">
+                📄 Receipt PDF
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      tbody.querySelectorAll(".btn-download-receipt").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const idx = parseInt(btn.dataset.index, 10);
+          const inv = this.activeBranchInvoices[idx];
+          soundService.playSuccess();
+          notificationService.success(`Official invoice ${inv.invoiceNo || "INV-2026"} downloaded.`);
+        });
+      });
+    }
+  }
+
   setupModals() {
     // 1. Staff Modal
     const btnOpenStaff = document.getElementById("btnOpenAddStaffModal");
@@ -620,6 +879,122 @@ export class OwnerDashboardController {
         pracForm.reset();
         closePracModal();
         this.renderPaneBranchPractitioners();
+      });
+    }
+
+    // 3. Service Modal
+    const btnOpenService = document.getElementById("btnOpenAddServiceModal");
+    const serviceOverlay = document.getElementById("addServiceModalOverlay");
+    const btnCloseService = document.getElementById("btnCloseServiceModal");
+    const btnCancelService = document.getElementById("btnCancelServiceModal");
+    const serviceForm = document.getElementById("addServiceForm");
+
+    if (btnOpenService) btnOpenService.addEventListener("click", () => serviceOverlay.style.display = "flex");
+    const closeServiceModal = () => serviceOverlay.style.display = "none";
+    if (btnCloseService) btnCloseService.addEventListener("click", closeServiceModal);
+    if (btnCancelService) btnCancelService.addEventListener("click", closeServiceModal);
+
+    if (serviceForm) {
+      serviceForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("newServiceName")?.value.trim();
+        const category = document.getElementById("newServiceCategory")?.value.trim() || "General Consultation";
+        const duration = parseInt(document.getElementById("newServiceDuration")?.value, 10) || 45;
+        const price = parseFloat(document.getElementById("newServicePrice")?.value) || 120;
+        const code = document.getElementById("newServiceCode")?.value.trim() || `PT-0${this.activeBranchServices.length + 1}`;
+        const desc = document.getElementById("newServiceDescription")?.value.trim() || "";
+
+        const newService = {
+          id: `srv-${this.activeBranch.id}-${Date.now()}`,
+          name,
+          category,
+          durationMinutes: duration,
+          priceSGD: price,
+          priceMYR: Math.round(price * 2.2),
+          code,
+          description: desc,
+          status: "ACTIVE"
+        };
+
+        this.activeBranchServices.push(newService);
+        storageService.set(`cliniva_services_${this.activeBranch.id}`, this.activeBranchServices);
+        soundService.playSuccess();
+        notificationService.success(`Service "${newService.name}" published to branch catalog!`);
+        serviceForm.reset();
+        closeServiceModal();
+        this.renderPaneBranchServices();
+      });
+    }
+
+    // 4. Renew Subscription Modal
+    const btnOpenRenew = document.getElementById("btnOpenRenewModal");
+    const renewOverlay = document.getElementById("renewSubscriptionModalOverlay");
+    const btnCloseRenew = document.getElementById("btnCloseRenewModal");
+    const btnCancelRenew = document.getElementById("btnCancelRenewModal");
+    const renewForm = document.getElementById("renewSubscriptionForm");
+    const renewTotalAmount = document.getElementById("renewTotalAmount");
+
+    if (btnOpenRenew) btnOpenRenew.addEventListener("click", () => renewOverlay.style.display = "flex");
+    const closeRenewModal = () => renewOverlay.style.display = "none";
+    if (btnCloseRenew) btnCloseRenew.addEventListener("click", closeRenewModal);
+    if (btnCancelRenew) btnCancelRenew.addEventListener("click", closeRenewModal);
+
+    // Update total price when plan radio changes
+    const planRadios = document.querySelectorAll('input[name="renewPlan"]');
+    planRadios.forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        const price = e.target.dataset.price;
+        if (renewTotalAmount && price) {
+          renewTotalAmount.textContent = `SGD ${parseFloat(price).toFixed(2)}`;
+        }
+      });
+    });
+
+    if (renewForm) {
+      renewForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const selectedRadio = document.querySelector('input[name="renewPlan"]:checked');
+        const planMonths = selectedRadio ? parseInt(selectedRadio.value, 10) : 12;
+        const planPrice = selectedRadio ? parseFloat(selectedRadio.dataset.price) : 948;
+
+        const currentExpires = this.activeBranchSubscription?.expiresAt
+          ? new Date(this.activeBranchSubscription.expiresAt)
+          : new Date();
+        const baseDate = currentExpires > new Date() ? currentExpires : new Date();
+        const newExpires = new Date(baseDate.getTime() + planMonths * 30 * 24 * 60 * 60 * 1000);
+
+        const newInvoice = {
+          id: `sub-${Date.now()}`,
+          invoiceNo: `INV-${new Date().getFullYear()}-${this.activeBranch.code || "SG01"}-${Math.floor(100 + Math.random() * 900)}`,
+          ownerId: this.currentUser ? this.currentUser.id : null,
+          ownerEmail: this.currentUser ? this.currentUser.email : null,
+          template: this.activeBranch.template || "physio",
+          branchId: this.activeBranch.id,
+          branchName: this.activeBranch.name,
+          durationMonths: planMonths,
+          amount: planPrice,
+          currency: "SGD",
+          gateway: "PayNow SG / Stripe Corporate",
+          status: "ACTIVE",
+          paidAt: new Date().toISOString(),
+          expiresAt: newExpires.toISOString()
+        };
+
+        const allSubs = storageService.get("cliniva_owner_subscriptions", []);
+        // Update active subscription expiry
+        const subIndex = allSubs.findIndex((s) => s.branchId === this.activeBranch.id);
+        if (subIndex !== -1) {
+          allSubs[subIndex].expiresAt = newExpires.toISOString();
+          allSubs[subIndex].durationMonths = (allSubs[subIndex].durationMonths || 0) + planMonths;
+        }
+        allSubs.unshift(newInvoice);
+        storageService.set("cliniva_owner_subscriptions", allSubs);
+
+        this.loadBranchSubscription();
+        soundService.playSuccess();
+        notificationService.success(`SaaS License extended by ${planMonths} months! Valid until ${newExpires.toLocaleDateString('en-SG', { day: 'numeric', month: 'short', year: 'numeric' })}.`);
+        closeRenewModal();
+        this.renderPaneBranchSubscription();
       });
     }
   }

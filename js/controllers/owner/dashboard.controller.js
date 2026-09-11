@@ -52,6 +52,7 @@ export class OwnerDashboardController {
     this.renderPaneBranchPractitioners();
     this.setupModals();
     this.setupSignOut();
+    this.setupCopyBranchLink();
 
     document.addEventListener("cliniva:languageChanged", () => {
       this.renderHeader();
@@ -627,5 +628,24 @@ export class OwnerDashboardController {
         authService.signOut();
       });
     }
+  }
+
+  setupCopyBranchLink() {
+    const btn = document.getElementById("btnCopyBranchBookingLink");
+    if (!btn) return;
+
+    btn.addEventListener("click", () => {
+      soundService.playClickTone();
+      const branchId = this.activeBranch ? this.activeBranch.id : "br-sg-orchard-01";
+      const origin = window.location.origin + window.location.pathname.replace('/pages/owner/dashboard.html', '');
+      const shareUrl = `${origin}/pages/public/booking.html?branch=${encodeURIComponent(branchId)}`;
+
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        notificationService.success(i18nService.t("owner.linkCopiedToast", "✅ Patient booking link copied to clipboard!"));
+      }).catch((err) => {
+        console.error("Clipboard copy failed", err);
+        prompt("Copy this branch booking link:", shareUrl);
+      });
+    });
   }
 }

@@ -55,9 +55,9 @@ export class PatientBookingController {
   }
 
   init() {
-    // Session Guard: Verify user has USER role (Patient)
-    const session = authService.requireAuth([USER_ROLES.USER]);
-    if (!session) return;
+    // Session (Optional for Guest Booking)
+    const session = authService.getCurrentSession();
+    const currentUser = session ? session.user : { name: "Guest Patient", contact: "No Phone Provided", role: USER_ROLES.GUEST };
 
     // --- AWAL MODIFIKASI: BACA PARAMETER URL ---
     // 1. Ambil parameter URL '?branch=...'
@@ -163,16 +163,21 @@ export class PatientBookingController {
   renderPatientHeader(user) {
     const nameEl = document.getElementById("bookingPatientName");
     const contactEl = document.getElementById("bookingPatientContact");
-    if (nameEl) nameEl.textContent = user.name;
-    if (contactEl) contactEl.textContent = user.contact || "+65 8123 4567";
+    if (nameEl) nameEl.textContent = user?.name || "Guest Patient";
+    if (contactEl) contactEl.textContent = user?.contact || "Guest Session";
 
     const signOutBtn = document.getElementById("bookingSignOutBtn");
     if (signOutBtn) {
-      signOutBtn.addEventListener("click", () => {
-        if (confirm(i18nService.t("booking.confirmSignOut", "Are you sure you want to sign out?"))) {
-          authService.logout();
-        }
-      });
+      if (!user || user.role === USER_ROLES.GUEST) {
+        signOutBtn.style.display = "none";
+      } else {
+        signOutBtn.style.display = "inline-block";
+        signOutBtn.addEventListener("click", () => {
+          if (confirm(i18nService.t("booking.confirmSignOut", "Are you sure you want to sign out?"))) {
+            authService.logout();
+          }
+        });
+      }
     }
   }
 
@@ -950,8 +955,8 @@ export class PatientBookingController {
         const newBooking = {
           code: bookingCode,
           queueNumber: queueCode,
-          patientName: user.name || "Amanda Tan",
-          patientPhone: user.contact || "+65 8123 4567",
+          patientName: user?.name || "Guest Patient",
+          patientPhone: user?.contact || "No Phone Provided",
           branchId: this.selectedBranch ? this.selectedBranch.id : "sg-orchard",
           branchName: this.bookingDraft.branchName,
           branchAddress: this.bookingDraft.branchAddress,

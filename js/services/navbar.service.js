@@ -193,7 +193,7 @@ class NavbarService {
         <div style="display:flex; align-items:center; gap:12px;">
           <div style="text-align:right; line-height:1.2;">
             <div style="font-size:12px; font-weight:800; color:var(--text);">${user.name}</div>
-            <div style="font-size:10px; color:#0369a1; font-weight:700;">🏪 Admin Cabang</div>
+            <div style="font-size:10px; color:#0369a1; font-weight:700;">🏪 Branch Admin</div>
           </div>
           <a href="${this._resolvePath("pages/branch-admin/index.html")}" class="btn btn-sm btn-primary">Branch Console →</a>
           <button type="button" class="btn btn-sm btn-soft global-nav-signout" title="Sign Out">Sign Out</button>
@@ -258,7 +258,7 @@ class NavbarService {
     } else if ((role === USER_ROLES.BRANCH_ADMIN || role === "BRANCH_MANAGER" || role === "RECEPTIONIST") && user) {
       return `
         <div style="padding:10px 0; font-size:12px; color:var(--text); font-weight:800;">
-          🏪 ${user.name} (Admin Cabang)
+          🏪 ${user.name} (Branch Admin)
         </div>
         <a href="${this._resolvePath("pages/branch-admin/index.html")}" class="btn btn-primary full">Branch Console</a>
         <button type="button" class="btn btn-soft full global-nav-signout" style="margin-top:8px;">Sign Out</button>

@@ -708,47 +708,41 @@
           schedules for this branch will remain strictly isolated from other tenants and branches.
         </div>
 
-        <div
-          style="background:#f0fdfa; border:1px solid #99f6e4; border-radius:var(--radius-md); padding:14px; margin-bottom:24px; font-size:13px; color:var(--primary-dark); line-height:1.5;">
-          ✓ <strong>Isolated Data Partition Created:</strong> All patient appointments, intake records, and staff
-          schedules for this branch will remain strictly isolated from other tenants and branches.
-        </div>
-
-        <!-- AWAL MODIFIKASI: PENAGIHAN LANGGANAN (ONBOARDING) -->
-        <h4 style="margin:0 0 16px; font-size:15px; font-weight:800; color:var(--text);">💳 Pilih Paket Langganan Sistem
+        <!-- B2B Subscription Billing Plan (Onboarding) -->
+        <h4 style="margin:0 0 16px; font-size:15px; font-weight:800; color:var(--text);" data-i18n="owner.onboarding.subsTitle">💳 Select System Subscription Plan
         </h4>
 
         <div class="field" style="margin-bottom: 8px;">
           <div style="display:flex; gap:12px; flex-wrap:wrap;">
 
-            <!-- 1 Bulan -->
+            <!-- 1 Month -->
             <label
               style="flex:1; border:1.5px solid var(--line); border-radius:10px; padding:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
               class="subs-radio-label-wizard">
               <input type="radio" name="wizardSubsPlan" value="1" data-price="99" style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--text);">1 Bulan</span>
-              <span style="color:var(--muted); font-size:12px;">SGD 99/bln</span>
+              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan1m">1 Month</span>
+              <span style="color:var(--muted); font-size:12px;">SGD 99/mo</span>
             </label>
 
-            <!-- 6 Bulan -->
+            <!-- 6 Months -->
             <label
               style="flex:1; border:1.5px solid var(--line); border-radius:10px; padding:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
               class="subs-radio-label-wizard">
               <input type="radio" name="wizardSubsPlan" value="6" data-price="534" style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--text);">6 Bulan</span>
-              <span style="color:var(--muted); font-size:12px;">SGD 89/bln (Hemat 10%)</span>
+              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan6m">6 Months</span>
+              <span style="color:var(--muted); font-size:12px;">SGD 89/mo (<span data-i18n="owner.onboarding.save10">Save 10%</span>)</span>
             </label>
 
-            <!-- 1 Tahun (Decoy / Best Value) -->
+            <!-- 1 Year (Decoy / Best Value) -->
             <label
               style="flex:1; border:1.5px solid var(--primary); border-radius:10px; padding:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f0fdfa; position:relative;"
               class="subs-radio-label-wizard">
               <div
-                style="position:absolute; top:-10px; background:var(--primary); color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:0.5px;">
+                style="position:absolute; top:-10px; background:var(--primary); color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:0.5px;" data-i18n="owner.onboarding.bestValue">
                 BEST VALUE</div>
               <input type="radio" name="wizardSubsPlan" value="12" data-price="948" checked style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--primary);">1 Tahun</span>
-              <span style="color:var(--primary-dark); font-size:12px;">SGD 79/bln (Hemat 20%)</span>
+              <span style="font-weight:800; font-size:14px; color:var(--primary);" data-i18n="owner.onboarding.plan1y">1 Year</span>
+              <span style="color:var(--primary-dark); font-size:12px;">SGD 79/mo (<span data-i18n="owner.onboarding.save20">Save 20%</span>)</span>
             </label>
 
           </div>
@@ -757,17 +751,16 @@
         <div
           style="background:#f1f5f9; padding:16px; border-radius:10px; margin-bottom:24px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
           <div>
-            <div style="font-size:12px; color:var(--muted); font-weight:600;">Total Tagihan Sistem:</div>
-            <div style="font-size:11px; color:#64748b; margin-top:2px;">Akan ditagih ke Kartu Kredit</div>
+            <div style="font-size:12px; color:var(--muted); font-weight:600;" data-i18n="owner.onboarding.totalBilling">Total System Billing:</div>
+            <div style="font-size:11px; color:#64748b; margin-top:2px;" data-i18n="owner.onboarding.billedCard">Will be charged to Credit Card</div>
           </div>
           <div style="font-size:22px; font-weight:900; color:var(--text);" id="wizardTotalBillingAmount">SGD 948.00
           </div>
         </div>
-        <!-- AKHIR MODIFIKASI -->
 
         <button type="button" class="btn btn-primary full" id="btnLaunchClinic"
-          style="padding:16px; font-size:16px; font-weight:800;">
-          🚀 Bayar &amp; Buka Dashboard Cabang →
+          style="padding:16px; font-size:16px; font-weight:800;" data-i18n="owner.onboarding.btnLaunch">
+          🚀 Pay &amp; Launch Branch Dashboard →
         </button>
 
         <div style="display:flex; justify-content:flex-start; margin-top:16px;">

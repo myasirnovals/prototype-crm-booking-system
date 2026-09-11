@@ -38,26 +38,26 @@ export const ROLE_CONFIG = {
     description: "Brand management: create branches, assign Branch Admin, view cross-branch reports"
   },
   [USER_ROLES.BRANCH_ADMIN]: {
-    name: "Admin Cabang (Branch Admin)",
+    name: "Branch Admin",
     homeRoute: "pages/branch-admin/index.html",
-    badge: "🏪 Admin Cabang",
+    badge: "🏪 Branch Admin",
     color: "#0369a1",
-    description: "Operasional cabang: antrean meja depan (front desk), dokter/praktisi cabang, jadwal & keterisian ruangan"
+    description: "Branch operations: front desk queue, clinic doctors/practitioners, room schedules & occupancy"
   },
   // Backward compatibility fallback keys
   "BRANCH_MANAGER": {
-    name: "Admin Cabang (Branch Admin)",
+    name: "Branch Admin",
     homeRoute: "pages/branch-admin/index.html",
-    badge: "🏪 Admin Cabang",
+    badge: "🏪 Branch Admin",
     color: "#0369a1",
-    description: "Operasional cabang: antrean meja depan (front desk), dokter/praktisi cabang, jadwal & keterisian ruangan"
+    description: "Branch operations: front desk queue, clinic doctors/practitioners, room schedules & occupancy"
   },
   "RECEPTIONIST": {
-    name: "Admin Cabang (Branch Admin)",
+    name: "Branch Admin",
     homeRoute: "pages/branch-admin/index.html",
-    badge: "🏪 Admin Cabang",
+    badge: "🏪 Branch Admin",
     color: "#0369a1",
-    description: "Operasional cabang: antrean meja depan (front desk), dokter/praktisi cabang, jadwal & keterisian ruangan"
+    description: "Branch operations: front desk queue, clinic doctors/practitioners, room schedules & occupancy"
   },
   [USER_ROLES.PRACTITIONER]: {
     name: "Practitioner / Doctor / Therapist",

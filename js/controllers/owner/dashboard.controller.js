@@ -81,11 +81,11 @@ export class OwnerDashboardController {
         id: "br-sg-orchard-01",
         name: this.currentUser.branchName && this.currentUser.branchName !== "Setup Pending"
           ? this.currentUser.branchName
-          : "Paragon Medical Flagship (Cabang 1)",
+          : "Paragon Medical Flagship (Branch 1)",
         code: "SG-01",
         address: "290 Orchard Road, #09-12 Paragon Medical Suites, Singapore 238859",
         phone: "+65 6733 8899",
-        hours: "09:00 - 20:00 (Sen - Sab)",
+        hours: "09:00 - 20:00 (Mon - Sat)",
         rooms: "4",
         template: this.currentUser.activeTemplate || "physio",
         currency: "SGD",
@@ -573,12 +573,14 @@ export class OwnerDashboardController {
           phone: document.getElementById("newStaffPhone").value.trim(),
           role: document.getElementById("newStaffRole").value,
           branchName: this.activeBranch.name,
-          status: "AKTIF"
+          status: "ACTIVE"
         };
         this.activeBranchStaff.push(newStaff);
         storageService.set(`cliniva_staff_${this.activeBranch.id}`, this.activeBranchStaff);
         soundService.playSuccess();
-        notificationService.success(`Staf ${newStaff.name} berhasil ditambahkan!`);
+        notificationService.showToast
+          ? notificationService.showToast(`Staff member ${newStaff.name} added successfully!`, "success")
+          : notificationService.success?.(`Staff member ${newStaff.name} added successfully!`);
         staffForm.reset();
         closeStaffModal();
         this.renderPaneBranchStaff();
@@ -607,12 +609,14 @@ export class OwnerDashboardController {
           room: document.getElementById("newPracRoom").value.trim(),
           shift: document.getElementById("newPracShift").value.trim(),
           fee: document.getElementById("newPracFee").value.trim(),
-          status: "AKTIF"
+          status: "ACTIVE"
         };
         this.activeBranchPractitioners.push(newPrac);
         storageService.set(`cliniva_practitioners_${this.activeBranch.id}`, this.activeBranchPractitioners);
         soundService.playSuccess();
-        notificationService.success(`Praktisi ${newPrac.name} berhasil didaftarkan ke cabang!`);
+        notificationService.showToast
+          ? notificationService.showToast(`Practitioner ${newPrac.name} scheduled successfully!`, "success")
+          : notificationService.success?.(`Practitioner ${newPrac.name} scheduled successfully!`);
         pracForm.reset();
         closePracModal();
         this.renderPaneBranchPractitioners();
@@ -641,7 +645,12 @@ export class OwnerDashboardController {
       const shareUrl = `${origin}/pages/public/booking.html?branch=${encodeURIComponent(branchId)}`;
 
       navigator.clipboard.writeText(shareUrl).then(() => {
-        notificationService.success(i18nService.t("owner.linkCopiedToast", "✅ Patient booking link copied to clipboard!"));
+        const msg = i18nService.t("owner.linkCopiedToast", "✅ Patient booking link copied to clipboard!");
+        if (notificationService.showToast) {
+          notificationService.showToast(msg, "success");
+        } else if (notificationService.success) {
+          notificationService.success(msg);
+        }
       }).catch((err) => {
         console.error("Clipboard copy failed", err);
         prompt("Copy this branch booking link:", shareUrl);

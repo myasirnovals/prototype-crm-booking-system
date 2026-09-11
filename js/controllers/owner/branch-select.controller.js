@@ -9,6 +9,7 @@ import { storageService } from "../../services/storage.service.js";
 import { soundService } from "../../services/sound.service.js";
 import { bookingService } from "../../services/booking.service.js";
 import { i18nService } from "../../services/i18n.service.js";
+import { supabaseService } from "../../services/supabase.service.js";
 
 export class BranchSelectController {
   constructor() {
@@ -65,11 +66,11 @@ export class BranchSelectController {
         id: "br-sg-orchard-01",
         name: this.currentUser.branchName && this.currentUser.branchName !== "Setup Pending"
           ? this.currentUser.branchName
-          : "Paragon Medical Flagship (Cabang 1)",
+          : "Paragon Medical Flagship (Branch 1)",
         code: "SG-01",
         address: "290 Orchard Road, #09-12 Paragon Medical Suites, Singapore 238859",
         phone: "+65 6733 8899",
-        hours: "09:00 - 20:00 (Sen - Sab)",
+        hours: "09:00 - 20:00 (Mon - Sat)",
         rooms: "4",
         template: this.currentUser.activeTemplate || "physio",
         currency: "SGD",
@@ -364,7 +365,7 @@ export class BranchSelectController {
           previewImage.style.display = "block";
           previewEmoji.style.display = "none";
           btnRemoveLogo.style.display = "inline-block";
-          uploadTitle.textContent = "Logo berhasil diunggah";
+          uploadTitle.textContent = i18nService.t("owner.gateway.logoUploaded", "Logo uploaded successfully");
         };
         reader.readAsDataURL(file);
       });
@@ -372,14 +373,14 @@ export class BranchSelectController {
 
     if (btnRemoveLogo) {
       btnRemoveLogo.addEventListener("click", (e) => {
-        e.stopPropagation(); // Mencegah klik menembus ke dropZone
+        e.stopPropagation();
         logoInput.value = "";
         hiddenLogoVal.value = "";
         previewImage.src = "";
         previewImage.style.display = "none";
         previewEmoji.style.display = "block";
         btnRemoveLogo.style.display = "none";
-        uploadTitle.textContent = "Klik untuk unggah logo cabang";
+        uploadTitle.textContent = i18nService.t("owner.gateway.clickUploadLogo", "Click to upload branch logo");
       });
     }
     // AKHIR MODIFIKASI
@@ -434,6 +435,43 @@ export class BranchSelectController {
 
         this.branches.push(newBranch);
         storageService.set("cliniva_branches", this.branches);
+
+        // Record Branch Subscription Plan
+        const selectedPlan = document.querySelector('input[name="subsPlan"]:checked');
+        const planDuration = selectedPlan ? parseInt(selectedPlan.value, 10) : 12;
+        const planPrice = selectedPlan ? parseFloat(selectedPlan.dataset.price) : 948;
+
+        const subscription = {
+          id: `sub-${Date.now()}`,
+          ownerId: this.currentUser ? this.currentUser.id : null,
+          ownerEmail: this.currentUser ? this.currentUser.email : null,
+          template,
+          branchId: newBranchId,
+          branchName: name,
+          durationMonths: planDuration,
+          amount: planPrice,
+          currency: "SGD",
+          status: "ACTIVE",
+          paidAt: new Date().toISOString(),
+          expiresAt: new Date(Date.now() + planDuration * 30 * 24 * 60 * 60 * 1000).toISOString()
+        };
+        const existingSubs = storageService.get("cliniva_owner_subscriptions", []);
+        storageService.set("cliniva_owner_subscriptions", [subscription, ...existingSubs]);
+
+        // Sync to Supabase Cloud if available
+        if (supabaseService.isAvailable()) {
+          supabaseService.upsertBranch({
+            id: newBranchId,
+            name,
+            address,
+            phone,
+            hours,
+            regionCode: "sg",
+            region: "Singapore",
+            country: "Singapore",
+            currency: "SGD"
+          }).catch(err => console.warn("[BranchSelect] Cloud branch sync failed:", err));
+        }
 
         soundService.playQueueChime();
         closeModal();

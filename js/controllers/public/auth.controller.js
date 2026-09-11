@@ -361,7 +361,7 @@ export class AuthController {
           this.resetModal.setAttribute("aria-hidden", "true");
           this.showSuccess(
             this.staffStatus,
-            `🔑 Password untuk <strong>${result.user.name}</strong> berhasil diperbarui. Silakan klik <strong>Sign In to Dashboard →</strong>.`
+            `🔑 Password for <strong>${result.user.name}</strong> updated successfully. Please click <strong>Sign In to Dashboard →</strong>.`
           );
         }, 1300);
       });

@@ -9,6 +9,7 @@ import { storageService } from "../../services/storage.service.js";
 import { soundService } from "../../services/sound.service.js";
 import { bookingService } from "../../services/booking.service.js";
 import { i18nService } from "../../services/i18n.service.js";
+import { supabaseService } from "../../services/supabase.service.js";
 
 export class AdminOnboardingController {
   constructor() {
@@ -108,7 +109,7 @@ export class AdminOnboardingController {
         const branchAddress = document.getElementById("branchAddressInput")?.value.trim();
 
         if (!branchName || !branchAddress) {
-          alert("Please fill in both the Branch Name and Physical Address for Cabang 1.");
+          alert("Please fill in both the Branch Name and Physical Address for Branch 1.");
           return;
         }
 
@@ -354,7 +355,7 @@ export class AdminOnboardingController {
     launchBtn.addEventListener("click", () => {
       soundService.playQueueChime();
       launchBtn.disabled = true;
-      launchBtn.innerHTML = "⏳ Memproses Pembayaran & Menyiapkan Tenant...";
+      launchBtn.innerHTML = i18nService.t("owner.onboarding.launchProcessing", "⏳ Processing Payment & Provisioning Tenant...");
 
       const brandName = document.getElementById("brandNameInput")?.value.trim() || "My Clinic";
       const brandTagline = document.getElementById("brandTaglineInput")?.value.trim() || "";
@@ -389,7 +390,6 @@ export class AdminOnboardingController {
 
       // 2. Save Branch to Branches Storage
       let currentBranches = storageService.get("cliniva_branches", []);
-      // If user had no custom branches, start clean with this new primary branch, ensuring no duplicate branch names
       currentBranches = [
         newBranch,
         ...currentBranches.filter(
@@ -398,6 +398,28 @@ export class AdminOnboardingController {
       ];
       storageService.set("cliniva_branches", currentBranches);
       storageService.set("cliniva_active_branch_id", branchId);
+
+      // 2b. Save B2B Subscription Record
+      const selectedPlan = document.querySelector('input[name="wizardSubsPlan"]:checked');
+      const planDuration = selectedPlan ? parseInt(selectedPlan.value, 10) : 12;
+      const planPrice = selectedPlan ? parseFloat(selectedPlan.dataset.price) : 948;
+
+      const subscription = {
+        id: `sub-${Date.now()}`,
+        ownerId: this.currentUser.id,
+        ownerEmail: this.currentUser.email,
+        template: this.selectedTemplate,
+        branchId: branchId,
+        branchName: branchName,
+        durationMonths: planDuration,
+        amount: planPrice,
+        currency: region === "sg" ? "SGD" : "MYR",
+        status: "ACTIVE",
+        paidAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + planDuration * 30 * 24 * 60 * 60 * 1000).toISOString()
+      };
+      const existingSubs = storageService.get("cliniva_owner_subscriptions", []);
+      storageService.set("cliniva_owner_subscriptions", [subscription, ...existingSubs]);
 
       // 3. Save Brand Profile
       const brandProfile = {
@@ -425,6 +447,21 @@ export class AdminOnboardingController {
         branchId,
         branchName
       });
+
+      // 6. Sync to Supabase Cloud if available
+      if (supabaseService.isAvailable()) {
+        supabaseService.upsertBranch({
+          id: branchId,
+          name: branchName,
+          address: branchAddress,
+          phone: branchPhone,
+          hours: branchHours,
+          regionCode: region,
+          region: region === "sg" ? "Singapore" : "Malaysia",
+          country: region === "sg" ? "Singapore" : "Malaysia",
+          currency: region === "sg" ? "SGD" : "MYR"
+        }).catch(err => console.warn("[Onboarding] Cloud branch sync failed:", err));
+      }
 
       setTimeout(() => {
         const alertMsg = (i18nService.t("onboarding.completeAlert", "🎉 ONBOARDING COMPLETE!\n\nBrand: {brand}\nTemplate: {template}\nBranch 1: {branch}\n\nRedirecting to Owner Dashboard..."))

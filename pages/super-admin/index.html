@@ -159,18 +159,82 @@
 
     /* ── Create Owner Panel ──────────────────────────────── */
     .create-owner-panel {
-      background: #fff;
-      border: 1.5px solid #c7d2fe;
-      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid #e0e7ff;
+      border-radius: 16px;
       padding: 24px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.08), 0 8px 10px -6px rgba(79, 70, 229, 0.04);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .create-owner-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .create-owner-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: #e0e7ff;
+      color: #4f46e5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
     }
 
     .sa-form-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px 20px;
       margin-top: 16px;
+    }
+
+    .sa-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sa-form-group .form-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #374151;
+      margin: 0;
+      display: block;
+      letter-spacing: 0.01em;
+    }
+
+    .sa-form-group .input,
+    .create-owner-panel .input {
+      width: 100%;
+      height: 42px;
+      padding: 0 14px;
+      font-size: 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background-color: #f8fafc;
+      color: #0f172a;
+      outline: none;
+      box-sizing: border-box;
+      transition: all 0.15s ease-in-out;
+    }
+
+    .sa-form-group .input:focus,
+    .create-owner-panel .input:focus {
+      border-color: #4f46e5;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3.5px rgba(79, 70, 229, 0.15);
+    }
+
+    .sa-form-group .input::placeholder,
+    .create-owner-panel .input::placeholder {
+      color: #94a3b8;
     }
 
     /* ── Audit Log ───────────────────────────────────────── */
@@ -555,35 +619,41 @@
 
         <!-- Create Owner Form (hidden by default) -->
         <div class="create-owner-panel" id="createOwnerPanel" style="display:none;">
-          <h3 style="font-size:15px; font-weight:800; margin:0 0 4px; color:#4f46e5;">Create New Owner Account</h3>
-          <p style="font-size:12px; color:var(--muted); margin:0;">The Owner will receive their credentials and complete
-            branch setup on first login.</p>
+          <div class="create-owner-header">
+            <div class="create-owner-icon">👤</div>
+            <div>
+              <h3 style="font-size:16px; font-weight:700; margin:0 0 4px; color:#1e293b;" data-i18n="superAdmin.createOwnerTitle">Create New Owner Account</h3>
+              <p style="font-size:13px; color:#64748b; margin:0;" data-i18n="superAdmin.createOwnerDesc">The Owner will receive their credentials and complete branch setup on first login.</p>
+            </div>
+          </div>
 
           <div class="sa-form-grid">
-            <div>
-              <label class="form-label">Full Name *</label>
+            <div class="sa-form-group">
+              <label class="form-label" data-i18n="superAdmin.fullName">Full Name *</label>
               <input type="text" id="newOwnerName" class="input" placeholder="e.g. Ahmad bin Hassan" />
             </div>
-            <div>
-              <label class="form-label">Email Address *</label>
+            <div class="sa-form-group">
+              <label class="form-label" data-i18n="superAdmin.emailAddress">Email Address *</label>
               <input type="email" id="newOwnerEmail" class="input" placeholder="e.g. ahmad@clinicname.com" />
             </div>
-            <div>
-              <label class="form-label">Phone Number</label>
+            <div class="sa-form-group">
+              <label class="form-label" data-i18n="superAdmin.phoneNumber">Phone Number</label>
               <input type="tel" id="newOwnerPhone" class="input" placeholder="e.g. +60 12 345 6789" />
             </div>
-            <div>
-              <label class="form-label">Initial Password</label>
+            <div class="sa-form-group">
+              <label class="form-label" data-i18n="superAdmin.initialPassword">Initial Password</label>
               <input type="text" id="newOwnerPass" class="input" placeholder="Default: cliniva2026" />
             </div>
           </div>
 
-          <div class="sa-form-actions" style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
-            <button class="btn btn-soft" id="cancelCreateOwnerBtn"
-              onclick="document.getElementById('createOwnerPanel').style.display='none'; document.getElementById('showCreateOwnerBtn').textContent='+ Add Owner Account';">
+          <div class="sa-form-actions" style="margin-top:24px; padding-top:16px; border-top:1px solid #f1f5f9; display:flex; gap:12px; justify-content:flex-end;">
+            <button class="btn btn-soft" id="cancelCreateOwnerBtn" style="padding:10px 18px; font-weight:600; border-radius:8px;"
+              onclick="document.getElementById('createOwnerPanel').style.display='none'; document.getElementById('showCreateOwnerBtn').textContent='+ Add Owner Account';"
+              data-i18n="common.cancel">
               Cancel
             </button>
-            <button class="btn btn-primary" id="createOwnerSubmitBtn" style="background:#4f46e5; border-color:#4f46e5;">
+            <button class="btn btn-primary" id="createOwnerSubmitBtn" style="background:#4f46e5; border-color:#4f46e5; padding:10px 20px; font-weight:600; border-radius:8px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);"
+              data-i18n="superAdmin.createOwnerSubmitBtn">
               ✓ Create Owner Account
             </button>
           </div>

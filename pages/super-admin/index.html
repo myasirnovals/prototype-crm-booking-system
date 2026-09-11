@@ -455,25 +455,25 @@
 
     <!-- Sidebar (Desktop View) -->
     <aside class="sa-sidebar">
-      <div class="sa-sidebar-label">Platform</div>
+      <div class="sa-sidebar-label" data-i18n="superAdmin.nav.labelPlatform">Platform</div>
       <button class="sa-tab-btn active" data-pane="paneStats" id="tabStats" data-i18n="superAdmin.nav.overview">
         📊 Platform Overview
       </button>
 
-      <div class="sa-sidebar-label">Owner Management</div>
+      <div class="sa-sidebar-label" data-i18n="superAdmin.nav.labelOwner">Owner Management</div>
       <button class="sa-tab-btn" data-pane="paneOwners" id="tabOwners" data-i18n="superAdmin.nav.owners">
         💼 Owner Accounts
       </button>
 
-      <div class="sa-sidebar-label">Tenant Operations</div>
-      <button class="sa-tab-btn" data-pane="paneTenants" id="tabTenants">
+      <div class="sa-sidebar-label" data-i18n="superAdmin.nav.labelTenant">Tenant Operations</div>
+      <button class="sa-tab-btn" data-pane="paneTenants" id="tabTenants" data-i18n="superAdmin.nav.tenants">
         🏢 Tenants &amp; Branches
       </button>
-      <button class="sa-tab-btn" data-pane="paneSubscriptions" id="tabSubscriptions">
+      <button class="sa-tab-btn" data-pane="paneSubscriptions" id="tabSubscriptions" data-i18n="superAdmin.nav.subscriptions">
         💳 Subscription &amp; Billing
       </button>
 
-      <div class="sa-sidebar-label">System</div>
+      <div class="sa-sidebar-label" data-i18n="superAdmin.nav.labelSystem">System</div>
       <button class="sa-tab-btn" data-pane="paneAudit" id="tabAudit" data-i18n="superAdmin.nav.audit">
         🛡️ Audit Logs
       </button>
@@ -633,6 +633,55 @@
         </div>
       </section>
 
+      <!-- ── PANE 4: Tenants & Branches ────────────────────────────────── -->
+      <section class="sa-tab-pane" id="paneTenants">
+        <div class="sa-page-header">
+          <div>
+            <h1 class="sa-page-title" data-i18n="superAdmin.tenants.title">Tenant &amp; Branch Control</h1>
+            <p class="sa-page-sub" data-i18n="superAdmin.tenants.sub">Monitor all active clinic branches across the platform and manage operational status.</p>
+          </div>
+        </div>
+        <div style="overflow-x:auto; border-radius:14px; border:1px solid var(--line);">
+          <table class="sa-table">
+            <thead>
+              <tr>
+                <th data-i18n="superAdmin.tableBranchName">Branch Name</th>
+                <th data-i18n="superAdmin.tableTemplate">Template</th>
+                <th data-i18n="superAdmin.tableOwnerTenant">Owner / Tenant</th>
+                <th data-i18n="superAdmin.tableStatus">Status</th>
+                <th data-i18n="superAdmin.tableCreated">Created</th>
+                <th style="text-align:right;" data-i18n="superAdmin.tableActions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="superAdminBranchTableBody">
+              <tr>
+                <td colspan="6" style="text-align:center; padding:32px; color:var(--muted);">Loading branches…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── PANE 5: Subscriptions & Billing ──────────────────────────── -->
+      <section class="sa-tab-pane" id="paneSubscriptions">
+        <div class="sa-page-header">
+          <div>
+            <h1 class="sa-page-title" data-i18n="superAdmin.subs.title">Subscription &amp; Billing Management</h1>
+            <p class="sa-page-sub" data-i18n="superAdmin.subs.sub">Track B2B software license subscriptions (1, 6, and 12-month plans) for all branches.</p>
+          </div>
+        </div>
+        <div class="sa-stats-grid" style="margin-bottom:24px;">
+          <div class="sa-stat-card">
+            <div class="sa-stat-label" data-i18n="superAdmin.statRevenue">Total Subscription Revenue</div>
+            <div class="sa-stat-value" id="saStatRevenue" style="color:#0f766e; font-size:28px;">SGD 0.00</div>
+          </div>
+          <div class="sa-stat-card">
+            <div class="sa-stat-label" data-i18n="superAdmin.statActiveSubs">Active Subscriptions</div>
+            <div class="sa-stat-value" id="saStatActiveSubs" style="color:#4f46e5;">0</div>
+          </div>
+        </div>
+      </section>
+
     </main>
   </div>
 
@@ -655,54 +704,4 @@
   <!-- Controller -->
   <script type="module" src="../../js/controllers/super-admin/super-admin.controller.js"></script>
 </body>
-
-<!-- ── PANE 4: Tenants & Branches ────────────────────────────────── -->
-<section class="sa-tab-pane" id="paneTenants">
-  <div class="sa-page-header">
-    <div>
-      <h1 class="sa-page-title">Tenant &amp; Branch Control</h1>
-      <p class="sa-page-sub">Monitor all active clinic branches across the platform and manage operational status.</p>
-    </div>
-  </div>
-  <div style="overflow-x:auto; border-radius:14px; border:1px solid var(--line);">
-    <table class="sa-table">
-      <thead>
-        <tr>
-          <th>Branch Name</th>
-          <th>Template</th>
-          <th>Owner / Tenant</th>
-          <th>Status</th>
-          <th>Created</th>
-          <th style="text-align:right;">Actions</th>
-        </tr>
-      </thead>
-      <tbody id="superAdminBranchTableBody">
-        <tr>
-          <td colspan="6" style="text-align:center; padding:32px; color:var(--muted);">Loading branches…</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<!-- ── PANE 5: Subscriptions & Billing ──────────────────────────── -->
-<section class="sa-tab-pane" id="paneSubscriptions">
-  <div class="sa-page-header">
-    <div>
-      <h1 class="sa-page-title">Subscription &amp; Billing Management</h1>
-      <p class="sa-page-sub">Track B2B software license subscriptions (1, 6, and 12-month plans) for all branches.</p>
-    </div>
-  </div>
-  <div class="sa-stats-grid" style="margin-bottom:24px;">
-    <div class="sa-stat-card">
-      <div class="sa-stat-label">Total Subscription Revenue</div>
-      <div class="sa-stat-value" id="saStatRevenue" style="color:#0f766e; font-size:28px;">SGD 0.00</div>
-    </div>
-    <div class="sa-stat-card">
-      <div class="sa-stat-label">Active Subscriptions</div>
-      <div class="sa-stat-value" id="saStatActiveSubs" style="color:#4f46e5;">0</div>
-    </div>
-  </div>
-</section>
-
 </html>

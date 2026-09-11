@@ -12,7 +12,7 @@ export const TCM_TEMPLATE = {
   accentColor: "#0f766e", // Medical Jade / Herbal Teal
   practitionerTitle: "Sinse / TCM Physician",
   practitionerTitleI18n: "template.tcm.practitionerTitle",
-  demoUrl: "https://prototype-crm-booking-system.vercel.app/",
+  demoUrl: "https://crm.isol.sg/login",
   pricing: {
     monthly: 99,
     sixMonth: 534,

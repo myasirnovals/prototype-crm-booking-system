@@ -17,7 +17,7 @@ import { supabaseService } from "../../services/supabase.service.js";
 
 export class SuperAdminController {
   constructor() {
-    this.AUDIT_KEY   = "cliniva_audit_logs";
+    this.AUDIT_KEY = "cliniva_audit_logs";
     this.currentUser = null;
   }
 
@@ -56,7 +56,7 @@ export class SuperAdminController {
   // ─────────────────────────────────────────────────────────────────────────
 
   setupTabs() {
-    const btns  = document.querySelectorAll(".sa-tab-btn");
+    const btns = document.querySelectorAll(".sa-tab-btn");
     const panes = document.querySelectorAll(".sa-tab-pane");
 
     btns.forEach((btn) => {
@@ -107,12 +107,12 @@ export class SuperAdminController {
       branches = storageService.get("cliniva_branches", []);
     }
 
-    const owners  = users.filter(u => u.role === USER_ROLES.OWNER);
-    const active  = owners.filter(u => u.onboardingCompleted);
+    const owners = users.filter(u => u.role === USER_ROLES.OWNER);
+    const active = owners.filter(u => u.onboardingCompleted);
     const pending = owners.filter(u => !u.onboardingCompleted);
 
-    this._setText("statTotalOwners",   owners.length);
-    this._setText("statActiveOwners",  active.length);
+    this._setText("statTotalOwners", owners.length);
+    this._setText("statActiveOwners", active.length);
     this._setText("statPendingOwners", pending.length);
     this._setText("statTotalBranches", branches.length);
   }
@@ -177,7 +177,7 @@ export class SuperAdminController {
   // ─────────────────────────────────────────────────────────────────────────
 
   setupCreateOwnerForm() {
-    const btn  = document.getElementById("showCreateOwnerBtn");
+    const btn = document.getElementById("showCreateOwnerBtn");
     const form = document.getElementById("createOwnerPanel");
     if (btn && form) {
       btn.addEventListener("click", () => {
@@ -193,10 +193,10 @@ export class SuperAdminController {
   }
 
   _createOwner() {
-    const name  = document.getElementById("newOwnerName")?.value?.trim();
+    const name = document.getElementById("newOwnerName")?.value?.trim();
     const email = document.getElementById("newOwnerEmail")?.value?.trim();
     const phone = document.getElementById("newOwnerPhone")?.value?.trim();
-    const pass  = document.getElementById("newOwnerPass")?.value?.trim() || "cliniva2026";
+    const pass = document.getElementById("newOwnerPass")?.value?.trim() || "cliniva2026";
 
     if (!name || !email) {
       alert("Please fill in Name and Email to create an Owner account.");
@@ -284,6 +284,38 @@ export class SuperAdminController {
     }
     this._logAudit(`Super Admin simulated login as Owner ID: ${userId}`);
     window.location.href = "../../" + result.targetRoute;
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // TENANT & BRANCH MONITORING (Super Admin Full Control)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  async renderAllBranches() {
+    const container = document.getElementById("superAdminBranchTableBody");
+    if (!container) return;
+
+    let branches = storageService.get("cliniva_branches", []);
+    let users = authService.getUsers();
+
+    if (branches.length === 0) {
+      container.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:32px; color:var(--muted);">No branch units registered yet.</td></tr>`;
+      return;
+    }
+
+    container.innerHTML = branches.map(b => {
+      return `
+        <tr>
+          <td style="font-weight:700; color:var(--text);">${b.name} <span style="font-size:11px; color:var(--muted);">(${b.code || "SG-01"})</span></td>
+          <td><span class="pill" style="font-size:11px; padding:3px 8px; background:#f0fdfa; color:#0f766e; font-weight:700;">${b.template || "physio"}</span></td>
+          <td>Platform Tenant</td>
+          <td><span class="pill" style="font-size:11px; padding:3px 8px; background:#dcfce7; color:#166534; font-weight:700;">● ACTIVE</span></td>
+          <td style="font-size:12px; color:var(--muted);">${b.createdAt ? new Date(b.createdAt).toLocaleDateString() : "Recent"}</td>
+          <td style="text-align:right;">
+            <button class="btn btn-sm btn-soft" onclick="alert('Super Admin: Branch review and audit status updated.')" style="font-size:11px; padding:4px 8px;">Audit Branch</button>
+          </td>
+        </tr>
+      `;
+    }).join("");
   }
 
   // ─────────────────────────────────────────────────────────────────────────

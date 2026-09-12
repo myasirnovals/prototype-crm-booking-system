@@ -599,6 +599,43 @@ class SupabaseService {
       console.warn("[SupabaseService] createProfile exception:", err);
       return null;
     }
+  /**
+   * Update existing profile in Supabase
+   * @param {string} userId
+   * @param {object} updates
+   * @returns {Promise<object|null>}
+   */
+  async updateProfile(userId, updates = {}) {
+    const supabase = await getSupabaseClient();
+    if (!supabase || !userId) return null;
+
+    try {
+      const payload = {};
+      if (updates.name !== undefined) payload.name = updates.name;
+      if (updates.email !== undefined) payload.email = updates.email.toLowerCase().trim();
+      if (updates.phone !== undefined) payload.phone = updates.phone;
+      if (updates.role !== undefined) payload.role = updates.role;
+      if (updates.title !== undefined) payload.title = updates.title;
+      if (updates.branchId !== undefined) payload.branch_id = updates.branchId;
+      if (updates.branchName !== undefined) payload.branch_name = updates.branchName;
+      if (updates.onboardingCompleted !== undefined) payload.onboarding_completed = updates.onboardingCompleted;
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .update(payload)
+        .eq("id", userId)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("[SupabaseService] updateProfile error:", error);
+        return null;
+      }
+      return data;
+    } catch (err) {
+      console.warn("[SupabaseService] updateProfile exception:", err);
+      return null;
+    }
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -669,6 +706,39 @@ class SupabaseService {
       return data;
     } catch (err) {
       console.warn("[SupabaseService] upsertBranch exception:", err);
+      return null;
+    }
+  }
+
+  /**
+   * Update branch operational status and payment verification
+   * @param {string} branchId
+   * @param {string} status - "ACTIVE" | "PENDING_PAYMENT" | "SUSPENDED"
+   * @param {boolean} [isActive]
+   * @returns {Promise<object|null>}
+   */
+  async updateBranchStatus(branchId, status, isActive = true) {
+    const supabase = await getSupabaseClient();
+    if (!supabase || !branchId) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from("branches")
+        .update({
+          status: status,
+          is_active: isActive
+        })
+        .eq("id", branchId)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("[SupabaseService] updateBranchStatus error:", error);
+        return null;
+      }
+      return data;
+    } catch (err) {
+      console.warn("[SupabaseService] updateBranchStatus exception:", err);
       return null;
     }
   }

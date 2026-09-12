@@ -583,6 +583,82 @@
         font-weight: 500;
       }
     }
+
+    /* ── Super Admin Modal Overlays & Cards ──────────────── */
+    .sa-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      box-sizing: border-box;
+      animation: saFadeIn 0.18s ease-out;
+    }
+
+    .sa-modal-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 26px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+      border: 1px solid #e2e8f0;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: saSlideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      box-sizing: border-box;
+    }
+
+    @keyframes saFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes saSlideUp {
+      from { opacity: 0; transform: translateY(16px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ── Filter Bar Styles ───────────────────────────────── */
+    .sa-filter-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid var(--line, #e2e8f0);
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .sa-filter-input,
+    .sa-filter-select {
+      height: 38px;
+      padding: 0 12px;
+      font-size: 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #f8fafc;
+      color: #0f172a;
+      outline: none;
+      transition: all 0.15s ease;
+    }
+
+    .sa-filter-input:focus,
+    .sa-filter-select:focus {
+      border-color: #4f46e5;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    }
   </style>
 </head>
 
@@ -652,6 +728,10 @@
       <button class="sa-tab-btn" data-pane="paneSubscriptions" id="tabSubscriptions"
         data-i18n="superAdmin.nav.subscriptions">
         💳 Subscription &amp; Billing
+      </button>
+      <button class="sa-tab-btn" data-pane="paneUsersAppointments" id="tabUsersAppointments"
+        data-i18n="superAdmin.nav.usersAppointments">
+        👥 Users &amp; Appointments
       </button>
 
       <div class="sa-sidebar-label" data-i18n="superAdmin.nav.labelSystem">System</div>
@@ -741,6 +821,14 @@
               <div>
                 <div class="sa-action-tile-title" data-i18n="superAdmin.quickActions.subsTitle">Subscriptions &amp; Billing</div>
                 <div class="sa-action-tile-desc" data-i18n="superAdmin.quickActions.subsDesc">Track B2B license revenue</div>
+              </div>
+            </button>
+
+            <button type="button" class="sa-action-tile sa-tab-btn" data-pane="paneUsersAppointments">
+              <div class="sa-action-tile-icon" style="background:#dbeafe; color:#1d4ed8;">👥</div>
+              <div>
+                <div class="sa-action-tile-title" data-i18n="superAdmin.quickActions.usersApptsTitle">Users &amp; Appointments</div>
+                <div class="sa-action-tile-desc" data-i18n="superAdmin.quickActions.usersApptsDesc">Cross-tenant patient tracking</div>
               </div>
             </button>
 
@@ -909,6 +997,127 @@
         </div>
       </section>
 
+      <!-- ── PANE 7: Aggregated Users & Appointments (Cross-Tenant Supervisory) ── -->
+      <section class="sa-tab-pane" id="paneUsersAppointments">
+        <div class="sa-page-header">
+          <div>
+            <h1 class="sa-page-title" data-i18n="superAdmin.usersAppts.title">Users &amp; Appointments Aggregation</h1>
+            <p class="sa-page-sub" data-i18n="superAdmin.usersAppts.sub">Supervisory cross-tenant tracking of patients and clinical appointments across all owners and branches.</p>
+          </div>
+          <button class="btn btn-soft sa-page-action-btn" id="refreshUsersApptsBtn">
+            ↻ <span data-i18n="superAdmin.refreshData">Refresh Live Data</span>
+          </button>
+        </div>
+
+        <!-- Metric KPI Cards -->
+        <div class="sa-stats-grid">
+          <div class="sa-stat-card">
+            <div class="sa-stat-label" data-i18n="superAdmin.usersAppts.statTotalPatients">Total Patients / Users</div>
+            <div class="sa-stat-value" id="statTotalPatients" style="color:#0f766e;">—</div>
+          </div>
+          <div class="sa-stat-card">
+            <div class="sa-stat-label" data-i18n="superAdmin.usersAppts.statTotalBookings">Total Appointments</div>
+            <div class="sa-stat-value" id="statTotalBookings" style="color:#4f46e5;">—</div>
+          </div>
+          <div class="sa-stat-card">
+            <div class="sa-stat-label" data-i18n="superAdmin.usersAppts.statConfirmedBookings">Confirmed / Waiting</div>
+            <div class="sa-stat-value" id="statConfirmedBookings" style="color:#d97706;">—</div>
+          </div>
+          <div class="sa-stat-card">
+            <div class="sa-stat-label" data-i18n="superAdmin.usersAppts.statCompletedBookings">Completed Treatments</div>
+            <div class="sa-stat-value" id="statCompletedBookings" style="color:#16a34a;">—</div>
+          </div>
+        </div>
+
+        <!-- Filter Controls Bar -->
+        <div class="sa-filter-bar">
+          <input type="text" id="filterApptSearch" class="sa-filter-input" style="flex:1; min-width:200px;" placeholder="Search patient name, phone, or booking code..." data-i18n-placeholder="superAdmin.usersAppts.searchPlaceholder" />
+          
+          <select id="filterApptOwner" class="sa-filter-select" aria-label="Filter by Owner">
+            <option value="ALL">All Owners</option>
+          </select>
+
+          <select id="filterApptTemplate" class="sa-filter-select" aria-label="Filter by Template">
+            <option value="ALL">All Templates</option>
+            <option value="tcm">Traditional Chinese Medicine</option>
+            <option value="wellness">Wellness &amp; Spa</option>
+            <option value="nutrition">Nutrition &amp; Diet</option>
+            <option value="physio">Physiotherapy &amp; Rehab</option>
+            <option value="personal-trainer">Personal Trainer</option>
+          </select>
+
+          <select id="filterApptStatus" class="sa-filter-select" aria-label="Filter by Status">
+            <option value="ALL">All Statuses</option>
+            <option value="CONFIRMED">CONFIRMED</option>
+            <option value="WAITING">WAITING</option>
+            <option value="IN_CONSULT">IN_CONSULT</option>
+            <option value="COMPLETED">COMPLETED</option>
+            <option value="CANCELLED">CANCELLED</option>
+          </select>
+
+          <button type="button" class="btn btn-sm btn-soft" id="resetApptFilterBtn" data-i18n="superAdmin.resetFilter">Reset</button>
+        </div>
+
+        <!-- Table Helper for Mobile -->
+        <div class="sa-table-helper" style="display:none;">
+          <span data-i18n="superAdmin.tableScrollHint">👆 Swipe table horizontally to view all data</span>
+        </div>
+
+        <!-- Aggregated Appointments Table -->
+        <div style="margin-bottom:32px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="font-size:16px; font-weight:800; color:var(--text); margin:0;" data-i18n="superAdmin.usersAppts.tableTitle">Platform-Wide Appointments</h3>
+            <span id="apptRecordCount" style="font-size:12px; font-weight:700; color:var(--muted);">0 records</span>
+          </div>
+          <div style="overflow-x:auto; border-radius:14px; border:1px solid var(--line); -webkit-overflow-scrolling:touch;">
+            <table class="sa-table">
+              <thead>
+                <tr>
+                  <th data-i18n="superAdmin.tableCode">Code</th>
+                  <th data-i18n="superAdmin.tablePatient">Patient / User</th>
+                  <th data-i18n="superAdmin.tableBranchName">Branch &amp; Template</th>
+                  <th data-i18n="superAdmin.tableService">Practitioner &amp; Service</th>
+                  <th data-i18n="superAdmin.tableSchedule">Schedule</th>
+                  <th data-i18n="superAdmin.tableStatus">Status</th>
+                  <th style="text-align:right;" data-i18n="superAdmin.tableActions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="aggregatedAppointmentsTableBody">
+                <tr>
+                  <td colspan="7" style="text-align:center; padding:32px; color:var(--muted);">Loading appointments…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Registered Patient Profiles Section -->
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="font-size:16px; font-weight:800; color:var(--text); margin:0;" data-i18n="superAdmin.usersAppts.patientsTitle">Registered Patients Registry</h3>
+            <span id="patientRecordCount" style="font-size:12px; font-weight:700; color:var(--muted);">0 users</span>
+          </div>
+          <div style="overflow-x:auto; border-radius:14px; border:1px solid var(--line); -webkit-overflow-scrolling:touch;">
+            <table class="sa-table">
+              <thead>
+                <tr>
+                  <th data-i18n="superAdmin.tablePatient">Patient Name</th>
+                  <th data-i18n="superAdmin.tablePhone">Contact Info</th>
+                  <th data-i18n="superAdmin.tableBrand">Associated Clinic</th>
+                  <th data-i18n="superAdmin.tableJoined">Registered</th>
+                  <th style="text-align:right;" data-i18n="superAdmin.tableTotalVisits">Total Bookings</th>
+                </tr>
+              </thead>
+              <tbody id="registeredPatientsTableBody">
+                <tr>
+                  <td colspan="5" style="text-align:center; padding:32px; color:var(--muted);">Loading patient registry…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <!-- ── PANE 6: Template & Offering Management ────────────────────── -->
       <section class="sa-tab-pane" id="paneTemplates">
         <div class="sa-page-header">
@@ -990,6 +1199,10 @@
       <span class="sa-mob-icon">📊</span>
       <span data-i18n="superAdmin.mobNavOverview">Overview</span>
     </button>
+    <button class="sa-mob-btn sa-tab-btn" data-pane="paneUsersAppointments" id="mobTabUsersAppointments" title="Users & Appointments">
+      <span class="sa-mob-icon">👥</span>
+      <span data-i18n="superAdmin.mobNavAppointments">Appointments</span>
+    </button>
     <button class="sa-mob-btn sa-tab-btn" data-pane="paneTemplates" id="mobTabTemplates" title="Templates & Offerings">
       <span class="sa-mob-icon">📦</span>
       <span data-i18n="superAdmin.nav.templates">Templates</span>
@@ -1003,6 +1216,134 @@
       <span data-i18n="superAdmin.mobNavAudit">Audit</span>
     </button>
   </nav>
+
+  <!-- ── MODAL 1: Edit Owner Account ──────────────────────────────────── -->
+  <div class="sa-modal-overlay" id="editOwnerModal" style="display:none;">
+    <div class="sa-modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="create-owner-icon" style="width:36px; height:36px; font-size:18px;">✏️</div>
+          <div>
+            <h3 style="font-size:16px; font-weight:800; color:var(--text); margin:0 0 2px;" data-i18n="superAdmin.editOwnerTitle">Edit Owner Account</h3>
+            <p style="font-size:12px; color:var(--muted); margin:0;" data-i18n="superAdmin.editOwnerSub">Update clinic owner profile and operational status.</p>
+          </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-soft" id="closeEditOwnerModalBtn" style="padding:4px 8px; font-size:14px;">✕</button>
+      </div>
+
+      <form id="editOwnerForm">
+        <input type="hidden" id="editOwnerId" />
+        <div class="sa-form-grid" style="grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="sa-form-group">
+            <label class="form-label" data-i18n="superAdmin.fullName">Full Name *</label>
+            <input type="text" id="editOwnerName" class="input" required />
+          </div>
+          <div class="sa-form-group">
+            <label class="form-label" data-i18n="superAdmin.emailAddress">Email Address *</label>
+            <input type="email" id="editOwnerEmail" class="input" required />
+          </div>
+          <div class="sa-form-group">
+            <label class="form-label" data-i18n="superAdmin.phoneNumber">Phone Number</label>
+            <input type="tel" id="editOwnerPhone" class="input" />
+          </div>
+          <div class="sa-form-group">
+            <label class="form-label" data-i18n="superAdmin.tableBrand">Brand / Clinic Name</label>
+            <input type="text" id="editOwnerBrand" class="input" placeholder="e.g. Orchard Wellness Suite" />
+          </div>
+          <div class="sa-form-group">
+            <label class="form-label" data-i18n="superAdmin.tableStatus">Account Status</label>
+            <select id="editOwnerStatus" class="input" style="height:42px; font-weight:700;">
+              <option value="ACTIVE">✓ Active (Approved)</option>
+              <option value="PENDING">⏳ Pending Setup</option>
+              <option value="SUSPENDED">🚫 Suspended</option>
+            </select>
+          </div>
+          <div class="sa-form-group">
+            <label class="form-label" data-i18n="superAdmin.resetPassword">New Password (Optional)</label>
+            <input type="text" id="editOwnerPass" class="input" placeholder="Min. 6 chars or leave empty" />
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; padding-top:16px; border-top:1px solid var(--line);">
+          <button type="button" class="btn btn-soft" id="cancelEditOwnerModalBtn" data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="background:#4f46e5; border-color:#4f46e5; font-weight:700;" data-i18n="common.save">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── MODAL 2: Branch Operational Status & Override ───────────────────── -->
+  <div class="sa-modal-overlay" id="branchStatusModal" style="display:none;">
+    <div class="sa-modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="create-owner-icon" style="width:36px; height:36px; font-size:18px; background:#ccfbf1; color:#0f766e;">🏢</div>
+          <div>
+            <h3 style="font-size:16px; font-weight:800; color:var(--text); margin:0 0 2px;" data-i18n="superAdmin.branchStatusTitle">Branch Status &amp; Override</h3>
+            <p style="font-size:12px; color:var(--muted); margin:0;" data-i18n="superAdmin.branchStatusSub">Control operational status and payment gate verification.</p>
+          </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-soft" id="closeBranchStatusModalBtn" style="padding:4px 8px; font-size:14px;">✕</button>
+      </div>
+
+      <form id="branchStatusForm">
+        <input type="hidden" id="statusBranchId" />
+        <div style="background:#f8fafc; border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:14px;">
+          <div style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase;" data-i18n="superAdmin.branchTarget">Target Branch:</div>
+          <div style="font-size:14px; font-weight:800; color:var(--text);" id="statusBranchNameDisplay">—</div>
+          <div style="font-size:11px; color:var(--muted);" id="statusBranchOwnerDisplay">—</div>
+        </div>
+
+        <div class="sa-form-group" style="margin-bottom:12px;">
+          <label class="form-label" data-i18n="superAdmin.operationalStatusLabel">Operational Status</label>
+          <select id="branchOperationalStatus" class="input" style="height:42px; font-weight:700;">
+            <option value="ACTIVE">● ACTIVE — Operational &amp; Booking Live</option>
+            <option value="PENDING_PAYMENT">⏳ PENDING_PAYMENT — Paywall Locked</option>
+            <option value="SUSPENDED">🚫 SUSPENDED — Temporarily Disabled</option>
+          </select>
+        </div>
+
+        <div style="background:#f0fdfa; border:1px solid #99f6e4; border-radius:10px; padding:12px 14px; margin-bottom:16px;">
+          <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:13px; font-weight:700; color:#0f766e;">
+            <input type="checkbox" id="branchPaymentVerifiedOverride" style="width:18px; height:18px; accent-color:#0f766e;" />
+            <span data-i18n="superAdmin.markPaidOverride">Super Admin Override: Mark Subscription as Paid</span>
+          </label>
+          <p style="font-size:11px; color:#0f766e; margin:6px 0 0 28px;" data-i18n="superAdmin.overrideHelp">
+            Bypasses the billing gate and activates the branch URL for offline/wire transfers.
+          </p>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; padding-top:16px; border-top:1px solid var(--line);">
+          <button type="button" class="btn btn-soft" id="cancelBranchStatusModalBtn" data-i18n="common.cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="background:#0f766e; border-color:#0f766e; font-weight:700;" data-i18n="superAdmin.saveBranchStatusBtn">Save Branch Status</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── MODAL 3: Appointment Details Inspection ─────────────────────────── -->
+  <div class="sa-modal-overlay" id="appointmentDetailModal" style="display:none;">
+    <div class="sa-modal-card" style="max-width:580px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="create-owner-icon" style="width:36px; height:36px; font-size:18px; background:#e0e7ff; color:#4338ca;">📅</div>
+          <div>
+            <h3 style="font-size:16px; font-weight:800; color:var(--text); margin:0 0 2px;" id="appDetailCodeTitle">Appointment #</h3>
+            <p style="font-size:12px; color:var(--muted); margin:0;" data-i18n="superAdmin.appDetailSub">Supervisory appointment and patient intake record.</p>
+          </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-soft" id="closeAppDetailModalBtn" style="padding:4px 8px; font-size:14px;">✕</button>
+      </div>
+
+      <div id="appointmentDetailBody" style="display:flex; flex-direction:column; gap:12px;">
+        <!-- Content populated dynamically -->
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; padding-top:16px; border-top:1px solid var(--line);">
+        <button type="button" class="btn btn-soft" id="closeAppDetailFooterBtn" data-i18n="common.close">Close</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Controller -->
   <script type="module" src="../../js/controllers/super-admin/super-admin.controller.js"></script>

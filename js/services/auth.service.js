@@ -665,6 +665,77 @@ class AuthService {
   }
 
   /**
+   * Update an existing user/owner account (Super Admin action)
+   * @param {string} userId
+   * @param {object} updates
+   * @returns {{ success: boolean, user?: object, error?: string }}
+   */
+  updateUserAccount(userId, updates = {}) {
+    if (!userId) {
+      return { success: false, error: "User ID is required." };
+    }
+
+    const users = this.getUsers();
+    const index = users.findIndex((u) => u.id === userId);
+    if (index === -1) {
+      return { success: false, error: "User account not found." };
+    }
+
+    const user = users[index];
+
+    // If updating email, check for duplicate email
+    if (updates.email && updates.email.trim().toLowerCase() !== user.email.toLowerCase()) {
+      const cleanEmail = updates.email.trim().toLowerCase();
+      if (users.some((u) => u.id !== userId && u.email.toLowerCase() === cleanEmail)) {
+        return { success: false, error: `Email '${cleanEmail}' is already used by another account.` };
+      }
+      user.email = cleanEmail;
+    }
+
+    if (updates.name) user.name = updates.name.trim();
+    if (updates.phone !== undefined) user.phone = updates.phone.trim();
+    if (updates.brandName !== undefined) user.brandName = updates.brandName.trim();
+    if (updates.status !== undefined) user.status = updates.status;
+    if (updates.password && updates.password.trim().length >= 6) {
+      user.password = updates.password.trim();
+    }
+    if (updates.role) user.role = updates.role;
+    if (updates.onboardingCompleted !== undefined) {
+      user.onboardingCompleted = Boolean(updates.onboardingCompleted);
+    }
+    user.updatedAt = new Date().toISOString();
+
+    users[index] = user;
+    this.saveUsers(users);
+
+    // Synchronize session if the edited user is currently logged in
+    const currentSession = this.getCurrentSession();
+    if (currentSession && currentSession.user && currentSession.user.id === userId) {
+      currentSession.user = {
+        ...currentSession.user,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        brandName: user.brandName,
+        status: user.status,
+        onboardingCompleted: user.onboardingCompleted
+      };
+      storageService.set(this.SESSION_KEY, currentSession);
+    }
+
+    if (notificationService && typeof notificationService.addSystemNotification === "function") {
+      notificationService.addSystemNotification({
+        title: "Account Details Updated",
+        message: `Account for ${user.name} (${user.email}) was updated.`,
+        category: "AUDIT",
+        type: "info"
+      });
+    }
+
+    return { success: true, user };
+  }
+
+  /**
    * Delete user account by ID (Cannot delete currently active user)
    */
   deleteUserAccount(userId) {

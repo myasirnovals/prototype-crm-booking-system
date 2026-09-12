@@ -334,8 +334,34 @@ export class AdminOnboardingController {
 
   setupTemplateSelection() {
     const cards = document.querySelectorAll(".template-card");
+    const lightbox = document.getElementById("templateLightboxModal");
+    const lightboxImg = document.getElementById("lightboxImage");
+    const lightboxTitle = document.getElementById("lightboxTemplateTitle");
+    const btnCloseLightbox = document.getElementById("btnCloseLightbox");
+    const btnSelectFromLightbox = document.getElementById("btnSelectFromLightbox");
+
+    let currentLightboxTemplate = null;
+
     cards.forEach((card) => {
-      card.addEventListener("click", () => {
+      card.addEventListener("click", (e) => {
+        // If clicked on the zoom button, open full screenshot lightbox
+        const zoomBtn = e.target.closest(".btn-preview-zoom");
+        if (zoomBtn) {
+          e.stopPropagation();
+          const imgSrc = zoomBtn.dataset.preview;
+          const title = zoomBtn.dataset.title;
+          const templateId = card.dataset.template;
+
+          currentLightboxTemplate = templateId;
+          if (lightboxImg) lightboxImg.src = imgSrc;
+          if (lightboxTitle) lightboxTitle.textContent = title;
+          if (lightbox) {
+            lightbox.style.display = "flex";
+            soundService.playClickTone();
+          }
+          return;
+        }
+
         cards.forEach((c) => c.classList.remove("active"));
         card.classList.add("active");
         this.selectedTemplate = card.dataset.template || "physio";
@@ -346,6 +372,37 @@ export class AdminOnboardingController {
         soundService.playClickTone();
       });
     });
+
+    if (btnCloseLightbox && lightbox) {
+      btnCloseLightbox.addEventListener("click", () => {
+        lightbox.style.display = "none";
+        soundService.playClickTone();
+      });
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) {
+          lightbox.style.display = "none";
+        }
+      });
+    }
+
+    if (btnSelectFromLightbox && lightbox) {
+      btnSelectFromLightbox.addEventListener("click", () => {
+        if (currentLightboxTemplate) {
+          const targetCard = document.querySelector(`.template-card[data-template="${currentLightboxTemplate}"]`);
+          if (targetCard) {
+            cards.forEach((c) => c.classList.remove("active"));
+            targetCard.classList.add("active");
+            this.selectedTemplate = currentLightboxTemplate;
+            const input = document.getElementById("selectedTemplateId");
+            if (input) input.value = this.selectedTemplate;
+            this.updateSubscriptionPricing();
+            this.updateReviewSummary();
+            soundService.playQueueChime();
+          }
+        }
+        lightbox.style.display = "none";
+      });
+    }
   }
 
   setupServiceModeSelection() {

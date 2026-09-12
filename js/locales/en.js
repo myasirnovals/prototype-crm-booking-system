@@ -1495,6 +1495,28 @@ export const en = {
   "superAdmin.markPaidOverride": "Super Admin Override: Mark Subscription as Paid",
   "superAdmin.overrideHelp": "Bypasses the billing gate and activates the branch URL for offline/wire transfers.",
   "superAdmin.saveBranchStatusBtn": "Save Branch Status",
-  "superAdmin.appDetailSub": "Supervisory appointment and patient intake record."
+  "superAdmin.appDetailSub": "Supervisory appointment and patient intake record.",
+
+  // Owner Onboarding & Template Visual Previews
+  "owner.onboarding.serviceModeLabel": "Service Delivery Model",
+  "owner.onboarding.serviceModeSub": "Select how clinical treatments and consultations are delivered to patients",
+  "owner.onboarding.modeInClinicTitle": "In-Clinic Facility Only",
+  "owner.onboarding.modeInClinicDesc": "Patients visit your physical clinic location or private therapy rooms.",
+  "owner.onboarding.modeHomeCareTitle": "Home Care Only (Home Visit)",
+  "owner.onboarding.modeHomeCareDesc": "Practitioners travel directly to patients' homes or designated addresses.",
+  "owner.onboarding.modeHybridTitle": "Hybrid (Both In-Clinic & Home Care)",
+  "owner.onboarding.modeHybridDesc": "Patients can flexibly choose either in-clinic or on-demand home visits during booking.",
+  "owner.onboarding.modeInClinicBadge": "In-Clinic",
+  "owner.onboarding.modeHomeCareBadge": "Home Care",
+  "owner.onboarding.modeHybridBadge": "Hybrid (Clinic & Home)",
+  "owner.onboarding.visualPreview": "Live Interface",
+  "owner.onboarding.zoomPreview": "Zoom Preview",
+  "owner.onboarding.chooseTemplate": "Choose This Template",
+  "owner.onboarding.fullPreviewTitle": "Template Interface Preview",
+  "owner.onboarding.fullPreviewSub": "Full prototype screenshot & clinical workflow dashboard",
+  "owner.onboarding.returningTitle": "Clinic Brand Already Established",
+  "owner.onboarding.returningDesc": "You have already completed initial onboarding for your clinic enterprise. You can manage existing branches or provision an additional location below.",
+  "owner.onboarding.btnGoGateway": "Go to Branch Gateway",
+  "owner.onboarding.btnAddBranch": "Provision Another Branch"
 };
 

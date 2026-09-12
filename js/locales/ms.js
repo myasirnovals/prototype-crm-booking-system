@@ -1478,5 +1478,27 @@ export const ms = {
   "superAdmin.markPaidOverride": "Pintasan Pentadbir: Tandakan Langganan Sebagai Telah Dibayar",
   "superAdmin.overrideHelp": "Memintas pintu bayaran dan mengaktifkan pautan cawangan untuk bayaran luar talian.",
   "superAdmin.saveBranchStatusBtn": "Simpan Status Cawangan",
-  "superAdmin.appDetailSub": "Rekod janji temu dan borang penilaian pesakit."
+  "superAdmin.appDetailSub": "Rekod janji temu dan borang penilaian pesakit.",
+
+  // Owner Onboarding & Template Visual Previews (Bahasa Malaysia)
+  "owner.onboarding.serviceModeLabel": "Model Penyampaian Perkhidmatan",
+  "owner.onboarding.serviceModeSub": "Pilih cara rawatan klinikal dan konsultasi disampaikan kepada pesakit",
+  "owner.onboarding.modeInClinicTitle": "Kemudahan Klinik Sahaja",
+  "owner.onboarding.modeInClinicDesc": "Pesakit mengunjungi lokasi klinik fizikal atau bilik rawatan peribadi anda.",
+  "owner.onboarding.modeHomeCareTitle": "Penjagaan Rumah Sahaja (Lawatan Rumah)",
+  "owner.onboarding.modeHomeCareDesc": "Pengamal bergerak terus ke kediaman atau alamat yang ditetapkan oleh pesakit.",
+  "owner.onboarding.modeHybridTitle": "Hibrid (Klinik & Rawatan Rumah)",
+  "owner.onboarding.modeHybridDesc": "Pesakit boleh memilih secara fleksibel sama ada rawatan di klinik atau panggilan ke rumah semasa membuat tempahan.",
+  "owner.onboarding.modeInClinicBadge": "Di Klinik",
+  "owner.onboarding.modeHomeCareBadge": "Rawatan Rumah",
+  "owner.onboarding.modeHybridBadge": "Hibrid (Klinik & Rumah)",
+  "owner.onboarding.visualPreview": "Antaramuka Langsung",
+  "owner.onboarding.zoomPreview": "Zum Pratonton",
+  "owner.onboarding.chooseTemplate": "Pilih Templat Ini",
+  "owner.onboarding.fullPreviewTitle": "Pratonton Antaramuka Templat",
+  "owner.onboarding.fullPreviewSub": "Tangkapan skrin prototaip penuh & papan pemuka aliran kerja klinikal",
+  "owner.onboarding.returningTitle": "Jenama Klinik Telah Ditetapkan",
+  "owner.onboarding.returningDesc": "Anda telah menyelesaikan onboarding awal untuk perusahaan klinik anda. Anda boleh menguruskan cawangan sedia ada atau menyediakan lokasi tambahan di bawah.",
+  "owner.onboarding.btnGoGateway": "Pergi ke Gerbang Cawangan",
+  "owner.onboarding.btnAddBranch": "Sediakan Cawangan Lain"
 };

@@ -106,8 +106,8 @@
     /* Template Cards Grid */
     .template-selection-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
       margin-top: 18px;
     }
 
@@ -127,47 +127,138 @@
 
     .template-card {
       border: 2px solid #e2e8f0;
-      border-radius: var(--radius-lg);
-      padding: 20px;
+      border-radius: var(--radius-xl);
+      padding: 16px;
       cursor: pointer;
       background: #ffffff;
-      transition: all 0.2s ease;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      overflow: hidden;
     }
 
     .template-card:hover {
       border-color: #99f6e4;
-      background: #f0fdfa;
-      transform: translateY(-2px);
+      background: #fafdfc;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px -5px rgba(15, 118, 110, 0.12);
     }
 
     .template-card.active {
       border-color: var(--primary);
       background: #f0fdfa;
-      box-shadow: 0 6px 20px -4px rgba(15, 118, 110, 0.15);
+      box-shadow: 0 10px 28px -4px rgba(15, 118, 110, 0.22);
+    }
+
+    .template-card-preview-wrap {
+      width: 100%;
+      height: 180px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      background: #0f172a;
+      border: 1.5px solid #e2e8f0;
+      margin-bottom: 14px;
+    }
+
+    .template-card-preview-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      transition: transform 0.35s ease;
+      display: block;
+    }
+
+    .template-card:hover .template-card-preview-img {
+      transform: scale(1.04);
+    }
+
+    .template-preview-tag-wrap {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .template-preview-tag {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(15, 23, 42, 0.8);
+      color: #ffffff;
+      backdrop-filter: blur(4px);
+      letter-spacing: 0.3px;
+    }
+
+    .template-active-badge {
+      display: none;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(15, 118, 110, 0.4);
+    }
+
+    .template-card.active .template-active-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-preview-zoom {
+      pointer-events: auto;
+      background: rgba(255, 255, 255, 0.92);
+      color: #1e293b;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-preview-zoom:hover {
+      background: #ffffff;
+      color: var(--primary);
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .template-card-header {
       display: flex;
       align-items: flex-start;
-      gap: 14px;
-      margin-bottom: 12px;
+      gap: 12px;
+      margin-bottom: 10px;
     }
 
     .template-card-icon {
-      font-size: 32px;
+      font-size: 28px;
       line-height: 1;
       background: #ffffff;
-      border-radius: 14px;
-      padding: 8px;
+      border-radius: 12px;
+      padding: 6px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e2e8f0;
+      flex-shrink: 0;
     }
 
     .template-card-body h3 {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
       margin: 0 0 4px;
       color: var(--text);
@@ -176,7 +267,7 @@
     .template-card-body p {
       font-size: 12px;
       color: var(--muted);
-      line-height: 1.5;
+      line-height: 1.45;
       margin: 0;
     }
 
@@ -184,7 +275,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 14px;
+      margin-top: 12px;
       padding-top: 12px;
       border-top: 1px dashed #e2e8f0;
     }
@@ -470,6 +561,18 @@
           <!-- 1. TCM -->
           <div class="template-card" data-template="tcm">
             <div>
+              <div class="template-card-preview-wrap">
+                <img src="../../assets/template-images/tcm-template.png" alt="Traditional Chinese Medicine Interface Preview" class="template-card-preview-img" loading="lazy">
+                <div class="template-preview-tag-wrap">
+                  <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <span class="template-active-badge">✓ Selected</span>
+                    <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/tcm-template.png" data-title="Traditional Chinese Medicine (TCM)" title="Zoom full screenshot">
+                      🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div class="template-card-header">
                 <div class="template-card-icon">🌿</div>
                 <div class="template-card-body">
@@ -488,6 +591,18 @@
           <!-- 2. Wellness & Spa -->
           <div class="template-card" data-template="wellness">
             <div>
+              <div class="template-card-preview-wrap">
+                <img src="../../assets/template-images/spa-template.png" alt="Wellness & Luxury Spa Care Interface Preview" class="template-card-preview-img" loading="lazy">
+                <div class="template-preview-tag-wrap">
+                  <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <span class="template-active-badge">✓ Selected</span>
+                    <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/spa-template.png" data-title="Wellness & Luxury Spa Care" title="Zoom full screenshot">
+                      🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div class="template-card-header">
                 <div class="template-card-icon">🌸</div>
                 <div class="template-card-body">
@@ -506,6 +621,18 @@
           <!-- 3. Physiotherapy -->
           <div class="template-card active" data-template="physio">
             <div>
+              <div class="template-card-preview-wrap">
+                <img src="../../assets/template-images/physio-template.png" alt="Physiotherapy & Sports Rehab Interface Preview" class="template-card-preview-img" loading="lazy">
+                <div class="template-preview-tag-wrap">
+                  <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <span class="template-active-badge">✓ Selected</span>
+                    <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/physio-template.png" data-title="Physiotherapy & Sports Rehab" title="Zoom full screenshot">
+                      🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div class="template-card-header">
                 <div class="template-card-icon">🏃</div>
                 <div class="template-card-body">
@@ -524,6 +651,18 @@
           <!-- 4. Nutrition -->
           <div class="template-card" data-template="nutrition">
             <div>
+              <div class="template-card-preview-wrap">
+                <img src="../../assets/template-images/nutritionist-template.png" alt="Clinical Nutrition & Dietetics Interface Preview" class="template-card-preview-img" loading="lazy">
+                <div class="template-preview-tag-wrap">
+                  <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <span class="template-active-badge">✓ Selected</span>
+                    <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/nutritionist-template.png" data-title="Clinical Nutrition & Dietetics" title="Zoom full screenshot">
+                      🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div class="template-card-header">
                 <div class="template-card-icon">🥗</div>
                 <div class="template-card-body">
@@ -542,6 +681,18 @@
           <!-- 5. Personal Trainer -->
           <div class="template-card" data-template="personal-trainer">
             <div>
+              <div class="template-card-preview-wrap">
+                <img src="../../assets/template-images/personal-trainer-template.png" alt="Personal Trainer & Fitness Coaching Interface Preview" class="template-card-preview-img" loading="lazy">
+                <div class="template-preview-tag-wrap">
+                  <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                  <div style="display:flex; gap:6px; align-items:center;">
+                    <span class="template-active-badge">✓ Selected</span>
+                    <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/personal-trainer-template.png" data-title="Personal Trainer & Fitness Coaching" title="Zoom full screenshot">
+                      🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div class="template-card-header">
                 <div class="template-card-icon">🏋️</div>
                 <div class="template-card-body">
@@ -848,6 +999,29 @@
 
     </div>
   </main>
+
+  <!-- TEMPLATE PREVIEW LIGHTBOX MODAL -->
+  <div id="templateLightboxModal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.85); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
+    <div style="background:#ffffff; border-radius:18px; max-width:1150px; width:100%; max-height:92vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.5); border:1.5px solid #e2e8f0;">
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-bottom:1px solid #e2e8f0; background:#f8fafc; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h3 id="lightboxTemplateTitle" style="margin:0 0 2px; font-size:18px; font-weight:800; color:var(--text);" data-i18n="owner.onboarding.fullPreviewTitle">Template Interface Preview</h3>
+          <span style="font-size:12px; color:var(--muted);" data-i18n="owner.onboarding.fullPreviewSub">Full prototype screenshot &amp; clinical workflow dashboard</span>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button type="button" class="btn btn-primary" id="btnSelectFromLightbox" style="font-weight:800; padding:8px 18px;" data-i18n="owner.onboarding.chooseTemplate">
+            ✓ Choose This Template
+          </button>
+          <button type="button" class="btn btn-white" id="btnCloseLightbox" style="font-weight:700; padding:8px 14px; font-size:13px;">
+            ✕ Close
+          </button>
+        </div>
+      </div>
+      <div style="flex:1; overflow-y:auto; padding:16px; background:#0f172a; text-align:center;">
+        <img id="lightboxImage" src="" alt="Template Full Screenshot" style="max-width:100%; height:auto; border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,0.4); display:inline-block;">
+      </div>
+    </div>
+  </div>
 
   <!-- Modular Onboarding Page Script Bootstrap -->
   <script type="module" src="../../js/pages/admin-onboarding.js"></script>

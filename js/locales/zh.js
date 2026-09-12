@@ -1495,6 +1495,28 @@ export const zh = {
   "superAdmin.markPaidOverride": "超级管理员特权：将订阅标记为已付款",
   "superAdmin.overrideHelp": "绕过在线支付闸口并立即激活分院独立预约链接，适用于银行转账与线下签约。",
   "superAdmin.saveBranchStatusBtn": "保存分院状态",
-  "superAdmin.appDetailSub": "监督级预约详情与就诊评估记录。"
+  "superAdmin.appDetailSub": "监督级预约详情与就诊评估记录。",
+
+  // Owner Onboarding & Template Visual Previews (Singapore Simplified Chinese)
+  "owner.onboarding.serviceModeLabel": "服务提供模式",
+  "owner.onboarding.serviceModeSub": "选择向患者提供临床治疗与咨询的方式",
+  "owner.onboarding.modeInClinicTitle": "仅限诊所门诊",
+  "owner.onboarding.modeInClinicDesc": "患者前往您的实体诊所或私人治疗室就诊。",
+  "owner.onboarding.modeHomeCareTitle": "仅限上门护理（家访）",
+  "owner.onboarding.modeHomeCareDesc": "执业人员直接前往患者家中或指定地址提供服务。",
+  "owner.onboarding.modeHybridTitle": "混合模式（诊所与上门兼具）",
+  "owner.onboarding.modeHybridDesc": "患者在预约时可灵活选择到店门诊或上门服务。",
+  "owner.onboarding.modeInClinicBadge": "门诊",
+  "owner.onboarding.modeHomeCareBadge": "上门护理",
+  "owner.onboarding.modeHybridBadge": "混合模式（门诊与上门）",
+  "owner.onboarding.visualPreview": "实时界面",
+  "owner.onboarding.zoomPreview": "放大预览",
+  "owner.onboarding.chooseTemplate": "选择此模板",
+  "owner.onboarding.fullPreviewTitle": "模板界面预览",
+  "owner.onboarding.fullPreviewSub": "完整原型截图与临床工作流仪表板",
+  "owner.onboarding.returningTitle": "诊所品牌已建立",
+  "owner.onboarding.returningDesc": "您已完成诊所企业的初始入驻。您可以在下方管理现有分行或开设新分行。",
+  "owner.onboarding.btnGoGateway": "前往分行网关",
+  "owner.onboarding.btnAddBranch": "增设新分行"
 };
 

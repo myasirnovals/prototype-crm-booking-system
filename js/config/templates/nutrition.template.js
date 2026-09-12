@@ -13,7 +13,7 @@ export const NUTRITION_TEMPLATE = {
   accentColor: "#16a34a", // Health Green / Emerald Vitality
   practitionerTitle: "Registered Dietitian / Clinical Nutritionist",
   practitionerTitleI18n: "template.nutrition.practitionerTitle",
-  demoUrl: "https://prototype-application-nutrition.vercel.app/dashboard.html",
+  demoUrl: "https://prototype-application-nutrition.vercel.app/",
   pricing: {
     monthly: 99,
     sixMonth: 534,

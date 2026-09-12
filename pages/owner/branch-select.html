@@ -280,7 +280,29 @@
             <option value="wellness">🌸 Wellness &amp; Spa Care</option>
             <option value="tcm">🌿 Traditional Chinese Medicine (TCM)</option>
             <option value="nutrition">🥗 Clinical Nutrition &amp; Dietetics</option>
+            <option value="personal-trainer">🏋️ Personal Trainer &amp; Fitness</option>
           </select>
+        </div>
+
+        <!-- Service Delivery Model for Branch -->
+        <div class="field" style="margin: 16px 0; padding: 14px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: var(--radius-md);">
+          <label style="font-weight: 800; font-size: 13px; color: var(--text); margin-bottom: 4px; display: block;" data-i18n="owner.onboarding.serviceModeLabel">
+            Service Delivery Model <span style="color:#ef4444;">*</span>
+          </label>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 8px;" id="newBranchServiceModeContainer">
+            <label class="new-branch-mode-label" style="border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px; cursor: pointer; background: #fff; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700;">
+              <input type="radio" name="newBranchServiceMode" value="in_clinic" style="cursor:pointer;">
+              <span data-i18n="owner.onboarding.modeInClinicTitle">🏥 In-Clinic</span>
+            </label>
+            <label class="new-branch-mode-label" style="border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px; cursor: pointer; background: #fff; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700;">
+              <input type="radio" name="newBranchServiceMode" value="home_care" style="cursor:pointer;">
+              <span data-i18n="owner.onboarding.modeHomeCareTitle">🏠 Home Care</span>
+            </label>
+            <label class="new-branch-mode-label active" style="border: 2px solid var(--primary); border-radius: 8px; padding: 10px; cursor: pointer; background: #f0fdfa; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--primary-dark);">
+              <input type="radio" name="newBranchServiceMode" value="hybrid" checked style="cursor:pointer;">
+              <span data-i18n="owner.onboarding.modeHybridTitle">✨ Hybrid (Both)</span>
+            </label>
+          </div>
         </div>
 
         <!-- Input Kode Pos & Alamat -->

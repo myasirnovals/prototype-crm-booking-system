@@ -412,19 +412,43 @@
   <main class="wizard-container">
     <div class="wizard-card">
 
+      <!-- RETURNING OWNER NOTIFICATION BANNER -->
+      <div id="returningOwnerBanner" style="display:none; background:#f0fdfa; border:2px solid var(--primary); border-radius:var(--radius-lg); padding:24px; margin-bottom:28px; box-shadow:0 8px 24px -6px rgba(15,118,110,0.18);">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+          <div style="display:flex; gap:14px; align-items:flex-start;">
+            <div style="font-size:32px; line-height:1; background:#ffffff; border-radius:12px; padding:8px; border:1px solid #ccfbf1;">🏢</div>
+            <div>
+              <div class="pill" style="font-size:11px; padding:2px 8px; background:#ccfbf1; color:var(--primary-dark); font-weight:800; margin-bottom:6px;" data-i18n="owner.onboarding.returningTitle">Clinic Brand Already Established</div>
+              <h3 style="margin:0 0 6px; font-size:18px; font-weight:800; color:var(--text);" id="returningBrandName">Dennis Health &amp; Wellness Hub</h3>
+              <p style="margin:0; font-size:13px; color:var(--muted); line-height:1.5;" id="returningOwnerNotice" data-i18n="owner.onboarding.returningDesc">
+                You have already completed initial onboarding for your clinic enterprise. You can manage existing branches or provision an additional location below.
+              </p>
+            </div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <a href="branch-select.html" class="btn btn-primary" style="font-weight:800; text-decoration:none; padding:10px 18px;" data-i18n="owner.onboarding.btnGoGateway">
+              🏢 Go to Branch Gateway →
+            </a>
+            <button type="button" class="btn btn-soft" id="btnContinueFastTrack" style="font-weight:800; padding:10px 16px;" data-i18n="owner.onboarding.btnAddBranch">
+              ➕ Provision Another Branch
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- STEPPER BAR -->
-      <div class="wizard-stepper">
+      <div class="wizard-stepper" id="wizardStepperBar">
         <div class="wizard-step-node active" id="wizardNode1">
           <div class="wizard-step-circle">1</div>
-          <span class="wizard-step-label">Brand Identity</span>
+          <span class="wizard-step-label">Practice Template</span>
         </div>
         <div class="wizard-step-node" id="wizardNode2">
           <div class="wizard-step-circle">2</div>
-          <span class="wizard-step-label">Practice Template</span>
+          <span class="wizard-step-label">Brand &amp; Branch</span>
         </div>
         <div class="wizard-step-node" id="wizardNode3">
           <div class="wizard-step-circle">3</div>
-          <span class="wizard-step-label">First Branch</span>
+          <span class="wizard-step-label">Subscription Plan</span>
         </div>
         <div class="wizard-step-node" id="wizardNode4">
           <div class="wizard-step-circle">4</div>
@@ -432,13 +456,121 @@
         </div>
       </div>
 
-      <!-- STEP 1: BRAND IDENTITY -->
+      <!-- STEP 1: PRACTICE TEMPLATE (OFFERING FIRST AS DIRECTED BY MENTOR) -->
       <div class="wizard-step-panel active" id="wizardStep1" style="display:block !important;">
-        <div style="margin-bottom:24px;">
-          <div class="pill" style="margin-bottom:8px; font-size:11px;">Step 1 of 4: Setup Brand</div>
-          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Establish Your Clinic Brand Identity</h2>
+        <div style="margin-bottom:20px;">
+          <div class="pill" style="margin-bottom:8px; font-size:11px;">Step 1 of 4: Business Template</div>
+          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Select Your Specialty Practice Template</h2>
           <p style="color:var(--muted); font-size:14px; margin:0;">
-            Define the brand name, visual emblem, and regional jurisdiction for your clinic enterprise.
+            Cliniva will automatically provision clinical intake forms, treatment workflows, pain maps, and appointment schemas tailored for this specialty.
+          </p>
+        </div>
+
+        <div class="template-selection-grid">
+          <!-- 1. TCM -->
+          <div class="template-card" data-template="tcm">
+            <div>
+              <div class="template-card-header">
+                <div class="template-card-icon">🌿</div>
+                <div class="template-card-body">
+                  <h3>Traditional Chinese Medicine (TCM)</h3>
+                  <p>Acupuncture, meridian diagnosis, pulse reading &amp; herbal apothecary.</p>
+                </div>
+              </div>
+            </div>
+            <div class="template-feature-pills">
+              <span class="template-pill">Meridian Pain Map</span>
+              <span class="template-pill">Pulse Diagnosis</span>
+              <span class="template-pill">Herbal Stock</span>
+            </div>
+          </div>
+
+          <!-- 2. Wellness & Spa -->
+          <div class="template-card" data-template="wellness">
+            <div>
+              <div class="template-card-header">
+                <div class="template-card-icon">🌸</div>
+                <div class="template-card-body">
+                  <h3>Wellness &amp; Luxury Spa Care</h3>
+                  <p>Aromatherapy, massage therapy, body relaxation &amp; private spa suites.</p>
+                </div>
+              </div>
+            </div>
+            <div class="template-feature-pills">
+              <span class="template-pill">Aromatherapy Scents</span>
+              <span class="template-pill">Pressure Slider</span>
+              <span class="template-pill">Suite Rooms</span>
+            </div>
+          </div>
+
+          <!-- 3. Physiotherapy -->
+          <div class="template-card active" data-template="physio">
+            <div>
+              <div class="template-card-header">
+                <div class="template-card-icon">🏃</div>
+                <div class="template-card-body">
+                  <h3>Physiotherapy &amp; Sports Rehab</h3>
+                  <p>Musculoskeletal therapy, sports injury rehabilitation &amp; joint mobility.</p>
+                </div>
+              </div>
+            </div>
+            <div class="template-feature-pills">
+              <span class="template-pill">VAS Pain Slider (1-10)</span>
+              <span class="template-pill">Joint Localization</span>
+              <span class="template-pill">Mobility Tests</span>
+            </div>
+          </div>
+
+          <!-- 4. Nutrition -->
+          <div class="template-card" data-template="nutrition">
+            <div>
+              <div class="template-card-header">
+                <div class="template-card-icon">🥗</div>
+                <div class="template-card-body">
+                  <h3>Clinical Nutrition &amp; Dietetics</h3>
+                  <p>Metabolic screening, personalized meal planning &amp; clinical dietetics.</p>
+                </div>
+              </div>
+            </div>
+            <div class="template-feature-pills">
+              <span class="template-pill">Real-Time BMI Calculator</span>
+              <span class="template-pill">Metabolic Target</span>
+              <span class="template-pill">Dietary Blueprints</span>
+            </div>
+          </div>
+
+          <!-- 5. Personal Trainer -->
+          <div class="template-card" data-template="personal-trainer">
+            <div>
+              <div class="template-card-header">
+                <div class="template-card-icon">🏋️</div>
+                <div class="template-card-body">
+                  <h3>Personal Trainer &amp; Fitness Coaching</h3>
+                  <p>1-on-1 private coaching, strength programming &amp; physique transformation.</p>
+                </div>
+              </div>
+            </div>
+            <div class="template-feature-pills">
+              <span class="template-pill">Workout Logs</span>
+              <span class="template-pill">Strength Milestones</span>
+              <span class="template-pill">Body Metrics</span>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" id="selectedTemplateId" value="physio">
+
+        <div style="display:flex; justify-content:flex-end; margin-top:28px;">
+          <button type="button" class="btn btn-primary" id="btnNext1">Next: Configure Brand &amp; Branch →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: BRAND & BRANCH CONFIGURATION (WITH SERVICE DELIVERY MODE) -->
+      <div class="wizard-step-panel" id="wizardStep2" style="display:none;">
+        <div style="margin-bottom:24px;">
+          <div class="pill" style="margin-bottom:8px; font-size:11px;">Step 2 of 4: Setup Brand &amp; Branch</div>
+          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Configure Brand &amp; Operational Branch</h2>
+          <p style="color:var(--muted); font-size:14px; margin:0;">
+            Establish your clinic enterprise identity and initialize your primary branch location.
           </p>
         </div>
 
@@ -455,6 +587,7 @@
             value="Holistic Recovery &amp; Vitality Redefined">
         </div>
 
+        <!-- Logo Uploader & Emoji Presets -->
         <div class="field">
           <label for="brandLogoFileInput"><span data-i18n="onboarding.brandLogo">Clinic Brand Logo / Emblem</span> <span style="font-weight:400; color:var(--muted); font-size:12px;" data-i18n="onboarding.brandLogoSub">(Upload your clinic's official brand logo image file)</span></label>
           
@@ -482,19 +615,13 @@
                 <button type="button" class="logo-choice-btn" data-emoji="🌸" title="Wellness / Spa">🌸</button>
                 <button type="button" class="logo-choice-btn" data-emoji="🏃" title="Physiotherapy / Sports">🏃</button>
                 <button type="button" class="logo-choice-btn" data-emoji="🥗" title="Nutrition / Diet">🥗</button>
+                <button type="button" class="logo-choice-btn" data-emoji="🏋️" title="Fitness / Coach">🏋️</button>
                 <button type="button" class="logo-choice-btn" data-emoji="💎" title="Premium Aesthetic">💎</button>
                 <button type="button" class="logo-choice-btn" data-emoji="✦" title="Modern Medical">✦</button>
                 <button type="button" class="logo-choice-btn" data-emoji="🏥" title="Hospital Clinic">🏥</button>
-                <button type="button" class="logo-choice-btn" data-emoji="⚡" title="Vitality & Recovery">⚡</button>
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="field">
-          <label for="brandDescInput">Brief Business / Practice Description</label>
-          <textarea id="brandDescInput" rows="2" placeholder="Tell patients what sets your practice apart..."
-            style="width:100%; border:1px solid #cbd5e1; border-radius:var(--radius-sm); padding:10px; font-family:inherit; font-size:13px;">Dedicated multidisciplinary wellness &amp; clinical therapy center providing personalized care and rapid patient recovery.</textarea>
         </div>
 
         <div class="field-row">
@@ -505,123 +632,57 @@
               <option value="my">🇲🇾 Malaysia (MYR · DuitNow · Malaysia PDPA)</option>
             </select>
           </div>
-        </div>
-
-        <div style="display:flex; justify-content:flex-end; margin-top:28px;">
-          <button type="button" class="btn btn-primary" id="btnNext1">Next: Select Practice Template →</button>
-        </div>
-      </div>
-
-      <!-- STEP 2: PRACTICE TEMPLATE -->
-      <div class="wizard-step-panel" id="wizardStep2" style="display:none;">
-        <div style="margin-bottom:20px;">
-          <div class="pill" style="margin-bottom:8px; font-size:11px;">Step 2 of 4: Business Template</div>
-          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Select Your Core Practice Template</h2>
-          <p style="color:var(--muted); font-size:14px; margin:0;">
-            Cliniva will configure patient intake forms, treatment workflows, and inventory tracking specifically for
-            this specialty.
-          </p>
-        </div>
-
-        <div class="template-selection-grid">
-          <!-- 1. TCM -->
-          <div class="template-card" data-template="tcm">
-            <div>
-              <div class="template-card-header">
-                <div class="template-card-icon">🌿</div>
-                <div class="template-card-body">
-                  <h3>Traditional Chinese Medicine</h3>
-                  <p>Eastern medicine, acupuncture, herbal remedies &amp; cupping.</p>
-                </div>
-              </div>
-            </div>
-            <div class="template-feature-pills">
-              <span class="template-pill">Meridian Pain Map</span>
-              <span class="template-pill">Pulse Diagnosis</span>
-              <span class="template-pill">Moxa &amp; Herbal Stock</span>
-            </div>
-          </div>
-
-          <!-- 2. Wellness & Spa -->
-          <div class="template-card" data-template="wellness">
-            <div>
-              <div class="template-card-header">
-                <div class="template-card-icon">🌸</div>
-                <div class="template-card-body">
-                  <h3>Wellness &amp; Spa Care</h3>
-                  <p>Relaxation therapy, body massages, aromatherapy &amp; reflexology.</p>
-                </div>
-              </div>
-            </div>
-            <div class="template-feature-pills">
-              <span class="template-pill">Aromatherapy Scents</span>
-              <span class="template-pill">Pressure Slider (Soft/Deep)</span>
-              <span class="template-pill">Therapist Preference</span>
-            </div>
-          </div>
-
-          <!-- 3. Physiotherapy -->
-          <div class="template-card active" data-template="physio">
-            <div>
-              <div class="template-card-header">
-                <div class="template-card-icon">🏃</div>
-                <div class="template-card-body">
-                  <h3>Physiotherapy &amp; Sports Rehab</h3>
-                  <p>Musculoskeletal therapy, sports injury rehab &amp; joint mobility.</p>
-                </div>
-              </div>
-            </div>
-            <div class="template-feature-pills">
-              <span class="template-pill">VAS Pain Slider (1-10)</span>
-              <span class="template-pill">Joint Localization</span>
-              <span class="template-pill">Functional Limitations</span>
-            </div>
-          </div>
-
-          <!-- 4. Nutrition -->
-          <div class="template-card" data-template="nutrition">
-            <div>
-              <div class="template-card-header">
-                <div class="template-card-icon">🥗</div>
-                <div class="template-card-body">
-                  <h3>Clinical Nutrition &amp; Dietetics</h3>
-                  <p>Personalized diet blueprints, metabolic screening &amp; weight goals.</p>
-                </div>
-              </div>
-            </div>
-            <div class="template-feature-pills">
-              <span class="template-pill">Real-Time BMI Calculator</span>
-              <span class="template-pill">Target Weight Difference</span>
-              <span class="template-pill">Allergies &amp; Diets</span>
-            </div>
+          <div class="field">
+            <label for="branchNameInput">Primary Branch Name (Branch 1) <span style="color:#ef4444;">*</span></label>
+            <input type="text" id="branchNameInput" placeholder="e.g. Paragon Medical Flagship" value="Paragon Medical Flagship (Branch 1)" required>
           </div>
         </div>
-        <input type="hidden" id="selectedTemplateId" value="physio">
 
-        <div style="display:flex; justify-content:space-between; margin-top:28px;">
-          <button type="button" class="btn btn-soft" id="btnPrev2">← Back to Brand</button>
-          <button type="button" class="btn btn-primary" id="btnNext2">Next: Configure First Branch →</button>
-        </div>
-      </div>
+        <!-- SERVICE DELIVERY MODEL (HOME CARE / IN-CLINIC / HYBRID) -->
+        <div class="field" style="margin-top:20px; margin-bottom:20px; padding:18px; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:var(--radius-lg);">
+          <label style="font-weight:800; font-size:13px; color:var(--text); margin-bottom:4px; display:block;" data-i18n="owner.onboarding.serviceModeLabel">
+            Service Delivery Model <span style="color:#ef4444;">*</span>
+          </label>
+          <span style="font-size:12px; color:var(--muted); margin-bottom:12px; display:block;" data-i18n="owner.onboarding.serviceModeSub">
+            (Select how clinical treatments and consultations are delivered to patients)
+          </span>
 
-      <!-- STEP 3: FIRST BRANCH -->
-      <div class="wizard-step-panel" id="wizardStep3" style="display:none;">
-        <div style="margin-bottom:24px;">
-          <div class="pill" style="margin-bottom:8px; font-size:11px;">Step 3 of 4: First Branch</div>
-          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Initialize Your First Clinic Branch (Branch 1)</h2>
-          <p style="color:var(--muted); font-size:14px; margin:0;">
-            Every tenant begins with an isolated primary branch. You can add more branches later from the dashboard.
-          </p>
-        </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px;" id="serviceModeOptions">
+            <!-- 1. In-Clinic Only -->
+            <label class="service-mode-label" style="border:1.5px solid #cbd5e1; border-radius:12px; padding:14px; cursor:pointer; background:#ffffff; display:flex; flex-direction:column; gap:6px; transition:all 0.2s ease;">
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <span style="font-size:22px;">🏥</span>
+                <input type="radio" name="wizardServiceMode" value="in_clinic" style="cursor:pointer;">
+              </div>
+              <strong style="font-size:13px; color:#1e293b;" data-i18n="owner.onboarding.modeInClinicTitle">🏥 In-Clinic Facility Only</strong>
+              <span style="font-size:11px; color:#64748b; line-height:1.4;" data-i18n="owner.onboarding.modeInClinicDesc">Patients visit your physical clinic location or private therapy rooms.</span>
+            </label>
 
-        <div class="field">
-          <label for="branchNameInput">Branch Name <span style="color:#ef4444;">*</span></label>
-          <input type="text" id="branchNameInput" placeholder="e.g. Paragon Medical Flagship / Branch 1" value="Paragon Medical Flagship (Branch 1)" required>
+            <!-- 2. Home Care Only -->
+            <label class="service-mode-label" style="border:1.5px solid #cbd5e1; border-radius:12px; padding:14px; cursor:pointer; background:#ffffff; display:flex; flex-direction:column; gap:6px; transition:all 0.2s ease;">
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <span style="font-size:22px;">🏠</span>
+                <input type="radio" name="wizardServiceMode" value="home_care" style="cursor:pointer;">
+              </div>
+              <strong style="font-size:13px; color:#1e293b;" data-i18n="owner.onboarding.modeHomeCareTitle">🏠 Home Care Only (Home Visit)</strong>
+              <span style="font-size:11px; color:#64748b; line-height:1.4;" data-i18n="owner.onboarding.modeHomeCareDesc">Practitioners travel directly to patients' homes or designated addresses.</span>
+            </label>
+
+            <!-- 3. Hybrid (Both) -->
+            <label class="service-mode-label active" style="border:2px solid var(--primary); border-radius:12px; padding:14px; cursor:pointer; background:#f0fdfa; display:flex; flex-direction:column; gap:6px; transition:all 0.2s ease;">
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <span style="font-size:22px;">✨</span>
+                <input type="radio" name="wizardServiceMode" value="hybrid" checked style="cursor:pointer;">
+              </div>
+              <strong style="font-size:13px; color:var(--primary-dark);" data-i18n="owner.onboarding.modeHybridTitle">✨ Hybrid (Both In-Clinic &amp; Home Care)</strong>
+              <span style="font-size:11px; color:#0f766e; line-height:1.4;" data-i18n="owner.onboarding.modeHybridDesc">Patients can flexibly choose either in-clinic or on-demand home visits during booking.</span>
+            </label>
+          </div>
         </div>
 
         <div class="field">
           <label for="branchAddressInput">Full Physical Address</label>
-          <input type="text" id="branchAddressInput" placeholder="Street, Building, Unit & Postal Code"
+          <input type="text" id="branchAddressInput" placeholder="Street, Building, Unit &amp; Postal Code"
             value="290 Orchard Road, #09-12 Paragon Medical Suites, Singapore 238859" required>
         </div>
 
@@ -640,7 +701,7 @@
 
         <div class="field-row">
           <div class="field">
-            <label for="branchRoomsInput">Initial Treatment Rooms / Capacity</label>
+            <label for="branchRoomsInput">Treatment Capacity / Treatment Bays</label>
             <select id="branchRoomsInput">
               <option value="2">2 Private Therapy Rooms</option>
               <option value="4" selected>4 Private Therapy Suites</option>
@@ -651,7 +712,66 @@
         </div>
 
         <div style="display:flex; justify-content:space-between; margin-top:28px;">
-          <button type="button" class="btn btn-soft" id="btnPrev3">← Back to Template</button>
+          <button type="button" class="btn btn-soft" id="btnPrev2">← Back to Template</button>
+          <button type="button" class="btn btn-primary" id="btnNext2">Next: Select Subscription Plan →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: B2B SUBSCRIPTION BILLING PLAN (PAYWALL GATE) -->
+      <div class="wizard-step-panel" id="wizardStep3" style="display:none;">
+        <div style="margin-bottom:24px;">
+          <div class="pill" style="margin-bottom:8px; font-size:11px;">Step 3 of 4: Subscription Plan</div>
+          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Select System Subscription Plan</h2>
+          <p style="color:var(--muted); font-size:14px; margin:0;">
+            Activate your clinic SaaS license before opening operations and public booking channels.
+          </p>
+        </div>
+
+        <div class="field" style="margin-bottom: 8px;">
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <!-- 1 Month -->
+            <label
+              style="flex:1; min-width:180px; border:1.5px solid var(--line); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
+              class="subs-radio-label-wizard">
+              <input type="radio" name="wizardSubsPlan" value="1" data-price="99" style="margin-bottom:8px;">
+              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan1m">1 Month</span>
+              <span style="color:var(--muted); font-size:12px;" id="plan1mText">SGD 99/mo</span>
+            </label>
+
+            <!-- 6 Months -->
+            <label
+              style="flex:1; min-width:180px; border:1.5px solid var(--line); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
+              class="subs-radio-label-wizard">
+              <input type="radio" name="wizardSubsPlan" value="6" data-price="534" style="margin-bottom:8px;">
+              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan6m">6 Months</span>
+              <span style="color:var(--muted); font-size:12px;" id="plan6mText">SGD 89/mo (<span data-i18n="owner.onboarding.save10">Save 10%</span>)</span>
+            </label>
+
+            <!-- 1 Year (Decoy / Best Value) -->
+            <label
+              style="flex:1; min-width:180px; border:1.5px solid var(--primary); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f0fdfa; position:relative;"
+              class="subs-radio-label-wizard">
+              <div
+                style="position:absolute; top:-10px; background:var(--primary); color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:0.5px;" data-i18n="owner.onboarding.bestValue">
+                BEST VALUE</div>
+              <input type="radio" name="wizardSubsPlan" value="12" data-price="948" checked style="margin-bottom:8px;">
+              <span style="font-weight:800; font-size:14px; color:var(--primary);" data-i18n="owner.onboarding.plan1y">1 Year</span>
+              <span style="color:var(--primary-dark); font-size:12px;" id="plan1yText">SGD 79/mo (<span data-i18n="owner.onboarding.save20">Save 20%</span>)</span>
+            </label>
+          </div>
+        </div>
+
+        <div
+          style="background:#f1f5f9; padding:18px; border-radius:12px; margin-bottom:24px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
+          <div>
+            <div style="font-size:12px; color:var(--muted); font-weight:600;" data-i18n="owner.onboarding.totalBilling">Total System Billing:</div>
+            <div style="font-size:11px; color:#64748b; margin-top:2px;" data-i18n="owner.onboarding.billedCard">Will be charged to Credit Card</div>
+          </div>
+          <div style="font-size:24px; font-weight:900; color:var(--text);" id="wizardTotalBillingAmount">SGD 948.00</div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; margin-top:28px;">
+          <button type="button" class="btn btn-soft" id="btnPrev3">← Back to Brand Setup</button>
           <button type="button" class="btn btn-primary" id="btnNext3">Next: Review &amp; Launch →</button>
         </div>
       </div>
@@ -662,7 +782,7 @@
           <div class="pill" style="margin-bottom:8px; font-size:11px;">Step 4 of 4: Launch</div>
           <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Review &amp; Launch Your Practice</h2>
           <p style="color:var(--muted); font-size:14px; margin:0;">
-            Verify your brand identity and initial branch settings before opening your executive dashboard.
+            Verify your brand identity, specialty template, and branch settings before opening your operations console.
           </p>
         </div>
 
@@ -685,8 +805,12 @@
             <span class="review-summary-val" id="reviewTemplateVal">🏃 Physiotherapy &amp; Sports Rehab</span>
           </div>
           <div class="review-summary-row">
-            <span class="review-summary-label">First Branch (Branch 1)</span>
+            <span class="review-summary-label">Primary Branch Name</span>
             <span class="review-summary-val" id="reviewBranchVal">Paragon Medical Flagship</span>
+          </div>
+          <div class="review-summary-row">
+            <span class="review-summary-label">Service Delivery Model</span>
+            <span class="review-summary-val" id="reviewServiceModeVal">✨ Hybrid (Clinic &amp; Home Care)</span>
           </div>
           <div class="review-summary-row">
             <span class="review-summary-label">Branch Address</span>
@@ -695,6 +819,10 @@
           <div class="review-summary-row">
             <span class="review-summary-label">Jurisdiction &amp; Currency</span>
             <span class="review-summary-val" id="reviewRegionVal">🇸🇬 Singapore (SGD)</span>
+          </div>
+          <div class="review-summary-row">
+            <span class="review-summary-label">B2B Subscription Plan</span>
+            <span class="review-summary-val" id="reviewPlanVal">1 Year (SGD 948.00)</span>
           </div>
           <div class="review-summary-row">
             <span class="review-summary-label">Clinic Owner Account</span>
@@ -708,63 +836,13 @@
           schedules for this branch will remain strictly isolated from other tenants and branches.
         </div>
 
-        <!-- B2B Subscription Billing Plan (Onboarding) -->
-        <h4 style="margin:0 0 16px; font-size:15px; font-weight:800; color:var(--text);" data-i18n="owner.onboarding.subsTitle">💳 Select System Subscription Plan
-        </h4>
-
-        <div class="field" style="margin-bottom: 8px;">
-          <div style="display:flex; gap:12px; flex-wrap:wrap;">
-
-            <!-- 1 Month -->
-            <label
-              style="flex:1; border:1.5px solid var(--line); border-radius:10px; padding:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
-              class="subs-radio-label-wizard">
-              <input type="radio" name="wizardSubsPlan" value="1" data-price="99" style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan1m">1 Month</span>
-              <span style="color:var(--muted); font-size:12px;">SGD 99/mo</span>
-            </label>
-
-            <!-- 6 Months -->
-            <label
-              style="flex:1; border:1.5px solid var(--line); border-radius:10px; padding:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
-              class="subs-radio-label-wizard">
-              <input type="radio" name="wizardSubsPlan" value="6" data-price="534" style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan6m">6 Months</span>
-              <span style="color:var(--muted); font-size:12px;">SGD 89/mo (<span data-i18n="owner.onboarding.save10">Save 10%</span>)</span>
-            </label>
-
-            <!-- 1 Year (Decoy / Best Value) -->
-            <label
-              style="flex:1; border:1.5px solid var(--primary); border-radius:10px; padding:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f0fdfa; position:relative;"
-              class="subs-radio-label-wizard">
-              <div
-                style="position:absolute; top:-10px; background:var(--primary); color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:0.5px;" data-i18n="owner.onboarding.bestValue">
-                BEST VALUE</div>
-              <input type="radio" name="wizardSubsPlan" value="12" data-price="948" checked style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--primary);" data-i18n="owner.onboarding.plan1y">1 Year</span>
-              <span style="color:var(--primary-dark); font-size:12px;">SGD 79/mo (<span data-i18n="owner.onboarding.save20">Save 20%</span>)</span>
-            </label>
-
-          </div>
-        </div>
-
-        <div
-          style="background:#f1f5f9; padding:16px; border-radius:10px; margin-bottom:24px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <div style="font-size:12px; color:var(--muted); font-weight:600;" data-i18n="owner.onboarding.totalBilling">Total System Billing:</div>
-            <div style="font-size:11px; color:#64748b; margin-top:2px;" data-i18n="owner.onboarding.billedCard">Will be charged to Credit Card</div>
-          </div>
-          <div style="font-size:22px; font-weight:900; color:var(--text);" id="wizardTotalBillingAmount">SGD 948.00
-          </div>
-        </div>
-
         <button type="button" class="btn btn-primary full" id="btnLaunchClinic"
           style="padding:16px; font-size:16px; font-weight:800;" data-i18n="owner.onboarding.btnLaunch">
           🚀 Pay &amp; Launch Branch Dashboard →
         </button>
 
         <div style="display:flex; justify-content:flex-start; margin-top:16px;">
-          <button type="button" class="btn btn-soft" id="btnPrev4">← Back to Branch</button>
+          <button type="button" class="btn btn-soft" id="btnPrev4">← Back to Subscription Plan</button>
         </div>
       </div>
 

@@ -166,6 +166,10 @@ export class BranchSelectController {
         return { label: i18nService.t("template.wellness.name", "🌸 Wellness & Spa"), color: "#9d174d", bg: "#fce7f3", icon: "🌸" };
       case "nutrition":
         return { label: i18nService.t("template.nutrition.name", "🥗 Nutrition & Dietetics"), color: "#166534", bg: "#dcfce7", icon: "🥗" };
+      case "personal-trainer":
+      case "fitness":
+      case "pt":
+        return { label: i18nService.t("template.pt.name", "🏋️ Fitness & Personal Trainer"), color: "#1e293b", bg: "#f1f5f9", icon: "🏋️" };
       case "physio":
       default:
         return { label: i18nService.t("template.physio.name", "🏃 Physiotherapy & Rehab"), color: "#0f766e", bg: "#ccfbf1", icon: "🏃" };
@@ -191,6 +195,14 @@ export class BranchSelectController {
         ? `<img src="${logoSrc}" alt="${b.name}">`
         : `<span>${b.logo || meta.icon || "🌿"}</span>`;
 
+      const mode = b.serviceMode || b.service_mode || "hybrid";
+      let modeBadge = `<span class="pill" style="background:#e0f2fe; color:#0369a1; font-weight:800; font-size:10px; padding:2px 6px;">✨ ${i18nService.t("owner.onboarding.modeHybridBadge", "Hybrid (Clinic & Home)")}</span>`;
+      if (mode === "in_clinic") {
+        modeBadge = `<span class="pill" style="background:#f1f5f9; color:#475569; font-weight:800; font-size:10px; padding:2px 6px;">🏥 ${i18nService.t("owner.onboarding.modeInClinicBadge", "In-Clinic")}</span>`;
+      } else if (mode === "home_care") {
+        modeBadge = `<span class="pill" style="background:#fef3c7; color:#92400e; font-weight:800; font-size:10px; padding:2px 6px;">🏠 ${i18nService.t("owner.onboarding.modeHomeCareBadge", "Home Care")}</span>`;
+      }
+
       return `
         <div class="gateway-header-card branch-card-row ${isActive ? "is-active" : ""}" data-branch-id="${b.id}">
           <div class="gateway-brand-info">
@@ -202,6 +214,7 @@ export class BranchSelectController {
                 <span class="pill" style="background:${meta.bg}; color:${meta.color}; font-weight:800; font-size:11px; padding:3px 8px;">
                   ${meta.label}
                 </span>
+                ${modeBadge}
                 <span class="pill" style="background:#dcfce7; color:#15803d; font-weight:800; font-size:10px; padding:2px 6px;">
                   ${i18nService.t("owner.activeBranchBadge", "● ACTIVE")}
                 </span>
@@ -408,6 +421,28 @@ export class BranchSelectController {
         uploadTitle.textContent = i18nService.t("owner.gateway.clickUploadLogo", "Click to upload branch logo");
       });
     }
+
+    // Service Mode Radio selection in new branch modal
+    const modeLabels = document.querySelectorAll(".new-branch-mode-label");
+    const modeRadios = document.querySelectorAll('input[name="newBranchServiceMode"]');
+    modeRadios.forEach((radio) => {
+      radio.addEventListener("change", () => {
+        modeLabels.forEach((lbl) => {
+          lbl.style.borderColor = "#cbd5e1";
+          lbl.style.background = "#ffffff";
+          lbl.classList.remove("active");
+          lbl.style.color = "inherit";
+        });
+        const parent = radio.closest(".new-branch-mode-label");
+        if (parent) {
+          parent.style.borderColor = "var(--primary)";
+          parent.style.background = "#f0fdfa";
+          parent.classList.add("active");
+          parent.style.color = "var(--primary-dark)";
+        }
+        soundService.playClickTone();
+      });
+    });
     // AKHIR MODIFIKASI
 
     if (btnClose) btnClose.addEventListener("click", closeModal);
@@ -438,6 +473,7 @@ export class BranchSelectController {
           return;
         }
 
+        const serviceMode = document.querySelector('input[name="newBranchServiceMode"]:checked')?.value || "hybrid";
         const meta = this.getTemplateMeta(template);
         const newBranchId = `br-sg-${Date.now().toString().slice(-4)}`;
         const newBranch = {
@@ -449,6 +485,7 @@ export class BranchSelectController {
           hours,
           rooms,
           template,
+          serviceMode,
           logo: document.getElementById("newBranchSelectedLogoInput")?.value || meta.icon,
           currency: "SGD",
           revenue: "SGD 0.00",
@@ -494,7 +531,9 @@ export class BranchSelectController {
             regionCode: "sg",
             region: "Singapore",
             country: "Singapore",
-            currency: "SGD"
+            currency: "SGD",
+            template,
+            service_mode: serviceMode
           }).catch(err => console.warn("[BranchSelect] Cloud branch sync failed:", err));
         }
 

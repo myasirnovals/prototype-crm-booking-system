@@ -1,7 +1,7 @@
 /**
  * Cliniva — Admin Onboarding Setup Wizard Controller
  * SOLID: Single Responsibility for WordPress-style setup wizard, brand initialization,
- * 4-specialty template selection, and initial branch provisioning.
+ * 4-specialty template selection, service delivery mode, and initial branch provisioning.
  */
 
 import { authService, USER_ROLES } from "../../services/auth.service.js";
@@ -10,6 +10,7 @@ import { soundService } from "../../services/sound.service.js";
 import { bookingService } from "../../services/booking.service.js";
 import { i18nService } from "../../services/i18n.service.js";
 import { supabaseService } from "../../services/supabase.service.js";
+import { getTemplateById } from "../../config/templates/index.js";
 
 export class AdminOnboardingController {
   constructor() {
@@ -29,51 +30,86 @@ export class AdminOnboardingController {
 
     this.currentUser = session.user;
     this.renderUserInfo();
+    this.checkReturningOwner();
     this.setupStepperButtons();
     this.setupLogoPicker();
     this.setupTemplateSelection();
+    this.setupServiceModeSelection();
+    this.setupSubscriptionBilling();
     this.setupLaunchButton();
     this.setupSignOut();
+    this.updateSubscriptionPricing();
     this.updateReviewSummary();
-
-    // AWAL MODIFIKASI: Logika Harga Dinamis Langganan B2B
-    const subsRadios = document.querySelectorAll('input[name="wizardSubsPlan"]');
-    const totalBillingAmount = document.getElementById('wizardTotalBillingAmount');
-
-    subsRadios.forEach(radio => {
-      radio.addEventListener('change', (e) => {
-        const price = parseFloat(e.target.dataset.price).toFixed(2);
-        if (totalBillingAmount) totalBillingAmount.textContent = `SGD ${price}`;
-
-        document.querySelectorAll('.subs-radio-label-wizard').forEach(label => {
-          label.style.borderColor = 'var(--line)';
-          label.style.background = '#f8fafc';
-          const title = label.querySelector('span:first-of-type');
-          if (title) title.style.color = 'var(--text)';
-        });
-
-        const selectedLabel = e.target.closest('.subs-radio-label-wizard');
-        if (selectedLabel) {
-          selectedLabel.style.borderColor = 'var(--primary)';
-          selectedLabel.style.background = '#f0fdfa';
-          const title = selectedLabel.querySelector('span:first-of-type');
-          if (title) title.style.color = 'var(--primary)';
-        }
-      });
-    });
-    // AKHIR MODIFIKASI
 
     this.goToStep(1, false);
 
     window.addEventListener("cliniva:languageChanged", () => {
+      this.updateSubscriptionPricing();
       this.updateReviewSummary();
     });
+
+    const regionSelect = document.getElementById("brandRegionSelect");
+    if (regionSelect) {
+      regionSelect.addEventListener("change", () => {
+        this.updateSubscriptionPricing();
+        this.updateReviewSummary();
+      });
+    }
   }
 
   renderUserInfo() {
     const el = document.getElementById("wizardLoggedInAs");
     if (el && this.currentUser) {
       el.innerHTML = `Signed in as <strong>${this.currentUser.name}</strong> (${this.currentUser.email})`;
+    }
+  }
+
+  checkReturningOwner() {
+    const existingBrand = storageService.get("cliniva_brand_profile", null);
+    const existingBranches = storageService.get("cliniva_branches", []);
+    const isReturning = Boolean(
+      this.currentUser.onboardingCompleted ||
+      existingBrand ||
+      (Array.isArray(existingBranches) && existingBranches.length > 0)
+    );
+
+    if (isReturning) {
+      const banner = document.getElementById("returningOwnerBanner");
+      if (banner) {
+        banner.style.display = "block";
+        const brandNameEl = document.getElementById("returningBrandName");
+        if (brandNameEl) {
+          brandNameEl.textContent = (existingBrand && existingBrand.name)
+            ? existingBrand.name
+            : (this.currentUser.brandName || "Dennis Health & Wellness Hub");
+        }
+      }
+
+      // Pre-fill existing brand details into Step 2 inputs if available
+      if (existingBrand) {
+        const brandNameInput = document.getElementById("brandNameInput");
+        const brandTaglineInput = document.getElementById("brandTaglineInput");
+        const brandDescInput = document.getElementById("brandDescInput");
+        const brandRegionSelect = document.getElementById("brandRegionSelect");
+        if (brandNameInput && existingBrand.name) brandNameInput.value = existingBrand.name;
+        if (brandTaglineInput && existingBrand.tagline) brandTaglineInput.value = existingBrand.tagline;
+        if (brandDescInput && existingBrand.description) brandDescInput.value = existingBrand.description;
+        if (brandRegionSelect && existingBrand.region) brandRegionSelect.value = existingBrand.region;
+        if (existingBrand.logo) {
+          this.setLogoState(existingBrand.logo, existingBrand.logo.startsWith("data:") || existingBrand.logo.startsWith("http"));
+        }
+      }
+
+      const btnContinueFastTrack = document.getElementById("btnContinueFastTrack");
+      if (btnContinueFastTrack) {
+        btnContinueFastTrack.addEventListener("click", () => {
+          soundService.playClickTone();
+          const step1 = document.getElementById("wizardStep1");
+          if (step1) {
+            step1.scrollIntoView({ behavior: "smooth" });
+          }
+        });
+      }
     }
   }
 
@@ -86,33 +122,41 @@ export class AdminOnboardingController {
     const btnPrev3 = document.getElementById("btnPrev3");
     const btnPrev4 = document.getElementById("btnPrev4");
 
+    // Step 1 -> Step 2 (Template -> Brand & Branch Config)
     if (btnNext1) {
       btnNext1.addEventListener("click", () => {
-        const brandName = document.getElementById("brandNameInput")?.value.trim();
-        if (!brandName) {
-          alert("Please enter your clinic / practice brand name.");
+        if (!this.selectedTemplate) {
+          alert("Please select a practice template to continue.");
           return;
         }
         this.goToStep(2, true);
       });
     }
 
+    // Step 2 -> Step 3 (Brand & Branch -> Subscription Billing)
     if (btnNext2) {
       btnNext2.addEventListener("click", () => {
-        this.goToStep(3, true);
-      });
-    }
-
-    if (btnNext3) {
-      btnNext3.addEventListener("click", () => {
+        const brandName = document.getElementById("brandNameInput")?.value.trim();
         const branchName = document.getElementById("branchNameInput")?.value.trim();
         const branchAddress = document.getElementById("branchAddressInput")?.value.trim();
 
+        if (!brandName) {
+          alert("Please enter your clinic / practice brand name.");
+          return;
+        }
         if (!branchName || !branchAddress) {
           alert("Please fill in both the Branch Name and Physical Address for Branch 1.");
           return;
         }
 
+        this.updateSubscriptionPricing();
+        this.goToStep(3, true);
+      });
+    }
+
+    // Step 3 -> Step 4 (Subscription Billing -> Launch Review)
+    if (btnNext3) {
+      btnNext3.addEventListener("click", () => {
         this.updateReviewSummary();
         this.goToStep(4, true);
       });
@@ -165,48 +209,51 @@ export class AdminOnboardingController {
     }
   }
 
+  setLogoState(logoVal, isImage = false) {
+    this.selectedLogo = logoVal;
+    const hiddenInput = document.getElementById("selectedLogoInput");
+    const previewEmoji = document.getElementById("logoPreviewEmoji");
+    const previewImage = document.getElementById("logoPreviewImage");
+    const btnRemove = document.getElementById("btnRemoveLogo");
+    const uploadTitle = document.getElementById("logoUploadTitle");
+    const presetButtons = document.querySelectorAll(".logo-choice-btn");
+
+    if (hiddenInput) hiddenInput.value = logoVal;
+
+    if (isImage) {
+      if (previewImage) {
+        previewImage.src = logoVal;
+        previewImage.style.display = "block";
+      }
+      if (previewEmoji) previewEmoji.style.display = "none";
+      if (btnRemove) btnRemove.style.display = "inline-flex";
+      if (uploadTitle) uploadTitle.textContent = i18nService.t("onboarding.logoUploaded", "Logo image uploaded successfully (Click to replace)");
+      presetButtons.forEach((b) => b.classList.remove("active"));
+    } else {
+      if (previewImage) {
+        previewImage.src = "";
+        previewImage.style.display = "none";
+      }
+      if (previewEmoji) {
+        previewEmoji.textContent = logoVal;
+        previewEmoji.style.display = "block";
+      }
+      if (btnRemove) btnRemove.style.display = "none";
+      if (uploadTitle) uploadTitle.textContent = i18nService.t("onboarding.logoUploadTitle", "Click to Upload Logo or Drag Image File Here");
+      presetButtons.forEach((b) => {
+        b.classList.toggle("active", b.dataset.emoji === logoVal);
+      });
+    }
+
+    this.updateReviewSummary();
+  }
+
   setupLogoPicker() {
     const fileInput = document.getElementById("brandLogoFileInput");
     const dropZone = document.getElementById("logoDropZone");
     const btnBrowse = document.getElementById("btnBrowseLogo");
     const btnRemove = document.getElementById("btnRemoveLogo");
-    const previewEmoji = document.getElementById("logoPreviewEmoji");
-    const previewImage = document.getElementById("logoPreviewImage");
-    const uploadTitle = document.getElementById("logoUploadTitle");
-    const hiddenInput = document.getElementById("selectedLogoInput");
     const presetButtons = document.querySelectorAll(".logo-choice-btn");
-
-    const setLogoState = (logoVal, isImage = false) => {
-      this.selectedLogo = logoVal;
-      if (hiddenInput) hiddenInput.value = logoVal;
-
-      if (isImage) {
-        if (previewImage) {
-          previewImage.src = logoVal;
-          previewImage.style.display = "block";
-        }
-        if (previewEmoji) previewEmoji.style.display = "none";
-        if (btnRemove) btnRemove.style.display = "inline-flex";
-        if (uploadTitle) uploadTitle.textContent = i18nService.t("onboarding.logoUploaded", "Logo image uploaded successfully (Click to replace)");
-        presetButtons.forEach((b) => b.classList.remove("active"));
-      } else {
-        if (previewImage) {
-          previewImage.src = "";
-          previewImage.style.display = "none";
-        }
-        if (previewEmoji) {
-          previewEmoji.textContent = logoVal;
-          previewEmoji.style.display = "block";
-        }
-        if (btnRemove) btnRemove.style.display = "none";
-        if (uploadTitle) uploadTitle.textContent = i18nService.t("onboarding.logoUploadTitle", "Click to Upload Logo or Drag Image File Here");
-        presetButtons.forEach((b) => {
-          b.classList.toggle("active", b.dataset.emoji === logoVal);
-        });
-      }
-
-      this.updateReviewSummary();
-    };
 
     const processFile = (file) => {
       if (!file) return;
@@ -222,7 +269,7 @@ export class AdminOnboardingController {
       const reader = new FileReader();
       reader.onload = (e) => {
         const dataUrl = e.target.result;
-        setLogoState(dataUrl, true);
+        this.setLogoState(dataUrl, true);
         soundService.playClickTone();
       };
       reader.readAsDataURL(file);
@@ -268,7 +315,7 @@ export class AdminOnboardingController {
       btnRemove.addEventListener("click", (e) => {
         e.stopPropagation();
         if (fileInput) fileInput.value = "";
-        setLogoState("🌿", false);
+        this.setLogoState("🌿", false);
         soundService.playClickTone();
       });
     }
@@ -279,7 +326,7 @@ export class AdminOnboardingController {
         e.stopPropagation();
         if (fileInput) fileInput.value = "";
         const emoji = btn.dataset.emoji || "🌿";
-        setLogoState(emoji, false);
+        this.setLogoState(emoji, false);
         soundService.playClickTone();
       });
     });
@@ -294,9 +341,100 @@ export class AdminOnboardingController {
         this.selectedTemplate = card.dataset.template || "physio";
         const input = document.getElementById("selectedTemplateId");
         if (input) input.value = this.selectedTemplate;
+        this.updateSubscriptionPricing();
+        this.updateReviewSummary();
         soundService.playClickTone();
       });
     });
+  }
+
+  setupServiceModeSelection() {
+    const labels = document.querySelectorAll(".service-mode-label");
+    const radios = document.querySelectorAll('input[name="wizardServiceMode"]');
+
+    radios.forEach((radio) => {
+      radio.addEventListener("change", () => {
+        labels.forEach((lbl) => {
+          lbl.style.borderColor = "#cbd5e1";
+          lbl.style.background = "#ffffff";
+          lbl.classList.remove("active");
+          const strong = lbl.querySelector("strong");
+          if (strong) strong.style.color = "#1e293b";
+        });
+
+        const parentLabel = radio.closest(".service-mode-label");
+        if (parentLabel) {
+          parentLabel.style.borderColor = "var(--primary)";
+          parentLabel.style.background = "#f0fdfa";
+          parentLabel.classList.add("active");
+          const strong = parentLabel.querySelector("strong");
+          if (strong) strong.style.color = "var(--primary-dark)";
+        }
+        soundService.playClickTone();
+        this.updateReviewSummary();
+      });
+    });
+  }
+
+  setupSubscriptionBilling() {
+    const subsRadios = document.querySelectorAll('input[name="wizardSubsPlan"]');
+    subsRadios.forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        const region = document.getElementById("brandRegionSelect")?.value || "sg";
+        const currency = region === "sg" ? "SGD" : "MYR";
+        const price = parseFloat(e.target.dataset.price || "948").toFixed(2);
+        const totalBillingAmount = document.getElementById("wizardTotalBillingAmount");
+        if (totalBillingAmount) totalBillingAmount.textContent = `${currency} ${price}`;
+
+        document.querySelectorAll(".subs-radio-label-wizard").forEach((label) => {
+          label.style.borderColor = "var(--line)";
+          label.style.background = "#f8fafc";
+          const title = label.querySelector("span:first-of-type");
+          if (title) title.style.color = "var(--text)";
+        });
+
+        const selectedLabel = e.target.closest(".subs-radio-label-wizard");
+        if (selectedLabel) {
+          selectedLabel.style.borderColor = "var(--primary)";
+          selectedLabel.style.background = "#f0fdfa";
+          const title = selectedLabel.querySelector("span:first-of-type");
+          if (title) title.style.color = "var(--primary)";
+        }
+
+        this.updateReviewSummary();
+      });
+    });
+  }
+
+  updateSubscriptionPricing() {
+    const tConfig = getTemplateById(this.selectedTemplate);
+    const monthly = tConfig?.pricing?.monthly || 99;
+    const sixMonth = tConfig?.pricing?.sixMonth || Math.round(monthly * 6 * 0.9);
+    const yearly = tConfig?.pricing?.yearly || Math.round(monthly * 12 * 0.8);
+
+    const region = document.getElementById("brandRegionSelect")?.value || "sg";
+    const currency = region === "sg" ? "SGD" : "MYR";
+
+    const plan1Radio = document.querySelector('input[name="wizardSubsPlan"][value="1"]');
+    const plan6Radio = document.querySelector('input[name="wizardSubsPlan"][value="6"]');
+    const plan12Radio = document.querySelector('input[name="wizardSubsPlan"][value="12"]');
+
+    if (plan1Radio) plan1Radio.dataset.price = monthly;
+    if (plan6Radio) plan6Radio.dataset.price = sixMonth;
+    if (plan12Radio) plan12Radio.dataset.price = yearly;
+
+    const plan1Text = document.getElementById("plan1mText");
+    const plan6Text = document.getElementById("plan6mText");
+    const plan1yText = document.getElementById("plan1yText");
+
+    if (plan1Text) plan1Text.textContent = `${currency} ${monthly}/mo`;
+    if (plan6Text) plan6Text.innerHTML = `${currency} ${Math.round(sixMonth / 6)}/mo (<span data-i18n="owner.onboarding.save10">Save 10%</span>)`;
+    if (plan1yText) plan1yText.innerHTML = `${currency} ${Math.round(yearly / 12)}/mo (<span data-i18n="owner.onboarding.save20">Save 20%</span>)`;
+
+    const selectedRadio = document.querySelector('input[name="wizardSubsPlan"]:checked');
+    const activePrice = selectedRadio ? parseFloat(selectedRadio.dataset.price).toFixed(2) : parseFloat(yearly).toFixed(2);
+    const totalBillingAmount = document.getElementById("wizardTotalBillingAmount");
+    if (totalBillingAmount) totalBillingAmount.textContent = `${currency} ${activePrice}`;
   }
 
   getTemplateLabel(templateId) {
@@ -309,6 +447,8 @@ export class AdminOnboardingController {
         return `🏃 ${i18nService.t("template.physio.title", "Physiotherapy & Sports Rehab")}`;
       case "nutrition":
         return `🥗 ${i18nService.t("template.nutrition.title", "Clinical Nutrition & Dietetics")}`;
+      case "personal-trainer":
+        return `🏋️ ${i18nService.t("template.pt.title", "Personal Trainer & Fitness")}`;
       default:
         return `🏃 ${i18nService.t("template.physio.title", "Physiotherapy & Sports Rehab")}`;
     }
@@ -326,8 +466,10 @@ export class AdminOnboardingController {
     const brandTaglineEl = document.getElementById("reviewBrandTagline");
     const templateValEl = document.getElementById("reviewTemplateVal");
     const branchValEl = document.getElementById("reviewBranchVal");
+    const serviceModeValEl = document.getElementById("reviewServiceModeVal");
     const addressValEl = document.getElementById("reviewAddressVal");
     const regionValEl = document.getElementById("reviewRegionVal");
+    const planValEl = document.getElementById("reviewPlanVal");
     const ownerValEl = document.getElementById("reviewOwnerVal");
 
     if (logoEl) {
@@ -341,8 +483,30 @@ export class AdminOnboardingController {
     if (brandTaglineEl) brandTaglineEl.textContent = brandTagline;
     if (templateValEl) templateValEl.textContent = this.getTemplateLabel(this.selectedTemplate);
     if (branchValEl) branchValEl.textContent = branchName;
+
+    if (serviceModeValEl) {
+      const mode = document.querySelector('input[name="wizardServiceMode"]:checked')?.value || "hybrid";
+      if (mode === "in_clinic") {
+        serviceModeValEl.textContent = "🏥 " + i18nService.t("owner.onboarding.modeInClinicTitle", "In-Clinic Facility Only");
+      } else if (mode === "home_care") {
+        serviceModeValEl.textContent = "🏠 " + i18nService.t("owner.onboarding.modeHomeCareTitle", "Home Care Only (Home Visit)");
+      } else {
+        serviceModeValEl.textContent = "✨ " + i18nService.t("owner.onboarding.modeHybridTitle", "Hybrid (Both In-Clinic & Home Care)");
+      }
+    }
+
     if (addressValEl) addressValEl.textContent = branchAddress;
     if (regionValEl) regionValEl.textContent = region === "sg" ? "🇸🇬 Singapore (SGD)" : "🇲🇾 Malaysia (MYR)";
+
+    if (planValEl) {
+      const selectedPlan = document.querySelector('input[name="wizardSubsPlan"]:checked');
+      const planDuration = selectedPlan ? selectedPlan.value : "12";
+      const planPrice = selectedPlan ? selectedPlan.dataset.price : "948";
+      const currency = region === "sg" ? "SGD" : "MYR";
+      const durationLabel = planDuration === "1" ? "1 Month" : (planDuration === "6" ? "6 Months" : "1 Year");
+      planValEl.textContent = `${durationLabel} (${currency} ${parseFloat(planPrice).toFixed(2)})`;
+    }
+
     if (ownerValEl && this.currentUser) {
       ownerValEl.textContent = `${this.currentUser.name} (${this.currentUser.email})`;
     }
@@ -366,6 +530,7 @@ export class AdminOnboardingController {
       const branchPhone = document.getElementById("branchPhoneInput")?.value.trim() || "+65 6733 8899";
       const branchHours = document.getElementById("branchHoursInput")?.value.trim() || "09:00 - 20:00";
       const branchRooms = document.getElementById("branchRoomsInput")?.value || "4";
+      const serviceMode = document.querySelector('input[name="wizardServiceMode"]:checked')?.value || "hybrid";
 
       const branchId = `br-${region}-${Date.now().toString().slice(-4)}`;
 
@@ -379,6 +544,7 @@ export class AdminOnboardingController {
         hours: branchHours,
         rooms: branchRooms,
         template: this.selectedTemplate,
+        serviceMode: serviceMode,
         currency: region === "sg" ? "SGD" : "MYR",
         revenue: region === "sg" ? "SGD 0.00" : "MYR 0.00",
         occupancy: "0.0%",
@@ -445,7 +611,8 @@ export class AdminOnboardingController {
         brandTagline,
         activeTemplate: this.selectedTemplate,
         branchId,
-        branchName
+        branchName,
+        serviceMode
       });
 
       // 6. Sync to Supabase Cloud if available
@@ -459,8 +626,10 @@ export class AdminOnboardingController {
           regionCode: region,
           region: region === "sg" ? "Singapore" : "Malaysia",
           country: region === "sg" ? "Singapore" : "Malaysia",
-          currency: region === "sg" ? "SGD" : "MYR"
-        }).catch(err => console.warn("[Onboarding] Cloud branch sync failed:", err));
+          currency: region === "sg" ? "SGD" : "MYR",
+          template: this.selectedTemplate,
+          service_mode: serviceMode
+        }).catch((err) => console.warn("[Onboarding] Cloud branch sync failed:", err));
       }
 
       setTimeout(() => {

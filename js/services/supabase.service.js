@@ -692,6 +692,8 @@ class SupabaseService {
         hours: branchData.hours || null,
         lat: branchData.lat || null,
         lng: branchData.lng || null,
+        template: branchData.template || "physio",
+        service_mode: branchData.serviceMode || branchData.service_mode || "hybrid",
         is_active: true
       };
 

@@ -66,34 +66,39 @@ export class PatientBookingController {
 
     // 2. Jika ada branch dari URL, set cabang dan templatenya
     if (branchParam) {
-      // Ambil semua daftar cabang dari seluruh template
-      const allTemplates = ['wellness', 'physio', 'tcm', 'nutrition'];
-      let foundBranch = null;
-      let foundTemplate = null;
+      // First check dynamic custom branches in storage
+      const dynamicBranches = storageService.get(this.BRANCHES_KEY, []);
+      const matchDynamic = Array.isArray(dynamicBranches) ? dynamicBranches.find(b => b.id === branchParam) : null;
 
-      for (const tmpl of allTemplates) {
-        const branchesInTmpl = bookingService.getBranches(tmpl);
-        const branch = branchesInTmpl.find(b => b.id === branchParam);
-        if (branch) {
-          foundBranch = branch;
-          foundTemplate = tmpl;
-          break; // Berhenti mencari jika sudah ketemu
+      if (matchDynamic) {
+        this.selectedBranch = matchDynamic;
+        this.activeTemplateId = matchDynamic.template || "physio";
+        bookingService.setActiveTemplate(this.activeTemplateId);
+      } else {
+        // Ambil semua daftar cabang dari seluruh template
+        const allTemplates = ["wellness", "physio", "tcm", "nutrition", "personal-trainer"];
+        let foundBranch = null;
+        let foundTemplate = null;
+
+        for (const tmpl of allTemplates) {
+          const branchesInTmpl = bookingService.getBranches(tmpl);
+          const branch = branchesInTmpl.find(b => b.id === branchParam);
+          if (branch) {
+            foundBranch = branch;
+            foundTemplate = tmpl;
+            break;
+          }
+        }
+
+        if (foundBranch && foundTemplate) {
+          this.activeTemplateId = foundTemplate;
+          bookingService.setActiveTemplate(foundTemplate);
+          this.selectedBranch = foundBranch;
+        } else {
+          this.activeTemplateId = bookingService.getActiveTemplateId() || "wellness";
         }
       }
-
-      if (foundBranch && foundTemplate) {
-        // Set template aktif berdasarkan URL
-        this.activeTemplateId = foundTemplate;
-        bookingService.setActiveTemplate(foundTemplate);
-
-        // Set cabang yang aktif
-        this.selectedBranch = foundBranch;
-      } else {
-        // Fallback jika id branch tidak ditemukan (kembali ke default)
-        this.activeTemplateId = bookingService.getActiveTemplateId() || "wellness";
-      }
     } else {
-      // Fallback jika tidak ada parameter branch di URL
       this.activeTemplateId = bookingService.getActiveTemplateId() || "wellness";
     }
     // --- AKHIR MODIFIKASI ---

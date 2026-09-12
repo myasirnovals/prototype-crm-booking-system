@@ -1517,6 +1517,28 @@ export const en = {
   "owner.onboarding.returningTitle": "Clinic Brand Already Established",
   "owner.onboarding.returningDesc": "You have already completed initial onboarding for your clinic enterprise. You can manage existing branches or provision an additional location below.",
   "owner.onboarding.btnGoGateway": "Go to Branch Gateway",
-  "owner.onboarding.btnAddBranch": "Provision Another Branch"
+  "owner.onboarding.btnAddBranch": "Provision Another Branch",
+
+  // Dynamic Step 2 Configuration & Postal Lookup
+  "owner.onboarding.postalLabel": "Postal Code (SG)",
+  "owner.onboarding.postalLabelMY": "Postal Code (MY)",
+  "owner.onboarding.postalBtn": "Lookup",
+  "owner.onboarding.postalSearching": "Searching address on OneMap...",
+  "owner.onboarding.postalFound": "Address found & auto-filled",
+  "owner.onboarding.postalNotFound": "Postal code not found in Singapore registry",
+  "owner.onboarding.postalInvalid": "Enter a valid 6-digit postal code",
+  "owner.onboarding.addrLabelClinic": "Clinic Physical Address",
+  "owner.onboarding.addrLabelHomeCare": "Operations & Dispatch Office Address",
+  "owner.onboarding.addrLabelHybrid": "Clinic Physical Address & Service Hub",
+  "owner.onboarding.coverageLabel": "Home Visit Coverage Area & Travel Radius",
+  "owner.onboarding.capacityLabelClinic": "Treatment Capacity / Clinic Therapy Suites",
+  "owner.onboarding.capacityLabelHomeCare": "Active Fleet Capacity / Mobile Therapists",
+  "owner.onboarding.capacityLabelHybrid": "Hybrid Operational Capacity (Suites + Mobile Fleet)",
+  "owner.onboarding.hoursLabelClinic": "Clinic Operating Hours",
+  "owner.onboarding.hoursLabelHomeCare": "Home Visit Dispatch Service Hours",
+  "owner.onboarding.hoursLabelHybrid": "Facility & Home Visit Operating Hours",
+  "owner.onboarding.branchNameClinic": "Paragon Medical Flagship (Branch 1)",
+  "owner.onboarding.branchNameHomeCare": "Dennis Mobile Care Dispatch (Central Hub)",
+  "owner.onboarding.branchNameHybrid": "Paragon Medical & Home Care Hub (Branch 1)"
 };
 

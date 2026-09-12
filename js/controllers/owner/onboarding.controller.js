@@ -1,7 +1,7 @@
 /**
  * Cliniva — Admin Onboarding Setup Wizard Controller
  * SOLID: Single Responsibility for WordPress-style setup wizard, brand initialization,
- * 4-specialty template selection, service delivery mode, and initial branch provisioning.
+ * 5-specialty template selection, dynamic service delivery modes, and OneMap postal lookup.
  */
 
 import { authService, USER_ROLES } from "../../services/auth.service.js";
@@ -34,16 +34,22 @@ export class AdminOnboardingController {
     this.setupStepperButtons();
     this.setupLogoPicker();
     this.setupTemplateSelection();
+    this.setupPostalCodeLookup();
     this.setupServiceModeSelection();
     this.setupSubscriptionBilling();
     this.setupLaunchButton();
     this.setupSignOut();
+
+    const initialMode = document.querySelector('input[name="wizardServiceMode"]:checked')?.value || "hybrid";
+    this.applyServiceModeDynamicUI(initialMode);
     this.updateSubscriptionPricing();
     this.updateReviewSummary();
 
     this.goToStep(1, false);
 
     window.addEventListener("cliniva:languageChanged", () => {
+      const currentMode = document.querySelector('input[name="wizardServiceMode"]:checked')?.value || "hybrid";
+      this.applyServiceModeDynamicUI(currentMode);
       this.updateSubscriptionPricing();
       this.updateReviewSummary();
     });
@@ -51,6 +57,7 @@ export class AdminOnboardingController {
     const regionSelect = document.getElementById("brandRegionSelect");
     if (regionSelect) {
       regionSelect.addEventListener("change", () => {
+        this.handleRegionChange();
         this.updateSubscriptionPricing();
         this.updateReviewSummary();
       });
@@ -144,8 +151,12 @@ export class AdminOnboardingController {
           alert("Please enter your clinic / practice brand name.");
           return;
         }
-        if (!branchName || !branchAddress) {
-          alert("Please fill in both the Branch Name and Physical Address for Branch 1.");
+        if (!branchName) {
+          alert("Please fill in the Branch Name.");
+          return;
+        }
+        if (!branchAddress) {
+          alert("Please fill in the Physical Address (or use Postal Code Lookup).");
           return;
         }
 
@@ -405,6 +416,155 @@ export class AdminOnboardingController {
     }
   }
 
+  // ─────────────────────────────────────────────────────────────────────────
+  // ONEMAP POSTAL CODE LOOKUP & AUTO-FILL
+  // ─────────────────────────────────────────────────────────────────────────
+
+  setupPostalCodeLookup() {
+    const postalInput = document.getElementById("branchPostalInput");
+    const btnLookup = document.getElementById("btnLookupPostal");
+    const addressInput = document.getElementById("branchAddressInput");
+    const feedback = document.getElementById("wizardPostalFeedback");
+
+    const executeLookup = async () => {
+      if (!postalInput) return;
+      const postalCode = postalInput.value.trim();
+      const region = document.getElementById("brandRegionSelect")?.value || "sg";
+
+      if (region === "sg") {
+        if (!/^\d{6}$/.test(postalCode)) {
+          if (feedback) {
+            feedback.textContent = "⚠️ " + i18nService.t("owner.onboarding.postalInvalid", "Enter a valid 6-digit postal code");
+            feedback.style.display = "block";
+            feedback.style.color = "#ef4444";
+          }
+          return;
+        }
+
+        if (feedback) {
+          feedback.textContent = "⏳ " + i18nService.t("owner.onboarding.postalSearching", "Searching address on OneMap...");
+          feedback.style.display = "block";
+          feedback.style.color = "var(--primary)";
+        }
+
+        try {
+          const response = await fetch(
+            `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${postalCode}&returnGeom=N&getAddrDetails=Y&pageNum=1`
+          );
+          const data = await response.json();
+
+          if (data && data.found > 0 && Array.isArray(data.results) && data.results.length > 0) {
+            const result = data.results[0];
+            const blk = result.BLK_NO && result.BLK_NO !== "NIL" ? `${result.BLK_NO} ` : "";
+            const road = result.ROAD_NAME && result.ROAD_NAME !== "NIL" ? result.ROAD_NAME : "";
+            const building = result.BUILDING && result.BUILDING !== "NIL" ? `, ${result.BUILDING}` : "";
+            const postal = result.POSTAL || postalCode;
+
+            const fullAddress = `${blk}${road}${building}, Singapore ${postal}`;
+            if (addressInput) addressInput.value = fullAddress;
+
+            if (feedback) {
+              feedback.textContent = "✅ " + i18nService.t("owner.onboarding.postalFound", "Address found & auto-filled");
+              feedback.style.color = "#16a34a";
+            }
+            soundService.playClickTone();
+            this.updateReviewSummary();
+          } else {
+            if (feedback) {
+              feedback.textContent = "❌ " + i18nService.t("owner.onboarding.postalNotFound", "Postal code not found in Singapore registry");
+              feedback.style.color = "#ef4444";
+            }
+          }
+        } catch (err) {
+          console.warn("[OneMap Lookup] Error fetching address:", err);
+          if (feedback) {
+            feedback.textContent = "⚠️ Connection to OneMap failed. Please type address manually.";
+            feedback.style.color = "#ef4444";
+          }
+        }
+      } else {
+        // Malaysia Region feedback
+        if (feedback) {
+          feedback.textContent = "ℹ️ Malaysian postal code verified. Please ensure building & street are accurate.";
+          feedback.style.display = "block";
+          feedback.style.color = "var(--primary)";
+        }
+        this.updateReviewSummary();
+      }
+    };
+
+    if (btnLookup) {
+      btnLookup.addEventListener("click", (e) => {
+        e.preventDefault();
+        executeLookup();
+      });
+    }
+
+    if (postalInput) {
+      postalInput.addEventListener("input", (e) => {
+        const val = e.target.value.trim();
+        const region = document.getElementById("brandRegionSelect")?.value || "sg";
+        if (region === "sg" && /^\d{6}$/.test(val)) {
+          executeLookup();
+        } else if (!val) {
+          if (feedback) feedback.style.display = "none";
+        }
+      });
+
+      postalInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          executeLookup();
+        }
+      });
+    }
+  }
+
+  handleRegionChange() {
+    const region = document.getElementById("brandRegionSelect")?.value || "sg";
+    const postalLabel = document.getElementById("branchPostalLabel");
+    const postalInput = document.getElementById("branchPostalInput");
+    const feedback = document.getElementById("wizardPostalFeedback");
+
+    if (region === "my") {
+      if (postalLabel) postalLabel.textContent = i18nService.t("owner.onboarding.postalLabelMY", "Postal Code (MY)");
+      if (postalInput) {
+        postalInput.placeholder = "e.g. 50450";
+        postalInput.maxLength = 5;
+        if (postalInput.value === "238859") postalInput.value = "50450";
+      }
+      const addressInput = document.getElementById("branchAddressInput");
+      if (addressInput && addressInput.value.includes("Singapore")) {
+        addressInput.value = "Level 8, Menara Ken TTDI, Jalan Burhanuddin Helmi, 60000 Kuala Lumpur";
+      }
+      const phoneInput = document.getElementById("branchPhoneInput");
+      if (phoneInput && phoneInput.value.startsWith("+65")) {
+        phoneInput.value = "+60 3 7728 8899";
+      }
+    } else {
+      if (postalLabel) postalLabel.textContent = i18nService.t("owner.onboarding.postalLabel", "Postal Code (SG)");
+      if (postalInput) {
+        postalInput.placeholder = "e.g. 238859";
+        postalInput.maxLength = 6;
+        if (postalInput.value === "50450") postalInput.value = "238859";
+      }
+      const addressInput = document.getElementById("branchAddressInput");
+      if (addressInput && addressInput.value.includes("Kuala Lumpur")) {
+        addressInput.value = "290 Orchard Road, #09-12 Paragon Medical Suites, Singapore 238859";
+      }
+      const phoneInput = document.getElementById("branchPhoneInput");
+      if (phoneInput && phoneInput.value.startsWith("+60")) {
+        phoneInput.value = "+65 6733 8899";
+      }
+    }
+
+    if (feedback) feedback.style.display = "none";
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // DYNAMIC SERVICE DELIVERY MODEL ADAPTATION
+  // ─────────────────────────────────────────────────────────────────────────
+
   setupServiceModeSelection() {
     const labels = document.querySelectorAll(".service-mode-label");
     const radios = document.querySelectorAll('input[name="wizardServiceMode"]');
@@ -427,10 +587,116 @@ export class AdminOnboardingController {
           const strong = parentLabel.querySelector("strong");
           if (strong) strong.style.color = "var(--primary-dark)";
         }
+
         soundService.playClickTone();
+        this.applyServiceModeDynamicUI(radio.value);
         this.updateReviewSummary();
       });
     });
+  }
+
+  applyServiceModeDynamicUI(mode = "hybrid") {
+    const addrLabel = document.getElementById("branchAddressLabel");
+    const addrHelp = document.getElementById("branchAddressHelp");
+    const addrInput = document.getElementById("branchAddressInput");
+    const coverageField = document.getElementById("branchCoverageRadiusField");
+    const hoursLabel = document.getElementById("branchHoursLabel");
+    const hoursInput = document.getElementById("branchHoursInput");
+    const capacityLabel = document.getElementById("branchCapacityLabel");
+    const capacityHelp = document.getElementById("branchCapacityHelp");
+    const roomsSelect = document.getElementById("branchRoomsInput");
+    const branchNameInput = document.getElementById("branchNameInput");
+
+    const prevCapacityVal = roomsSelect ? roomsSelect.value : "4";
+
+    if (mode === "in_clinic") {
+      // 1. In-Clinic Only
+      if (addrLabel) addrLabel.textContent = i18nService.t("owner.onboarding.addrLabelClinic", "Clinic Physical Address");
+      if (addrHelp) addrHelp.textContent = "Physical facility address where patients arrive for therapy sessions & consultations.";
+      if (addrInput) addrInput.placeholder = "Building, Street, Unit & Postal Code";
+
+      if (coverageField) coverageField.style.display = "none";
+
+      if (hoursLabel) hoursLabel.textContent = i18nService.t("owner.onboarding.hoursLabelClinic", "Clinic Operating Hours");
+      if (hoursInput && (hoursInput.value.includes("Home:") || hoursInput.value.includes("Dispatch"))) {
+        hoursInput.value = "09:00 - 20:00 (Mon - Sat)";
+      }
+
+      if (capacityLabel) capacityLabel.textContent = i18nService.t("owner.onboarding.capacityLabelClinic", "Treatment Capacity / Clinic Therapy Suites");
+      if (capacityHelp) capacityHelp.textContent = "Total private rooms or treatment bays available for simultaneous appointments.";
+
+      if (roomsSelect) {
+        roomsSelect.innerHTML = `
+          <option value="2">2 Private Therapy Rooms (Boutique Practice)</option>
+          <option value="4">4 Private Therapy Suites (Standard Clinic)</option>
+          <option value="6">6 Multi-Bed Treatment Bays (High Volume)</option>
+          <option value="8">8+ Large Enterprise Clinical Facility</option>
+        `;
+        roomsSelect.value = prevCapacityVal;
+      }
+
+      if (branchNameInput && (branchNameInput.value.includes("Dispatch") || branchNameInput.value.includes("Home Care Hub"))) {
+        branchNameInput.value = "Paragon Medical Flagship (Branch 1)";
+      }
+    } else if (mode === "home_care") {
+      // 2. Home Care Only
+      if (addrLabel) addrLabel.textContent = i18nService.t("owner.onboarding.addrLabelHomeCare", "Operations & Dispatch Office Address");
+      if (addrHelp) addrHelp.textContent = "Administrative headquarters or dispatch office for mobile therapy team (no patient walk-ins).";
+      if (addrInput) addrInput.placeholder = "Headquarters / Dispatch Unit, Building, Street, Postal Code";
+
+      if (coverageField) coverageField.style.display = "block";
+
+      if (hoursLabel) hoursLabel.textContent = i18nService.t("owner.onboarding.hoursLabelHomeCare", "Home Visit Dispatch Service Hours");
+      if (hoursInput && (hoursInput.value === "09:00 - 20:00 (Mon - Sat)" || hoursInput.value.includes("Clinic:"))) {
+        hoursInput.value = "08:00 - 21:00 (Daily On-Demand Dispatch)";
+      }
+
+      if (capacityLabel) capacityLabel.textContent = i18nService.t("owner.onboarding.capacityLabelHomeCare", "Active Fleet Capacity / Mobile Therapists");
+      if (capacityHelp) capacityHelp.textContent = "Total active certified mobile practitioners traveling to patients' addresses.";
+
+      if (roomsSelect) {
+        roomsSelect.innerHTML = `
+          <option value="2">2 Mobile Practitioners (Up to 8 home visits/day)</option>
+          <option value="4">4 Mobile Practitioners (Up to 16 home visits/day)</option>
+          <option value="6">6 Certified Home Care Specialists (Up to 24 home visits/day)</option>
+          <option value="8">8+ Enterprise Mobile Fleet (35+ home visits/day)</option>
+        `;
+        roomsSelect.value = prevCapacityVal;
+      }
+
+      if (branchNameInput && (branchNameInput.value.includes("Flagship") || branchNameInput.value.includes("Home Care Hub"))) {
+        branchNameInput.value = "Dennis Mobile Care Dispatch (Central Hub)";
+      }
+    } else {
+      // 3. Hybrid (Both)
+      if (addrLabel) addrLabel.textContent = i18nService.t("owner.onboarding.addrLabelHybrid", "Clinic Physical Address & Service Hub");
+      if (addrHelp) addrHelp.textContent = "Main physical clinic facility for walk-ins and central dispatch hub for traveling therapists.";
+      if (addrInput) addrInput.placeholder = "Building, Street, Unit & Postal Code";
+
+      if (coverageField) coverageField.style.display = "block";
+
+      if (hoursLabel) hoursLabel.textContent = i18nService.t("owner.onboarding.hoursLabelHybrid", "Facility & Home Visit Operating Hours");
+      if (hoursInput && (hoursInput.value === "09:00 - 20:00 (Mon - Sat)" || hoursInput.value.includes("Daily On-Demand"))) {
+        hoursInput.value = "Clinic: 09:00 - 20:00 | Home Visits: 08:00 - 21:00";
+      }
+
+      if (capacityLabel) capacityLabel.textContent = i18nService.t("owner.onboarding.capacityLabelHybrid", "Hybrid Operational Capacity (Suites + Mobile Fleet)");
+      if (capacityHelp) capacityHelp.textContent = "Combined operational capacity across private facility rooms and traveling specialists.";
+
+      if (roomsSelect) {
+        roomsSelect.innerHTML = `
+          <option value="2">2 Therapy Rooms + 2 Mobile Specialists</option>
+          <option value="4">4 Therapy Suites + 4 Mobile Practitioners (Standard)</option>
+          <option value="6">6 Clinic Bays + 6 Home Visit Specialists</option>
+          <option value="8">8+ Enterprise Suites & Island-wide Mobile Fleet</option>
+        `;
+        roomsSelect.value = prevCapacityVal;
+      }
+
+      if (branchNameInput && (branchNameInput.value.includes("Flagship") || branchNameInput.value.includes("Dispatch (Central Hub)"))) {
+        branchNameInput.value = "Paragon Medical & Home Care Hub (Branch 1)";
+      }
+    }
   }
 
   setupSubscriptionBilling() {
@@ -525,6 +791,9 @@ export class AdminOnboardingController {
     const branchValEl = document.getElementById("reviewBranchVal");
     const serviceModeValEl = document.getElementById("reviewServiceModeVal");
     const addressValEl = document.getElementById("reviewAddressVal");
+    const coverageRow = document.getElementById("reviewCoverageRow");
+    const coverageValEl = document.getElementById("reviewCoverageVal");
+    const capacityValEl = document.getElementById("reviewCapacityVal");
     const regionValEl = document.getElementById("reviewRegionVal");
     const planValEl = document.getElementById("reviewPlanVal");
     const ownerValEl = document.getElementById("reviewOwnerVal");
@@ -541,8 +810,8 @@ export class AdminOnboardingController {
     if (templateValEl) templateValEl.textContent = this.getTemplateLabel(this.selectedTemplate);
     if (branchValEl) branchValEl.textContent = branchName;
 
+    const mode = document.querySelector('input[name="wizardServiceMode"]:checked')?.value || "hybrid";
     if (serviceModeValEl) {
-      const mode = document.querySelector('input[name="wizardServiceMode"]:checked')?.value || "hybrid";
       if (mode === "in_clinic") {
         serviceModeValEl.textContent = "🏥 " + i18nService.t("owner.onboarding.modeInClinicTitle", "In-Clinic Facility Only");
       } else if (mode === "home_care") {
@@ -553,6 +822,28 @@ export class AdminOnboardingController {
     }
 
     if (addressValEl) addressValEl.textContent = branchAddress;
+
+    // Coverage Area Row in Review Card
+    if (coverageRow) {
+      if (mode === "in_clinic") {
+        coverageRow.style.display = "none";
+      } else {
+        coverageRow.style.display = "flex";
+        const coverageSelect = document.getElementById("branchCoverageRadiusInput");
+        if (coverageValEl && coverageSelect) {
+          coverageValEl.textContent = coverageSelect.options[coverageSelect.selectedIndex]?.text || "15 km Radius";
+        }
+      }
+    }
+
+    // Capacity Row in Review Card
+    if (capacityValEl) {
+      const roomsSelect = document.getElementById("branchRoomsInput");
+      if (roomsSelect) {
+        capacityValEl.textContent = roomsSelect.options[roomsSelect.selectedIndex]?.text || "4 Units";
+      }
+    }
+
     if (regionValEl) regionValEl.textContent = region === "sg" ? "🇸🇬 Singapore (SGD)" : "🇲🇾 Malaysia (MYR)";
 
     if (planValEl) {
@@ -583,11 +874,13 @@ export class AdminOnboardingController {
       const brandDesc = document.getElementById("brandDescInput")?.value.trim() || "";
       const region = document.getElementById("brandRegionSelect")?.value || "sg";
       const branchName = document.getElementById("branchNameInput")?.value.trim() || "Branch 1";
+      const branchPostal = document.getElementById("branchPostalInput")?.value.trim() || "";
       const branchAddress = document.getElementById("branchAddressInput")?.value.trim() || "Clinic Address";
       const branchPhone = document.getElementById("branchPhoneInput")?.value.trim() || "+65 6733 8899";
       const branchHours = document.getElementById("branchHoursInput")?.value.trim() || "09:00 - 20:00";
       const branchRooms = document.getElementById("branchRoomsInput")?.value || "4";
       const serviceMode = document.querySelector('input[name="wizardServiceMode"]:checked')?.value || "hybrid";
+      const coverageRadius = document.getElementById("branchCoverageRadiusInput")?.value || "15km";
 
       const branchId = `br-${region}-${Date.now().toString().slice(-4)}`;
 
@@ -596,12 +889,14 @@ export class AdminOnboardingController {
         id: branchId,
         name: branchName,
         code: `${region.toUpperCase()}-01`,
+        postalCode: branchPostal,
         address: branchAddress,
         phone: branchPhone,
         hours: branchHours,
         rooms: branchRooms,
         template: this.selectedTemplate,
         serviceMode: serviceMode,
+        coverageRadius: serviceMode === "in_clinic" ? null : coverageRadius,
         currency: region === "sg" ? "SGD" : "MYR",
         revenue: region === "sg" ? "SGD 0.00" : "MYR 0.00",
         occupancy: "0.0%",
@@ -677,6 +972,7 @@ export class AdminOnboardingController {
         supabaseService.upsertBranch({
           id: branchId,
           name: branchName,
+          postal_code: branchPostal,
           address: branchAddress,
           phone: branchPhone,
           hours: branchHours,
@@ -685,7 +981,8 @@ export class AdminOnboardingController {
           country: region === "sg" ? "Singapore" : "Malaysia",
           currency: region === "sg" ? "SGD" : "MYR",
           template: this.selectedTemplate,
-          service_mode: serviceMode
+          service_mode: serviceMode,
+          coverage_radius: serviceMode === "in_clinic" ? null : coverageRadius
         }).catch((err) => console.warn("[Onboarding] Cloud branch sync failed:", err));
       }
 

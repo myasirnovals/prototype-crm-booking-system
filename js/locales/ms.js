@@ -1500,5 +1500,27 @@ export const ms = {
   "owner.onboarding.returningTitle": "Jenama Klinik Telah Ditetapkan",
   "owner.onboarding.returningDesc": "Anda telah menyelesaikan onboarding awal untuk perusahaan klinik anda. Anda boleh menguruskan cawangan sedia ada atau menyediakan lokasi tambahan di bawah.",
   "owner.onboarding.btnGoGateway": "Pergi ke Gerbang Cawangan",
-  "owner.onboarding.btnAddBranch": "Sediakan Cawangan Lain"
+  "owner.onboarding.btnAddBranch": "Sediakan Cawangan Lain",
+
+  // Dynamic Step 2 Configuration & Postal Lookup (Bahasa Malaysia)
+  "owner.onboarding.postalLabel": "Poskod (SG)",
+  "owner.onboarding.postalLabelMY": "Poskod (MY)",
+  "owner.onboarding.postalBtn": "Cari",
+  "owner.onboarding.postalSearching": "Mencari alamat di OneMap...",
+  "owner.onboarding.postalFound": "Alamat dijumpai & diisi secara automatik",
+  "owner.onboarding.postalNotFound": "Poskod tidak dijumpai dalam daftar Singapura",
+  "owner.onboarding.postalInvalid": "Masukkan 6 digit poskod yang sah",
+  "owner.onboarding.addrLabelClinic": "Alamat Fizikal Penuh Klinik",
+  "owner.onboarding.addrLabelHomeCare": "Alamat Pejabat Operasi & Penghantaran",
+  "owner.onboarding.addrLabelHybrid": "Alamat Fizikal Klinik & Hab Perkhidmatan",
+  "owner.onboarding.coverageLabel": "Kawasan Liputan Perkhidmatan Rawatan Rumah",
+  "owner.onboarding.capacityLabelClinic": "Kapasiti Rawatan / Suite Terapi Klinik",
+  "owner.onboarding.capacityLabelHomeCare": "Kapasiti Armada Pengamal Bergerak",
+  "owner.onboarding.capacityLabelHybrid": "Kapasiti Operasi Hibrid (Suite + Armada Bergerak)",
+  "owner.onboarding.hoursLabelClinic": "Waktu Operasi Klinik",
+  "owner.onboarding.hoursLabelHomeCare": "Waktu Perkhidmatan Penghantaran Rawatan Rumah",
+  "owner.onboarding.hoursLabelHybrid": "Waktu Perkhidmatan Fasiliti & Rawatan Rumah",
+  "owner.onboarding.branchNameClinic": "Pusat Perubatan Utama Paragon (Cawangan 1)",
+  "owner.onboarding.branchNameHomeCare": "Pusat Penghantaran Penjagaan Bergerak Dennis",
+  "owner.onboarding.branchNameHybrid": "Hab Perubatan & Rawatan Rumah Paragon (Cawangan 1)"
 };

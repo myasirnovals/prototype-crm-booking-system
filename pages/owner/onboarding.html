@@ -831,35 +831,73 @@
           </div>
         </div>
 
-        <div class="field">
-          <label for="branchAddressInput">Full Physical Address</label>
-          <input type="text" id="branchAddressInput" placeholder="Street, Building, Unit &amp; Postal Code"
-            value="290 Orchard Road, #09-12 Paragon Medical Suites, Singapore 238859" required>
+        <!-- POSTAL CODE & AUTO-FILL ADDRESS (ONEMAP API) -->
+        <div class="field-row" style="align-items: flex-start; margin-top: 14px;">
+          <div class="field" style="flex: 0 0 230px;">
+            <label for="branchPostalInput" id="branchPostalLabel" data-i18n="owner.onboarding.postalLabel">
+              Postal Code (SG) <span style="color:#ef4444;">*</span>
+            </label>
+            <div style="display:flex; gap:6px; margin-top:2px;">
+              <input type="text" id="branchPostalInput" placeholder="e.g. 238859" maxlength="6" value="238859" autocomplete="off" style="font-weight:700; letter-spacing:0.5px;">
+              <button type="button" class="btn btn-primary btn-sm" id="btnLookupPostal" style="white-space:nowrap; padding:0 14px; font-weight:800; font-size:12px;" title="Lookup address from OneMap API">
+                🔍 <span data-i18n="owner.onboarding.postalBtn">Lookup</span>
+              </button>
+            </div>
+            <small id="wizardPostalFeedback" style="font-size:11px; font-weight:700; color:var(--primary); display:none; margin-top:5px; line-height:1.3;"></small>
+          </div>
+
+          <div class="field" style="flex: 1;">
+            <label for="branchAddressInput" id="branchAddressLabel" data-i18n="owner.onboarding.addrLabelClinic">
+              Full Physical Address <span style="color:#ef4444;">*</span>
+            </label>
+            <input type="text" id="branchAddressInput" placeholder="Street, Building, Unit &amp; Postal Code"
+              value="290 Orchard Road, #09-12 Paragon Medical Suites, Singapore 238859" required>
+            <small id="branchAddressHelp" style="font-size:11px; color:var(--muted); margin-top:4px; display:block;">
+              Physical address where patients arrive for therapy sessions &amp; consultations.
+            </small>
+          </div>
+        </div>
+
+        <!-- HOME CARE COVERAGE RADIUS (HOME CARE & HYBRID) -->
+        <div class="field" id="branchCoverageRadiusField" style="display:block; margin-top:14px;">
+          <label for="branchCoverageRadiusInput" id="branchCoverageRadiusLabel" data-i18n="owner.onboarding.coverageLabel">
+            Home Visit Coverage Area &amp; Travel Radius <span style="color:#ef4444;">*</span>
+          </label>
+          <select id="branchCoverageRadiusInput">
+            <option value="5km">5 km Radius (Local neighborhood &amp; immediate district)</option>
+            <option value="10km">10 km Radius (City district &amp; surrounding sub-urban)</option>
+            <option value="15km" selected>15 km Radius (Metropolitan central &amp; suburban ring)</option>
+            <option value="island-wide">Island-wide Coverage (All districts / Nationwide mobile fleet)</option>
+          </select>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="branchPhoneInput">Branch WhatsApp / Reception Phone</label>
+            <label for="branchPhoneInput" id="branchPhoneLabel">Branch WhatsApp / Reception Phone <span style="color:#ef4444;">*</span></label>
             <input type="tel" id="branchPhoneInput" placeholder="+65 6733 8899" value="+65 6733 8899" required>
           </div>
 
           <div class="field">
-            <label for="branchHoursInput">Operating Hours</label>
+            <label for="branchHoursInput" id="branchHoursLabel" data-i18n="owner.onboarding.hoursLabelClinic">Operating Hours</label>
             <input type="text" id="branchHoursInput" placeholder="e.g. 09:00 - 20:00 (Mon - Sat)"
               value="09:00 - 20:00 (Mon - Sat)">
           </div>
         </div>
 
-        <div class="field-row">
-          <div class="field">
-            <label for="branchRoomsInput">Treatment Capacity / Treatment Bays</label>
-            <select id="branchRoomsInput">
-              <option value="2">2 Private Therapy Rooms</option>
-              <option value="4" selected>4 Private Therapy Suites</option>
-              <option value="6">6 Multi-Bed Treatment Bays</option>
-              <option value="8">8+ Large Enterprise Suite</option>
-            </select>
-          </div>
+        <div class="field">
+          <label for="branchRoomsInput" id="branchCapacityLabel" data-i18n="owner.onboarding.capacityLabelClinic">
+            Treatment Capacity / Treatment Bays <span style="color:#ef4444;">*</span>
+          </label>
+          <select id="branchRoomsInput">
+            <!-- Dynamically populated by onboarding.controller.js based on wizardServiceMode -->
+            <option value="2">2 Private Therapy Rooms (Boutique Practice)</option>
+            <option value="4" selected>4 Private Therapy Suites (Standard Clinic)</option>
+            <option value="6">6 Multi-Bed Treatment Bays (High Volume)</option>
+            <option value="8">8+ Large Enterprise Clinical Facility</option>
+          </select>
+          <small id="branchCapacityHelp" style="font-size:11px; color:var(--muted); margin-top:4px; display:block;">
+            Total private rooms or treatment bays available for simultaneous appointments.
+          </small>
         </div>
 
         <div style="display:flex; justify-content:space-between; margin-top:28px;">
@@ -966,6 +1004,14 @@
           <div class="review-summary-row">
             <span class="review-summary-label">Branch Address</span>
             <span class="review-summary-val" id="reviewAddressVal">290 Orchard Road, #09-12 Paragon</span>
+          </div>
+          <div class="review-summary-row" id="reviewCoverageRow" style="display:flex;">
+            <span class="review-summary-label">Coverage Area / Radius</span>
+            <span class="review-summary-val" id="reviewCoverageVal">15 km Radius</span>
+          </div>
+          <div class="review-summary-row">
+            <span class="review-summary-label">Operational Capacity</span>
+            <span class="review-summary-val" id="reviewCapacityVal">4 Private Therapy Suites</span>
           </div>
           <div class="review-summary-row">
             <span class="review-summary-label">Jurisdiction &amp; Currency</span>

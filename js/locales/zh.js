@@ -1517,6 +1517,28 @@ export const zh = {
   "owner.onboarding.returningTitle": "诊所品牌已建立",
   "owner.onboarding.returningDesc": "您已完成诊所企业的初始入驻。您可以在下方管理现有分行或开设新分行。",
   "owner.onboarding.btnGoGateway": "前往分行网关",
-  "owner.onboarding.btnAddBranch": "增设新分行"
+  "owner.onboarding.btnAddBranch": "增设新分行",
+
+  // Dynamic Step 2 Configuration & Postal Lookup (Singapore Simplified Chinese)
+  "owner.onboarding.postalLabel": "邮政编码 (新加坡)",
+  "owner.onboarding.postalLabelMY": "邮政编码 (马来西亚)",
+  "owner.onboarding.postalBtn": "查询",
+  "owner.onboarding.postalSearching": "正在 OneMap 查询地址...",
+  "owner.onboarding.postalFound": "地址已找到并自动填充",
+  "owner.onboarding.postalNotFound": "未在新加坡地址库中找到该邮政编码",
+  "owner.onboarding.postalInvalid": "请输入有效的6位数邮政编码",
+  "owner.onboarding.addrLabelClinic": "诊所实体门诊完整地址",
+  "owner.onboarding.addrLabelHomeCare": "运营与出诊调度办公室地址",
+  "owner.onboarding.addrLabelHybrid": "诊所实体门诊及服务枢纽地址",
+  "owner.onboarding.coverageLabel": "上门出诊服务覆盖范围",
+  "owner.onboarding.capacityLabelClinic": "诊疗承载能力 / 诊所私人治疗室",
+  "owner.onboarding.capacityLabelHomeCare": "移动执业团队出诊承载能力",
+  "owner.onboarding.capacityLabelHybrid": "混合运营承载能力（治疗室 + 移动团队）",
+  "owner.onboarding.hoursLabelClinic": "诊所门诊营业时间",
+  "owner.onboarding.hoursLabelHomeCare": "上门出诊调度服务时段",
+  "owner.onboarding.hoursLabelHybrid": "门诊与上门出诊服务时段",
+  "owner.onboarding.branchNameClinic": "百利宫医疗旗舰店 (第一分行)",
+  "owner.onboarding.branchNameHomeCare": "丹尼斯移动护理调度中心 (中央枢纽)",
+  "owner.onboarding.branchNameHybrid": "百利宫医疗与上门护理中心 (第一分行)"
 };
 

@@ -599,6 +599,8 @@ class SupabaseService {
       console.warn("[SupabaseService] createProfile exception:", err);
       return null;
     }
+  }
+
   /**
    * Update existing profile in Supabase
    * @param {string} userId

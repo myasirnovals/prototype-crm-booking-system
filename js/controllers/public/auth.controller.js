@@ -100,7 +100,8 @@ export class AuthController {
 
     if (triggerBtn && dropdownMenu) {
       const toggleDropdown = (forceState) => {
-        const isOpening = forceState !== undefined ? forceState : dropdownMenu.style.display === "none";
+        const isCurrentlyOpen = dropdownMenu.style.display === "flex" || triggerBtn.classList.contains("active");
+        const isOpening = forceState !== undefined ? forceState : !isCurrentlyOpen;
         dropdownMenu.style.display = isOpening ? "flex" : "none";
         triggerBtn.classList.toggle("active", isOpening);
         triggerBtn.setAttribute("aria-expanded", isOpening ? "true" : "false");
@@ -108,6 +109,7 @@ export class AuthController {
       };
 
       triggerBtn.addEventListener("click", (e) => {
+        e.preventDefault();
         e.stopPropagation();
         toggleDropdown();
       });
@@ -121,7 +123,7 @@ export class AuthController {
 
       // Close dropdown on ESC
       document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && dropdownMenu.style.display !== "none") {
+        if (e.key === "Escape" && (dropdownMenu.style.display === "flex" || triggerBtn.classList.contains("active"))) {
           toggleDropdown(false);
         }
       });
@@ -135,12 +137,15 @@ export class AuthController {
 
         // Close dropdown menu immediately
         if (dropdownMenu) dropdownMenu.style.display = "none";
-        if (triggerBtn) triggerBtn.classList.remove("active");
+        if (triggerBtn) {
+          triggerBtn.classList.remove("active");
+          triggerBtn.setAttribute("aria-expanded", "false");
+        }
 
         const roleNameEl = card.querySelector(".demo-role-name");
         const roleName = roleNameEl ? roleNameEl.textContent.trim() : roleKey;
         if (triggerText) {
-          triggerText.innerHTML = `⚡ Masuk sebagai: <strong>${roleName}</strong>...`;
+          triggerText.innerHTML = `⚡ Signing in as: <strong>${roleName}</strong>...`;
         }
 
         card.style.transform = "scale(0.96)";
@@ -148,7 +153,7 @@ export class AuthController {
 
         const activeStatus = document.querySelector(".form.active .status-box") || this.staffStatus;
         if (activeStatus) {
-          this.showSuccess(activeStatus, `⏳ Sedang memproses login ${roleName}...`);
+          this.showSuccess(activeStatus, `⏳ Processing sign-in for ${roleName}...`);
         }
 
         try {
@@ -160,7 +165,7 @@ export class AuthController {
           }
 
           if (!result || !result.success) {
-            const errMsg = result?.error || "Gagal melakukan demo login.";
+            const errMsg = result?.error || "Failed to complete demo sign-in.";
             if (activeStatus) this.showError(activeStatus, errMsg);
             else alert(errMsg);
             return;
@@ -179,9 +184,9 @@ export class AuthController {
         } catch (err) {
           console.error("[AuthController] Quick demo login error:", err);
           if (activeStatus) {
-            this.showError(activeStatus, `Terjadi kesalahan saat masuk: ${err.message || err}`);
+            this.showError(activeStatus, `An error occurred during sign-in: ${err.message || err}`);
           } else {
-            alert(`Terjadi kesalahan saat masuk: ${err.message || err}`);
+            alert(`An error occurred during sign-in: ${err.message || err}`);
           }
         }
       });
@@ -241,13 +246,13 @@ export class AuthController {
       const role = document.getElementById("staffRole")?.value || null;
 
       this.resetStatus(this.staffStatus);
-      this.showSuccess(this.staffStatus, "⏳ Memverifikasi akun...");
+      this.showSuccess(this.staffStatus, "⏳ Verifying account credentials...");
 
       try {
         const result = await authService.loginWithCredentials(email, password, role, this.selectedRegion);
 
         if (!result || !result.success) {
-          this.showError(this.staffStatus, result?.error || "Gagal masuk.");
+          this.showError(this.staffStatus, result?.error || "Failed to sign in.");
           return;
         }
 
@@ -262,7 +267,7 @@ export class AuthController {
         }, 800);
       } catch (err) {
         console.error("[AuthController] Staff submit error:", err);
-        this.showError(this.staffStatus, `Gagal masuk: ${err.message || err}`);
+        this.showError(this.staffStatus, `Sign-in failed: ${err.message || err}`);
       }
     });
   }
@@ -493,10 +498,10 @@ export class AuthController {
       const isCloud = isSupabaseConfigured();
       if (isCloud) {
         if (dot) dot.style.background = "#10b981"; // Emerald green
-        if (text) text.innerHTML = "Mode: <strong style='color:#059669;'>Supabase Cloud Aktif</strong> (PostgreSQL + Realtime)";
+        if (text) text.innerHTML = "Mode: <strong style='color:#059669;'>Supabase Cloud Active</strong> (PostgreSQL + Realtime)";
       } else {
         if (dot) dot.style.background = "#f59e0b"; // Amber
-        if (text) text.innerHTML = "Mode: <span style='color:#b45309;'>Local Storage (Demo Offline)</span>";
+        if (text) text.innerHTML = "Mode: <span style='color:#b45309;'>Local Storage (Offline Demo)</span>";
       }
     };
 
@@ -532,7 +537,7 @@ export class AuthController {
         if (statusBox) {
           statusBox.style.display = "block";
           statusBox.style.color = "#ef4444";
-          statusBox.textContent = "Mohon isi Project URL dan Anon Key dengan lengkap.";
+          statusBox.textContent = "Please fill in both Project URL and Anon Key.";
         }
         return;
       }
@@ -542,7 +547,7 @@ export class AuthController {
       if (statusBox) {
         statusBox.style.display = "block";
         statusBox.style.color = "#059669";
-        statusBox.textContent = "✓ Kredensial tersimpan! Memuat ulang sistem...";
+        statusBox.textContent = "✓ Credentials saved! Reloading application...";
       }
 
       setTimeout(() => {

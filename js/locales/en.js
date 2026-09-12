@@ -1539,6 +1539,9 @@ export const en = {
   "owner.onboarding.hoursLabelHybrid": "Facility & Home Visit Operating Hours",
   "owner.onboarding.branchNameClinic": "Paragon Medical Flagship (Branch 1)",
   "owner.onboarding.branchNameHomeCare": "Dennis Mobile Care Dispatch (Central Hub)",
-  "owner.onboarding.branchNameHybrid": "Paragon Medical & Home Care Hub (Branch 1)"
+  "owner.onboarding.branchNameHybrid": "Paragon Medical & Home Care Hub (Branch 1)",
+  "owner.onboarding.btnPrevTemplate": "Previous Template",
+  "owner.onboarding.btnNextTemplate": "Next Template",
+  "owner.onboarding.templateOf": "Template {current} of {total}"
 };
 

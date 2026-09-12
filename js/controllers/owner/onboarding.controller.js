@@ -345,17 +345,134 @@ export class AdminOnboardingController {
 
   setupTemplateSelection() {
     const cards = document.querySelectorAll(".template-card");
+    const track = document.getElementById("templateCarouselTrack");
+    const btnPrev = document.getElementById("btnPrevTemplate");
+    const btnNext = document.getElementById("btnNextTemplate");
+    const counterPill = document.getElementById("templateCounterPill");
+    const dots = document.querySelectorAll(".template-dot");
+
     const lightbox = document.getElementById("templateLightboxModal");
     const lightboxImg = document.getElementById("lightboxImage");
     const lightboxTitle = document.getElementById("lightboxTemplateTitle");
     const btnCloseLightbox = document.getElementById("btnCloseLightbox");
     const btnSelectFromLightbox = document.getElementById("btnSelectFromLightbox");
 
+    const templateList = ["tcm", "wellness", "physio", "nutrition", "personal-trainer"];
+    let currentTemplateIndex = templateList.indexOf(this.selectedTemplate);
+    if (currentTemplateIndex === -1) currentTemplateIndex = 2; // Default: physio
+
     let currentLightboxTemplate = null;
 
-    cards.forEach((card) => {
+    const updateCarousel = (index, playSound = false) => {
+      if (index < 0) index = templateList.length - 1;
+      if (index >= templateList.length) index = 0;
+      currentTemplateIndex = index;
+
+      // 1. Slide Track (Single card viewport)
+      if (track) {
+        track.style.transform = `translateX(-${currentTemplateIndex * 100}%)`;
+      }
+
+      // 2. Mark Active Card
+      cards.forEach((card, idx) => {
+        card.classList.toggle("active", idx === currentTemplateIndex);
+      });
+
+      // 3. Mark Active Dot
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle("active", idx === currentTemplateIndex);
+      });
+
+      // 4. Update Selected Template in Controller & Hidden Input
+      this.selectedTemplate = templateList[currentTemplateIndex];
+      const input = document.getElementById("selectedTemplateId");
+      if (input) input.value = this.selectedTemplate;
+
+      // 5. Update Dynamic Counter Pill
+      if (counterPill) {
+        const fullTitle = this.getTemplateLabel(this.selectedTemplate);
+        counterPill.textContent = `Template ${currentTemplateIndex + 1} of ${templateList.length}: ${fullTitle}`;
+      }
+
+      // 6. Update dependent step states
+      this.updateSubscriptionPricing();
+      this.updateReviewSummary();
+
+      if (playSound) {
+        soundService.playClickTone();
+      }
+    };
+
+    // Next Template (Icon Button)
+    if (btnNext) {
+      btnNext.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        updateCarousel(currentTemplateIndex + 1, true);
+      });
+    }
+
+    // Prev Template (Icon Button)
+    if (btnPrev) {
+      btnPrev.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        updateCarousel(currentTemplateIndex - 1, true);
+      });
+    }
+
+    // Dot Indicators Click
+    dots.forEach((dot) => {
+      dot.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const idx = parseInt(dot.dataset.index, 10);
+        if (!isNaN(idx)) {
+          updateCarousel(idx, true);
+        }
+      });
+    });
+
+    // Touch Swipe Gesture on Track for Mobile Devices
+    let touchStartX = 0;
+    let touchEndX = 0;
+    if (track) {
+      track.addEventListener("touchstart", (e) => {
+        if (e.changedTouches && e.changedTouches[0]) {
+          touchStartX = e.changedTouches[0].screenX;
+        }
+      }, { passive: true });
+
+      track.addEventListener("touchend", (e) => {
+        if (e.changedTouches && e.changedTouches[0]) {
+          touchEndX = e.changedTouches[0].screenX;
+          const diff = touchEndX - touchStartX;
+          if (Math.abs(diff) > 40) {
+            if (diff < 0) {
+              updateCarousel(currentTemplateIndex + 1, true); // Swipe left -> Next
+            } else {
+              updateCarousel(currentTemplateIndex - 1, true); // Swipe right -> Prev
+            }
+          }
+        }
+      }, { passive: true });
+    }
+
+    // Keyboard Arrow Keys (Left / Right) when in Step 1
+    window.addEventListener("keydown", (e) => {
+      if (this.currentStep === 1) {
+        if (e.key === "ArrowLeft") {
+          updateCarousel(currentTemplateIndex - 1, true);
+        } else if (e.key === "ArrowRight") {
+          updateCarousel(currentTemplateIndex + 1, true);
+        }
+      }
+    });
+
+    // Card Clicks & Screenshot Zoom Lightbox
+    cards.forEach((card, idx) => {
       card.addEventListener("click", (e) => {
-        // If clicked on the zoom button, open full screenshot lightbox
+        // If user clicked the zoom preview button, open modal
         const zoomBtn = e.target.closest(".btn-preview-zoom");
         if (zoomBtn) {
           e.stopPropagation();
@@ -373,17 +490,12 @@ export class AdminOnboardingController {
           return;
         }
 
-        cards.forEach((c) => c.classList.remove("active"));
-        card.classList.add("active");
-        this.selectedTemplate = card.dataset.template || "physio";
-        const input = document.getElementById("selectedTemplateId");
-        if (input) input.value = this.selectedTemplate;
-        this.updateSubscriptionPricing();
-        this.updateReviewSummary();
-        soundService.playClickTone();
+        // Clicking on the card ensures it is selected and centered
+        updateCarousel(idx, true);
       });
     });
 
+    // Close Lightbox Modal
     if (btnCloseLightbox && lightbox) {
       btnCloseLightbox.addEventListener("click", () => {
         lightbox.style.display = "none";
@@ -396,24 +508,22 @@ export class AdminOnboardingController {
       });
     }
 
+    // Select Template from Lightbox Modal Action
     if (btnSelectFromLightbox && lightbox) {
       btnSelectFromLightbox.addEventListener("click", () => {
         if (currentLightboxTemplate) {
-          const targetCard = document.querySelector(`.template-card[data-template="${currentLightboxTemplate}"]`);
-          if (targetCard) {
-            cards.forEach((c) => c.classList.remove("active"));
-            targetCard.classList.add("active");
-            this.selectedTemplate = currentLightboxTemplate;
-            const input = document.getElementById("selectedTemplateId");
-            if (input) input.value = this.selectedTemplate;
-            this.updateSubscriptionPricing();
-            this.updateReviewSummary();
+          const targetIndex = templateList.indexOf(currentLightboxTemplate);
+          if (targetIndex !== -1) {
+            updateCarousel(targetIndex, false);
             soundService.playQueueChime();
           }
         }
         lightbox.style.display = "none";
       });
     }
+
+    // Initialize initial position and active states
+    updateCarousel(currentTemplateIndex, false);
   }
 
   // ─────────────────────────────────────────────────────────────────────────

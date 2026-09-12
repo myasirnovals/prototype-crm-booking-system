@@ -1539,6 +1539,9 @@ export const zh = {
   "owner.onboarding.hoursLabelHybrid": "门诊与上门出诊服务时段",
   "owner.onboarding.branchNameClinic": "百利宫医疗旗舰店 (第一分行)",
   "owner.onboarding.branchNameHomeCare": "丹尼斯移动护理调度中心 (中央枢纽)",
-  "owner.onboarding.branchNameHybrid": "百利宫医疗与上门护理中心 (第一分行)"
+  "owner.onboarding.branchNameHybrid": "百利宫医疗与上门护理中心 (第一分行)",
+  "owner.onboarding.btnPrevTemplate": "上一个模板",
+  "owner.onboarding.btnNextTemplate": "下一个模板",
+  "owner.onboarding.templateOf": "模板 {current} / {total}"
 };
 

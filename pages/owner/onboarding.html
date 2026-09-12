@@ -103,21 +103,159 @@
       font-weight: 800;
     }
 
-    /* Template Cards Grid */
-    .template-selection-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    /* Template Single-Card Carousel (Replacing Grid) */
+    .template-carousel-wrapper {
+      width: 100%;
+      margin: 18px 0 24px;
+    }
+
+    .template-carousel-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       gap: 18px;
+      position: relative;
+      width: 100%;
+    }
+
+    .btn-template-nav {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+      z-index: 5;
+    }
+
+    .btn-template-nav:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(15, 118, 110, 0.28);
+    }
+
+    .btn-template-nav:active {
+      transform: scale(0.95);
+    }
+
+    .template-carousel-viewport {
+      flex: 1;
+      max-width: 580px;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      box-shadow: 0 6px 24px -4px rgba(0, 0, 0, 0.06);
+    }
+
+    .template-carousel-track {
+      display: flex;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      width: 100%;
+    }
+
+    .template-carousel-track .template-card {
+      flex: 0 0 100%;
+      min-width: 100%;
+      box-sizing: border-box;
+      border: 2.5px solid #e2e8f0;
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      cursor: pointer;
+      background: #ffffff;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .template-carousel-track .template-card:hover {
+      border-color: #99f6e4;
+      background: #fafdfc;
+    }
+
+    .template-carousel-track .template-card.active {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 12px 32px -6px rgba(15, 118, 110, 0.22);
+    }
+
+    .template-carousel-indicators {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
       margin-top: 18px;
     }
 
+    .template-counter-pill {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      background: #f0fdfa;
+      border: 1px solid #ccfbf1;
+      padding: 5px 16px;
+      border-radius: 20px;
+      letter-spacing: 0.2px;
+    }
+
+    .template-nav-dots {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .template-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .template-dot:hover {
+      background: #94a3b8;
+    }
+
+    .template-dot.active {
+      width: 28px;
+      border-radius: 8px;
+      background: var(--primary);
+      box-shadow: 0 2px 8px rgba(15, 118, 110, 0.35);
+    }
+
     @media (max-width: 680px) {
-      .template-selection-grid {
-        grid-template-columns: 1fr;
+      .template-carousel-container {
+        gap: 8px;
+      }
+
+      .btn-template-nav {
+        width: 40px;
+        height: 40px;
+      }
+
+      .template-card {
+        padding: 14px;
+      }
+
+      .template-card-preview-wrap {
+        height: 190px;
       }
 
       .wizard-card {
-        padding: 24px 18px;
+        padding: 24px 14px;
       }
 
       .wizard-stepper::before {
@@ -557,154 +695,190 @@
           </p>
         </div>
 
-        <div class="template-selection-grid">
-          <!-- 1. TCM -->
-          <div class="template-card" data-template="tcm">
-            <div>
-              <div class="template-card-preview-wrap">
-                <img src="../../assets/template-images/tcm-template.png" alt="Traditional Chinese Medicine Interface Preview" class="template-card-preview-img" loading="lazy">
-                <div class="template-preview-tag-wrap">
-                  <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
-                  <div style="display:flex; gap:6px; align-items:center;">
-                    <span class="template-active-badge">✓ Selected</span>
-                    <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/tcm-template.png" data-title="Traditional Chinese Medicine (TCM)" title="Zoom full screenshot">
-                      🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
-                    </button>
+        <!-- TEMPLATE CAROUSEL (SINGLE CARD VIEW WITH PREV & NEXT ICON BUTTONS) -->
+        <div class="template-carousel-wrapper">
+          <div class="template-carousel-container">
+            <!-- Prev Button (Icon Only) -->
+            <button type="button" class="btn-template-nav btn-template-prev" id="btnPrevTemplate"
+              aria-label="Previous Template" title="Previous Template" data-i18n-title="owner.onboarding.btnPrevTemplate">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+
+            <!-- Single Card Viewport / Track -->
+            <div class="template-carousel-viewport">
+              <div class="template-carousel-track" id="templateCarouselTrack">
+                <!-- 1. TCM -->
+                <div class="template-card" data-template="tcm">
+                  <div>
+                    <div class="template-card-preview-wrap">
+                      <img src="../../assets/template-images/tcm-template.png" alt="Traditional Chinese Medicine Interface Preview" class="template-card-preview-img" loading="lazy">
+                      <div class="template-preview-tag-wrap">
+                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                        <div style="display:flex; gap:6px; align-items:center;">
+                          <span class="template-active-badge">✓ Selected</span>
+                          <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/tcm-template.png" data-title="Traditional Chinese Medicine (TCM)" title="Zoom full screenshot">
+                            🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="template-card-header">
+                      <div class="template-card-icon">🌿</div>
+                      <div class="template-card-body">
+                        <h3>Traditional Chinese Medicine (TCM)</h3>
+                        <p>Acupuncture, meridian diagnosis, pulse reading &amp; herbal apothecary.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="template-feature-pills">
+                    <span class="template-pill">Meridian Pain Map</span>
+                    <span class="template-pill">Pulse Diagnosis</span>
+                    <span class="template-pill">Herbal Stock</span>
+                  </div>
+                </div>
+
+                <!-- 2. Wellness & Spa -->
+                <div class="template-card" data-template="wellness">
+                  <div>
+                    <div class="template-card-preview-wrap">
+                      <img src="../../assets/template-images/spa-template.png" alt="Wellness &amp; Luxury Spa Care Interface Preview" class="template-card-preview-img" loading="lazy">
+                      <div class="template-preview-tag-wrap">
+                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                        <div style="display:flex; gap:6px; align-items:center;">
+                          <span class="template-active-badge">✓ Selected</span>
+                          <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/spa-template.png" data-title="Wellness &amp; Luxury Spa Care" title="Zoom full screenshot">
+                            🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="template-card-header">
+                      <div class="template-card-icon">🌸</div>
+                      <div class="template-card-body">
+                        <h3>Wellness &amp; Luxury Spa Care</h3>
+                        <p>Aromatherapy, massage therapy, body relaxation &amp; private spa suites.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="template-feature-pills">
+                    <span class="template-pill">Aromatherapy Scents</span>
+                    <span class="template-pill">Pressure Slider</span>
+                    <span class="template-pill">Suite Rooms</span>
+                  </div>
+                </div>
+
+                <!-- 3. Physiotherapy -->
+                <div class="template-card active" data-template="physio">
+                  <div>
+                    <div class="template-card-preview-wrap">
+                      <img src="../../assets/template-images/physio-template.png" alt="Physiotherapy &amp; Sports Rehab Interface Preview" class="template-card-preview-img" loading="lazy">
+                      <div class="template-preview-tag-wrap">
+                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                        <div style="display:flex; gap:6px; align-items:center;">
+                          <span class="template-active-badge">✓ Selected</span>
+                          <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/physio-template.png" data-title="Physiotherapy &amp; Sports Rehab" title="Zoom full screenshot">
+                            🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="template-card-header">
+                      <div class="template-card-icon">🏃</div>
+                      <div class="template-card-body">
+                        <h3>Physiotherapy &amp; Sports Rehab</h3>
+                        <p>Musculoskeletal therapy, sports injury rehabilitation &amp; joint mobility.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="template-feature-pills">
+                    <span class="template-pill">VAS Pain Slider (1-10)</span>
+                    <span class="template-pill">Joint Localization</span>
+                    <span class="template-pill">Mobility Tests</span>
+                  </div>
+                </div>
+
+                <!-- 4. Nutrition -->
+                <div class="template-card" data-template="nutrition">
+                  <div>
+                    <div class="template-card-preview-wrap">
+                      <img src="../../assets/template-images/nutritionist-template.png" alt="Clinical Nutrition &amp; Dietetics Interface Preview" class="template-card-preview-img" loading="lazy">
+                      <div class="template-preview-tag-wrap">
+                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                        <div style="display:flex; gap:6px; align-items:center;">
+                          <span class="template-active-badge">✓ Selected</span>
+                          <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/nutritionist-template.png" data-title="Clinical Nutrition &amp; Dietetics" title="Zoom full screenshot">
+                            🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="template-card-header">
+                      <div class="template-card-icon">🥗</div>
+                      <div class="template-card-body">
+                        <h3>Clinical Nutrition &amp; Dietetics</h3>
+                        <p>Metabolic screening, personalized meal planning &amp; clinical dietetics.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="template-feature-pills">
+                    <span class="template-pill">Real-Time BMI Calculator</span>
+                    <span class="template-pill">Metabolic Target</span>
+                    <span class="template-pill">Dietary Blueprints</span>
+                  </div>
+                </div>
+
+                <!-- 5. Personal Trainer -->
+                <div class="template-card" data-template="personal-trainer">
+                  <div>
+                    <div class="template-card-preview-wrap">
+                      <img src="../../assets/template-images/personal-trainer-template.png" alt="Personal Trainer &amp; Fitness Coaching Interface Preview" class="template-card-preview-img" loading="lazy">
+                      <div class="template-preview-tag-wrap">
+                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                        <div style="display:flex; gap:6px; align-items:center;">
+                          <span class="template-active-badge">✓ Selected</span>
+                          <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/personal-trainer-template.png" data-title="Personal Trainer &amp; Fitness Coaching" title="Zoom full screenshot">
+                            🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="template-card-header">
+                      <div class="template-card-icon">🏋️</div>
+                      <div class="template-card-body">
+                        <h3>Personal Trainer &amp; Fitness Coaching</h3>
+                        <p>1-on-1 private coaching, strength programming &amp; physique transformation.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="template-feature-pills">
+                    <span class="template-pill">Workout Logs</span>
+                    <span class="template-pill">Strength Milestones</span>
+                    <span class="template-pill">Body Metrics</span>
                   </div>
                 </div>
               </div>
-              <div class="template-card-header">
-                <div class="template-card-icon">🌿</div>
-                <div class="template-card-body">
-                  <h3>Traditional Chinese Medicine (TCM)</h3>
-                  <p>Acupuncture, meridian diagnosis, pulse reading &amp; herbal apothecary.</p>
-                </div>
-              </div>
             </div>
-            <div class="template-feature-pills">
-              <span class="template-pill">Meridian Pain Map</span>
-              <span class="template-pill">Pulse Diagnosis</span>
-              <span class="template-pill">Herbal Stock</span>
-            </div>
+
+            <!-- Next Button (Icon Only) -->
+            <button type="button" class="btn-template-nav btn-template-next" id="btnNextTemplate"
+              aria-label="Next Template" title="Next Template" data-i18n-title="owner.onboarding.btnNextTemplate">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
           </div>
 
-          <!-- 2. Wellness & Spa -->
-          <div class="template-card" data-template="wellness">
-            <div>
-              <div class="template-card-preview-wrap">
-                <img src="../../assets/template-images/spa-template.png" alt="Wellness & Luxury Spa Care Interface Preview" class="template-card-preview-img" loading="lazy">
-                <div class="template-preview-tag-wrap">
-                  <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
-                  <div style="display:flex; gap:6px; align-items:center;">
-                    <span class="template-active-badge">✓ Selected</span>
-                    <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/spa-template.png" data-title="Wellness & Luxury Spa Care" title="Zoom full screenshot">
-                      🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="template-card-header">
-                <div class="template-card-icon">🌸</div>
-                <div class="template-card-body">
-                  <h3>Wellness &amp; Luxury Spa Care</h3>
-                  <p>Aromatherapy, massage therapy, body relaxation &amp; private spa suites.</p>
-                </div>
-              </div>
-            </div>
-            <div class="template-feature-pills">
-              <span class="template-pill">Aromatherapy Scents</span>
-              <span class="template-pill">Pressure Slider</span>
-              <span class="template-pill">Suite Rooms</span>
-            </div>
-          </div>
-
-          <!-- 3. Physiotherapy -->
-          <div class="template-card active" data-template="physio">
-            <div>
-              <div class="template-card-preview-wrap">
-                <img src="../../assets/template-images/physio-template.png" alt="Physiotherapy & Sports Rehab Interface Preview" class="template-card-preview-img" loading="lazy">
-                <div class="template-preview-tag-wrap">
-                  <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
-                  <div style="display:flex; gap:6px; align-items:center;">
-                    <span class="template-active-badge">✓ Selected</span>
-                    <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/physio-template.png" data-title="Physiotherapy & Sports Rehab" title="Zoom full screenshot">
-                      🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="template-card-header">
-                <div class="template-card-icon">🏃</div>
-                <div class="template-card-body">
-                  <h3>Physiotherapy &amp; Sports Rehab</h3>
-                  <p>Musculoskeletal therapy, sports injury rehabilitation &amp; joint mobility.</p>
-                </div>
-              </div>
-            </div>
-            <div class="template-feature-pills">
-              <span class="template-pill">VAS Pain Slider (1-10)</span>
-              <span class="template-pill">Joint Localization</span>
-              <span class="template-pill">Mobility Tests</span>
-            </div>
-          </div>
-
-          <!-- 4. Nutrition -->
-          <div class="template-card" data-template="nutrition">
-            <div>
-              <div class="template-card-preview-wrap">
-                <img src="../../assets/template-images/nutritionist-template.png" alt="Clinical Nutrition & Dietetics Interface Preview" class="template-card-preview-img" loading="lazy">
-                <div class="template-preview-tag-wrap">
-                  <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
-                  <div style="display:flex; gap:6px; align-items:center;">
-                    <span class="template-active-badge">✓ Selected</span>
-                    <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/nutritionist-template.png" data-title="Clinical Nutrition & Dietetics" title="Zoom full screenshot">
-                      🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="template-card-header">
-                <div class="template-card-icon">🥗</div>
-                <div class="template-card-body">
-                  <h3>Clinical Nutrition &amp; Dietetics</h3>
-                  <p>Metabolic screening, personalized meal planning &amp; clinical dietetics.</p>
-                </div>
-              </div>
-            </div>
-            <div class="template-feature-pills">
-              <span class="template-pill">Real-Time BMI Calculator</span>
-              <span class="template-pill">Metabolic Target</span>
-              <span class="template-pill">Dietary Blueprints</span>
-            </div>
-          </div>
-
-          <!-- 5. Personal Trainer -->
-          <div class="template-card" data-template="personal-trainer">
-            <div>
-              <div class="template-card-preview-wrap">
-                <img src="../../assets/template-images/personal-trainer-template.png" alt="Personal Trainer & Fitness Coaching Interface Preview" class="template-card-preview-img" loading="lazy">
-                <div class="template-preview-tag-wrap">
-                  <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
-                  <div style="display:flex; gap:6px; align-items:center;">
-                    <span class="template-active-badge">✓ Selected</span>
-                    <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/personal-trainer-template.png" data-title="Personal Trainer & Fitness Coaching" title="Zoom full screenshot">
-                      🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="template-card-header">
-                <div class="template-card-icon">🏋️</div>
-                <div class="template-card-body">
-                  <h3>Personal Trainer &amp; Fitness Coaching</h3>
-                  <p>1-on-1 private coaching, strength programming &amp; physique transformation.</p>
-                </div>
-              </div>
-            </div>
-            <div class="template-feature-pills">
-              <span class="template-pill">Workout Logs</span>
-              <span class="template-pill">Strength Milestones</span>
-              <span class="template-pill">Body Metrics</span>
+          <!-- Carousel Indicators: Counter Pill & Nav Dots -->
+          <div class="template-carousel-indicators" id="templateCarouselIndicators">
+            <div class="template-counter-pill" id="templateCounterPill">Template 3 of 5: Physiotherapy &amp; Sports Rehab</div>
+            <div class="template-nav-dots" id="templateNavDots">
+              <button type="button" class="template-dot" data-index="0" title="Traditional Chinese Medicine"></button>
+              <button type="button" class="template-dot" data-index="1" title="Wellness &amp; Spa Care"></button>
+              <button type="button" class="template-dot active" data-index="2" title="Physiotherapy &amp; Sports Rehab"></button>
+              <button type="button" class="template-dot" data-index="3" title="Clinical Nutrition"></button>
+              <button type="button" class="template-dot" data-index="4" title="Personal Trainer"></button>
             </div>
           </div>
         </div>

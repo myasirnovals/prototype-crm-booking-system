@@ -1522,5 +1522,8 @@ export const ms = {
   "owner.onboarding.hoursLabelHybrid": "Waktu Perkhidmatan Fasiliti & Rawatan Rumah",
   "owner.onboarding.branchNameClinic": "Pusat Perubatan Utama Paragon (Cawangan 1)",
   "owner.onboarding.branchNameHomeCare": "Pusat Penghantaran Penjagaan Bergerak Dennis",
-  "owner.onboarding.branchNameHybrid": "Hab Perubatan & Rawatan Rumah Paragon (Cawangan 1)"
+  "owner.onboarding.branchNameHybrid": "Hab Perubatan & Rawatan Rumah Paragon (Cawangan 1)",
+  "owner.onboarding.btnPrevTemplate": "Templat Sebelumnya",
+  "owner.onboarding.btnNextTemplate": "Templat Seterusnya",
+  "owner.onboarding.templateOf": "Templat {current} daripada {total}"
 };

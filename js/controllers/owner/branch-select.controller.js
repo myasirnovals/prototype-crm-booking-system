@@ -39,15 +39,12 @@ export class BranchSelectController {
     this.loadBrandProfile();
     this.loadBranches();
     this.renderHeader();
-    this.renderSubscriptionsBanner();
     this.renderBranchCards();
     this.setupModal();
-    this.setupSubscribeModal();
     this.setupSignOut();
 
     document.addEventListener("cliniva:languageChanged", () => {
       this.renderHeader();
-      this.renderSubscriptionsBanner();
       this.renderBranchCards();
     });
 
@@ -701,16 +698,20 @@ export class BranchSelectController {
       });
     });
 
-    if (btnClose) btnClose.addEventListener("click", closeModal);
-    if (btnCancel) btnCancel.addEventListener("click", closeModal);
-
-    const upgradeBtnFromModal = document.getElementById("btnUpgradeQuotaFromModal");
-    if (upgradeBtnFromModal) {
-      upgradeBtnFromModal.addEventListener("click", () => {
-        closeModal();
-        this.openSubscribeModal();
+    // Practice template change auto-sync with emblem (if user hasn't uploaded custom image)
+    if (templateSelect) {
+      templateSelect.addEventListener("change", () => {
+        const tmpl = templateSelect.value;
+        const isCustomImage = selectedLogoInput && selectedLogoInput.value && (selectedLogoInput.value.startsWith("data:image") || selectedLogoInput.value.startsWith("http"));
+        if (!isCustomImage) {
+          const autoEmblem = templateIconMap[tmpl] || "🏃";
+          selectEmblem(autoEmblem);
+        }
       });
     }
+
+    if (btnClose) btnClose.addEventListener("click", closeModal);
+    if (btnCancel) btnCancel.addEventListener("click", closeModal);
 
     if (modalOverlay) {
       modalOverlay.addEventListener("click", (e) => {
@@ -718,44 +719,12 @@ export class BranchSelectController {
       });
     }
 
-    // Dynamic quota badge update when parent subscription select changes
-    const subSelect = document.getElementById("newBranchSubscription");
-    if (subSelect) {
-      subSelect.addEventListener("change", () => {
-        const subId = subSelect.value;
-        const sub = this.subscriptions.find((s) => s.id === subId);
-        const quotaBadge = document.getElementById("selectedSubQuotaBadge");
-        if (sub && quotaBadge) {
-          const quota = subscriptionService.checkBranchQuota(sub.id);
-          quotaBadge.textContent = `${quota.remainingQuota} slot${quota.remainingQuota > 1 ? "s" : ""} available`;
-
-          // Auto-sync emblem with parent template
-          const isCustomImage = selectedLogoInput && selectedLogoInput.value && (selectedLogoInput.value.startsWith("data:image") || selectedLogoInput.value.startsWith("http"));
-          if (!isCustomImage) {
-            const autoEmblem = templateIconMap[sub.template] || "🏃";
-            selectEmblem(autoEmblem);
-          }
-        }
-      });
-    }
-
     if (form) {
       form.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const subscriptionId = document.getElementById("newBranchSubscription")?.value;
-        if (!subscriptionId) {
-          alert("Please select a parent practice subscription.");
-          return;
-        }
-
-        const quota = subscriptionService.checkBranchQuota(subscriptionId);
-        if (!quota.canAddBranch) {
-          alert("This practice subscription has reached its maximum branch quota. Please add branch quota or subscribe to a new practice.");
-          return;
-        }
-
         const name = document.getElementById("newBranchName")?.value.trim();
+        const template = document.getElementById("newBranchTemplate")?.value || "physio";
         const address = document.getElementById("newBranchAddress")?.value.trim();
         const phone = document.getElementById("newBranchPhone")?.value.trim() || "+65 6888 1234";
         const hours = document.getElementById("newBranchHours")?.value.trim() || "Mon - Sat (09:00 - 20:00)";
@@ -766,9 +735,30 @@ export class BranchSelectController {
         }
 
         const serviceMode = document.querySelector('input[name="newBranchServiceMode"]:checked')?.value || "hybrid";
-        const meta = this.getTemplateMeta(quota.subscription.template);
+        const meta = this.getTemplateMeta(template);
         const selectedLogo = selectedLogoInput?.value || meta.icon || "🏃";
         const newBranchId = `br-sg-${Date.now().toString().slice(-4)}`;
+
+        // Subscription duration & pricing
+        const selectedPlan = document.querySelector('input[name="subsPlan"]:checked');
+        const planDuration = selectedPlan ? parseInt(selectedPlan.value, 10) : 12;
+        const planPrice = selectedPlan ? parseFloat(selectedPlan.dataset.price) : 948;
+
+        // Persist through subscriptionService
+        let createdSub = null;
+        try {
+          createdSub = subscriptionService.createOwnerSubscription({
+            ownerId: this.currentUser ? this.currentUser.id : null,
+            ownerEmail: this.currentUser ? this.currentUser.email : null,
+            template,
+            templateName: meta.label,
+            branchQuota: 1,
+            durationMonths: planDuration,
+            paymentMethod: "CREDIT_CARD"
+          });
+        } catch (subErr) {
+          console.warn("[BranchSelect] subscriptionService notice:", subErr);
+        }
 
         const newBranch = {
           id: newBranchId,
@@ -778,23 +768,42 @@ export class BranchSelectController {
           phone,
           hours,
           rooms: "4",
-          template: quota.subscription.template, // STRICT INHERITANCE
-          subscriptionId: quota.subscription.id,
+          template,
+          subscriptionId: createdSub ? createdSub.id : `sub-${Date.now()}`,
           serviceMode,
           logo: selectedLogo,
-          currency: quota.subscription.currency || "SGD",
-          revenue: `${quota.subscription.currency || "SGD"} 0.00`,
+          currency: "SGD",
+          revenue: "SGD 0.00",
           occupancy: "0.0%",
-          status: "ACTIVE", // Active under verified parent subscription
+          status: "ACTIVE",
           isPrimary: false,
           createdAt: new Date().toISOString()
         };
 
-        // Assign branch and consume 1 quota slot
-        subscriptionService.assignBranchToSubscription(subscriptionId, newBranch);
+        if (createdSub) {
+          subscriptionService.assignBranchToSubscription(createdSub.id, newBranch);
+        }
 
         this.branches.push(newBranch);
         storageService.set("cliniva_branches", this.branches);
+
+        // Also persist subscription to legacy key for full backward compatibility
+        const legacySubscription = {
+          id: createdSub ? createdSub.id : `sub-${Date.now()}`,
+          ownerId: this.currentUser ? this.currentUser.id : null,
+          ownerEmail: this.currentUser ? this.currentUser.email : null,
+          template,
+          branchId: newBranchId,
+          branchName: name,
+          durationMonths: planDuration,
+          amount: planPrice,
+          currency: "SGD",
+          status: "ACTIVE",
+          paidAt: new Date().toISOString(),
+          expiresAt: new Date(Date.now() + planDuration * 30 * 24 * 60 * 60 * 1000).toISOString()
+        };
+        const existingSubs = storageService.get("cliniva_owner_subscriptions", []);
+        storageService.set("cliniva_owner_subscriptions", [legacySubscription, ...existingSubs]);
 
         // Sync to Supabase Cloud if available
         this.syncBranchToCloud(newBranch);
@@ -803,9 +812,7 @@ export class BranchSelectController {
         closeModal();
         form.reset();
 
-        this.showToast(`${name} deployed & activated!`, "🚀");
-        this.renderSubscriptionsBanner();
-        this.renderBranchCards();
+        this.showToast(`${name} registered & activated!`, "🚀");
 
         // Immediately activate newly created branch and enter dashboard
         this.selectBranchAndGo(newBranchId);
@@ -813,305 +820,25 @@ export class BranchSelectController {
     }
   }
 
-  renderSubscriptionsBanner() {
-    const container = document.getElementById("ownerSubscriptionsBanner");
-    if (!container) return;
-
-    this.subscriptions = subscriptionService.getOwnerSubscriptions(this.currentUser ? this.currentUser.id : null);
-    if (!this.subscriptions || this.subscriptions.length === 0) {
-      container.innerHTML = "";
-      return;
-    }
-
-    const cardsHtml = this.subscriptions
-      .map((sub) => {
-        const quota = subscriptionService.checkBranchQuota(sub.id);
-        const meta = this.getTemplateMeta(sub.template);
-        const pct = Math.min(100, Math.round((quota.usedCount / quota.totalQuota) * 100));
-        const expiryDateStr = new Date(sub.expiresAt).toLocaleDateString("en-SG", {
-          day: "numeric",
-          month: "short",
-          year: "numeric"
-        });
-
-        const isFull = quota.remainingQuota === 0;
-
-        return `
-          <div style="background:#ffffff; border:1.5px solid ${isFull ? '#cbd5e1' : 'var(--line)'}; border-radius:14px; padding:16px 20px; box-shadow:0 2px 10px rgba(0,0,0,0.03); display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;">
-              <div style="display:flex; align-items:center; gap:10px;">
-                <span style="font-size:26px;">${meta.icon}</span>
-                <div>
-                  <h4 style="margin:0; font-size:15px; font-weight:800; color:var(--text);">${sub.templateName || meta.label}</h4>
-                  <span style="font-size:11px; color:var(--muted);">${sub.invoiceNo} · Valid until ${expiryDateStr}</span>
-                </div>
-              </div>
-              <span class="pill" style="font-size:10px; font-weight:800; background:${isFull ? '#f1f5f9' : '#f0fdfa'}; color:${isFull ? '#475569' : '#0f766e'}; border:1px solid ${isFull ? '#e2e8f0' : '#ccfbf1'};">
-                ${isFull ? 'CAPACITY FULL' : 'ACTIVE LICENSE'}
-              </span>
-            </div>
-
-            <!-- Quota meter bar -->
-            <div>
-              <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-bottom:5px;">
-                <span style="color:var(--text);">Branch Locations Quota</span>
-                <span style="color:${isFull ? '#be123c' : 'var(--primary-dark)'};">${quota.usedCount} of ${quota.totalQuota} slots in use</span>
-              </div>
-              <div style="width:100%; height:8px; background:#f1f5f9; border-radius:10px; overflow:hidden;">
-                <div style="width:${pct}%; height:100%; background:${isFull ? '#f59e0b' : 'var(--primary)'}; border-radius:10px; transition:width 0.3s ease;"></div>
-              </div>
-            </div>
-
-            <div style="display:flex; justify-content:space-between; align-items:center; pt:6px; border-top:1px solid #f1f5f9;">
-              <span style="font-size:11px; color:var(--muted);">${quota.remainingQuota} branch slot${quota.remainingQuota !== 1 ? 's' : ''} available</span>
-              ${
-                quota.remainingQuota > 0
-                  ? `<button type="button" class="btn btn-sm btn-primary btn-deploy-to-sub" data-sub-id="${sub.id}" style="font-size:11px; font-weight:700; padding:4px 12px; background:#0f766e; border-color:#0f766e;">+ Deploy Branch</button>`
-                  : `<button type="button" class="btn btn-sm btn-soft btn-scale-sub" data-sub-id="${sub.id}" data-template="${sub.template}" style="font-size:11px; font-weight:700; padding:4px 12px; color:#0f766e; border-color:#0f766e;">⚡ Add Branch Slot</button>`
-              }
-            </div>
-          </div>
-        `;
-      })
-      .join("");
-
-    container.innerHTML = `
-      <div style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:18px; padding:20px; box-shadow:0 4px 14px rgba(0,0,0,0.03);">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
-          <div>
-            <h3 style="margin:0; font-size:16px; font-weight:800; color:var(--text); display:flex; align-items:center; gap:6px;">
-              <span>📜</span> Practice Subscriptions &amp; Branch Quotas
-            </h3>
-            <p style="margin:2px 0 0; font-size:12px; color:var(--muted);">
-              Each branch inherits its clinical workflows and templates from its authorized practice license.
-            </p>
-          </div>
-        </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:14px;">
-          ${cardsHtml}
-        </div>
-      </div>
-    `;
-
-    // Wire quick buttons inside banner
-    container.querySelectorAll(".btn-deploy-to-sub").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const subId = btn.dataset.subId;
-        this.openNewBranchModal(subId);
-      });
-    });
-
-    container.querySelectorAll(".btn-scale-sub").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const template = btn.dataset.template;
-        this.openSubscribeModal(template);
-      });
-    });
-  }
-
-  openNewBranchModal(preselectedSubId = null) {
+  openNewBranchModal() {
     const modalOverlay = document.getElementById("newBranchModalOverlay");
     const nameInput = document.getElementById("newBranchName");
-    const subSelect = document.getElementById("newBranchSubscription");
-    const quotaExhaustedAlert = document.getElementById("quotaExhaustedAlert");
-    const form = document.getElementById("createBranchForm");
-    const quotaBadge = document.getElementById("selectedSubQuotaBadge");
-
     if (nameInput && !nameInput.value) {
       const nextNum = this.branches.length + 1;
       nameInput.placeholder = `e.g. Marina Bay Clinic (Branch ${nextNum})`;
     }
-
-    // Populate active subscriptions with quota
-    const activeSubs = subscriptionService.getActiveSubscriptions(this.currentUser ? this.currentUser.id : null);
-    const subsWithQuota = activeSubs.filter((s) => {
-      const q = subscriptionService.checkBranchQuota(s.id);
-      return q.canAddBranch;
-    });
-
-    if (subsWithQuota.length === 0) {
-      if (quotaExhaustedAlert) quotaExhaustedAlert.style.display = "block";
-      if (form) form.style.display = "none";
-    } else {
-      if (quotaExhaustedAlert) quotaExhaustedAlert.style.display = "none";
-      if (form) form.style.display = "block";
-
-      if (subSelect) {
-        subSelect.innerHTML = subsWithQuota
-          .map((s) => {
-            const q = subscriptionService.checkBranchQuota(s.id);
-            const isSelected = preselectedSubId ? s.id === preselectedSubId : false;
-            return `<option value="${s.id}" ${isSelected ? 'selected' : ''}>${s.templateName || s.template.toUpperCase()} (${q.remainingQuota} remaining slots)</option>`;
-          })
-          .join("");
-
-        // Trigger change to update badge
-        subSelect.dispatchEvent(new Event("change"));
+    const modeRadios = document.querySelectorAll('input[name="newBranchServiceMode"]');
+    modeRadios.forEach((r) => {
+      const parent = r.closest(".new-branch-mode-label");
+      if (parent) {
+        parent.classList.toggle("active", r.checked);
       }
-    }
-
+    });
     if (modalOverlay) {
       modalOverlay.style.display = "flex";
       soundService.playClickTone?.();
       i18nService.applyTranslations(modalOverlay);
     }
-  }
-
-  setupSubscribeModal() {
-    const openBtn = document.getElementById("btnOpenSubscribeModal");
-    const overlay = document.getElementById("subscribePracticeModalOverlay");
-    const closeBtn = document.getElementById("btnCloseSubscribeModal");
-    const cancelBtn = document.getElementById("btnCancelSubscribeModal");
-    const form = document.getElementById("subscribePracticeForm");
-
-    if (openBtn) {
-      openBtn.addEventListener("click", () => this.openSubscribeModal());
-    }
-
-    const closeModal = () => {
-      if (overlay) overlay.style.display = "none";
-    };
-
-    if (closeBtn) closeBtn.addEventListener("click", closeModal);
-    if (cancelBtn) cancelBtn.addEventListener("click", closeModal);
-    if (overlay) {
-      overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) closeModal();
-      });
-    }
-
-    // Recalculate price when options change
-    const updateModalPrice = () => {
-      const selectedTmpl = document.querySelector('input[name="subModalTemplate"]:checked')?.value || "tcm";
-      const selectedQuota = document.querySelector('input[name="subModalQuota"]:checked')?.value || 1;
-      const selectedDur = document.querySelector('input[name="subModalDuration"]:checked')?.value || 12;
-
-      const pricing = subscriptionService.calculateOrderPricing({
-        templateId: selectedTmpl,
-        branchQuota: parseInt(selectedQuota, 10),
-        durationMonths: parseInt(selectedDur, 10),
-        currency: "SGD"
-      });
-
-      const subtotalEl = document.getElementById("subModalSubtotalVal");
-      const taxEl = document.getElementById("subModalTaxVal");
-      const totalEl = document.getElementById("subModalTotalVal");
-
-      if (subtotalEl) subtotalEl.textContent = `SGD ${pricing.subtotal.toFixed(2)}`;
-      if (taxEl) taxEl.textContent = `SGD ${pricing.taxAmount.toFixed(2)}`;
-      if (totalEl) totalEl.textContent = `SGD ${pricing.totalAmount.toFixed(2)}`;
-    };
-
-    // Template click styling & update
-    document.querySelectorAll(".sub-template-pill").forEach((pill) => {
-      pill.addEventListener("click", () => {
-        document.querySelectorAll(".sub-template-pill").forEach((p) => {
-          p.style.borderColor = "#e2e8f0";
-          p.style.background = "#fff";
-        });
-        pill.style.borderColor = "var(--primary)";
-        pill.style.background = "#f0fdfa";
-        const radio = pill.querySelector('input[name="subModalTemplate"]');
-        if (radio) radio.checked = true;
-        updateModalPrice();
-      });
-    });
-
-    // Quota click styling & update
-    document.querySelectorAll(".sub-quota-pill").forEach((pill) => {
-      pill.addEventListener("click", () => {
-        document.querySelectorAll(".sub-quota-pill").forEach((p) => {
-          p.style.borderColor = "#e2e8f0";
-          p.style.background = "#fff";
-        });
-        pill.style.borderColor = "var(--primary)";
-        pill.style.background = "#f0fdfa";
-        const radio = pill.querySelector('input[name="subModalQuota"]');
-        if (radio) radio.checked = true;
-        updateModalPrice();
-      });
-    });
-
-    // Duration click styling & update
-    document.querySelectorAll(".sub-dur-label").forEach((lbl) => {
-      lbl.addEventListener("click", () => {
-        document.querySelectorAll(".sub-dur-label").forEach((l) => {
-          l.style.borderColor = "var(--line)";
-          l.style.background = "#f8fafc";
-        });
-        lbl.style.borderColor = "var(--primary)";
-        lbl.style.background = "#f0fdfa";
-        const radio = lbl.querySelector('input[name="subModalDuration"]');
-        if (radio) radio.checked = true;
-        updateModalPrice();
-      });
-    });
-
-    if (form) {
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const processingBox = document.getElementById("subModalProcessingBox");
-        const actionsGroup = document.getElementById("subModalActionsGroup");
-        const statusText = document.getElementById("subModalStatusText");
-
-        if (actionsGroup) actionsGroup.style.display = "none";
-        if (processingBox) processingBox.style.display = "block";
-        if (statusText) statusText.textContent = "Authorizing Corporate Payment Gateway...";
-
-        const templateId = document.querySelector('input[name="subModalTemplate"]:checked')?.value || "tcm";
-        const branchQuota = parseInt(document.querySelector('input[name="subModalQuota"]:checked')?.value || "1", 10);
-        const durationMonths = parseInt(document.querySelector('input[name="subModalDuration"]:checked')?.value || "12", 10);
-        const paymentMethod = document.querySelector('input[name="subModalPayMethod"]:checked')?.value || "CREDIT_CARD";
-
-        try {
-          const order = subscriptionService.createSubscriptionOrder({
-            ownerId: this.currentUser ? this.currentUser.id : null,
-            ownerEmail: this.currentUser ? this.currentUser.email : "owner@cliniva.com",
-            templateId,
-            branchQuota,
-            durationMonths,
-            currency: "SGD"
-          });
-
-          const { subscription, paymentReceipt } = await subscriptionService.processPayment({
-            orderId: order.orderId,
-            paymentMethod,
-            paymentDetails: { last4: "4242" }
-          });
-
-          if (statusText) statusText.textContent = `✓ Payment Verified! License #${subscription.invoiceNo} active.`;
-
-          soundService.playSuccess();
-          this.showToast(`Practice License #${subscription.invoiceNo} successfully activated!`, "⚡");
-
-          setTimeout(() => {
-            closeModal();
-            if (actionsGroup) actionsGroup.style.display = "flex";
-            if (processingBox) processingBox.style.display = "none";
-            this.renderSubscriptionsBanner();
-            this.renderBranchCards();
-          }, 900);
-        } catch (err) {
-          console.error("Subscription payment failed:", err);
-          if (actionsGroup) actionsGroup.style.display = "flex";
-          if (processingBox) processingBox.style.display = "none";
-          alert("Payment failed: " + err.message);
-        }
-      });
-    }
-  }
-
-  openSubscribeModal(defaultTemplate = "tcm") {
-    const overlay = document.getElementById("subscribePracticeModalOverlay");
-    if (!overlay) return;
-
-    // Set default template if requested
-    const targetPill = document.querySelector(`input[name="subModalTemplate"][value="${defaultTemplate}"]`)?.closest(".sub-template-pill");
-    if (targetPill) targetPill.click();
-
-    overlay.style.display = "flex";
-    soundService.playClickTone?.();
   }
 
   setupSignOut() {

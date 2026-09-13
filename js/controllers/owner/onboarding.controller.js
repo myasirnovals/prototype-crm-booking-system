@@ -923,11 +923,11 @@ export class AdminOnboardingController {
     const mode = document.querySelector('input[name="wizardServiceMode"]:checked')?.value || "hybrid";
     if (serviceModeValEl) {
       if (mode === "in_clinic") {
-        serviceModeValEl.textContent = "🏥 " + i18nService.t("owner.onboarding.modeInClinicTitle", "In-Clinic Facility Only");
+        serviceModeValEl.textContent = "🏥 " + i18nService.t("owner.onboarding.modeInClinicTitle", "In-Clinic");
       } else if (mode === "home_care") {
-        serviceModeValEl.textContent = "🏠 " + i18nService.t("owner.onboarding.modeHomeCareTitle", "Home Care Only (Home Visit)");
+        serviceModeValEl.textContent = "🏠 " + i18nService.t("owner.onboarding.modeHomeCareTitle", "Home Care");
       } else {
-        serviceModeValEl.textContent = "✨ " + i18nService.t("owner.onboarding.modeHybridTitle", "Hybrid (Both In-Clinic & Home Care)");
+        serviceModeValEl.textContent = "✨ " + i18nService.t("owner.onboarding.modeHybridTitle", "Hybrid");
       }
     }
 

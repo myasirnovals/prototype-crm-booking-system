@@ -548,24 +548,19 @@ export class BranchSelectController {
     };
 
     // Service Mode Radio selection in new branch modal
-    const modeLabels = document.querySelectorAll(".new-branch-mode-label");
     const modeRadios = document.querySelectorAll('input[name="newBranchServiceMode"]');
+    const syncActiveModeLabel = () => {
+      modeRadios.forEach((r) => {
+        const parent = r.closest(".new-branch-mode-label");
+        if (parent) {
+          parent.classList.toggle("active", r.checked);
+        }
+      });
+    };
     modeRadios.forEach((radio) => {
       radio.addEventListener("change", () => {
-        modeLabels.forEach((lbl) => {
-          lbl.style.borderColor = "#cbd5e1";
-          lbl.style.background = "#ffffff";
-          lbl.classList.remove("active");
-          lbl.style.color = "inherit";
-        });
-        const parent = radio.closest(".new-branch-mode-label");
-        if (parent) {
-          parent.style.borderColor = "var(--primary)";
-          parent.style.background = "#f0fdfa";
-          parent.classList.add("active");
-          parent.style.color = "var(--primary-dark)";
-        }
-        soundService.playClickTone();
+        syncActiveModeLabel();
+        soundService.playClickTone?.();
       });
     });
 
@@ -809,6 +804,13 @@ export class BranchSelectController {
       const nextNum = this.branches.length + 1;
       nameInput.placeholder = `e.g. Marina Bay Clinic (Branch ${nextNum})`;
     }
+    const modeRadios = document.querySelectorAll('input[name="newBranchServiceMode"]');
+    modeRadios.forEach((r) => {
+      const parent = r.closest(".new-branch-mode-label");
+      if (parent) {
+        parent.classList.toggle("active", r.checked);
+      }
+    });
     if (modalOverlay) {
       modalOverlay.style.display = "flex";
       soundService.playClickTone?.();

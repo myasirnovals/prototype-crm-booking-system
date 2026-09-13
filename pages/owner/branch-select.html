@@ -445,6 +445,101 @@
       box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.2);
     }
 
+    /* Modal Service Delivery Model Segmented Cards */
+    .service-mode-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .new-branch-mode-label {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 12px 6px 10px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      background: #ffffff;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .new-branch-mode-label:hover {
+      border-color: #cbd5e1;
+      background: #f8fafc;
+      transform: translateY(-1px);
+    }
+
+    .new-branch-mode-label.active {
+      border-color: var(--primary);
+      background: #f0fdfa;
+      box-shadow: 0 0 0 1.5px var(--primary), 0 4px 12px rgba(15, 118, 110, 0.12);
+    }
+
+    .new-branch-mode-label input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      height: 0;
+      margin: 0;
+    }
+
+    .new-branch-mode-label .mode-check {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 900;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s ease;
+    }
+
+    .new-branch-mode-label.active .mode-check {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(15, 118, 110, 0.25);
+    }
+
+    .new-branch-mode-label .mode-icon {
+      font-size: 22px;
+      line-height: 1;
+      margin-bottom: 4px;
+      transition: transform 0.2s ease;
+    }
+
+    .new-branch-mode-label:hover .mode-icon {
+      transform: scale(1.1);
+    }
+
+    .new-branch-mode-label .mode-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: #64748b;
+      white-space: nowrap;
+      letter-spacing: -0.2px;
+      transition: color 0.2s ease;
+    }
+
+    .new-branch-mode-label.active .mode-text {
+      color: var(--primary-dark);
+      font-weight: 800;
+    }
+
     @media (max-width: 768px) {
       .branch-card {
         flex-direction: column;
@@ -596,27 +691,28 @@
 
         <!-- Service Delivery Model -->
         <div class="field"
-          style="margin: 14px 0; padding: 12px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: var(--radius-md);">
-          <label style="font-weight: 800; font-size: 12px; color: var(--text); margin-bottom: 6px; display: block;"
-            data-i18n="owner.onboarding.serviceModeLabel">
-            Service Delivery Model <span style="color:#ef4444;">*</span>
+          style="margin: 14px 0; padding: 12px 14px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: var(--radius-md);">
+          <label style="font-weight: 800; font-size: 12px; color: var(--text); margin-bottom: 8px; display: block;">
+            <span data-i18n="owner.onboarding.serviceModeLabel">Service Delivery Model</span> <span style="color:#ef4444;">*</span>
           </label>
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;"
-            id="newBranchServiceModeContainer">
-            <label class="new-branch-mode-label"
-              style="border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; cursor: pointer; background: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700;">
-              <input type="radio" name="newBranchServiceMode" value="in_clinic" style="cursor:pointer;">
-              <span data-i18n="owner.onboarding.modeInClinicTitle">🏥 Clinic</span>
+          <div class="service-mode-grid" id="newBranchServiceModeContainer">
+            <label class="new-branch-mode-label">
+              <input type="radio" name="newBranchServiceMode" value="in_clinic">
+              <span class="mode-check">✓</span>
+              <span class="mode-icon">🏥</span>
+              <span class="mode-text" data-i18n="owner.onboarding.modeInClinicTitle">In-Clinic</span>
             </label>
-            <label class="new-branch-mode-label"
-              style="border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; cursor: pointer; background: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700;">
-              <input type="radio" name="newBranchServiceMode" value="home_care" style="cursor:pointer;">
-              <span data-i18n="owner.onboarding.modeHomeCareTitle">🏠 Home</span>
+            <label class="new-branch-mode-label">
+              <input type="radio" name="newBranchServiceMode" value="home_care">
+              <span class="mode-check">✓</span>
+              <span class="mode-icon">🏠</span>
+              <span class="mode-text" data-i18n="owner.onboarding.modeHomeCareTitle">Home Care</span>
             </label>
-            <label class="new-branch-mode-label active"
-              style="border: 2px solid var(--primary); border-radius: 8px; padding: 8px; cursor: pointer; background: #f0fdfa; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--primary-dark);">
-              <input type="radio" name="newBranchServiceMode" value="hybrid" checked style="cursor:pointer;">
-              <span data-i18n="owner.onboarding.modeHybridTitle">✨ Hybrid</span>
+            <label class="new-branch-mode-label active">
+              <input type="radio" name="newBranchServiceMode" value="hybrid" checked>
+              <span class="mode-check">✓</span>
+              <span class="mode-icon">✨</span>
+              <span class="mode-text" data-i18n="owner.onboarding.modeHybridTitle">Hybrid</span>
             </label>
           </div>
         </div>

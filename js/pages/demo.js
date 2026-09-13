@@ -4,7 +4,7 @@
  * Mounts modular role components into the DOM before initializing i18n and controller logic
  */
 
-import { DemoController } from "../controllers/demo.controller.js";
+import { DemoController } from "../controllers/demo/demo.controller.js";
 import { i18nService } from "../services/i18n.service.js";
 
 // Import modular demo components

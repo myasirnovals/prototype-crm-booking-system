@@ -801,11 +801,6 @@
           data-i18n="branchAdmin.nav.calendar">
           📅 Schedules &amp; Treatment Rooms
         </button>
-        <button class="side-link admin-tab-btn" data-pane="paneInventory"
-          style="border:0;background:transparent;width:100%;text-align:left;"
-          data-i18n="branchAdmin.nav.inventory">
-          📦 Stock &amp; Branch Inventory
-        </button>
         <button class="side-link admin-tab-btn" data-pane="paneClinicSettings"
           style="border:0;background:transparent;width:100%;text-align:left;"
           data-i18n="branchAdmin.nav.settings">
@@ -1066,37 +1061,7 @@
         </div>
       </section>
 
-
-      <!-- ── PANE 5: STOK & INVENTARIS CABANG ─────────────────────────────── -->
-      <section class="admin-tab-pane" id="paneInventory" style="display:none;">
-        <div class="panel-top">
-          <div>
-            <h2 data-i18n="branchAdmin.paneInventoryTitle">Branch Stock &amp; Supplies Inventory</h2>
-            <p data-i18n="branchAdmin.paneInventoryDesc">Adaptively customized based on clinic practice template (TCM, Physio, Wellness, or Nutrition).
-            </p>
-          </div>
-          <button class="btn btn-soft" id="btnSyncStock" data-i18n="branchAdmin.btnSyncStock">↻ Sync Stock</button>
-        </div>
-
-        <div class="data-table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th data-i18n="branchAdmin.thItemName">Item / Product Name</th>
-                <th data-i18n="branchAdmin.thCategory">Template Category</th>
-                <th data-i18n="branchAdmin.thStock">Available Physical Stock</th>
-                <th data-i18n="branchAdmin.thThreshold">Minimum Threshold</th>
-                <th data-i18n="branchAdmin.thStatus">Status</th>
-              </tr>
-            </thead>
-            <tbody id="branchStockTableBody">
-              <!-- Rendered dynamically -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ── PANE 6: PROFIL IDENTITAS CABANG ──────────────────────────────── -->
+      <!-- ── PANE 5: PROFIL IDENTITAS CABANG ──────────────────────────────── -->
       <section class="admin-tab-pane" id="paneClinicSettings" style="display:none;">
         <div class="panel-top">
           <div>

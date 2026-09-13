@@ -145,7 +145,7 @@ class NavbarService {
       navActions.innerHTML = `
         ${langHtml}
         <a href="${this._resolvePath("pages/public/sign-in.html")}" class="btn btn-soft" data-i18n="nav.signIn">Sign In</a>
-        <a href="onboarding.html" class="btn btn-primary" data-i18n="nav.getStarted">Get Started</a>
+        <a href="${this._resolvePath("pages/owner/onboarding.html")}" class="btn btn-primary" data-i18n="nav.getStarted">Get Started</a>
       `;
       return;
     }
@@ -275,7 +275,7 @@ class NavbarService {
 
     return `
       <a href="${this._resolvePath("pages/public/sign-in.html")}" class="btn btn-soft full" data-i18n="nav.signIn">Sign In</a>
-      <a href="onboarding.html" class="btn btn-primary full" data-i18n="nav.getStarted">Get Started</a>
+      <a href="${this._resolvePath("pages/owner/onboarding.html")}" class="btn btn-primary full" data-i18n="nav.getStarted">Get Started</a>
     `;
   }
 }

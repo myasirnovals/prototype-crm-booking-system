@@ -57,6 +57,16 @@
       "permanent": true
     },
     {
+      "source": "/onboarding.html",
+      "destination": "/pages/owner/onboarding.html",
+      "permanent": true
+    },
+    {
+      "source": "/onboarding",
+      "destination": "/pages/owner/onboarding.html",
+      "permanent": true
+    },
+    {
       "source": "/practitioner.html",
       "destination": "/pages/practitioner/index.html",
       "permanent": true

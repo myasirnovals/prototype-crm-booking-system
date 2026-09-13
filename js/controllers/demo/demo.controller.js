@@ -3,11 +3,11 @@
  * SOLID: Single Responsibility for Complete Product Demo Sandbox Interactions across ALL User Roles
  */
 
-import { CLINIC_BRANCHES, CLINIC_SERVICES, PRACTITIONERS, DEFAULT_SLOTS } from "../config/clinic-data.js";
-import { bookingService } from "../services/booking.service.js";
-import { notificationService } from "../services/notification.service.js";
-import { soundService } from "../services/sound.service.js";
-import { i18nService } from "../services/i18n.service.js";
+import { CLINIC_BRANCHES, CLINIC_SERVICES, PRACTITIONERS, DEFAULT_SLOTS } from "../../config/clinic-data.js";
+import { bookingService } from "../../services/booking.service.js";
+import { notificationService } from "../../services/notification.service.js";
+import { soundService } from "../../services/sound.service.js";
+import { i18nService } from "../../services/i18n.service.js";
 
 export class DemoController {
   constructor() {

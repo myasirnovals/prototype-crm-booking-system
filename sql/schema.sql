@@ -196,6 +196,34 @@ CREATE TABLE IF NOT EXISTS public.audit_logs (
     target TEXT,
     details TEXT,
     ip_address TEXT,
+);
+
+-- I. OWNER SUBSCRIPTIONS TABLE (B2B SaaS Practice Licenses & Branch Quotas)
+CREATE TABLE IF NOT EXISTS public.owner_subscriptions (
+    id TEXT PRIMARY KEY,
+    owner_id TEXT REFERENCES public.profiles(id) ON DELETE CASCADE,
+    template_id TEXT NOT NULL DEFAULT 'wellness',
+    branch_quota INTEGER NOT NULL DEFAULT 1,
+    duration_months INTEGER NOT NULL DEFAULT 12,
+    amount NUMERIC(10,2) NOT NULL DEFAULT 948.00,
+    currency TEXT NOT NULL DEFAULT 'SGD',
+    status TEXT NOT NULL DEFAULT 'ACTIVE', -- ACTIVE, PENDING, EXPIRED
+    paid_at TIMESTAMPTZ,
+    expires_at TIMESTAMPTZ NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- J. PAYMENTS & INVOICES TABLE (Transaction receipts & audit)
+CREATE TABLE IF NOT EXISTS public.payments (
+    id TEXT PRIMARY KEY,
+    subscription_id TEXT REFERENCES public.owner_subscriptions(id) ON DELETE CASCADE,
+    invoice_no TEXT UNIQUE NOT NULL,
+    amount NUMERIC(10,2) NOT NULL,
+    currency TEXT NOT NULL DEFAULT 'SGD',
+    gateway TEXT DEFAULT 'PayNow SG / Stripe Corporate',
+    status TEXT NOT NULL DEFAULT 'PAID',
+    paid_at TIMESTAMPTZ DEFAULT NOW(),
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -221,6 +249,8 @@ ALTER TABLE public.bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.queue_tickets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.treatment_notes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.owner_subscriptions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
 
 -- Allow Public / Anon Key Read Access for master catalog (branches, services, practitioners)
 CREATE POLICY "Public read branches" ON public.branches FOR SELECT USING (true);
@@ -231,6 +261,13 @@ CREATE POLICY "Public read practitioners" ON public.practitioners FOR SELECT USI
 CREATE POLICY "Public profiles read" ON public.profiles FOR SELECT USING (true);
 CREATE POLICY "Public profiles insert" ON public.profiles FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public profiles update" ON public.profiles FOR UPDATE USING (true);
+
+-- Subscriptions & Payments: Allow authenticated/demo owner access
+CREATE POLICY "Owner subscriptions select" ON public.owner_subscriptions FOR SELECT USING (true);
+CREATE POLICY "Owner subscriptions insert" ON public.owner_subscriptions FOR INSERT WITH CHECK (true);
+CREATE POLICY "Owner subscriptions update" ON public.owner_subscriptions FOR UPDATE USING (true);
+CREATE POLICY "Payments select" ON public.payments FOR SELECT USING (true);
+CREATE POLICY "Payments insert" ON public.payments FOR INSERT WITH CHECK (true);
 
 -- Bookings: Allow create booking publicly & read by code
 CREATE POLICY "Public bookings create" ON public.bookings FOR INSERT WITH CHECK (true);
@@ -254,7 +291,7 @@ CREATE POLICY "Public audit insert" ON public.audit_logs FOR INSERT WITH CHECK (
 -- ============================================================================
 -- 6. ENABLE SUPABASE REALTIME REPLICATION
 -- ============================================================================
--- Enables WebSocket broadcast on queue changes and bookings
+-- Enables WebSocket broadcast on queue changes, bookings, and subscriptions
 DO $$ BEGIN
     ALTER PUBLICATION supabase_realtime ADD TABLE public.queue_tickets;
 EXCEPTION
@@ -263,6 +300,12 @@ END $$;
 
 DO $$ BEGIN
     ALTER PUBLICATION supabase_realtime ADD TABLE public.bookings;
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    ALTER PUBLICATION supabase_realtime ADD TABLE public.owner_subscriptions;
 EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;

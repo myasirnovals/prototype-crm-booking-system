@@ -10,6 +10,7 @@ import { soundService } from "../../services/sound.service.js";
 import { bookingService } from "../../services/booking.service.js";
 import { i18nService } from "../../services/i18n.service.js";
 import { supabaseService } from "../../services/supabase.service.js";
+import { subscriptionService } from "../../services/subscription.service.js";
 import { getTemplateById } from "../../config/templates/index.js";
 
 export class AdminOnboardingController {
@@ -18,6 +19,7 @@ export class AdminOnboardingController {
     this.selectedLogo = "🌿";
     this.selectedTemplate = "physio";
     this.currentUser = null;
+    this.currentOrderPricing = null;
   }
 
   init() {
@@ -810,15 +812,10 @@ export class AdminOnboardingController {
   }
 
   setupSubscriptionBilling() {
+    // 1. Duration radio listener
     const subsRadios = document.querySelectorAll('input[name="wizardSubsPlan"]');
     subsRadios.forEach((radio) => {
       radio.addEventListener("change", (e) => {
-        const region = document.getElementById("brandRegionSelect")?.value || "sg";
-        const currency = region === "sg" ? "SGD" : "MYR";
-        const price = parseFloat(e.target.dataset.price || "948").toFixed(2);
-        const totalBillingAmount = document.getElementById("wizardTotalBillingAmount");
-        if (totalBillingAmount) totalBillingAmount.textContent = `${currency} ${price}`;
-
         document.querySelectorAll(".subs-radio-label-wizard").forEach((label) => {
           label.style.borderColor = "var(--line)";
           label.style.background = "#f8fafc";
@@ -834,40 +831,113 @@ export class AdminOnboardingController {
           if (title) title.style.color = "var(--primary)";
         }
 
+        this.updateSubscriptionPricing();
         this.updateReviewSummary();
+      });
+    });
+
+    // 2. Branch Quota radio listener
+    const quotaRadios = document.querySelectorAll('input[name="wizardBranchQuota"]');
+    quotaRadios.forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        document.querySelectorAll(".quota-radio-pill").forEach((pill) => {
+          pill.style.borderColor = "#e2e8f0";
+          pill.style.background = "#ffffff";
+        });
+        const selectedPill = e.target.closest(".quota-radio-pill");
+        if (selectedPill) {
+          selectedPill.style.borderColor = "var(--primary)";
+          selectedPill.style.background = "#f0fdfa";
+        }
+        this.updateSubscriptionPricing();
+        this.updateReviewSummary();
+      });
+    });
+
+    // 3. Payment Method Card Toggle
+    const paymentRadios = document.querySelectorAll('input[name="wizardPaymentMethod"]');
+    const cardGroup = document.getElementById("cardDetailsGroup");
+    const qrGroup = document.getElementById("qrDetailsGroup");
+
+    paymentRadios.forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        document.querySelectorAll(".payment-method-card").forEach((card) => {
+          card.style.borderColor = "#e2e8f0";
+          card.style.background = "#ffffff";
+        });
+        const activeCard = e.target.closest(".payment-method-card");
+        if (activeCard) {
+          activeCard.style.borderColor = "var(--primary)";
+          activeCard.style.background = "#f0fdfa";
+        }
+
+        if (e.target.value === "CREDIT_CARD") {
+          if (cardGroup) cardGroup.style.display = "block";
+          if (qrGroup) qrGroup.style.display = "none";
+        } else {
+          if (cardGroup) cardGroup.style.display = "none";
+          if (qrGroup) qrGroup.style.display = "block";
+        }
       });
     });
   }
 
   updateSubscriptionPricing() {
-    const tConfig = getTemplateById(this.selectedTemplate);
-    const monthly = tConfig?.pricing?.monthly || 99;
-    const sixMonth = tConfig?.pricing?.sixMonth || Math.round(monthly * 6 * 0.9);
-    const yearly = tConfig?.pricing?.yearly || Math.round(monthly * 12 * 0.8);
-
     const region = document.getElementById("brandRegionSelect")?.value || "sg";
     const currency = region === "sg" ? "SGD" : "MYR";
 
-    const plan1Radio = document.querySelector('input[name="wizardSubsPlan"][value="1"]');
-    const plan6Radio = document.querySelector('input[name="wizardSubsPlan"][value="6"]');
-    const plan12Radio = document.querySelector('input[name="wizardSubsPlan"][value="12"]');
+    const selectedQuota = document.querySelector('input[name="wizardBranchQuota"]:checked');
+    const branchQuota = selectedQuota ? parseInt(selectedQuota.value, 10) : 1;
 
-    if (plan1Radio) plan1Radio.dataset.price = monthly;
-    if (plan6Radio) plan6Radio.dataset.price = sixMonth;
-    if (plan12Radio) plan12Radio.dataset.price = yearly;
+    const selectedDuration = document.querySelector('input[name="wizardSubsPlan"]:checked');
+    const durationMonths = selectedDuration ? parseInt(selectedDuration.value, 10) : 12;
 
+    const pricing = subscriptionService.calculateOrderPricing({
+      templateId: this.selectedTemplate,
+      branchQuota,
+      durationMonths,
+      currency
+    });
+
+    this.currentOrderPricing = pricing;
+
+    // Update UI elements
+    const baseRateEl = document.getElementById("summaryBaseRateVal");
+    const branchCountEl = document.getElementById("summaryBranchCountVal");
+    const durationValEl = document.getElementById("summaryDurationVal");
+    const subtotalEl = document.getElementById("summarySubtotalVal");
+    const taxRateLabelEl = document.getElementById("summaryTaxRateLabel");
+    const taxValEl = document.getElementById("summaryTaxVal");
+    const totalBillingAmount = document.getElementById("wizardTotalBillingAmount");
+    const savingsBadge = document.getElementById("pricingSavingsBadge");
+
+    if (baseRateEl) baseRateEl.textContent = `${currency} ${pricing.baseMonthly.toFixed(2)} / mo`;
+    if (branchCountEl) branchCountEl.textContent = `${branchQuota} ${branchQuota > 1 ? "Locations" : "Location"}`;
+    if (durationValEl) durationValEl.textContent = `${durationMonths} Months`;
+    if (subtotalEl) subtotalEl.textContent = `${currency} ${pricing.subtotal.toFixed(2)}`;
+    if (taxRateLabelEl) taxRateLabelEl.textContent = `${pricing.taxRate}% ${currency === "MYR" ? "SST" : "GST"}`;
+    if (taxValEl) taxValEl.textContent = `${currency} ${pricing.taxAmount.toFixed(2)}`;
+    if (totalBillingAmount) totalBillingAmount.textContent = `${currency} ${pricing.totalAmount.toFixed(2)}`;
+
+    if (savingsBadge) {
+      if (pricing.durationDiscountPct > 0 || pricing.volumeDiscountPct > 0) {
+        savingsBadge.style.display = "inline-block";
+        savingsBadge.textContent = `Save ${pricing.durationDiscountPct + pricing.volumeDiscountPct}% Applied`;
+      } else {
+        savingsBadge.style.display = "none";
+      }
+    }
+
+    // Plan individual texts
     const plan1Text = document.getElementById("plan1mText");
     const plan6Text = document.getElementById("plan6mText");
     const plan1yText = document.getElementById("plan1yText");
+    const plan2yText = document.getElementById("plan2yText");
 
-    if (plan1Text) plan1Text.textContent = `${currency} ${monthly}/mo`;
-    if (plan6Text) plan6Text.innerHTML = `${currency} ${Math.round(sixMonth / 6)}/mo (<span data-i18n="owner.onboarding.save10">Save 10%</span>)`;
-    if (plan1yText) plan1yText.innerHTML = `${currency} ${Math.round(yearly / 12)}/mo (<span data-i18n="owner.onboarding.save20">Save 20%</span>)`;
-
-    const selectedRadio = document.querySelector('input[name="wizardSubsPlan"]:checked');
-    const activePrice = selectedRadio ? parseFloat(selectedRadio.dataset.price).toFixed(2) : parseFloat(yearly).toFixed(2);
-    const totalBillingAmount = document.getElementById("wizardTotalBillingAmount");
-    if (totalBillingAmount) totalBillingAmount.textContent = `${currency} ${activePrice}`;
+    if (plan1Text) plan1Text.textContent = `${currency} ${pricing.baseMonthly.toFixed(0)}/mo`;
+    if (plan6Text) plan6Text.textContent = `Save 10%`;
+    if (plan1yText) plan1yText.textContent = `Save 20%`;
+    if (plan2yText) plan2yText.textContent = `Save 30%`;
   }
 
   getTemplateLabel(templateId) {
@@ -893,6 +963,7 @@ export class AdminOnboardingController {
     const branchName = document.getElementById("branchNameInput")?.value.trim() || "Branch 1";
     const branchAddress = document.getElementById("branchAddressInput")?.value.trim() || "Singapore";
     const region = document.getElementById("brandRegionSelect")?.value || "sg";
+    const currency = region === "sg" ? "SGD" : "MYR";
 
     const logoEl = document.getElementById("reviewLogoBadge");
     const brandTitleEl = document.getElementById("reviewBrandTitle");
@@ -901,12 +972,9 @@ export class AdminOnboardingController {
     const branchValEl = document.getElementById("reviewBranchVal");
     const serviceModeValEl = document.getElementById("reviewServiceModeVal");
     const addressValEl = document.getElementById("reviewAddressVal");
-    const coverageRow = document.getElementById("reviewCoverageRow");
-    const coverageValEl = document.getElementById("reviewCoverageVal");
-    const capacityValEl = document.getElementById("reviewCapacityVal");
-    const regionValEl = document.getElementById("reviewRegionVal");
+    const branchQuotaValEl = document.getElementById("reviewBranchQuotaVal");
     const planValEl = document.getElementById("reviewPlanVal");
-    const ownerValEl = document.getElementById("reviewOwnerVal");
+    const finalTotalValEl = document.getElementById("reviewFinalTotalVal");
 
     if (logoEl) {
       if (this.selectedLogo && (this.selectedLogo.startsWith("data:image") || this.selectedLogo.startsWith("http") || this.selectedLogo.includes("/"))) {
@@ -933,56 +1001,45 @@ export class AdminOnboardingController {
 
     if (addressValEl) addressValEl.textContent = branchAddress;
 
-    // Coverage Area Row in Review Card
-    if (coverageRow) {
-      if (mode === "in_clinic") {
-        coverageRow.style.display = "none";
-      } else {
-        coverageRow.style.display = "flex";
-        const coverageSelect = document.getElementById("branchCoverageRadiusInput");
-        if (coverageValEl && coverageSelect) {
-          coverageValEl.textContent = coverageSelect.options[coverageSelect.selectedIndex]?.text || "15 km Radius";
-        }
-      }
+    const selectedQuota = document.querySelector('input[name="wizardBranchQuota"]:checked');
+    const branchQuota = selectedQuota ? parseInt(selectedQuota.value, 10) : 1;
+    if (branchQuotaValEl) {
+      branchQuotaValEl.textContent = `${branchQuota} Active Branch ${branchQuota > 1 ? "Slots" : "Slot"} (Multi-Branch Quota)`;
     }
 
-    // Capacity Row in Review Card
-    if (capacityValEl) {
-      const roomsSelect = document.getElementById("branchRoomsInput");
-      if (roomsSelect) {
-        capacityValEl.textContent = roomsSelect.options[roomsSelect.selectedIndex]?.text || "4 Units";
-      }
-    }
-
-    if (regionValEl) regionValEl.textContent = region === "sg" ? "🇸🇬 Singapore (SGD)" : "🇲🇾 Malaysia (MYR)";
-
+    const selectedPlan = document.querySelector('input[name="wizardSubsPlan"]:checked');
+    const planDuration = selectedPlan ? parseInt(selectedPlan.value, 10) : 12;
     if (planValEl) {
-      const selectedPlan = document.querySelector('input[name="wizardSubsPlan"]:checked');
-      const planDuration = selectedPlan ? selectedPlan.value : "12";
-      const planPrice = selectedPlan ? selectedPlan.dataset.price : "948";
-      const currency = region === "sg" ? "SGD" : "MYR";
-      const durationLabel = planDuration === "1" ? "1 Month" : (planDuration === "6" ? "6 Months" : "1 Year");
-      planValEl.textContent = `${durationLabel} (${currency} ${parseFloat(planPrice).toFixed(2)})`;
+      planValEl.textContent = `${planDuration} Months (${planDuration >= 12 ? "Annual License" : "Term License"})`;
     }
 
-    if (ownerValEl && this.currentUser) {
-      ownerValEl.textContent = `${this.currentUser.name} (${this.currentUser.email})`;
+    if (!this.currentOrderPricing) {
+      this.updateSubscriptionPricing();
+    }
+    if (finalTotalValEl && this.currentOrderPricing) {
+      finalTotalValEl.textContent = `${currency} ${this.currentOrderPricing.totalAmount.toFixed(2)}`;
     }
   }
 
   setupLaunchButton() {
     const launchBtn = document.getElementById("btnLaunchClinic");
+    const processingBox = document.getElementById("paymentProcessingBox");
+    const actionsGroup = document.getElementById("wizardStep4Actions");
+    const processingText = document.getElementById("paymentProcessingStatusText");
     if (!launchBtn) return;
 
-    launchBtn.addEventListener("click", () => {
+    launchBtn.addEventListener("click", async () => {
       soundService.playQueueChime();
-      launchBtn.disabled = true;
-      launchBtn.innerHTML = i18nService.t("owner.onboarding.launchProcessing", "⏳ Processing Payment & Provisioning Tenant...");
+
+      if (actionsGroup) actionsGroup.style.display = "none";
+      if (processingBox) processingBox.style.display = "block";
+      if (processingText) processingText.textContent = i18nService.t("owner.onboarding.authorizingPayment", "Authorizing Payment via Corporate Gateway...");
 
       const brandName = document.getElementById("brandNameInput")?.value.trim() || "My Clinic";
       const brandTagline = document.getElementById("brandTaglineInput")?.value.trim() || "";
       const brandDesc = document.getElementById("brandDescInput")?.value.trim() || "";
       const region = document.getElementById("brandRegionSelect")?.value || "sg";
+      const currency = region === "sg" ? "SGD" : "MYR";
       const branchName = document.getElementById("branchNameInput")?.value.trim() || "Branch 1";
       const branchPostal = document.getElementById("branchPostalInput")?.value.trim() || "";
       const branchAddress = document.getElementById("branchAddressInput")?.value.trim() || "Clinic Address";
@@ -992,118 +1049,134 @@ export class AdminOnboardingController {
       const serviceMode = document.querySelector('input[name="wizardServiceMode"]:checked')?.value || "hybrid";
       const coverageRadius = document.getElementById("branchCoverageRadiusInput")?.value || "15km";
 
-      const branchId = `br-${region}-${Date.now().toString().slice(-4)}`;
+      const selectedQuota = document.querySelector('input[name="wizardBranchQuota"]:checked');
+      const branchQuota = selectedQuota ? parseInt(selectedQuota.value, 10) : 1;
 
-      // 1. Create First Branch Object
-      const newBranch = {
-        id: branchId,
-        name: branchName,
-        code: `${region.toUpperCase()}-01`,
-        postalCode: branchPostal,
-        address: branchAddress,
-        phone: branchPhone,
-        hours: branchHours,
-        rooms: branchRooms,
-        template: this.selectedTemplate,
-        serviceMode: serviceMode,
-        coverageRadius: serviceMode === "in_clinic" ? null : coverageRadius,
-        currency: region === "sg" ? "SGD" : "MYR",
-        revenue: region === "sg" ? "SGD 0.00" : "MYR 0.00",
-        occupancy: "0.0%",
-        practitioners: "1 Senior Specialist",
-        status: "ACTIVE",
-        isPrimary: true,
-        createdAt: new Date().toISOString()
-      };
-
-      // 2. Save Branch to Branches Storage
-      let currentBranches = storageService.get("cliniva_branches", []);
-      currentBranches = [
-        newBranch,
-        ...currentBranches.filter(
-          (b) => b.id !== branchId && (b.name || "").trim().toLowerCase() !== branchName.trim().toLowerCase()
-        )
-      ];
-      storageService.set("cliniva_branches", currentBranches);
-      storageService.set("cliniva_active_branch_id", branchId);
-
-      // 2b. Save B2B Subscription Record
       const selectedPlan = document.querySelector('input[name="wizardSubsPlan"]:checked');
       const planDuration = selectedPlan ? parseInt(selectedPlan.value, 10) : 12;
-      const planPrice = selectedPlan ? parseFloat(selectedPlan.dataset.price) : 948;
 
-      const subscription = {
-        id: `sub-${Date.now()}`,
-        ownerId: this.currentUser.id,
-        ownerEmail: this.currentUser.email,
-        template: this.selectedTemplate,
-        branchId: branchId,
-        branchName: branchName,
-        durationMonths: planDuration,
-        amount: planPrice,
-        currency: region === "sg" ? "SGD" : "MYR",
-        status: "ACTIVE",
-        paidAt: new Date().toISOString(),
-        expiresAt: new Date(Date.now() + planDuration * 30 * 24 * 60 * 60 * 1000).toISOString()
-      };
-      const existingSubs = storageService.get("cliniva_owner_subscriptions", []);
-      storageService.set("cliniva_owner_subscriptions", [subscription, ...existingSubs]);
+      const paymentMethod = document.querySelector('input[name="wizardPaymentMethod"]:checked')?.value || "CREDIT_CARD";
 
-      // 3. Save Brand Profile
-      const brandProfile = {
-        name: brandName,
-        tagline: brandTagline,
-        logo: this.selectedLogo,
-        description: brandDesc,
-        region: region,
-        primaryTemplate: this.selectedTemplate,
-        ownerId: this.currentUser.id,
-        createdAt: new Date().toISOString()
-      };
-      storageService.set("cliniva_brand_profile", brandProfile);
+      try {
+        // 1. Create Formal Subscription Order
+        const order = subscriptionService.createSubscriptionOrder({
+          ownerId: this.currentUser.id,
+          ownerEmail: this.currentUser.email,
+          templateId: this.selectedTemplate,
+          branchQuota,
+          durationMonths: planDuration,
+          currency,
+          branchName,
+          brandName
+        });
 
-      // 4. Set Active Template in Booking Service
-      bookingService.setActiveTemplate(this.selectedTemplate);
-      storageService.set("cliniva_intake_profile", this.selectedTemplate.toUpperCase());
+        // 2. Process Asynchronous Payment Verification
+        const { subscription, paymentReceipt } = await subscriptionService.processPayment({
+          orderId: order.orderId,
+          paymentMethod,
+          paymentDetails: {
+            last4: "4242",
+            cardholderName: document.getElementById("checkoutCardName")?.value.trim() || "Clinic Owner"
+          }
+        });
 
-      // 5. Complete User Onboarding in AuthService
-      authService.completeUserOnboarding(this.currentUser.id, {
-        brandName,
-        brandLogo: this.selectedLogo,
-        brandTagline,
-        activeTemplate: this.selectedTemplate,
-        branchId,
-        branchName,
-        serviceMode
-      });
+        if (processingText) {
+          processingText.textContent = `✓ Payment Verified! Invoice #${paymentReceipt.invoiceNo} issued. Activating Practice...`;
+        }
 
-      // 6. Sync to Supabase Cloud if available
-      if (supabaseService.isAvailable()) {
-        supabaseService.upsertBranch({
+        // 3. Create First Branch and Assign to Active Subscription (Strict Inheritance & Quota)
+        const branchId = `br-${region}-${Date.now().toString().slice(-4)}`;
+        const initialBranch = {
           id: branchId,
           name: branchName,
-          postal_code: branchPostal,
+          code: `${region.toUpperCase()}-01`,
+          postalCode: branchPostal,
           address: branchAddress,
           phone: branchPhone,
           hours: branchHours,
-          regionCode: region,
-          region: region === "sg" ? "Singapore" : "Malaysia",
-          country: region === "sg" ? "Singapore" : "Malaysia",
-          currency: region === "sg" ? "SGD" : "MYR",
+          rooms: branchRooms,
           template: this.selectedTemplate,
-          service_mode: serviceMode,
-          coverage_radius: serviceMode === "in_clinic" ? null : coverageRadius
-        }).catch((err) => console.warn("[Onboarding] Cloud branch sync failed:", err));
-      }
+          serviceMode: serviceMode,
+          coverageRadius: serviceMode === "in_clinic" ? null : coverageRadius,
+          currency: currency,
+          revenue: `${currency} 0.00`,
+          occupancy: "0.0%",
+          practitioners: "1 Senior Specialist",
+          status: "ACTIVE", // Verified active post-payment
+          isPrimary: true,
+          createdAt: new Date().toISOString()
+        };
 
-      setTimeout(() => {
-        const alertMsg = (i18nService.t("onboarding.completeAlert", "🎉 ONBOARDING COMPLETE!\n\nBrand: {brand}\nTemplate: {template}\nBranch 1: {branch}\n\nRedirecting to Owner Dashboard..."))
-          .replace("{brand}", brandName)
-          .replace("{template}", this.getTemplateLabel(this.selectedTemplate))
-          .replace("{branch}", branchName);
-        alert(alertMsg);
-        window.location.href = "../../pages/owner/dashboard.html";
-      }, 1500);
+        subscriptionService.assignBranchToSubscription(subscription.id, initialBranch);
+
+        // 4. Save Branch to Branches Storage
+        let currentBranches = storageService.get("cliniva_branches", []);
+        currentBranches = [
+          initialBranch,
+          ...currentBranches.filter((b) => b.id !== branchId)
+        ];
+        storageService.set("cliniva_branches", currentBranches);
+        storageService.set("cliniva_active_branch_id", branchId);
+
+        // 5. Save Brand Profile
+        const brandProfile = {
+          name: brandName,
+          tagline: brandTagline,
+          logo: this.selectedLogo,
+          description: brandDesc,
+          region: region,
+          primaryTemplate: this.selectedTemplate,
+          ownerId: this.currentUser.id,
+          createdAt: new Date().toISOString()
+        };
+        storageService.set("cliniva_brand_profile", brandProfile);
+
+        // 6. Set Active Template in Booking Service
+        bookingService.setActiveTemplate(this.selectedTemplate);
+        storageService.set("cliniva_intake_profile", this.selectedTemplate.toUpperCase());
+
+        // 7. Complete User Onboarding in AuthService
+        authService.completeUserOnboarding(this.currentUser.id, {
+          brandName,
+          brandLogo: this.selectedLogo,
+          brandTagline,
+          activeTemplate: this.selectedTemplate,
+          branchId,
+          branchName,
+          serviceMode
+        });
+
+        // 8. Sync to Supabase Cloud if available
+        if (supabaseService.isAvailable()) {
+          supabaseService.upsertBranch({
+            id: branchId,
+            name: branchName,
+            postal_code: branchPostal,
+            address: branchAddress,
+            phone: branchPhone,
+            hours: branchHours,
+            regionCode: region,
+            region: region === "sg" ? "Singapore" : "Malaysia",
+            country: region === "sg" ? "Singapore" : "Malaysia",
+            currency: currency,
+            template: this.selectedTemplate,
+            service_mode: serviceMode,
+            coverage_radius: serviceMode === "in_clinic" ? null : coverageRadius
+          }).catch((err) => console.warn("[Onboarding] Cloud branch sync failed:", err));
+        }
+
+        soundService.playSuccess();
+
+        setTimeout(() => {
+          window.location.href = "../../pages/owner/dashboard.html";
+        }, 1200);
+
+      } catch (err) {
+        console.error("[Onboarding] Payment or launch failed:", err);
+        if (processingBox) processingBox.style.display = "none";
+        if (actionsGroup) actionsGroup.style.display = "flex";
+        alert("Payment Authorization failed: " + (err.message || "Please check card details."));
+      }
     });
   }
 

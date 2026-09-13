@@ -1161,92 +1161,137 @@
       <!-- STEP 3: B2B SUBSCRIPTION BILLING PLAN (PAYWALL GATE) -->
       <div class="wizard-step-panel" id="wizardStep3" style="display:none;">
         <div style="margin-bottom:24px;">
-          <div class="pill" style="margin-bottom:8px; font-size:11px;">Step 3 of 4: Subscription Plan</div>
-          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Select System Subscription Plan</h2>
-          <p style="color:var(--muted); font-size:14px; margin:0;">
-            Activate your clinic SaaS license before opening operations and public booking channels.
+          <div class="pill" style="margin-bottom:8px; font-size:11px;" data-i18n="owner.onboarding.step3Pill">Step 3 of 4: Subscription Plan</div>
+          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;" data-i18n="owner.onboarding.step3Title">Configure Practice Subscription &amp; Branch Quota</h2>
+          <p style="color:var(--muted); font-size:14px; margin:0;" data-i18n="owner.onboarding.step3Desc">
+            Select your branch network capacity and subscription term. You can open multiple branches under this practice license.
           </p>
         </div>
 
-        <div class="field" style="margin-bottom: 8px;">
+        <!-- Branch Quota Capacity -->
+        <div class="field" style="margin-bottom:20px;">
+          <label style="font-weight:700; font-size:14px; margin-bottom:8px; display:block;" data-i18n="owner.onboarding.branchQuotaLabel">
+            🏢 Number of Practice Branch Locations (Quota)
+          </label>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;" id="quotaSelectorGroup">
+            <label class="quota-radio-pill" style="border:1.5px solid var(--primary); padding:10px 18px; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:8px; font-weight:700; font-size:13px; background:#f0fdfa;">
+              <input type="radio" name="wizardBranchQuota" value="1" checked style="accent-color:var(--primary);">
+              <span>1 Branch (Solo Flagship)</span>
+            </label>
+            <label class="quota-radio-pill" style="border:1.5px solid #e2e8f0; padding:10px 18px; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:8px; font-weight:700; font-size:13px; background:#fff;">
+              <input type="radio" name="wizardBranchQuota" value="2" style="accent-color:var(--primary);">
+              <span>2 Branches (Dual Hub)</span>
+            </label>
+            <label class="quota-radio-pill" style="border:1.5px solid #e2e8f0; padding:10px 18px; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:8px; font-weight:700; font-size:13px; background:#fff;">
+              <input type="radio" name="wizardBranchQuota" value="3" style="accent-color:var(--primary);">
+              <span>3 Branches (Multi-District)</span>
+            </label>
+            <label class="quota-radio-pill" style="border:1.5px solid #e2e8f0; padding:10px 18px; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:8px; font-weight:700; font-size:13px; background:#fff;">
+              <input type="radio" name="wizardBranchQuota" value="5" style="accent-color:var(--primary);">
+              <span>5 Branches (Enterprise Group)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Duration Options -->
+        <div class="field" style="margin-bottom:8px;">
+          <label style="font-weight:700; font-size:14px; margin-bottom:8px; display:block;" data-i18n="owner.onboarding.durationLabel">
+            ⏳ Subscription Term &amp; Billing Cycle
+          </label>
           <div style="display:flex; gap:12px; flex-wrap:wrap;">
             <!-- 1 Month -->
-            <label
-              style="flex:1; min-width:180px; border:1.5px solid var(--line); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
-              class="subs-radio-label-wizard">
-              <input type="radio" name="wizardSubsPlan" value="1" data-price="99" style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan1m">1
-                Month</span>
+            <label style="flex:1; min-width:140px; border:1.5px solid var(--line); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;" class="subs-radio-label-wizard">
+              <input type="radio" name="wizardSubsPlan" value="1" style="margin-bottom:8px;">
+              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan1m">1 Month</span>
               <span style="color:var(--muted); font-size:12px;" id="plan1mText">SGD 99/mo</span>
             </label>
 
             <!-- 6 Months -->
-            <label
-              style="flex:1; min-width:180px; border:1.5px solid var(--line); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
-              class="subs-radio-label-wizard">
-              <input type="radio" name="wizardSubsPlan" value="6" data-price="534" style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan6m">6
-                Months</span>
-              <span style="color:var(--muted); font-size:12px;" id="plan6mText">SGD 89/mo (<span
-                  data-i18n="owner.onboarding.save10">Save 10%</span>)</span>
+            <label style="flex:1; min-width:140px; border:1.5px solid var(--line); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;" class="subs-radio-label-wizard">
+              <input type="radio" name="wizardSubsPlan" value="6" style="margin-bottom:8px;">
+              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan6m">6 Months</span>
+              <span style="color:var(--muted); font-size:12px;" id="plan6mText">Save 10%</span>
             </label>
 
-            <!-- 1 Year (Decoy / Best Value) -->
-            <label
-              style="flex:1; min-width:180px; border:1.5px solid var(--primary); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f0fdfa; position:relative;"
-              class="subs-radio-label-wizard">
-              <div
-                style="position:absolute; top:-10px; background:var(--primary); color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:0.5px;"
-                data-i18n="owner.onboarding.bestValue">
-                BEST VALUE</div>
-              <input type="radio" name="wizardSubsPlan" value="12" data-price="948" checked style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--primary);" data-i18n="owner.onboarding.plan1y">1
-                Year</span>
-              <span style="color:var(--primary-dark); font-size:12px;" id="plan1yText">SGD 79/mo (<span
-                  data-i18n="owner.onboarding.save20">Save 20%</span>)</span>
+            <!-- 1 Year (Recommended / Best Value) -->
+            <label style="flex:1; min-width:140px; border:1.5px solid var(--primary); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f0fdfa; position:relative;" class="subs-radio-label-wizard">
+              <div style="position:absolute; top:-10px; background:var(--primary); color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:0.5px;" data-i18n="owner.onboarding.bestValue">
+                BEST VALUE
+              </div>
+              <input type="radio" name="wizardSubsPlan" value="12" checked style="margin-bottom:8px;">
+              <span style="font-weight:800; font-size:14px; color:var(--primary);" data-i18n="owner.onboarding.plan1y">1 Year</span>
+              <span style="color:var(--primary-dark); font-size:12px;" id="plan1yText">Save 20%</span>
+            </label>
+
+            <!-- 2 Years -->
+            <label style="flex:1; min-width:140px; border:1.5px solid var(--line); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;" class="subs-radio-label-wizard">
+              <input type="radio" name="wizardSubsPlan" value="24" style="margin-bottom:8px;">
+              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan2y">2 Years</span>
+              <span style="color:var(--muted); font-size:12px;" id="plan2yText">Save 30%</span>
             </label>
           </div>
         </div>
 
-        <div
-          style="background:#f1f5f9; padding:18px; border-radius:12px; margin-bottom:24px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
-          <div>
-            <div style="font-size:12px; color:var(--muted); font-weight:600;" data-i18n="owner.onboarding.totalBilling">
-              Total System Billing:</div>
-            <div style="font-size:11px; color:#64748b; margin-top:2px;" data-i18n="owner.onboarding.billedCard">Will be
-              charged to Credit Card</div>
+        <!-- Real-Time Itemized Price Calculation Box -->
+        <div style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:14px; padding:20px; margin-top:20px; margin-bottom:24px;">
+          <div style="font-size:14px; font-weight:800; color:var(--text); margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+            <span data-i18n="owner.onboarding.pricingSummaryTitle">Billing Breakdown</span>
+            <span style="font-size:12px; font-weight:600; color:var(--primary); background:#ccfbf1; padding:3px 8px; border-radius:6px;" id="pricingSavingsBadge">Save 20% Applied</span>
           </div>
-          <div style="font-size:24px; font-weight:900; color:var(--text);" id="wizardTotalBillingAmount">SGD 948.00
+
+          <div style="display:flex; flex-direction:column; gap:8px; font-size:13px;">
+            <div style="display:flex; justify-content:space-between; color:var(--muted);">
+              <span>Base Rate per Branch:</span>
+              <span id="summaryBaseRateVal" style="font-weight:600; color:var(--text);">SGD 99.00 / mo</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; color:var(--muted);">
+              <span>Allocated Branch Quota:</span>
+              <span id="summaryBranchCountVal" style="font-weight:600; color:var(--text);">1 Location</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; color:var(--muted);">
+              <span>Billing Term Duration:</span>
+              <span id="summaryDurationVal" style="font-weight:600; color:var(--text);">12 Months</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; color:var(--muted);">
+              <span>Subtotal:</span>
+              <span id="summarySubtotalVal" style="font-weight:600; color:var(--text);">SGD 950.40</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; color:var(--muted);">
+              <span>Applicable Tax (<span id="summaryTaxRateLabel">9% GST</span>):</span>
+              <span id="summaryTaxVal" style="font-weight:600; color:var(--text);">SGD 85.54</span>
+            </div>
+            <div style="border-top:1px dashed #cbd5e1; margin-top:6px; padding-top:10px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-weight:800; font-size:15px; color:var(--text);" data-i18n="owner.onboarding.totalBilling">Total Order Amount Due:</span>
+              <span style="font-weight:900; font-size:22px; color:var(--primary);" id="wizardTotalBillingAmount">SGD 1,035.94</span>
+            </div>
           </div>
         </div>
 
         <div style="display:flex; justify-content:space-between; margin-top:28px;">
           <button type="button" class="btn btn-soft" id="btnPrev3">← Back to Brand Setup</button>
-          <button type="button" class="btn btn-primary" id="btnNext3">Next: Review &amp; Launch →</button>
+          <button type="button" class="btn btn-primary" id="btnNext3">Next: Order Review &amp; Payment →</button>
         </div>
       </div>
 
-      <!-- STEP 4: REVIEW & LAUNCH -->
+      <!-- STEP 4: REVIEW & LAUNCH WITH PAYMENT GATEWAY -->
       <div class="wizard-step-panel" id="wizardStep4" style="display:none;">
         <div style="margin-bottom:24px;">
-          <div class="pill" style="margin-bottom:8px; font-size:11px;">Step 4 of 4: Launch</div>
-          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Review &amp; Launch Your Practice</h2>
-          <p style="color:var(--muted); font-size:14px; margin:0;">
-            Verify your brand identity, specialty template, and branch settings before opening your operations console.
+          <div class="pill" style="margin-bottom:8px; font-size:11px;" data-i18n="owner.onboarding.step4Pill">Step 4 of 4: Checkout &amp; Verification</div>
+          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;" data-i18n="owner.onboarding.step4Title">Review Order &amp; Complete Payment</h2>
+          <p style="color:var(--muted); font-size:14px; margin:0;" data-i18n="owner.onboarding.step4Desc">
+            Verify your practice specifications and complete payment to authorize license activation and branch rollout.
           </p>
         </div>
 
+        <!-- Order Summary Card -->
         <div class="review-summary-card">
-          <div
-            style="display:flex; align-items:center; gap:16px; margin-bottom:18px; padding-bottom:16px; border-bottom:1px solid #e2e8f0;">
-            <div id="reviewLogoBadge"
-              style="font-size:36px; background:#ffffff; border-radius:14px; width:56px; height:56px; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-              🌿</div>
+          <div style="display:flex; align-items:center; gap:16px; margin-bottom:18px; padding-bottom:16px; border-bottom:1px solid #e2e8f0;">
+            <div id="reviewLogoBadge" style="font-size:36px; background:#ffffff; border-radius:14px; width:56px; height:56px; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+              🌿
+            </div>
             <div>
-              <h3 id="reviewBrandTitle" style="font-size:18px; font-weight:800; margin:0 0 4px;">Dennis Health &amp;
-                Wellness Hub</h3>
-              <p id="reviewBrandTagline" style="font-size:12px; color:var(--muted); margin:0;">Holistic Recovery &amp;
-                Vitality Redefined</p>
+              <h3 id="reviewBrandTitle" style="font-size:18px; font-weight:800; margin:0 0 4px;">Dennis Health &amp; Wellness Hub</h3>
+              <p id="reviewBrandTagline" style="font-size:12px; color:var(--muted); margin:0;">Holistic Recovery &amp; Vitality Redefined</p>
             </div>
           </div>
 
@@ -1266,40 +1311,96 @@
             <span class="review-summary-label">Branch Address</span>
             <span class="review-summary-val" id="reviewAddressVal">290 Orchard Road, #09-12 Paragon</span>
           </div>
-          <div class="review-summary-row" id="reviewCoverageRow" style="display:flex;">
-            <span class="review-summary-label">Coverage Area / Radius</span>
-            <span class="review-summary-val" id="reviewCoverageVal">15 km Radius</span>
+          <div class="review-summary-row">
+            <span class="review-summary-label">Allocated Branch Quota</span>
+            <span class="review-summary-val" id="reviewBranchQuotaVal" style="color:var(--primary); font-weight:800;">1 Active Branch Slot</span>
           </div>
           <div class="review-summary-row">
-            <span class="review-summary-label">Operational Capacity</span>
-            <span class="review-summary-val" id="reviewCapacityVal">4 Private Therapy Suites</span>
+            <span class="review-summary-label">Subscription Term</span>
+            <span class="review-summary-val" id="reviewPlanVal">1 Year (12 Months)</span>
           </div>
-          <div class="review-summary-row">
-            <span class="review-summary-label">Jurisdiction &amp; Currency</span>
-            <span class="review-summary-val" id="reviewRegionVal">🇸🇬 Singapore (SGD)</span>
-          </div>
-          <div class="review-summary-row">
-            <span class="review-summary-label">B2B Subscription Plan</span>
-            <span class="review-summary-val" id="reviewPlanVal">1 Year (SGD 948.00)</span>
-          </div>
-          <div class="review-summary-row">
-            <span class="review-summary-label">Clinic Owner Account</span>
-            <span class="review-summary-val" id="reviewOwnerVal">Dennis Pratama (dennis@cliniva.com)</span>
+          <div class="review-summary-row" style="background:#f0fdfa; padding:8px 12px; border-radius:8px; margin-top:6px;">
+            <span class="review-summary-label" style="font-weight:800; color:var(--primary-dark);">Grand Total Payable</span>
+            <span class="review-summary-val" id="reviewFinalTotalVal" style="font-weight:900; font-size:18px; color:var(--primary);">SGD 1,035.94</span>
           </div>
         </div>
 
-        <div
-          style="background:#f0fdfa; border:1px solid #99f6e4; border-radius:var(--radius-md); padding:14px; margin-bottom:24px; font-size:13px; color:var(--primary-dark); line-height:1.5;">
-          ✓ <strong>Isolated Data Partition Created:</strong> All patient appointments, intake records, and staff
-          schedules for this branch will remain strictly isolated from other tenants and branches.
+        <!-- PAYMENT GATEWAY SELECTOR -->
+        <div style="background:#ffffff; border:1.5px solid #e2e8f0; border-radius:14px; padding:24px; margin-top:24px; margin-bottom:24px; box-shadow:0 4px 12px rgba(0,0,0,0.03);">
+          <h3 style="font-size:16px; font-weight:800; margin:0 0 14px; display:flex; align-items:center; gap:8px;" data-i18n="owner.onboarding.paymentMethodTitle">
+            💳 Select Payment Method
+          </h3>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:20px;">
+            <label class="payment-method-card" style="border:2px solid var(--primary); background:#f0fdfa; border-radius:10px; padding:14px; cursor:pointer; display:flex; align-items:center; gap:10px;">
+              <input type="radio" name="wizardPaymentMethod" value="CREDIT_CARD" checked style="accent-color:var(--primary);">
+              <div>
+                <div style="font-weight:800; font-size:13px; color:var(--text);">Credit / Debit Card</div>
+                <div style="font-size:11px; color:var(--muted);">Corporate Visa / Mastercard</div>
+              </div>
+            </label>
+
+            <label class="payment-method-card" style="border:2px solid #e2e8f0; background:#ffffff; border-radius:10px; padding:14px; cursor:pointer; display:flex; align-items:center; gap:10px;">
+              <input type="radio" name="wizardPaymentMethod" value="PAYNOW_SG" style="accent-color:var(--primary);">
+              <div>
+                <div style="font-weight:800; font-size:13px; color:var(--text);">PayNow SG / FPX</div>
+                <div style="font-size:11px; color:var(--muted);">Instant QR &amp; NetBanking</div>
+              </div>
+            </label>
+
+            <label class="payment-method-card" style="border:2px solid #e2e8f0; background:#ffffff; border-radius:10px; padding:14px; cursor:pointer; display:flex; align-items:center; gap:10px;">
+              <input type="radio" name="wizardPaymentMethod" value="BANK_TRANSFER" style="accent-color:var(--primary);">
+              <div>
+                <div style="font-weight:800; font-size:13px; color:var(--text);">Wire Transfer</div>
+                <div style="font-size:11px; color:var(--muted);">Corporate Invoice billing</div>
+              </div>
+            </label>
+          </div>
+
+          <!-- Card Details Input Form -->
+          <div id="cardDetailsGroup" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:16px;">
+            <div class="field" style="margin-bottom:12px;">
+              <label style="font-size:12px; font-weight:700; margin-bottom:4px; display:block;">Cardholder Full Name</label>
+              <input type="text" id="checkoutCardName" placeholder="Dennis Pratama" value="Dennis Pratama" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;">
+            </div>
+            <div class="field" style="margin-bottom:12px;">
+              <label style="font-size:12px; font-weight:700; margin-bottom:4px; display:block;">Card Number</label>
+              <div style="position:relative;">
+                <input type="text" id="checkoutCardNumber" placeholder="4242 •••• •••• 4242" value="4242 8888 9999 4242" style="width:100%; padding:10px 40px 10px 10px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px; font-family:monospace;">
+                <span style="position:absolute; right:12px; top:10px; font-size:16px;">💳</span>
+              </div>
+            </div>
+            <div style="display:flex; gap:12px;">
+              <div class="field" style="flex:1;">
+                <label style="font-size:12px; font-weight:700; margin-bottom:4px; display:block;">Expiry (MM/YY)</label>
+                <input type="text" id="checkoutCardExp" placeholder="12/28" value="12/28" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;">
+              </div>
+              <div class="field" style="flex:1;">
+                <label style="font-size:12px; font-weight:700; margin-bottom:4px; display:block;">CVC / CVV</label>
+                <input type="password" id="checkoutCardCvc" placeholder="888" value="888" maxlength="4" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Alternate QR Code Notice -->
+          <div id="qrDetailsGroup" style="display:none; text-align:center; padding:20px; background:#f0fdfa; border:1px dashed var(--primary); border-radius:10px;">
+            <div style="font-size:40px; margin-bottom:6px;">📱</div>
+            <div style="font-weight:800; font-size:14px; color:var(--primary-dark);">Instant PayNow SG &amp; DuitNow QR Generated</div>
+            <p style="font-size:12px; color:var(--muted); margin:4px 0 0;">Clicking Authorize will simulate instant banking authorization and issue your official tax receipt.</p>
+          </div>
         </div>
 
-        <div
-          style="display:flex; justify-content:space-between; align-items:center; margin-top:28px; gap:12px; flex-wrap:wrap;">
-          <button type="button" class="btn btn-soft" id="btnPrev4">← Back to Subscription Plan</button>
-          <button type="button" class="btn btn-primary" id="btnLaunchClinic"
-            style="padding:14px 26px; font-size:15px; font-weight:800;" data-i18n="owner.onboarding.btnLaunch">
-            🚀 Pay &amp; Launch Branch Dashboard →
+        <!-- Payment Processing State Animation Box -->
+        <div id="paymentProcessingBox" style="display:none; background:#f8fafc; border:1.5px solid var(--primary); border-radius:12px; padding:24px; text-align:center; margin-bottom:24px;">
+          <div class="spinner" style="width:36px; height:36px; border:3px solid #ccfbf1; border-top-color:var(--primary); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 12px;"></div>
+          <div style="font-weight:800; font-size:16px; color:var(--text);" id="paymentProcessingStatusText">Authorizing Payment via Corporate Gateway...</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:4px;">Verifying funds and provisioning multi-tenant branch partition...</div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:28px; gap:12px; flex-wrap:wrap;" id="wizardStep4Actions">
+          <button type="button" class="btn btn-soft" id="btnPrev4">← Back to Plan Options</button>
+          <button type="button" class="btn btn-primary" id="btnLaunchClinic" style="padding:14px 28px; font-size:15px; font-weight:800; background:#0f766e; border-color:#0f766e; box-shadow:0 4px 14px rgba(15,118,110,0.3);" data-i18n="owner.onboarding.btnLaunch">
+            🔒 Complete Payment &amp; Launch Branch →
           </button>
         </div>
       </div>

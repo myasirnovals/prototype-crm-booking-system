@@ -11,6 +11,7 @@ import { notificationService } from "../../services/notification.service.js";
 import { soundService } from "../../services/sound.service.js";
 import { bookingService } from "../../services/booking.service.js";
 import { i18nService } from "../../services/i18n.service.js";
+import { subscriptionService } from "../../services/subscription.service.js";
 import { getTemplateServices } from "../../config/templates/index.js";
 
 export class OwnerDashboardController {
@@ -588,33 +589,34 @@ export class OwnerDashboardController {
   loadBranchSubscription() {
     if (!this.activeBranch) return;
     const branchId = this.activeBranch.id;
-    const allSubs = storageService.get("cliniva_owner_subscriptions", []);
+    const ownerId = this.currentUser ? this.currentUser.id : null;
+    const allSubs = subscriptionService.getOwnerSubscriptions(ownerId);
 
-    let sub = allSubs.find((s) => s.branchId === branchId);
+    // Find parent subscription by branch.subscriptionId or if branch.id is in sub.branchIds or matching branchId
+    let sub = allSubs.find((s) => 
+      s.id === this.activeBranch.subscriptionId || 
+      (s.branchIds && s.branchIds.includes(branchId)) ||
+      s.branchId === branchId
+    );
+
     if (!sub) {
-      // Synthesize an active annual license for this branch
-      sub = {
-        id: `sub-${branchId}`,
-        invoiceNo: `INV-2026-${this.activeBranch.code || "SG01"}`,
-        ownerId: this.currentUser ? this.currentUser.id : null,
-        ownerEmail: this.currentUser ? this.currentUser.email : null,
-        template: this.activeBranch.template || "physio",
-        branchId: branchId,
-        branchName: this.activeBranch.name,
-        durationMonths: 12,
-        amount: 948.00,
-        currency: "SGD",
-        gateway: "PayNow SG / Stripe Corporate",
-        status: "ACTIVE",
-        paidAt: new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString(),
-        expiresAt: new Date(Date.now() + 337 * 24 * 60 * 60 * 1000).toISOString()
-      };
-      allSubs.unshift(sub);
-      storageService.set("cliniva_owner_subscriptions", allSubs);
+      // Try to match active subscription with same template
+      sub = allSubs.find((s) => s.template === (this.activeBranch.template || "physio") && s.status === "ACTIVE");
+      if (sub) {
+        subscriptionService.assignBranchToSubscription(sub.id, this.activeBranch);
+      } else if (allSubs.length > 0) {
+        sub = allSubs[0];
+      }
     }
 
     this.activeBranchSubscription = sub;
-    this.activeBranchInvoices = allSubs.filter((s) => s.branchId === branchId || !s.branchId);
+
+    // Load payments/invoices
+    const allPayments = storageService.get(subscriptionService.STORAGE_PAYMENTS_KEY, []);
+    this.activeBranchInvoices = allPayments.filter((p) => 
+      (sub && p.subscriptionId === sub.id) || 
+      (this.currentUser && p.ownerId === this.currentUser.id)
+    );
   }
 
   renderPaneBranchServices() {
@@ -702,6 +704,8 @@ export class OwnerDashboardController {
       const meta = this.getTemplateMeta(this.activeBranch.template);
       const isExpiringSoon = daysLeft <= 30;
 
+      const landingUrl = this.activeBranch.landingUrl || subscriptionService.generateBranchLandingUrl(this.activeBranch.code || this.activeBranch.id, this.activeBranch.name);
+
       cardContainer.innerHTML = `
         <div style="background:#ffffff; border:1px solid var(--line); border-radius:16px; padding:24px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
@@ -715,10 +719,10 @@ export class OwnerDashboardController {
                 </span>
               </div>
               <h3 style="font-size:20px; font-weight:800; margin:0 0 4px; color:var(--text);">
-                Enterprise ${sub.durationMonths}-Month SaaS License
+                Enterprise ${sub.durationMonths || 12}-Month SaaS License
               </h3>
               <p style="font-size:12px; color:var(--muted); margin:0;">
-                Assigned Branch: <strong>${sub.branchName || this.activeBranch.name}</strong> (${this.activeBranch.code || this.activeBranch.id})
+                Assigned Branch: <strong>${this.activeBranch.name}</strong> (${this.activeBranch.code || this.activeBranch.id})
               </p>
             </div>
 
@@ -731,14 +735,31 @@ export class OwnerDashboardController {
             </div>
           </div>
 
+          <!-- Public Landing Page URL Banner (Mobile-First Prototype Shareable Link) -->
+          <div style="background:#f0fdfa; border:1px solid #99f6e4; border-radius:12px; padding:14px 16px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+            <div style="min-width:0; flex:1;">
+              <div style="font-size:11px; font-weight:800; color:#0f766e; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px;">
+                🌐 Public Patient Booking Landing URL
+              </div>
+              <a href="${landingUrl}" target="_blank" rel="noopener noreferrer" style="font-size:13px; font-weight:700; color:#0f766e; text-decoration:underline; font-family:ui-monospace, monospace; word-break:break-all;">
+                ${landingUrl} ↗
+              </a>
+            </div>
+            <button type="button" class="btn btn-sm btn-white btn-copy-landing-link" data-url="${landingUrl}" style="border-color:#99f6e4; color:#0f766e; font-weight:700; flex-shrink:0;">
+              📋 Copy Public URL
+            </button>
+          </div>
+
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; padding:16px; background:#f8fafc; border-radius:12px; border:1px solid var(--line);">
             <div>
-              <div style="font-size:11px; color:var(--muted);">Annual Plan Fee</div>
-              <div style="font-size:15px; font-weight:800; color:var(--text);">SGD ${parseFloat(sub.amount || 948).toFixed(2)}</div>
+              <div style="font-size:11px; color:var(--muted);">Plan Fee Paid</div>
+              <div style="font-size:15px; font-weight:800; color:var(--text);">${sub.currency || 'SGD'} ${parseFloat(sub.amount || 948).toFixed(2)}</div>
             </div>
             <div>
-              <div style="font-size:11px; color:var(--muted);">Included Branch Quota</div>
-              <div style="font-size:13px; font-weight:700; color:#0f766e;">✓ Unlimited Patient Bookings</div>
+              <div style="font-size:11px; color:var(--muted);">Allocated Branch Quota</div>
+              <div style="font-size:13px; font-weight:700; color:#0f766e;">
+                ${sub.usedBranchCount || (sub.branchIds ? sub.branchIds.length : 1)} / ${sub.branchQuota || 1} Branches Active
+              </div>
             </div>
             <div>
               <div style="font-size:11px; color:var(--muted);">Cloud Sync &amp; Realtime</div>
@@ -751,6 +772,21 @@ export class OwnerDashboardController {
           </div>
         </div>
       `;
+
+      const copyBtn = cardContainer.querySelector(".btn-copy-landing-link");
+      if (copyBtn) {
+        copyBtn.addEventListener("click", () => {
+          const url = copyBtn.dataset.url;
+          navigator.clipboard.writeText(url).then(() => {
+            notificationService.showToast
+              ? notificationService.showToast("Public branch landing link copied to clipboard!", "success")
+              : notificationService.success?.("Public branch landing link copied to clipboard!");
+            soundService.playSuccess();
+          }).catch(() => {
+            prompt("Copy this branch booking link:", url);
+          });
+        });
+      }
     }
 
     if (tbody) {
@@ -786,7 +822,7 @@ export class OwnerDashboardController {
               </span>
             </td>
             <td class="col-center"><span style="font-weight:700; font-size:12px;">${inv.durationMonths || 12} Months</span></td>
-            <td class="col-right"><span class="price-text">SGD ${parseFloat(inv.amount || 948).toFixed(2)}</span></td>
+            <td class="col-right"><span class="price-text">${inv.currency || 'SGD'} ${parseFloat(inv.amount || 0).toFixed(2)}</span></td>
             <td><span style="font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums;">🗓️ ${dateStr}</span></td>
             <td class="col-center"><span class="owner-status-badge success">● PAID</span></td>
             <td class="col-right">
@@ -803,7 +839,9 @@ export class OwnerDashboardController {
           const idx = parseInt(btn.dataset.index, 10);
           const inv = this.activeBranchInvoices[idx];
           soundService.playSuccess();
-          notificationService.success(`Official invoice ${inv.invoiceNo || "INV-2026"} downloaded.`);
+          notificationService.showToast
+            ? notificationService.showToast(`Official receipt ${inv.invoiceNo || "INV-2026"} downloaded.`, "success")
+            : notificationService.success?.(`Official receipt ${inv.invoiceNo || "INV-2026"} downloaded.`);
         });
       });
     }
@@ -951,50 +989,40 @@ export class OwnerDashboardController {
     });
 
     if (renewForm) {
-      renewForm.addEventListener("submit", (e) => {
+      renewForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const selectedRadio = document.querySelector('input[name="renewPlan"]:checked');
         const planMonths = selectedRadio ? parseInt(selectedRadio.value, 10) : 12;
-        const planPrice = selectedRadio ? parseFloat(selectedRadio.dataset.price) : 948;
+        const subId = this.activeBranchSubscription ? this.activeBranchSubscription.id : null;
 
-        const currentExpires = this.activeBranchSubscription?.expiresAt
-          ? new Date(this.activeBranchSubscription.expiresAt)
-          : new Date();
-        const baseDate = currentExpires > new Date() ? currentExpires : new Date();
-        const newExpires = new Date(baseDate.getTime() + planMonths * 30 * 24 * 60 * 60 * 1000);
-
-        const newInvoice = {
-          id: `sub-${Date.now()}`,
-          invoiceNo: `INV-${new Date().getFullYear()}-${this.activeBranch.code || "SG01"}-${Math.floor(100 + Math.random() * 900)}`,
-          ownerId: this.currentUser ? this.currentUser.id : null,
-          ownerEmail: this.currentUser ? this.currentUser.email : null,
-          template: this.activeBranch.template || "physio",
-          branchId: this.activeBranch.id,
-          branchName: this.activeBranch.name,
-          durationMonths: planMonths,
-          amount: planPrice,
-          currency: "SGD",
-          gateway: "PayNow SG / Stripe Corporate",
-          status: "ACTIVE",
-          paidAt: new Date().toISOString(),
-          expiresAt: newExpires.toISOString()
-        };
-
-        const allSubs = storageService.get("cliniva_owner_subscriptions", []);
-        // Update active subscription expiry
-        const subIndex = allSubs.findIndex((s) => s.branchId === this.activeBranch.id);
-        if (subIndex !== -1) {
-          allSubs[subIndex].expiresAt = newExpires.toISOString();
-          allSubs[subIndex].durationMonths = (allSubs[subIndex].durationMonths || 0) + planMonths;
+        const confirmBtn = document.getElementById("btnConfirmRenew");
+        if (confirmBtn) {
+          confirmBtn.disabled = true;
+          confirmBtn.textContent = "Processing Renewal...";
         }
-        allSubs.unshift(newInvoice);
-        storageService.set("cliniva_owner_subscriptions", allSubs);
 
-        this.loadBranchSubscription();
-        soundService.playSuccess();
-        notificationService.success(`SaaS License extended by ${planMonths} months! Valid until ${newExpires.toLocaleDateString('en-SG', { day: 'numeric', month: 'short', year: 'numeric' })}.`);
-        closeRenewModal();
-        this.renderPaneBranchSubscription();
+        try {
+          if (subId) {
+            await subscriptionService.renewSubscription(subId, planMonths);
+          }
+          this.loadBranchSubscription();
+          soundService.playSuccess();
+          notificationService.showToast
+            ? notificationService.showToast(`SaaS License extended by ${planMonths} months!`, "success")
+            : notificationService.success?.(`SaaS License extended by ${planMonths} months!`);
+          closeRenewModal();
+          this.renderPaneBranchSubscription();
+        } catch (err) {
+          console.error("Renewal failed:", err);
+          notificationService.showToast
+            ? notificationService.showToast(err.message || "License renewal failed.", "error")
+            : notificationService.error?.(err.message || "License renewal failed.");
+        } finally {
+          if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = "💳 Process Renewal & Extend License";
+          }
+        }
       });
     }
   }

@@ -830,9 +830,9 @@ class SupabaseService {
         return { connected: false, message: `Database error: ${error.message}` };
       }
 
-      return { connected: true, message: `Terhubung ke PostgreSQL Supabase (${count || 0} cabang).` };
+      return { connected: true, message: `Connected to PostgreSQL Supabase (${count || 0} branches).` };
     } catch (err) {
-      return { connected: false, message: `Koneksi gagal: ${err.message || err}` };
+      return { connected: false, message: `Connection failed: ${err.message || err}` };
     }
   }
 }

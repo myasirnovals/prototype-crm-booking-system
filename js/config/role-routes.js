@@ -14,12 +14,14 @@
 export const USER_ROLES = {
   SUPER_ADMIN:     "SUPER_ADMIN",
   OWNER:           "OWNER",
-  BRANCH_ADMIN:    "BRANCH_ADMIN",   // Admin Cabang: Front desk, live queue, branch doctors, room schedule & POS
+  BRANCH_ADMIN:    "BRANCH_ADMIN",   // Admin Cabang: Front desk, live queue, branch doctors, room schedule
+  STAFF:           "STAFF",          // Staf Cabang: Front desk, live queue, appointment check-in locked to assigned branch
   PRACTITIONER:    "PRACTITIONER",
   USER:            "USER",           // Patient / Client
+  GUEST:           "GUEST",          // Guest user booking without sign-in
   // Backward compatibility aliases
   BRANCH_MANAGER:  "BRANCH_ADMIN",
-  RECEPTIONIST:    "BRANCH_ADMIN"
+  RECEPTIONIST:    "STAFF"
 };
 
 export const ROLE_CONFIG = {
@@ -44,6 +46,13 @@ export const ROLE_CONFIG = {
     color: "#0369a1",
     description: "Branch operations: front desk queue, clinic doctors/practitioners, room schedules & occupancy"
   },
+  [USER_ROLES.STAFF]: {
+    name: "Staff",
+    homeRoute: "pages/branch-admin/index.html",
+    badge: "📋 Clinic Staff",
+    color: "#0891b2",
+    description: "Branch operations: front desk queue, appointment check-in & treatment records locked to assigned branch"
+  },
   // Backward compatibility fallback keys
   "BRANCH_MANAGER": {
     name: "Branch Admin",
@@ -53,11 +62,11 @@ export const ROLE_CONFIG = {
     description: "Branch operations: front desk queue, clinic doctors/practitioners, room schedules & occupancy"
   },
   "RECEPTIONIST": {
-    name: "Branch Admin",
+    name: "Staff",
     homeRoute: "pages/branch-admin/index.html",
-    badge: "🏪 Branch Admin",
-    color: "#0369a1",
-    description: "Branch operations: front desk queue, clinic doctors/practitioners, room schedules & occupancy"
+    badge: "📋 Clinic Staff",
+    color: "#0891b2",
+    description: "Branch operations: front desk queue, appointment check-in & treatment records locked to assigned branch"
   },
   [USER_ROLES.PRACTITIONER]: {
     name: "Practitioner / Doctor / Therapist",
@@ -142,6 +151,23 @@ export const REGISTERED_USERS = [
     avatar: "🏢",
     onboardingCompleted: true,
     createdAt: "2026-09-01T08:00:00.000Z"
+  },
+
+  // ── Staff (Locked to Assigned Branch) ──────────────────────────────────
+  {
+    id: "usr-staff-01",
+    email: "staff@orchardclinic.sg",
+    phone: "+65 9444 5555",
+    password: "cliniva2026",
+    role: USER_ROLES.STAFF,
+    name: "Farah Nadia",
+    title: "Clinic Operations Staff",
+    branchId: "sg-orchard",
+    branchName: "Orchard Wellness Clinic",
+    region: "sg",
+    avatar: "📋",
+    onboardingCompleted: true,
+    createdAt: "2026-09-02T08:00:00.000Z"
   },
 
   // ── Practitioner ──────────────────────────────────────────────────────────

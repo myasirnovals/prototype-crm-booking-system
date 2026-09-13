@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="branchPageTitle">Branch Overview — Cliniva Healthcare</title>
+  <meta name="description"
+    content="Official public branch storefront and online appointment booking page for Cliniva clinics." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Modular Design System Stylesheet -->
+  <link rel="stylesheet" href="../../css/style.css?v=3">
+  <link rel="stylesheet" href="../../css/components/branch-landing.css?v=3">
+</head>
+
+<body class="branch-landing-body">
+  <!-- 1. Simulated Prototype Subdomain / URL Bar -->
+  <aside class="proto-url-bar" aria-label="Branch Shareable Link Prototype">
+    <div class="proto-url-inner">
+      <div class="proto-url-badge">
+        <span class="proto-lock-icon">🔒</span>
+        <span class="proto-url-text" id="protoUrlDisplay">https://orchard-wellness.cliniva.app</span>
+      </div>
+      <div class="proto-url-actions">
+        <button type="button" class="proto-btn" id="btnCopyProtoUrl" title="Copy public shareable link">
+          📋 <span data-i18n="branchLanding.copyLink">Copy Link</span>
+        </button>
+        <button type="button" class="proto-btn" id="btnOpenQrModal" title="Show QR code for clinic counter or marketing flyer">
+          📱 <span data-i18n="branchLanding.scanQr">QR Code</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 2. Header Topbar -->
+  <header class="branch-header">
+    <div class="branch-header-inner">
+      <div class="branch-header-brand">
+        <a href="../../index.html" class="branch-logo" title="Cliniva Platform">
+          <span class="logo-mark">✦</span>
+          <span class="brand-name">Cliniva</span>
+        </a>
+        <div class="branch-brand-divider"></div>
+        <div class="branch-title-group">
+          <span class="branch-name-text" id="branchHeaderName">Orchard Wellness &amp; Luxury Spa</span>
+          <span class="branch-badge-pill" id="branchHeaderBadge">🌸 LUXURY WELLNESS SPA</span>
+        </div>
+      </div>
+
+      <div class="branch-header-actions">
+        <span class="branch-status-indicator" id="branchOpenStatus">
+          <span class="status-pulse-dot"></span>
+          <span data-i18n="branchLanding.openToday">Open Today · Closes 20:00 SGT</span>
+        </span>
+
+        <!-- Language Switcher (Strictly 3 Locales: EN, ZH, MS) -->
+        <div class="lang-switcher-wrap">
+          <select class="lang-select" aria-label="Select Language" id="branchLangSelect">
+            <option value="en" selected>🇬🇧 English</option>
+            <option value="zh">🇸🇬 华语 (Singapura)</option>
+            <option value="ms">🇲🇾 Bahasa Melayu (Malaysia)</option>
+          </select>
+        </div>
+
+        <a href="#treatments" class="btn btn-primary btn-sm btn-header-cta" id="headerBookCta" data-i18n="branchLanding.bookBtn">
+          Book Appointment →
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. Dynamic Branch Hero Section -->
+  <section class="branch-hero" id="branchHeroSection">
+    <div class="branch-hero-backdrop" id="branchHeroBackdrop"></div>
+    <div class="branch-container branch-hero-content">
+      <div class="branch-hero-kicker">
+        <span class="branch-kicker-icon" id="heroCategoryIcon">🌸</span>
+        <span id="heroCategoryText">HOLISTIC WELLNESS &amp; SPA CARE</span>
+        <span class="branch-kicker-dot">·</span>
+        <span id="heroRegionText">SINGAPORE</span>
+      </div>
+
+      <h1 class="branch-hero-title" id="branchHeroTitle">
+        Orchard Wellness &amp; Luxury Spa
+      </h1>
+
+      <p class="branch-hero-tagline" id="branchHeroTagline">
+        Holistic rejuvenation, aromatherapy indulgence &amp; deep muscle stress relief in private luxury suites.
+      </p>
+
+      <!-- Trust Metrics -->
+      <div class="branch-trust-row">
+        <div class="trust-item">
+          <span class="trust-stars">★★★★★</span>
+          <span class="trust-text"><strong>4.9 / 5.0</strong> (<span data-i18n="branchLanding.trustReviews">1,240+ Verified Patients</span>)</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">🩺</span>
+          <span class="trust-text" data-i18n="branchLanding.trustSpecialists">Licensed Clinical Specialists</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">🚪</span>
+          <span class="trust-text" data-i18n="branchLanding.trustSuites">Private Individual Suites</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">⏱️</span>
+          <span class="trust-text" data-i18n="branchLanding.trustZeroWait">Guaranteed Reserved Slot</span>
+        </div>
+      </div>
+
+      <!-- Hero CTAs -->
+      <div class="branch-hero-actions">
+        <a href="../../pages/public/booking.html" class="btn btn-primary btn-hero-book" id="heroBookBtn" data-i18n="branchLanding.heroBookBtn">
+          📅 Book Appointment Now →
+        </a>
+        <a href="#treatments" class="btn btn-soft btn-hero-explore" data-i18n="branchLanding.viewTreatments">
+          📋 Explore Treatments &amp; Rates
+        </a>
+        <a href="#" class="btn btn-soft btn-hero-whatsapp" id="heroWhatsAppBtn" target="_blank" rel="noopener">
+          💬 WhatsApp Front Desk
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Quick Highlights Bar -->
+  <section class="branch-stats-bar">
+    <div class="branch-container branch-stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🏥</div>
+        <div class="stat-info">
+          <strong id="statRoomCount">4 Private Suites</strong>
+          <span data-i18n="branchLanding.statRoomsSub">Sanitized &amp; soundproofed</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🧑‍⚕️</div>
+        <div class="stat-info">
+          <strong id="statSpecialistCount">Attending Specialists</strong>
+          <span data-i18n="branchLanding.statSpecialistsSub">Dedicated 1-on-1 care</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🕒</div>
+        <div class="stat-info">
+          <strong id="statOperatingHours">Mon - Sat (08:30 - 20:00 SGT)</strong>
+          <span data-i18n="branchLanding.statHoursSub">Self-check-in available</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📍</div>
+        <div class="stat-info">
+          <strong id="statShortAddress">Paragon Medical #14-02</strong>
+          <span data-i18n="branchLanding.statTransitSub">Orchard MRT Exit A</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Treatments & Clinical Services Section -->
+  <section class="branch-section" id="treatments">
+    <div class="branch-container">
+      <div class="section-header">
+        <span class="section-pill" data-i18n="branchLanding.treatmentsPill">SIGNATURE SERVICES &amp; TREATMENTS</span>
+        <h2 class="section-title" data-i18n="branchLanding.treatmentsTitle">Specialized Healthcare &amp; Wellness Programs</h2>
+        <p class="section-subtitle" data-i18n="branchLanding.treatmentsDesc">
+          All consultations and treatments are tailored to individual clinical intake assessments. No upfront online payment required.
+        </p>
+      </div>
+
+      <div class="services-grid" id="branchServicesGrid">
+        <!-- Dynamically rendered by branch-landing.controller.js -->
+      </div>
+
+      <!-- Payment Policy Banner -->
+      <div class="branch-payment-policy-box">
+        <div class="policy-icon">💳</div>
+        <div class="policy-content">
+          <h4 data-i18n="branchLanding.policyTitle">Frictionless Online Reservation · Settle at Clinic Counter</h4>
+          <p data-i18n="branchLanding.policyDesc">
+            Booking an appointment on this platform guarantees your practitioner and private suite slot without upfront credit card deduction. Full consultation and treatment fees are settled at the clinic reception desk upon arrival via PayNow, DuitNow, Visa/Mastercard, or Cash.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Attending Specialists & Clinical Team Section -->
+  <section class="branch-section branch-section-alt" id="specialists">
+    <div class="branch-container">
+      <div class="section-header">
+        <span class="section-pill" data-i18n="branchLanding.specialistsPill">MEET OUR CLINICAL PRACTITIONERS</span>
+        <h2 class="section-title" data-i18n="branchLanding.specialistsTitle">Experienced, Certified Healthcare Specialists</h2>
+        <p class="section-subtitle" data-i18n="branchLanding.specialistsDesc">
+          Book directly with your preferred doctor, licensed TCM physician, or certified therapist for personalized ongoing therapy.
+        </p>
+      </div>
+
+      <div class="specialists-grid" id="branchSpecialistsGrid">
+        <!-- Dynamically rendered by branch-landing.controller.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Facilities & Clinical Standards -->
+  <section class="branch-section">
+    <div class="branch-container">
+      <div class="section-header">
+        <span class="section-pill" data-i18n="branchLanding.facilitiesPill">SAFETY &amp; CLINICAL EXCELLENCE</span>
+        <h2 class="section-title" data-i18n="branchLanding.facilitiesTitle">Purpose-Built Treatment Suites &amp; Equipment</h2>
+        <p class="section-subtitle" data-i18n="branchLanding.facilitiesDesc">
+          Engineered for patient privacy, sterile hygiene, and superior therapeutic outcomes.
+        </p>
+      </div>
+
+      <div class="facilities-grid" id="branchFacilitiesGrid">
+        <div class="facility-card">
+          <div class="facility-icon">🌿</div>
+          <h3 data-i18n="branchLanding.facility1Title">Private Treatment Suites</h3>
+          <p data-i18n="branchLanding.facility1Desc">Individual acoustic privacy suites equipped with ergonomic treatment tables, fresh medical-grade air filtration, and calming ambiance.</p>
+        </div>
+        <div class="facility-card">
+          <div class="facility-icon">🔬</div>
+          <h3 data-i18n="branchLanding.facility2Title">Specialized Medical Devices</h3>
+          <p id="facilityEquipmentDesc">Advanced therapeutic modalities including electro-acupuncture stimulators, shockwave therapy units, and diagnostic monitors calibrated for optimal efficacy.</p>
+        </div>
+        <div class="facility-card">
+          <div class="facility-icon">🧼</div>
+          <h3 data-i18n="branchLanding.facility3Title">Medical Hygiene Protocol</h3>
+          <p data-i18n="branchLanding.facility3Desc">Single-use organic linens, hospital-grade sterilization for every session, and contactless digital queue check-in via QR e-tickets.</p>
+        </div>
+        <div class="facility-card">
+          <div class="facility-icon">🍵</div>
+          <h3 data-i18n="branchLanding.facility4Title">Patient Recovery Lounge</h3>
+          <p data-i18n="branchLanding.facility4Desc">Complimentary restorative organic herbal infusions, private changing bays, and zero-wait check-in assistance by our front desk team.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Location, Hours & Reception Contact Section -->
+  <section class="branch-section branch-section-alt" id="location">
+    <div class="branch-container">
+      <div class="location-layout">
+        <div class="location-details">
+          <span class="section-pill" data-i18n="branchLanding.locationPill">BRANCH INFORMATION &amp; RECEPTION</span>
+          <h2 class="section-title" id="locationBranchName">Orchard Wellness &amp; Luxury Spa</h2>
+          
+          <div class="location-info-list">
+            <div class="info-row">
+              <span class="info-icon">📍</span>
+              <div>
+                <strong data-i18n="branchLanding.addressLabel">Physical Address:</strong>
+                <p id="locationAddressText">290 Orchard Road, Paragon Medical #14-02, Singapore 238859</p>
+                <button type="button" class="btn-copy-address" id="btnCopyAddress" data-i18n="branchLanding.copyAddress">
+                  📋 Copy Address
+                </button>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <span class="info-icon">🕒</span>
+              <div>
+                <strong data-i18n="branchLanding.hoursLabel">Operating Hours:</strong>
+                <p id="locationHoursText">Monday – Saturday: 08:30 – 20:00 SGT<br>Sunday &amp; Public Holidays: 09:30 – 18:00 SGT</p>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <span class="info-icon">📞</span>
+              <div>
+                <strong data-i18n="branchLanding.phoneLabel">Front Desk Contact:</strong>
+                <p><a href="tel:+6567381234" id="locationPhoneLink" class="phone-link">+65 6738 1234</a></p>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <span class="info-icon">🚆</span>
+              <div>
+                <strong data-i18n="branchLanding.transitLabel">Public Transit &amp; Parking:</strong>
+                <p data-i18n="branchLanding.transitDesc">Conveniently accessible via Orchard MRT (NS22/TE14, Exit A). Dedicated basement patient parking with elevator access directly to Medical Suites Level 14.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation & Contact CTAs -->
+          <div class="location-buttons">
+            <a href="#" class="btn btn-primary" id="btnGoogleMaps" target="_blank" rel="noopener">
+              🗺️ <span data-i18n="branchLanding.openMaps">Open in Google Maps</span>
+            </a>
+            <a href="#" class="btn btn-soft" id="btnWaze" target="_blank" rel="noopener">
+              🚗 <span data-i18n="branchLanding.openWaze">Open in Waze</span>
+            </a>
+            <a href="#" class="btn btn-soft" id="btnWhatsAppDirect" target="_blank" rel="noopener">
+              💬 <span data-i18n="branchLanding.chatWhatsApp">WhatsApp Reception</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Interactive Map Preview Card -->
+        <div class="location-card-preview">
+          <div class="map-visual-box">
+            <div class="map-pin-indicator">
+              <span class="pin-pulse"></span>
+              <span class="pin-icon" id="mapPinIcon">🌸</span>
+            </div>
+            <div class="map-overlay-card">
+              <h4 id="mapBranchName">Orchard Wellness &amp; Luxury Spa</h4>
+              <p id="mapAddressSub">Paragon Medical #14-02, Singapore</p>
+              <div class="map-chip" data-i18n="branchLanding.verifiedLocation">✓ Verified Clinic Facility</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Patient Testimonials -->
+  <section class="branch-section">
+    <div class="branch-container">
+      <div class="section-header">
+        <span class="section-pill" data-i18n="branchLanding.reviewsPill">PATIENT EXPERIENCES</span>
+        <h2 class="section-title" data-i18n="branchLanding.reviewsTitle">Trusted by Thousands of Patients</h2>
+        <p class="section-subtitle" data-i18n="branchLanding.reviewsDesc">
+          Read genuine feedback from patients who booked online and visited this branch.
+        </p>
+      </div>
+
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-top">
+            <div class="review-stars">★★★★★</div>
+            <span class="review-date">2 days ago</span>
+          </div>
+          <p class="review-text">
+            "The online reservation made booking so effortless without having to pay upfront. The suite was immaculate, peaceful, and the therapist listened carefully to my chronic shoulder complaints. Highly recommended!"
+          </p>
+          <div class="review-author">
+            <div class="author-avatar">AT</div>
+            <div>
+              <strong>Amanda Tan</strong>
+              <small>Verified Patient · Orchard</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="review-stars">★★★★★</div>
+            <span class="review-date">1 week ago</span>
+          </div>
+          <p class="review-text">
+            "Extremely impressed by the digital queue e-ticket system. I walked in, scanned the QR code at reception, and was led into the treatment suite within 3 minutes. Zero waiting lounge delays."
+          </p>
+          <div class="review-author">
+            <div class="author-avatar">MC</div>
+            <div>
+              <strong>Marcus Chen</strong>
+              <small>Verified Patient · Sports Therapy</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-top">
+            <div class="review-stars">★★★★★</div>
+            <span class="review-date">2 weeks ago</span>
+          </div>
+          <p class="review-text">
+            "The consultation was thorough and tailored. Dr. Wong explained the meridian acupuncture steps clearly and the herbal treatment alleviated my lower back tension immediately."
+          </p>
+          <div class="review-author">
+            <div class="author-avatar">SL</div>
+            <div>
+              <strong>Sarah Lim</strong>
+              <small>Verified Patient · TCM Consultation</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Floating Ergonomic Mobile Booking Bar -->
+  <aside class="mobile-sticky-cta-bar" aria-label="Mobile Sticky Booking Action">
+    <div class="mobile-cta-inner">
+      <div class="mobile-cta-info">
+        <strong id="mobStickyBranchName">Orchard Wellness &amp; Luxury Spa</strong>
+        <span class="mobile-cta-meta">
+          <span class="status-pulse-dot" style="width:7px; height:7px;"></span>
+          <span data-i18n="branchLanding.openToday">Open Today · SGT</span>
+        </span>
+      </div>
+      <a href="../../pages/public/booking.html" class="btn btn-primary btn-mobile-book" id="mobStickyBookBtn" data-i18n="branchLanding.bookBtn">
+        Book Appointment →
+      </a>
+    </div>
+  </aside>
+
+  <!-- 11. QR Code Modal for In-Person or Marketing Sharing -->
+  <div class="branch-modal-backdrop" id="qrModal" style="display:none;" aria-hidden="true">
+    <div class="branch-modal-card" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span style="font-size:22px;">📱</span>
+          <div>
+            <h3 id="qrModalTitle" style="margin:0; font-size:17px; font-weight:800; color:var(--text);" data-i18n="branchLanding.qrModalTitle">
+              Branch Direct Booking QR Code
+            </h3>
+            <p style="margin:2px 0 0; font-size:12px; color:var(--muted);" data-i18n="branchLanding.qrModalDesc">
+              Scan with any mobile camera to open this branch's public booking storefront.
+            </p>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" id="btnCloseQrModal" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="qr-preview-box">
+        <div class="qr-canvas-wrap" id="qrCanvasWrap">
+          <!-- Dynamic High-Resolution SVG QR Code -->
+          <svg width="200" height="200" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="26" height="26" fill="#0f172a" rx="4"/>
+            <rect x="9" y="9" width="18" height="18" fill="#fff" rx="2"/>
+            <rect x="13" y="13" width="10" height="10" fill="#0f766e" rx="1"/>
+            <rect x="69" y="5" width="26" height="26" fill="#0f172a" rx="4"/>
+            <rect x="73" y="9" width="18" height="18" fill="#fff" rx="2"/>
+            <rect x="77" y="13" width="10" height="10" fill="#0f766e" rx="1"/>
+            <rect x="5" y="69" width="26" height="26" fill="#0f172a" rx="4"/>
+            <rect x="9" y="73" width="18" height="18" fill="#fff" rx="2"/>
+            <rect x="13" y="77" width="10" height="10" fill="#0f766e" rx="1"/>
+            <rect x="36" y="8" width="6" height="6" fill="#0f172a"/>
+            <rect x="46" y="8" width="8" height="6" fill="#0f172a"/>
+            <rect x="58" y="12" width="6" height="6" fill="#0f766e"/>
+            <rect x="36" y="36" width="28" height="28" fill="#0f172a" rx="3"/>
+            <rect x="42" y="42" width="16" height="16" fill="#fff" rx="2"/>
+            <rect x="46" y="46" width="8" height="8" fill="#0f766e"/>
+            <rect x="72" y="70" width="20" height="6" fill="#0f172a"/>
+          </svg>
+        </div>
+        <div class="qr-branch-meta">
+          <strong id="qrBranchTitle">Orchard Wellness &amp; Luxury Spa</strong>
+          <span id="qrBranchUrlText" style="font-size:12px; color:var(--muted); word-break:break-all;">https://orchard-wellness.cliniva.app</span>
+        </div>
+      </div>
+
+      <div class="modal-footer-actions">
+        <button type="button" class="btn btn-soft" id="btnCopyQrUrl">
+          📋 <span data-i18n="branchLanding.copyLink">Copy Link</span>
+        </button>
+        <button type="button" class="btn btn-primary" id="btnCloseQrModalAction" data-i18n="common.close">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="branchToast" class="branch-toast" style="display:none;" role="status"></div>
+
+  <!-- Footer -->
+  <footer class="branch-footer">
+    <div class="branch-container branch-footer-inner">
+      <div class="footer-left">
+        <div class="footer-brand">✦ Cliniva Healthcare Systems</div>
+        <p class="footer-sub" id="footerBranchSub">
+          Official public branch storefront powered by Cliniva Multi-Tenant Platform.
+        </p>
+      </div>
+      <div class="footer-links">
+        <a href="../../index.html" data-i18n="nav.backHome">Cliniva Platform</a>
+        <a href="../../pages/patient/index.html" data-i18n="nav.patientPortal">Patient Portal</a>
+        <a href="../../pages/public/ticket.html" data-i18n="hero.viewTicket">Active E-Ticket</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Script -->
+  <script type="module" src="../../js/pages/branch-landing.js?v=3"></script>
+</body>
+
+</html>

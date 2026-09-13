@@ -302,7 +302,7 @@ export class BranchSelectController {
         const origin = window.location.origin;
         const pathname = window.location.pathname;
         const basePath = pathname.substring(0, pathname.lastIndexOf("/pages/"));
-        const url = `${origin}${basePath}/pages/public/booking.html?branch=${encodeURIComponent(branchId)}`;
+        const url = `${origin}${basePath}/pages/public/branch.html?branch=${encodeURIComponent(branchId)}`;
 
         try {
           await navigator.clipboard.writeText(url);

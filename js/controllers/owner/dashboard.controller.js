@@ -1015,9 +1015,9 @@ export class OwnerDashboardController {
 
     btn.addEventListener("click", () => {
       soundService.playClickTone();
-      const branchId = this.activeBranch ? this.activeBranch.id : "br-sg-orchard-01";
+      const branchId = this.activeBranch ? this.activeBranch.id : "sg-orchard";
       const origin = window.location.origin + window.location.pathname.replace('/pages/owner/dashboard.html', '');
-      const shareUrl = `${origin}/pages/public/booking.html?branch=${encodeURIComponent(branchId)}`;
+      const shareUrl = `${origin}/pages/public/branch.html?branch=${encodeURIComponent(branchId)}`;
 
       navigator.clipboard.writeText(shareUrl).then(() => {
         const msg = i18nService.t("owner.linkCopiedToast", "✅ Patient booking link copied to clipboard!");

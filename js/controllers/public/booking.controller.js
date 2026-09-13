@@ -101,6 +101,13 @@ export class PatientBookingController {
     } else {
       this.activeTemplateId = bookingService.getActiveTemplateId() || "wellness";
     }
+
+    // Save session user reference
+    this.currentUser = currentUser;
+    if (currentUser && currentUser.name && currentUser.name !== "Guest Patient") {
+      this.bookingDraft.patientName = currentUser.name;
+      this.bookingDraft.patientPhone = currentUser.contact || "";
+    }
     // --- AKHIR MODIFIKASI ---
 
     this.bookingDraft.templateType = this.activeTemplateId;
@@ -655,7 +662,7 @@ export class PatientBookingController {
       sessionDurationEl.textContent = `⏱️ ${consultation.duration}`;
     }
     if (sessionTypeEl) {
-      sessionTypeEl.textContent = `✨ Reservasi Online`;
+      sessionTypeEl.textContent = i18nService.t("booking.onlineBookingPill", "✨ Online Booking");
     }
     if (sessionPriceEl) {
       sessionPriceEl.style.display = "none";
@@ -743,6 +750,30 @@ export class PatientBookingController {
     if (toStep3Btn) toStep3Btn.addEventListener("click", () => this.goToStep(3));
     if (toStep4Btn) {
       toStep4Btn.addEventListener("click", () => {
+        // Read guest/patient identification inputs
+        const nameInput = document.getElementById("guestPatientName");
+        const phoneInput = document.getElementById("guestPatientPhone");
+        const emailInput = document.getElementById("guestPatientEmail");
+
+        const patientName = nameInput?.value?.trim() || "";
+        const patientPhone = phoneInput?.value?.trim() || "";
+
+        if (!patientName) {
+          alert(i18nService.t("booking.guest.nameRequiredAlert", "Please enter your full legal name to issue your appointment e-ticket."));
+          nameInput?.focus();
+          return;
+        }
+
+        if (!patientPhone) {
+          alert(i18nService.t("booking.guest.phoneRequiredAlert", "Please enter your WhatsApp or mobile phone number for appointment confirmation."));
+          phoneInput?.focus();
+          return;
+        }
+
+        this.bookingDraft.patientName = patientName;
+        this.bookingDraft.patientPhone = patientPhone;
+        this.bookingDraft.patientEmail = emailInput?.value?.trim() || "";
+
         this.captureIntakeFormData();
         this.renderSummaryStep();
         this.goToStep(4);
@@ -870,6 +901,21 @@ export class PatientBookingController {
     const container = document.getElementById("dynamicIntakeContainer");
     if (!container) return;
 
+    // Prefill patient identification fields
+    const nameInput = document.getElementById("guestPatientName");
+    const phoneInput = document.getElementById("guestPatientPhone");
+    const emailInput = document.getElementById("guestPatientEmail");
+
+    if (nameInput && !nameInput.value) {
+      nameInput.value = this.bookingDraft.patientName || (this.currentUser?.name && this.currentUser.name !== "Guest Patient" ? this.currentUser.name : "");
+    }
+    if (phoneInput && !phoneInput.value) {
+      phoneInput.value = this.bookingDraft.patientPhone || (this.currentUser?.contact && this.currentUser.contact !== "No Phone Provided" ? this.currentUser.contact : "");
+    }
+    if (emailInput && !emailInput.value && this.bookingDraft.patientEmail) {
+      emailInput.value = this.bookingDraft.patientEmail;
+    }
+
     const step3Title = document.getElementById("step3PaneTitle");
     const step3Desc = document.getElementById("step3PaneDesc");
 
@@ -928,12 +974,19 @@ export class PatientBookingController {
     if (scheduleEl) scheduleEl.textContent = `${this.bookingDraft.scheduleDate} · ${this.bookingDraft.scheduleSlot}`;
     if (roomEl) roomEl.textContent = this.bookingDraft.room || "Private Consultation Suite 01";
 
+    const patientEl = document.getElementById("summaryPatientVal");
+    if (patientEl) {
+      const pName = this.bookingDraft.patientName || "Guest Patient";
+      const pPhone = this.bookingDraft.patientPhone ? ` (${this.bookingDraft.patientPhone})` : "";
+      patientEl.textContent = `${pName}${pPhone}`;
+    }
+
     if (complaintEl) {
       complaintEl.textContent = this.bookingDraft.chiefComplaint || this.bookingDraft.intakeData || "Routine Clinical Assessment";
     }
 
-    if (priceEl) priceEl.textContent = "Bebas Biaya Online";
-    if (depositEl) depositEl.textContent = "Tanpa Uang Muka";
+    if (priceEl) priceEl.textContent = i18nService.t("booking.freeOnlineFee", "FREE Online Booking");
+    if (depositEl) depositEl.textContent = i18nService.t("booking.noDepositRequired", "No Deposit Required");
   }
 
   setupCheckoutAction(user) {
@@ -942,7 +995,7 @@ export class PatientBookingController {
 
     confirmBtn.addEventListener("click", () => {
       confirmBtn.disabled = true;
-      confirmBtn.textContent = "Memproses Reservasi Janji Temu...";
+      confirmBtn.textContent = i18nService.t("booking.step4.processing", "Processing Reservation...");
 
       setTimeout(async () => {
         soundService.playQueueChime();
@@ -960,8 +1013,9 @@ export class PatientBookingController {
         const newBooking = {
           code: bookingCode,
           queueNumber: queueCode,
-          patientName: user?.name || "Guest Patient",
-          patientPhone: user?.contact || "No Phone Provided",
+          patientName: this.bookingDraft.patientName || user?.name || "Guest Patient",
+          patientPhone: this.bookingDraft.patientPhone || user?.contact || "No Phone Provided",
+          patientEmail: this.bookingDraft.patientEmail || "",
           branchId: this.selectedBranch ? this.selectedBranch.id : "sg-orchard",
           branchName: this.bookingDraft.branchName,
           branchAddress: this.bookingDraft.branchAddress,

@@ -53,6 +53,7 @@ export class BranchAdminController {
       // Validate role if an existing session is present
       const allowedRoles = [
         USER_ROLES.BRANCH_ADMIN,
+        USER_ROLES.STAFF,
         USER_ROLES.OWNER,
         "BRANCH_MANAGER",
         "RECEPTIONIST"
@@ -105,6 +106,18 @@ export class BranchAdminController {
     // Owner link only visible if current session is OWNER
     if (ownerLink) {
       ownerLink.style.display = role === USER_ROLES.OWNER ? "inline-flex" : "none";
+    }
+
+    // Role-based restrictions: Staff role is strictly locked to front desk & operational tabs
+    if (role === USER_ROLES.STAFF) {
+      const settingsTabBtn = document.querySelector('.admin-tab-btn[data-pane="paneClinicSettings"]');
+      if (settingsTabBtn) {
+        settingsTabBtn.style.display = "none";
+      }
+      const editProfileBtn = document.getElementById("editProfileBtn");
+      if (editProfileBtn) {
+        editProfileBtn.style.display = "none";
+      }
     }
   }
 

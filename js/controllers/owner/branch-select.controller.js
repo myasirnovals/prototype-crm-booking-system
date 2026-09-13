@@ -569,6 +569,150 @@ export class BranchSelectController {
       });
     });
 
+    // ── Logo Uploader & Emblem Picker Controls ──
+    const logoFileInput = document.getElementById("newBranchLogoFileInput");
+    const selectedLogoInput = document.getElementById("newBranchSelectedLogoInput");
+    const previewEmoji = document.getElementById("newBranchPreviewEmoji");
+    const previewImage = document.getElementById("newBranchPreviewImage");
+    const btnBrowse = document.getElementById("btnBrowseNewBranchLogo");
+    const btnRemove = document.getElementById("btnRemoveNewBranchLogo");
+    const dropZone = document.getElementById("newBranchLogoDropZone");
+    const emblemButtons = document.querySelectorAll("#newBranchEmblemPicker .logo-choice-btn");
+    const templateSelect = document.getElementById("newBranchTemplate");
+
+    // Template -> default icon map
+    const templateIconMap = {
+      physio: "🏃",
+      wellness: "🌸",
+      tcm: "🌿",
+      nutrition: "🥗",
+      "personal-trainer": "🏋️"
+    };
+
+    // Helper: Select an emblem emoji
+    const selectEmblem = (emoji) => {
+      if (selectedLogoInput) selectedLogoInput.value = emoji;
+      if (previewEmoji) {
+        previewEmoji.textContent = emoji;
+        previewEmoji.style.display = "inline";
+      }
+      if (previewImage) {
+        previewImage.style.display = "none";
+        previewImage.src = "";
+      }
+      if (logoFileInput) logoFileInput.value = "";
+      if (btnRemove) btnRemove.style.display = "none";
+
+      emblemButtons.forEach((b) => {
+        if (b.dataset.emoji === emoji) b.classList.add("active");
+        else b.classList.remove("active");
+      });
+    };
+
+    // Helper: Set uploaded image logo
+    const setUploadedLogo = (dataUrl) => {
+      if (selectedLogoInput) selectedLogoInput.value = dataUrl;
+      if (previewImage) {
+        previewImage.src = dataUrl;
+        previewImage.style.display = "block";
+      }
+      if (previewEmoji) {
+        previewEmoji.style.display = "none";
+      }
+      if (btnRemove) btnRemove.style.display = "inline-flex";
+      emblemButtons.forEach((b) => b.classList.remove("active"));
+    };
+
+    // Browse logo button
+    if (btnBrowse && logoFileInput) {
+      btnBrowse.addEventListener("click", () => logoFileInput.click());
+    }
+
+    // Remove uploaded logo button
+    if (btnRemove) {
+      btnRemove.addEventListener("click", () => {
+        const currentTemplate = templateSelect?.value || "physio";
+        const fallbackEmblem = templateIconMap[currentTemplate] || "🏃";
+        selectEmblem(fallbackEmblem);
+        this.showToast(i18nService.t("owner.gateway.logoRemovedNotice", "Custom logo removed, reverted to emblem icon."), "ℹ️");
+      });
+    }
+
+    // Process file upload
+    const handleFile = (file) => {
+      if (!file) return;
+      if (!file.type.startsWith("image/")) {
+        alert("Please upload a valid image file (PNG, JPG, WebP, SVG).");
+        return;
+      }
+      if (file.size > 3 * 1024 * 1024) {
+        alert(i18nService.t("owner.gateway.maxImageSize", "Maximum image file size is 3MB."));
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target.result;
+        setUploadedLogo(dataUrl);
+        soundService.playSuccess?.();
+        this.showToast(i18nService.t("owner.gateway.logoUploadedNotice", "Logo uploaded successfully!"), "🖼️");
+      };
+      reader.readAsDataURL(file);
+    };
+
+    if (logoFileInput) {
+      logoFileInput.addEventListener("change", (e) => {
+        const file = e.target.files?.[0];
+        handleFile(file);
+      });
+    }
+
+    // Drag & Drop
+    if (dropZone) {
+      ["dragenter", "dragover"].forEach((eventName) => {
+        dropZone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.add("dragover");
+        });
+      });
+
+      ["dragleave", "drop"].forEach((eventName) => {
+        dropZone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropZone.classList.remove("dragover");
+        });
+      });
+
+      dropZone.addEventListener("drop", (e) => {
+        const dt = e.dataTransfer;
+        const file = dt?.files?.[0];
+        handleFile(file);
+      });
+    }
+
+    // Preset emblem button click
+    emblemButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const emoji = btn.dataset.emoji;
+        selectEmblem(emoji);
+        soundService.playClickTone?.();
+      });
+    });
+
+    // Practice template change auto-sync with emblem (if user hasn't uploaded custom image)
+    if (templateSelect) {
+      templateSelect.addEventListener("change", () => {
+        const tmpl = templateSelect.value;
+        const isCustomImage = selectedLogoInput && selectedLogoInput.value && (selectedLogoInput.value.startsWith("data:image") || selectedLogoInput.value.startsWith("http"));
+        if (!isCustomImage) {
+          const autoEmblem = templateIconMap[tmpl] || "🏃";
+          selectEmblem(autoEmblem);
+        }
+      });
+    }
+
     if (btnClose) btnClose.addEventListener("click", closeModal);
     if (btnCancel) btnCancel.addEventListener("click", closeModal);
 
@@ -597,6 +741,7 @@ export class BranchSelectController {
 
         const serviceMode = document.querySelector('input[name="newBranchServiceMode"]:checked')?.value || "hybrid";
         const meta = this.getTemplateMeta(template);
+        const selectedLogo = selectedLogoInput?.value || meta.icon || "🏃";
         const newBranchId = `br-sg-${Date.now().toString().slice(-4)}`;
         const newBranch = {
           id: newBranchId,
@@ -608,7 +753,7 @@ export class BranchSelectController {
           rooms: "4",
           template,
           serviceMode,
-          logo: meta.icon,
+          logo: selectedLogo,
           currency: "SGD",
           revenue: "SGD 0.00",
           occupancy: "0.0%",
@@ -666,7 +811,9 @@ export class BranchSelectController {
     }
     if (modalOverlay) {
       modalOverlay.style.display = "flex";
-      soundService.playClickTone();
+      soundService.playClickTone?.();
+      // Ensure translations in modal are dynamically applied fresh
+      i18nService.applyTranslations(modalOverlay);
     }
   }
 

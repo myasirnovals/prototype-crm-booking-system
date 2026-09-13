@@ -1,4 +1,4 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.8.1 [STABLE RELEASE]
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.12.0 [STABLE RELEASE]
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 
@@ -118,6 +118,26 @@ Lalu buka:
 ---
 
 ## 📦 Riwayat Rilis & Semantic Versioning (SemVer)
+
+### 🏷️ V1.12.0 (Minor Release) ✅ *Stable Release*
+*Rilis resmi minor v1.12.0: Perapihan dan simplifikasi komprehensif antarmuka Branch Selector Gateway (`pages/owner/branch-select.html`), penataan tombol vertikal di kolom kanan, penambahan menu dropdown kontrol status operasional cabang langsung di kartu (`🟢 Open / Active`, `⏸️ Temporarily Closed`, `🗑️ Archive Branch`), eliminasi tumpukan badge berlebih, pembersihan otomatis kebocoran bahasa Indonesia pada jam operasional, penambahan alias `playSuccess()` pada `SoundService`, serta sinkronisasi penuh status cabang ke Supabase Cloud.*
+
+- **🚀 New Features & Architecture (Minor)**:
+  - **Simplifikasi & Perapihan Kartu Cabang Gateway (`pages/owner/branch-select.html` & `branch-select.controller.js`)**:
+    - Menghilangkan tumpukan 4 badge berjejer (*badge overload*) dan memusatkan fokus visual pada: Logo Avatar, Nama Cabang, 1 Badge Template, dan Status Badge Interaktif.
+    - Menata ulang tombol aksi menjadi kolom **vertikal** di sebelah kanan (Primary CTA: `Manage Branch →` di atas, Secondary CTA: `🔗 Copy Booking Link` di bawah).
+    - Menambahkan menu dropdown kontrol status operasional cawangan langsung pada kartu (`🟢 Open / Active`, `⏸️ Temporarily Closed`, dan `🗑️ Archive Branch`) tanpa harus masuk ke dashboard operasional.
+    - Mengintegrasikan aksi `🟢 Open / Active` agar otomatis mengaktifkan cabang tersebut sebagai cabang utama sesi (`cliniva_active_branch_id`), memindahkan badge `CURRENT`, dan mengubah tombol menjadi `Open Dashboard →`.
+  - **Sistem Notifikasi Toast Gateway & Sinkronisasi Cloud**:
+    - Wadah notifikasi toast non-blocking (`#gatewayToastContainer`) yang otomatis dibuat jika belum ada di DOM untuk umpan balik instan saat menyalin link atau mengubah status.
+    - Sinkronisasi perubahan status operasional cawangan ke Supabase Cloud (`supabaseService.upsertBranch`).
+- **🩹 Bug Fixes & Hardening (Patch)**:
+  - **Resolusi Runtime Error SoundService (`sound.service.js`)**:
+    - Menambahkan method alias `playSuccess()` yang memanggil `playSuccessChime()` untuk mencegah terjadinya `TypeError: soundService.playSuccess is not a function`.
+  - **Pembersihan Kebocoran Bahasa Indonesia pada Jam Operasional (`branch-select.controller.js`)**:
+    - Menambahkan helper `formatOperatingHours()` untuk menormalkan data hari lama (seperti `Senin - Sabtu` ➔ `Mon - Sat`) agar mematuhi standar bebas Bahasa Indonesia pada antarmuka web.
+  - **Sinkronisasi Kamus Multi-Bahasa (`en.js`, `ms.js`, `zh.js`)**:
+    - Melengkapi seluruh kunci terjemahan `owner.gateway.*` untuk bahasa Inggris, Melayu, dan Mandarin Singapura.
 
 ### 🏷️ V1.8.1 (Patch Release) ✅ *Stable Release*
 *Rilis perbaikan (patch release) v1.8.1: Harmonisasi benchmark visual kartu cabang pada Owner Gateway (`branch-select.html`), deduplikasi cerdas data cabang untuk mencegah duplikasi entri kartu ganda, eliminasi elemen pembatas bawah redundan (`#cardTriggerNewBranch`) yang digantikan tombol header primer, serta perbaikan menyeluruh interaktivitas tombol dan sintaks template literal pada konsol operasional Branch Admin (`pages/branch-admin/index.html`).*

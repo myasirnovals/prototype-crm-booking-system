@@ -257,11 +257,6 @@ export class BranchSelectController {
                       ${isPaused ? '<span style="color:#92400e; font-weight:900;">✓</span>' : ''}
                     </button>
                     <div class="status-menu-divider"></div>
-                    <button type="button" class="status-menu-item ${isActive ? 'selected-status' : ''}" data-action="set-current" data-branch-id="${b.id}">
-                      <span>📌 ${i18nService.t("owner.gateway.setCurrent", "Set as Current Branch")}</span>
-                      ${isActive ? '<span style="color:#0f766e; font-weight:900;">✓</span>' : ''}
-                    </button>
-                    <div class="status-menu-divider"></div>
                     <button type="button" class="status-menu-item danger-item" data-action="archive" data-branch-id="${b.id}">
                       <span>🗑️ ${i18nService.t("owner.gateway.archiveBranch", "Archive Branch")}</span>
                     </button>
@@ -311,7 +306,7 @@ export class BranchSelectController {
 
         try {
           await navigator.clipboard.writeText(url);
-          try { soundService.playSuccess(); } catch (err) {}
+          try { soundService.playSuccess(); } catch (err) { }
           const originalHtml = btn.innerHTML;
           btn.innerHTML = `✅ <span>${i18nService.t("owner.copied", "Copied!")}</span>`;
           btn.style.background = "#dcfce7";
@@ -363,7 +358,7 @@ export class BranchSelectController {
 
         if (menu) {
           menu.classList.toggle("show");
-          try { soundService.playClickTone(); } catch (err) {}
+          try { soundService.playClickTone(); } catch (err) { }
         }
       });
     });
@@ -388,14 +383,14 @@ export class BranchSelectController {
           if (branch.template) {
             bookingService.setActiveTemplate(branch.template);
           }
-          try { soundService.playSuccess(); } catch (err) {}
+          try { soundService.playSuccess(); } catch (err) { }
           this.showToast(`${branch.name} is now Open & Active for bookings`, "🟢");
           this.syncBranchToCloud(branch);
           this.renderBranchCards();
         } else if (action === "set-paused") {
           branch.status = "PAUSED";
           storageService.set("cliniva_branches", this.branches);
-          try { soundService.playClickTone(); } catch (err) {}
+          try { soundService.playClickTone(); } catch (err) { }
           this.showToast(`${branch.name} is now Temporarily Closed (Bookings paused)`, "⏸️");
           this.syncBranchToCloud(branch);
           this.renderBranchCards();
@@ -404,7 +399,7 @@ export class BranchSelectController {
           if (branch.template) {
             bookingService.setActiveTemplate(branch.template);
           }
-          try { soundService.playClickTone(); } catch (err) {}
+          try { soundService.playClickTone(); } catch (err) { }
           this.showToast(`${branch.name} set as current branch`, "📌");
           this.renderBranchCards();
         } else if (action === "archive") {
@@ -419,7 +414,7 @@ export class BranchSelectController {
               storageService.set("cliniva_active_branch_id", this.branches[0].id);
             }
 
-            try { soundService.playSuccess(); } catch (err) {}
+            try { soundService.playSuccess(); } catch (err) { }
             this.showToast(`${branch.name} archived successfully`, "🗑️");
             this.renderHeader();
             this.renderBranchCards();

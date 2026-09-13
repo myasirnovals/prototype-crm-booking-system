@@ -1,7 +1,7 @@
 /**
  * Cliniva — Branch Selection Gateway Controller
- * SOLID: Single Responsibility for Branch Switching & Multi-Branch Tenant Navigation
- * Flow based on Scraping Data/alur aplikasi booking system.xml (Owner -> First: No -> Choose Branch -> Dashboard)
+ * SOLID: Single Responsibility for Branch Switching, Status Toggling, and Multi-Branch Navigation.
+ * Mobile-First, decluttered, vertical action stack, and interactive status management.
  */
 
 import { authService, USER_ROLES } from "../../services/auth.service.js";
@@ -45,6 +45,11 @@ export class BranchSelectController {
       this.renderHeader();
       this.renderBranchCards();
     });
+
+    // Close any open status menus when clicking outside
+    document.addEventListener("click", () => {
+      document.querySelectorAll(".status-menu-popup.show").forEach((m) => m.classList.remove("show"));
+    });
   }
 
   loadBrandProfile() {
@@ -61,7 +66,6 @@ export class BranchSelectController {
     let stored = storageService.get("cliniva_branches", null);
 
     if (!stored || !Array.isArray(stored) || stored.length === 0) {
-      // Default initial branch for Dennis if not created yet
       const defaultBranch = {
         id: "br-sg-orchard-01",
         name: this.currentUser.branchName && this.currentUser.branchName !== "Setup Pending"
@@ -70,7 +74,7 @@ export class BranchSelectController {
         code: "SG-01",
         address: "290 Orchard Road, #09-12 Paragon Medical Suites, Singapore 238859",
         phone: "+65 6733 8899",
-        hours: "09:00 - 20:00 (Mon - Sat)",
+        hours: "Mon - Sat (09:00 - 20:00)",
         rooms: "4",
         template: this.currentUser.activeTemplate || "physio",
         currency: "SGD",
@@ -96,7 +100,6 @@ export class BranchSelectController {
     if (!Array.isArray(branches)) return [];
     const activeBranchId = storageService.get("cliniva_active_branch_id", null);
 
-    // Deduplicate by ID and by normalized Name
     const seenNames = new Set();
     const seenIds = new Set();
     const result = [];
@@ -122,7 +125,6 @@ export class BranchSelectController {
       result.push(b);
     }
 
-    // Ensure active branch ID is valid
     if (result.length > 0 && !result.some((b) => b.id === activeBranchId)) {
       storageService.set("cliniva_active_branch_id", result[0].id);
     }
@@ -134,22 +136,6 @@ export class BranchSelectController {
     const userLabel = document.getElementById("gatewayLoggedInAs");
     if (userLabel && this.currentUser) {
       userLabel.innerHTML = `Signed in as <strong>${this.currentUser.name}</strong> (${this.currentUser.title || "Owner"})`;
-    }
-
-    const titleEl = document.getElementById("gatewayBrandTitle");
-    const taglineEl = document.getElementById("gatewayBrandTagline");
-    const logoEl = document.getElementById("gatewayBrandLogo");
-
-    if (titleEl) titleEl.textContent = this.brandProfile.name || "Clinic Enterprise";
-    if (taglineEl) taglineEl.textContent = this.brandProfile.tagline || "";
-
-    if (logoEl) {
-      const logoVal = this.brandProfile.logo || "🌿";
-      if (logoVal.startsWith("data:image") || logoVal.startsWith("http") || logoVal.includes("/")) {
-        logoEl.innerHTML = `<img src="${logoVal}" alt="Brand Logo">`;
-      } else {
-        logoEl.textContent = logoVal;
-      }
     }
 
     const countBadge = document.getElementById("branchCountBadge");
@@ -176,6 +162,41 @@ export class BranchSelectController {
     }
   }
 
+  /**
+   * Sanitizes operational hours strings and eliminates any leaked Indonesian day names.
+   */
+  formatOperatingHours(rawHours) {
+    if (!rawHours) return "Mon - Sat (09:00 - 20:00)";
+    return rawHours
+      .replace(/Senin\s*-\s*Sabtu/gi, "Mon - Sat")
+      .replace(/Selasa\s*-\s*Minggu/gi, "Tue - Sun")
+      .replace(/Senin\s*-\s*Minggu/gi, "Mon - Sun")
+      .replace(/Senin\s*-\s*Jumat/gi, "Mon - Fri")
+      .replace(/Sabtu\s*-\s*Minggu/gi, "Sat - Sun")
+      .replace(/Senin/gi, "Mon")
+      .replace(/Selasa/gi, "Tue")
+      .replace(/Rabu/gi, "Wed")
+      .replace(/Kamis/gi, "Thu")
+      .replace(/Jumat/gi, "Fri")
+      .replace(/Sabtu/gi, "Sat")
+      .replace(/Minggu/gi, "Sun");
+  }
+
+  showToast(message, icon = "✅") {
+    const container = document.getElementById("gatewayToastContainer");
+    if (!container) return;
+    const toast = document.createElement("div");
+    toast.className = "gateway-toast";
+    toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.transition = "opacity 0.25s ease, transform 0.25s ease";
+      toast.style.opacity = "0";
+      toast.style.transform = "translateY(8px)";
+      setTimeout(() => toast.remove(), 250);
+    }, 2500);
+  }
+
   renderBranchCards() {
     const container = document.getElementById("branchCardsGrid");
     if (!container) return;
@@ -185,57 +206,79 @@ export class BranchSelectController {
     const cardsHtml = this.branches.map((b) => {
       const meta = this.getTemplateMeta(b.template);
       const isActive = b.id === activeBranchId;
+      const isPaused = b.status === "PAUSED" || b.status === "CLOSED" || b.status === "INACTIVE";
       const roomsCount = Array.isArray(b.rooms) ? b.rooms.length : (b.rooms || "4");
 
-      // Isolasi logo cabang: Hanya cabang primer yang menggunakan fallback Brand Profile.
-      // Cabang kedua dan seterusnya memprioritaskan b.logo mandiri atau default ikon template (anti-duplikasi foto cabang 1).
       const logoSrc = b.isPrimary ? (b.logo || this.brandProfile?.logo) : b.logo;
       const hasImageLogo = logoSrc && (logoSrc.startsWith("data:image") || logoSrc.startsWith("http") || logoSrc.includes("/"));
       const logoContent = hasImageLogo
         ? `<img src="${logoSrc}" alt="${b.name}">`
         : `<span>${b.logo || meta.icon || "🌿"}</span>`;
 
-      const mode = b.serviceMode || b.service_mode || "hybrid";
-      let modeBadge = `<span class="pill" style="background:#e0f2fe; color:#0369a1; font-weight:800; font-size:10px; padding:2px 6px;">✨ ${i18nService.t("owner.onboarding.modeHybridBadge", "Hybrid (Clinic & Home)")}</span>`;
-      if (mode === "in_clinic") {
-        modeBadge = `<span class="pill" style="background:#f1f5f9; color:#475569; font-weight:800; font-size:10px; padding:2px 6px;">🏥 ${i18nService.t("owner.onboarding.modeInClinicBadge", "In-Clinic")}</span>`;
-      } else if (mode === "home_care") {
-        modeBadge = `<span class="pill" style="background:#fef3c7; color:#92400e; font-weight:800; font-size:10px; padding:2px 6px;">🏠 ${i18nService.t("owner.onboarding.modeHomeCareBadge", "Home Care")}</span>`;
-      }
+      const cleanHours = this.formatOperatingHours(b.hours);
+      const cleanPhone = b.phone || "+65 6733 8899";
+
+      const statusLabel = isPaused
+        ? i18nService.t("owner.gateway.statusPaused", "Paused")
+        : i18nService.t("owner.gateway.statusActive", "Active");
 
       return `
-        <div class="gateway-header-card branch-card-row ${isActive ? "is-active" : ""}" data-branch-id="${b.id}">
-          <div class="gateway-brand-info">
-            <div class="gateway-brand-logo">
+        <div class="branch-card ${isActive ? "is-active" : ""}" data-branch-id="${b.id}">
+          <div class="branch-content-wrap">
+            <div class="branch-avatar">
               ${logoContent}
             </div>
-            <div class="branch-brand-text">
-              <div style="display:flex; gap:8px; align-items:center; margin-bottom:6px; flex-wrap:wrap;">
+            <div class="branch-info">
+              <div class="branch-title-row">
+                <h2>${b.name}</h2>
                 <span class="pill" style="background:${meta.bg}; color:${meta.color}; font-weight:800; font-size:11px; padding:3px 8px;">
                   ${meta.label}
                 </span>
-                ${modeBadge}
-                <span class="pill" style="background:#dcfce7; color:#15803d; font-weight:800; font-size:10px; padding:2px 6px;">
-                  ${i18nService.t("owner.activeBranchBadge", "● ACTIVE")}
-                </span>
-                ${isActive ? `<span class="pill" style="background:#0f766e; color:#ffffff; font-weight:800; font-size:10px; padding:2px 6px;">${i18nService.t("owner.gateway.openNow", "OPEN NOW")}</span>` : ""}
+
+                <!-- Interactive Status Dropdown -->
+                <div class="status-dropdown-wrap">
+                  <button type="button" class="btn-status-badge ${isPaused ? "status-paused" : "status-active"}" data-branch-id="${b.id}" title="${i18nService.t("owner.gateway.toggleStatus", "Click to change branch status")}">
+                    <span class="status-dot-pulse"></span>
+                    <span class="status-text">${statusLabel}</span>
+                    <span style="font-size:9px; margin-left:1px;">▾</span>
+                  </button>
+                  <div class="status-menu-popup" id="statusMenu-${b.id}">
+                    <button type="button" class="status-menu-item" data-action="set-active" data-branch-id="${b.id}">
+                      🟢 ${i18nService.t("owner.gateway.setOpen", "Open / Active")}
+                    </button>
+                    <button type="button" class="status-menu-item" data-action="set-paused" data-branch-id="${b.id}">
+                      ⏸️ ${i18nService.t("owner.gateway.setPaused", "Temporarily Closed")}
+                    </button>
+                    <div class="status-menu-divider"></div>
+                    <button type="button" class="status-menu-item danger-item" data-action="archive" data-branch-id="${b.id}">
+                      🗑️ ${i18nService.t("owner.gateway.archiveBranch", "Archive Branch")}
+                    </button>
+                  </div>
+                </div>
+
+                ${isActive ? `<span class="pill" style="background:#0f766e; color:#ffffff; font-weight:800; font-size:10px; padding:2px 7px;">${i18nService.t("owner.gateway.currentBranch", "CURRENT")}</span>` : ""}
               </div>
-              <h2>${b.name}</h2>
-              <p>📍 ${b.address}</p>
-              <div class="branch-meta-row">
-                <span class="branch-meta-item">📞 <strong>${b.phone || "-"}</strong></span>
-                <span class="branch-meta-item">⏰ <strong>${b.hours || "09:00 - 20:00"}</strong></span>
-                <span class="branch-meta-item">🚪 <strong>${roomsCount} Rooms</strong></span>
+
+              <div class="branch-address-line">
+                <span>📍</span>
+                <span>${b.address}</span>
+              </div>
+
+              <div class="branch-meta-chips">
+                <span class="branch-meta-chip">📞 <strong>${cleanPhone}</strong></span>
+                <span class="branch-meta-chip">⏰ <strong>${cleanHours}</strong></span>
+                <span class="branch-meta-chip">🚪 <strong>${roomsCount} Rooms</strong></span>
               </div>
             </div>
           </div>
 
-          <div class="branch-action-wrap" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-            <button type="button" class="btn btn-sm btn-soft copy-branch-link-btn" data-branch-id="${b.id}" style="padding:10px 16px; font-weight:700; white-space:nowrap; border-radius:12px; font-size:12px; display:inline-flex; align-items:center; gap:6px;">
-              🔗 <span data-i18n="owner.copyBookingLink">${i18nService.t("owner.copyBookingLink", "Copy Booking Link")}</span>
+          <!-- Vertical Action Stack -->
+          <div class="branch-actions-stack">
+            <button type="button" class="btn btn-primary btn-manage-branch select-branch-btn" data-branch-id="${b.id}">
+              ${isActive ? i18nService.t("owner.gateway.openDashboard", "Open Dashboard →") : i18nService.t("owner.gateway.manageBranch", "Manage Branch →")}
             </button>
-            <button type="button" class="btn btn-primary select-branch-btn" data-branch-id="${b.id}" style="padding:12px 24px; font-weight:800; white-space:nowrap; border-radius:12px; font-size:13px; ${isActive ? 'background:#0f766e; border-color:#0f766e;' : ''}">
-              ${isActive ? i18nService.t("owner.gateway.openActive", "Open Active Branch Dashboard →") : i18nService.t("owner.gateway.chooseAndEnter", "Select & Open Dashboard →")}
+            <button type="button" class="btn btn-copy-link copy-branch-link-btn" data-branch-id="${b.id}">
+              🔗 <span>${i18nService.t("owner.copyBookingLink", "Copy Booking Link")}</span>
             </button>
           </div>
         </div>
@@ -244,7 +287,7 @@ export class BranchSelectController {
 
     container.innerHTML = cardsHtml;
 
-    // Attach click listeners to cards and buttons
+    // Attach click listeners to Copy Link buttons
     container.querySelectorAll(".copy-branch-link-btn").forEach((btn) => {
       btn.addEventListener("click", async (e) => {
         e.stopPropagation();
@@ -258,12 +301,15 @@ export class BranchSelectController {
           await navigator.clipboard.writeText(url);
           soundService.playSuccess();
           const originalHtml = btn.innerHTML;
-          btn.innerHTML = `✅ ${i18nService.t("owner.copied", "Copied!")}`;
+          btn.innerHTML = `✅ <span>${i18nService.t("owner.copied", "Copied!")}</span>`;
           btn.style.background = "#dcfce7";
+          btn.style.borderColor = "#86efac";
           btn.style.color = "#15803d";
+          this.showToast(i18nService.t("owner.gateway.linkCopiedNotice", "Booking link copied to clipboard!"), "📋");
           setTimeout(() => {
             btn.innerHTML = originalHtml;
             btn.style.background = "";
+            btn.style.borderColor = "";
             btn.style.color = "";
           }, 2000);
         } catch (err) {
@@ -272,6 +318,7 @@ export class BranchSelectController {
       });
     });
 
+    // Attach click listeners to Select/Manage Branch buttons
     container.querySelectorAll(".select-branch-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -280,12 +327,96 @@ export class BranchSelectController {
       });
     });
 
-    container.querySelectorAll(".branch-card-row").forEach((card) => {
-      card.addEventListener("click", () => {
+    // Attach click listeners to card bodies
+    container.querySelectorAll(".branch-card").forEach((card) => {
+      card.addEventListener("click", (e) => {
+        // Prevent action if clicking inside status dropdown menu
+        if (e.target.closest(".status-dropdown-wrap")) return;
         const branchId = card.dataset.branchId;
         this.selectBranchAndGo(branchId);
       });
     });
+
+    // Attach click listeners to status badge toggle
+    container.querySelectorAll(".btn-status-badge").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const branchId = btn.dataset.branchId;
+        const menu = document.getElementById(`statusMenu-${branchId}`);
+
+        // Close any other open menus
+        document.querySelectorAll(".status-menu-popup.show").forEach((m) => {
+          if (m !== menu) m.classList.remove("show");
+        });
+
+        if (menu) {
+          menu.classList.toggle("show");
+          soundService.playClickTone();
+        }
+      });
+    });
+
+    // Attach click listeners to status menu actions
+    container.querySelectorAll(".status-menu-item").forEach((item) => {
+      item.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const branchId = item.dataset.branchId;
+        const action = item.dataset.action;
+        const branch = this.branches.find((b) => b.id === branchId);
+        if (!branch) return;
+
+        const menu = document.getElementById(`statusMenu-${branchId}`);
+        if (menu) menu.classList.remove("show");
+
+        if (action === "set-active") {
+          branch.status = "ACTIVE";
+          storageService.set("cliniva_branches", this.branches);
+          soundService.playSuccess();
+          this.showToast(`${branch.name} is now Open & Active for bookings`, "🟢");
+          this.syncBranchToCloud(branch);
+          this.renderBranchCards();
+        } else if (action === "set-paused") {
+          branch.status = "PAUSED";
+          storageService.set("cliniva_branches", this.branches);
+          soundService.playClickTone();
+          this.showToast(`${branch.name} is now Temporarily Closed (Bookings paused)`, "⏸️");
+          this.syncBranchToCloud(branch);
+          this.renderBranchCards();
+        } else if (action === "archive") {
+          const confirmMsg = i18nService.t("owner.gateway.archiveConfirm", `Archive ${branch.name}? It will be removed from your active branch list.`);
+          if (confirm(confirmMsg)) {
+            this.branches = this.branches.filter((b) => b.id !== branchId);
+            storageService.set("cliniva_branches", this.branches);
+
+            // If active branch was archived, select next branch
+            const activeId = storageService.get("cliniva_active_branch_id", null);
+            if (activeId === branchId && this.branches.length > 0) {
+              storageService.set("cliniva_active_branch_id", this.branches[0].id);
+            }
+
+            soundService.playSuccess();
+            this.showToast(`${branch.name} archived successfully`, "🗑️");
+            this.renderHeader();
+            this.renderBranchCards();
+          }
+        }
+      });
+    });
+  }
+
+  syncBranchToCloud(branch) {
+    if (supabaseService && supabaseService.isAvailable()) {
+      supabaseService.upsertBranch({
+        id: branch.id,
+        name: branch.name,
+        address: branch.address,
+        phone: branch.phone,
+        hours: branch.hours,
+        status: branch.status,
+        template: branch.template,
+        service_mode: branch.serviceMode || "hybrid"
+      }).catch(err => console.warn("[BranchSelect] Cloud status sync failed:", err));
+    }
   }
 
   selectBranchAndGo(branchId) {
@@ -305,7 +436,7 @@ export class BranchSelectController {
     // 3. Navigate to dedicated Owner Dashboard
     setTimeout(() => {
       window.location.href = "../../pages/owner/dashboard.html";
-    }, 400);
+    }, 350);
   }
 
   setupModal() {
@@ -314,16 +445,32 @@ export class BranchSelectController {
     const btnClose = document.getElementById("btnCloseNewBranchModal");
     const btnCancel = document.getElementById("btnCancelNewBranch");
     const form = document.getElementById("createBranchForm");
-    const logoInput = document.getElementById("newBranchLogoFileInput");
-    const dropZone = document.getElementById("newBranchLogoDropZone");
-    const previewEmoji = document.getElementById("newBranchLogoPreviewEmoji");
-    const previewImage = document.getElementById("newBranchLogoPreviewImage");
-    const hiddenLogoVal = document.getElementById("newBranchSelectedLogoInput");
-    const btnRemoveLogo = document.getElementById("btnRemoveNewBranchLogo");
-    const uploadTitle = document.getElementById("newBranchLogoUploadTitle");
     const postalInput = document.getElementById("newBranchPostal");
     const addressInput = document.getElementById("newBranchAddress");
     const postalFeedback = document.getElementById("postalFeedback");
+    const totalBillingEl = document.getElementById("totalBillingAmount");
+
+    // Dynamic price calculation on plan change
+    const planRadios = document.querySelectorAll('input[name="subsPlan"]');
+    planRadios.forEach((r) => {
+      r.addEventListener("change", () => {
+        const price = r.dataset.price || "948";
+        if (totalBillingEl) {
+          totalBillingEl.textContent = `SGD ${parseFloat(price).toFixed(2)}`;
+        }
+        // Update border highlights
+        document.querySelectorAll(".subs-radio-label").forEach((lbl) => {
+          lbl.style.borderColor = "var(--line)";
+          lbl.style.background = "#f8fafc";
+        });
+        const parent = r.closest(".subs-radio-label");
+        if (parent) {
+          parent.style.borderColor = "var(--primary)";
+          parent.style.background = "#f0fdfa";
+        }
+        soundService.playClickTone();
+      });
+    });
 
     // OneMap API Auto-fill (Singapore Postal Code Validation)
     if (postalInput && addressInput) {
@@ -371,7 +518,6 @@ export class BranchSelectController {
         }
       });
     }
-    // AKHIR MODIFIKASI
 
     if (btnOpen) {
       btnOpen.addEventListener("click", () => this.openNewBranchModal());
@@ -380,47 +526,6 @@ export class BranchSelectController {
     const closeModal = () => {
       if (modalOverlay) modalOverlay.style.display = "none";
     };
-
-    // AWAL MODIFIKASI: Logika Upload Logo Cabang
-    if (dropZone && logoInput) {
-      dropZone.addEventListener("click", () => logoInput.click());
-
-      logoInput.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        // Validate image file size (max 3MB)
-        if (file.size > 3 * 1024 * 1024) {
-          alert(i18nService.t("owner.gateway.maxImageSize", "Maximum image file size is 3MB."));
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          const dataUrl = ev.target.result;
-          hiddenLogoVal.value = dataUrl;
-          previewImage.src = dataUrl;
-          previewImage.style.display = "block";
-          previewEmoji.style.display = "none";
-          btnRemoveLogo.style.display = "inline-block";
-          uploadTitle.textContent = i18nService.t("owner.gateway.logoUploaded", "Logo uploaded successfully");
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    if (btnRemoveLogo) {
-      btnRemoveLogo.addEventListener("click", (e) => {
-        e.stopPropagation();
-        logoInput.value = "";
-        hiddenLogoVal.value = "";
-        previewImage.src = "";
-        previewImage.style.display = "none";
-        previewEmoji.style.display = "block";
-        btnRemoveLogo.style.display = "none";
-        uploadTitle.textContent = i18nService.t("owner.gateway.clickUploadLogo", "Click to upload branch logo");
-      });
-    }
 
     // Service Mode Radio selection in new branch modal
     const modeLabels = document.querySelectorAll(".new-branch-mode-label");
@@ -443,14 +548,12 @@ export class BranchSelectController {
         soundService.playClickTone();
       });
     });
-    // AKHIR MODIFIKASI
 
     if (btnClose) btnClose.addEventListener("click", closeModal);
     if (btnCancel) btnCancel.addEventListener("click", closeModal);
 
     if (modalOverlay) {
       modalOverlay.addEventListener("click", (e) => {
-        // Pastikan yang diklik adalah background gelapnya, bukan area dalam form
         if (e.target === modalOverlay) {
           closeModal();
         }
@@ -465,8 +568,7 @@ export class BranchSelectController {
         const template = document.getElementById("newBranchTemplate")?.value || "physio";
         const address = document.getElementById("newBranchAddress")?.value.trim();
         const phone = document.getElementById("newBranchPhone")?.value.trim() || "+65 6888 1234";
-        const hours = document.getElementById("newBranchHours")?.value.trim() || "09:00 - 20:00";
-        const rooms = document.getElementById("newBranchRooms")?.value || "4";
+        const hours = document.getElementById("newBranchHours")?.value.trim() || "Mon - Sat (09:00 - 20:00)";
 
         if (!name || !address) {
           alert(i18nService.t("owner.gateway.branchNameAddressRequired", "Please fill in the new branch name and address."));
@@ -483,10 +585,10 @@ export class BranchSelectController {
           address,
           phone,
           hours,
-          rooms,
+          rooms: "4",
           template,
           serviceMode,
-          logo: document.getElementById("newBranchSelectedLogoInput")?.value || meta.icon,
+          logo: meta.icon,
           currency: "SGD",
           revenue: "SGD 0.00",
           occupancy: "0.0%",
@@ -521,25 +623,13 @@ export class BranchSelectController {
         storageService.set("cliniva_owner_subscriptions", [subscription, ...existingSubs]);
 
         // Sync to Supabase Cloud if available
-        if (supabaseService.isAvailable()) {
-          supabaseService.upsertBranch({
-            id: newBranchId,
-            name,
-            address,
-            phone,
-            hours,
-            regionCode: "sg",
-            region: "Singapore",
-            country: "Singapore",
-            currency: "SGD",
-            template,
-            service_mode: serviceMode
-          }).catch(err => console.warn("[BranchSelect] Cloud branch sync failed:", err));
-        }
+        this.syncBranchToCloud(newBranch);
 
-        soundService.playQueueChime();
+        soundService.playSuccess();
         closeModal();
         form.reset();
+
+        this.showToast(`${name} registered & activated!`, "🚀");
 
         // Immediately activate newly created branch and enter dashboard
         this.selectBranchAndGo(newBranchId);

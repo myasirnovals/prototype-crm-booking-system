@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="owner.gatewayPageTitle">Select Branch — Cliniva Clinic Gateway</title>
+  <title data-i18n="owner.gatewayPageTitle">Select Branch — Cliniva</title>
   <meta name="description"
-    content="Active clinic branch gateway for Owner before entering the operational dashboard." />
+    content="Active clinic branch selector and management gateway for clinic owners." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,199 +19,328 @@
 
   <style>
     .gateway-container {
-      max-width: 980px;
-      margin: 40px auto;
+      max-width: 960px;
+      margin: 36px auto;
       padding: 0 20px;
     }
 
-    .gateway-header-card {
+    /* Page Header Clean Styling */
+    .gateway-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .gateway-top-bar h1 {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      margin: 0 0 6px;
+    }
+
+    .gateway-top-bar p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* Modern Card Layout */
+    .branch-card {
       background: #ffffff;
       border: 1.5px solid #e2e8f0;
-      border-radius: var(--radius-xl);
-      padding: 24px 32px;
-      box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.04);
-      margin-bottom: 16px;
+      border-radius: 20px;
+      padding: 22px 26px;
+      box-shadow: 0 4px 18px -4px rgba(15, 23, 42, 0.04);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      transition: all 0.25s ease;
-      cursor: pointer;
+      gap: 24px;
+      margin-bottom: 16px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
     }
 
-    .gateway-header-card:hover {
-      border-color: var(--primary);
+    .branch-card:hover {
+      border-color: #cbd5e1;
       transform: translateY(-2px);
-      box-shadow: 0 12px 28px -8px rgba(15, 118, 110, 0.15);
+      box-shadow: 0 10px 28px -6px rgba(15, 23, 42, 0.08);
     }
 
-    .gateway-header-card.is-active {
+    .branch-card.is-active {
       border-color: var(--primary);
-      background: #fcfefe;
-      box-shadow: 0 8px 24px -6px rgba(15, 118, 110, 0.15);
+      box-shadow: 0 8px 24px -4px rgba(15, 118, 110, 0.12);
+      background: #ffffff;
     }
 
-    .gateway-brand-info {
+    .branch-content-wrap {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 18px;
       flex: 1;
-      min-width: 280px;
+      min-width: 0;
     }
 
-    .gateway-brand-logo {
-      width: 64px;
-      height: 64px;
-      border-radius: 18px;
+    .branch-avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
       background: #f0fdfa;
-      border: 1.5px solid #99f6e4;
+      border: 1.5px solid #ccfbf1;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 32px;
+      font-size: 28px;
       overflow: hidden;
       flex-shrink: 0;
     }
 
-    .gateway-brand-logo img {
+    .branch-avatar img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       padding: 4px;
     }
 
-    .branch-brand-text {
+    .branch-info {
       flex: 1;
+      min-width: 0;
     }
 
-    .branch-brand-text h2 {
-      font-size: 20px;
-      font-weight: 800;
-      margin: 0 0 4px;
-      letter-spacing: -0.4px;
-      color: var(--text);
-    }
-
-    .branch-brand-text p {
-      font-size: 13px;
-      color: var(--muted);
-      margin: 0 0 8px;
-      line-height: 1.4;
-    }
-
-    .branch-meta-row {
+    .branch-title-row {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .branch-title-row h2 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .branch-address-line {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 10px;
+      line-height: 1.45;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .branch-meta-chips {
+      display: flex;
+      align-items: center;
+      gap: 14px;
       font-size: 12px;
       color: #475569;
       flex-wrap: wrap;
     }
 
-    .branch-meta-item {
+    .branch-meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f8fafc;
+      padding: 4px 10px;
+      border-radius: 8px;
+      border: 1px solid #f1f5f9;
+      font-weight: 600;
+    }
+
+    /* Vertical Action Stack on the Right */
+    .branch-actions-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 210px;
+      flex-shrink: 0;
+    }
+
+    .branch-actions-stack .btn {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+      border-radius: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .btn-manage-branch {
+      padding: 11px 16px;
+      font-size: 13px;
+      box-shadow: 0 2px 8px rgba(15, 118, 110, 0.18);
+    }
+
+    .btn-copy-link {
+      padding: 9px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      color: #334155;
       display: inline-flex;
       align-items: center;
       gap: 6px;
     }
 
-    .branch-action-wrap {
-      flex-shrink: 0;
+    .btn-copy-link:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      color: var(--text);
     }
 
-    @media (max-width: 768px) {
-      .gateway-header-card {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 20px;
-      }
-
-      .branch-action-wrap {
-        width: 100%;
-      }
-
-      .branch-action-wrap button {
-        width: 100%;
-        text-align: center;
-      }
+    /* Interactive Status Badge & Dropdown */
+    .status-dropdown-wrap {
+      position: relative;
+      display: inline-block;
     }
-  </style>
-</head>
 
-<body style="background:#f1f5f9; min-height:100vh;">
+    .btn-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: #dcfce7;
+      color: #15803d;
+      border-color: #bbf7d0;
+    }
 
-  <!-- Minimal Header -->
-  <header style="background:#ffffff; border-bottom:1px solid var(--line); padding:16px 28px;">
-    <div style="max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center;">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <span style="font-size:22px; color:var(--primary);">✦</span>
-        <span style="font-size:18px; font-weight:900; letter-spacing:-0.5px;">Cliniva Gateway</span>
-        <span class="pill"
-          style="font-size:11px; padding:3px 8px; background:#f0fdfa; color:var(--primary-dark); font-weight:800;">Branch
-          Selector</span>
-      </div>
-      <div style="display:flex; align-items:center; gap:14px;">
-        <!-- Language Switcher -->
-        <div class="lang-switcher-wrap" style="position:relative;">
-          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
-            <option value="en">🇬🇧 English</option>
-            <option value="zh">🇸🇬 华语 (Singapura)</option>
-            <option value="ms">🇲🇾 Bahasa Melayu (Malaysia)</option>
-          </select>
-        </div>
+    .btn-status-badge:hover {
+      filter: brightness(0.96);
+      transform: scale(1.02);
+    }
 
-        <span id="gatewayLoggedInAs" style="font-size:12px; color:var(--muted); font-weight:600;">Signed in as <strong>Dennis Pratama</strong> (Owner)</span>
-        <button type="button" class="btn btn-sm btn-white" id="gatewaySignOutBtn" data-i18n="nav.signOut">Sign Out</button>
-      </div>
-    </div>
-  </header>
+    .btn-status-badge.status-paused {
+      background: #fef3c7;
+      color: #92400e;
+      border-color: #fde68a;
+    }
 
-  <main class="gateway-container">
-    <!-- Section Heading & Global Action Bar -->
-    <div
-      style="margin-bottom:24px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
-      <div>
-        <div class="pill" style="font-size:11px; padding:3px 10px; background:#e0f2fe; color:#0369a1; font-weight:800; margin-bottom:8px;" data-i18n="owner.gateway.badge">
-          🏢 Owner Gateway · Operational Branch Selection
-        </div>
-        <h1 style="font-size:24px; font-weight:900; margin:0 0 4px; letter-spacing:-0.5px; color:var(--text);" data-i18n="owner.gateway.title">
-          Select Active Operational Branch
-        </h1>
-        <p style="font-size:13px; color:var(--muted); margin:0;" data-i18n="owner.gateway.desc">
-          Choose the clinic branch you wish to manage to access its branch-specific operations console.
-        </p>
-      </div>
-      <div style="display:flex; align-items:center; gap:12px;">
-        <span class="pill" id="branchCountBadge" style="font-size:12px; padding:7px 14px; background:#e2e8f0; font-weight:700; color:#334155;">
-          -- Registered Branches
-        </span>
-        <button type="button" class="btn btn-primary" id="btnOpenNewBranchModal" style="padding:10px 18px; font-weight:800; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(15,118,110,0.25);">
-          <span>➕</span> <span data-i18n="owner.gateway.btnNewBranch">Register New Branch</span>
-        </button>
-      </div>
-    </div>
+    .status-dot-pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
 
-    <!-- Branch Cards List: Every branch styled uniformly using the gateway-header-card benchmark -->
-    <div class="branch-list" id="branchCardsGrid" style="display:flex; flex-direction:column; gap:16px;">
-      <!-- Dynamic branches rendered via branch-select.controller.js -->
-    </div>
-  </main>
+    .status-menu-popup {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12);
+      padding: 6px;
+      min-width: 190px;
+      z-index: 50;
+      display: none;
+    }
 
-  <!-- Tambahan CSS Khusus Modal -->
-  <style>
-    /* Menyembunyikan scrollbar tapi tetap bisa di-scroll */
+    .status-menu-popup.show {
+      display: block;
+      animation: menuFadeIn 0.15s ease-out forwards;
+    }
+
+    @keyframes menuFadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .status-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s ease;
+    }
+
+    .status-menu-item:hover {
+      background: #f1f5f9;
+      color: var(--text);
+    }
+
+    .status-menu-item.danger-item {
+      color: #dc2626;
+    }
+
+    .status-menu-item.danger-item:hover {
+      background: #fee2e2;
+    }
+
+    .status-menu-divider {
+      height: 1px;
+      background: #f1f5f9;
+      margin: 4px 0;
+    }
+
+    /* Toast Notification Container */
+    .gateway-toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .gateway-toast {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastSlideUp 0.25s ease forwards;
+    }
+
+    @keyframes toastSlideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Modal Styling */
     .hide-scrollbar::-webkit-scrollbar {
       display: none;
     }
 
     .hide-scrollbar {
       -ms-overflow-style: none;
-      /* IE and Edge */
       scrollbar-width: none;
-      /* Firefox */
     }
 
-    /* Memperjelas visual tombol Close */
     .btn-close-modal {
       background: #f1f5f9;
       border: none;
@@ -231,16 +360,84 @@
       background: #fee2e2;
       color: #ef4444;
     }
+
+    @media (max-width: 768px) {
+      .branch-card {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 18px;
+        gap: 16px;
+      }
+
+      .branch-actions-stack {
+        width: 100%;
+      }
+    }
   </style>
+</head>
+
+<body style="background:#f8fafc; min-height:100vh;">
+
+  <!-- Minimal Header -->
+  <header style="background:#ffffff; border-bottom:1px solid var(--line); padding:16px 28px;">
+    <div style="max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:22px; color:var(--primary);">✦</span>
+        <span style="font-size:18px; font-weight:900; letter-spacing:-0.5px;">Cliniva</span>
+        <span class="pill"
+          style="font-size:11px; padding:3px 8px; background:#f0fdfa; color:var(--primary-dark); font-weight:800;"
+          data-i18n="owner.gateway.badge">Branch Gateway</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px;">
+        <!-- Language Switcher -->
+        <div class="lang-switcher-wrap" style="position:relative;">
+          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+            <option value="en">🇬🇧 English</option>
+            <option value="zh">🇸🇬 华语 (Singapura)</option>
+            <option value="ms">🇲🇾 Bahasa Melayu (Malaysia)</option>
+          </select>
+        </div>
+
+        <span id="gatewayLoggedInAs" style="font-size:12px; color:var(--muted); font-weight:600;">Signed in as <strong>Dennis Pratama</strong></span>
+        <button type="button" class="btn btn-sm btn-white" id="gatewaySignOutBtn" data-i18n="nav.signOut">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="gateway-container">
+    <!-- Section Heading & Clean Action Bar -->
+    <div class="gateway-top-bar">
+      <div>
+        <h1 data-i18n="owner.gateway.title">Your Branches</h1>
+        <p data-i18n="owner.gateway.desc">Manage clinic operations or share booking links with patients.</p>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span class="pill" id="branchCountBadge" style="font-size:12px; padding:8px 14px; background:#ffffff; border:1px solid #e2e8f0; font-weight:700; color:#475569;">
+          -- Registered Branches
+        </span>
+        <button type="button" class="btn btn-primary" id="btnOpenNewBranchModal" style="padding:10px 18px; font-weight:800; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(15,118,110,0.25);">
+          <span>➕</span> <span data-i18n="owner.gateway.btnNewBranch">+ Add Branch</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Branch Cards List -->
+    <div class="branch-list" id="branchCardsGrid">
+      <!-- Dynamically rendered via branch-select.controller.js -->
+    </div>
+  </main>
 
   <!-- Modal Tambah Cabang Baru -->
   <div id="newBranchModalOverlay"
-    style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center; backdrop-filter:blur(3px);">
+    style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.5); z-index:999; align-items:center; justify-content:center; backdrop-filter:blur(3px);">
     <div class="hide-scrollbar"
-      style="background:#ffffff; border-radius:var(--radius-xl); max-width:560px; width:90%; max-height: 90vh; overflow-y: auto; padding:32px; box-shadow:0 20px 40px rgba(0,0,0,0.2); position:relative;">
+      style="background:#ffffff; border-radius:var(--radius-xl); max-width:540px; width:92%; max-height: 90vh; overflow-y: auto; padding:28px 32px; box-shadow:0 24px 50px rgba(0,0,0,0.2); position:relative;">
       <div
-        style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid #e2e8f0; padding-bottom:14px;">
-        <h3 style="margin:0; font-size:18px; font-weight:800;" data-i18n="owner.gateway.modalTitle">🏢 Register New Branch</h3>
+        style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; border-bottom:1px solid #e2e8f0; padding-bottom:14px;">
+        <div>
+          <h3 style="margin:0 0 4px; font-size:18px; font-weight:800; color:var(--text);" data-i18n="owner.gateway.modalTitle">🏢 Register New Branch</h3>
+          <p style="margin:0; font-size:12px; color:var(--muted);">Add an operational clinic location under your brand.</p>
+        </div>
         <button type="button" id="btnCloseNewBranchModal" class="btn-close-modal" title="Close">&times;</button>
       </div>
 
@@ -250,31 +447,8 @@
           <input type="text" id="newBranchName" placeholder="e.g. Marina Bay Wellness Center (Branch 2)" required>
         </div>
 
-        <!-- Uploader Logo Cabang -->
         <div class="field">
-          <label for="newBranchLogoFileInput">Branch Logo <span
-              style="font-weight:400; color:var(--muted); font-size:12px;">(Optional, max 3MB)</span></label>
-
-          <input type="file" id="newBranchLogoFileInput" accept="image/png, image/jpeg, image/webp, image/svg+xml"
-            style="display:none;">
-          <input type="hidden" id="newBranchSelectedLogoInput" value="">
-
-          <div id="newBranchLogoDropZone"
-            style="border: 2px dashed #cbd5e1; border-radius: var(--radius-lg); padding: 16px; background: #f8fafc; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.2s;">
-            <div
-              style="width: 56px; height: 56px; border-radius: 12px; background: #ffffff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 24px;">
-              <span id="newBranchLogoPreviewEmoji">🏢</span>
-              <img id="newBranchLogoPreviewImage" src="" alt="Branch Logo"
-                style="display:none; width: 100%; height: 100%; object-fit: contain; padding:2px;">
-            </div>
-            <div style="font-size: 12px; color: var(--muted);" id="newBranchLogoUploadTitle">Click to upload branch logo</div>
-            <button type="button" class="btn btn-sm btn-soft" id="btnRemoveNewBranchLogo"
-              style="display:none; color:#ef4444; font-size: 11px; padding: 4px 8px;">✕ Remove</button>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="newBranchTemplate">Branch Business Template</label>
+          <label for="newBranchTemplate">Branch Practice Template</label>
           <select id="newBranchTemplate">
             <option value="physio" selected>🏃 Physiotherapy &amp; Sports Rehab</option>
             <option value="wellness">🌸 Wellness &amp; Spa Care</option>
@@ -284,23 +458,23 @@
           </select>
         </div>
 
-        <!-- Service Delivery Model for Branch -->
-        <div class="field" style="margin: 16px 0; padding: 14px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: var(--radius-md);">
-          <label style="font-weight: 800; font-size: 13px; color: var(--text); margin-bottom: 4px; display: block;" data-i18n="owner.onboarding.serviceModeLabel">
+        <!-- Service Delivery Model -->
+        <div class="field" style="margin: 14px 0; padding: 12px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: var(--radius-md);">
+          <label style="font-weight: 800; font-size: 12px; color: var(--text); margin-bottom: 6px; display: block;" data-i18n="owner.onboarding.serviceModeLabel">
             Service Delivery Model <span style="color:#ef4444;">*</span>
           </label>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 8px;" id="newBranchServiceModeContainer">
-            <label class="new-branch-mode-label" style="border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px; cursor: pointer; background: #fff; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700;">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;" id="newBranchServiceModeContainer">
+            <label class="new-branch-mode-label" style="border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; cursor: pointer; background: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700;">
               <input type="radio" name="newBranchServiceMode" value="in_clinic" style="cursor:pointer;">
-              <span data-i18n="owner.onboarding.modeInClinicTitle">🏥 In-Clinic</span>
+              <span data-i18n="owner.onboarding.modeInClinicTitle">🏥 Clinic</span>
             </label>
-            <label class="new-branch-mode-label" style="border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px; cursor: pointer; background: #fff; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700;">
+            <label class="new-branch-mode-label" style="border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; cursor: pointer; background: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700;">
               <input type="radio" name="newBranchServiceMode" value="home_care" style="cursor:pointer;">
-              <span data-i18n="owner.onboarding.modeHomeCareTitle">🏠 Home Care</span>
+              <span data-i18n="owner.onboarding.modeHomeCareTitle">🏠 Home</span>
             </label>
-            <label class="new-branch-mode-label active" style="border: 2px solid var(--primary); border-radius: 8px; padding: 10px; cursor: pointer; background: #f0fdfa; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--primary-dark);">
+            <label class="new-branch-mode-label active" style="border: 2px solid var(--primary); border-radius: 8px; padding: 8px; cursor: pointer; background: #f0fdfa; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--primary-dark);">
               <input type="radio" name="newBranchServiceMode" value="hybrid" checked style="cursor:pointer;">
-              <span data-i18n="owner.onboarding.modeHybridTitle">✨ Hybrid (Both)</span>
+              <span data-i18n="owner.onboarding.modeHybridTitle">✨ Hybrid</span>
             </label>
           </div>
         </div>
@@ -315,87 +489,86 @@
           </div>
           <div class="field" style="flex: 1;">
             <label for="newBranchAddress">Full Branch Address <span style="color:#ef4444;">*</span></label>
-            <input type="text" id="newBranchAddress" placeholder="Building, Street, Unit No., Postal Code" required="">
+            <input type="text" id="newBranchAddress" placeholder="Building, Street, Unit No., Postal Code" required>
           </div>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="newBranchPhone">Branch WhatsApp / Phone</label>
+            <label for="newBranchPhone">Branch Contact Phone</label>
             <input type="tel" id="newBranchPhone" placeholder="+65 6888 1234" required>
           </div>
           <div class="field">
             <label for="newBranchHours">Operating Hours</label>
-            <input type="text" id="newBranchHours" placeholder="09:00 - 20:00 (Mon - Sat)" value="09:00 - 20:00 (Mon - Sat)">
+            <input type="text" id="newBranchHours" placeholder="Mon - Sat (09:00 - 20:00)" value="Mon - Sat (09:00 - 20:00)">
           </div>
         </div>
 
-        <div class="field">
-          <label for="newBranchRooms">Treatment Rooms / Bays</label>
-          <select id="newBranchRooms">
-            <option value="2">2 Private Therapy Rooms</option>
-            <option value="4" selected>4 Standard Therapy Rooms</option>
-            <option value="6">6 Therapy Rooms &amp; Bays</option>
-            <option value="8">8+ Multi-Specialty Treatment Rooms</option>
-          </select>
+        <!-- Compact Logo Picker / Upload -->
+        <div class="field" style="display:none;">
+          <input type="file" id="newBranchLogoFileInput" accept="image/png, image/jpeg, image/webp" style="display:none;">
+          <input type="hidden" id="newBranchSelectedLogoInput" value="">
         </div>
 
         <!-- PENAGIHAN LANGGANAN CABANG B2B -->
-        <hr style="border:0; border-top:1px dashed #cbd5e1; margin:24px 0;">
-        <h4 style="margin:0 0 16px; font-size:15px; font-weight:800; color:var(--text);">💳 Select Branch Subscription Plan</h4>
+        <hr style="border:0; border-top:1px dashed #cbd5e1; margin:20px 0;">
+        <h4 style="margin:0 0 12px; font-size:14px; font-weight:800; color:var(--text);">💳 Subscription Plan &amp; Billing</h4>
 
         <div class="field" style="margin-bottom: 8px;">
-          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
 
             <!-- 1 Month -->
             <label
-              style="flex:1; border:1.5px solid var(--line); border-radius:10px; padding:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
+              style="flex:1; min-width:100px; border:1.5px solid var(--line); border-radius:10px; padding:10px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc;"
               class="subs-radio-label">
-              <input type="radio" name="subsPlan" value="1" data-price="99" style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--text);">1 Month</span>
-              <span style="color:var(--muted); font-size:12px;">SGD 99/mo</span>
+              <input type="radio" name="subsPlan" value="1" data-price="99" style="margin-bottom:6px;">
+              <span style="font-weight:800; font-size:13px; color:var(--text);">1 Month</span>
+              <span style="color:var(--muted); font-size:11px;">SGD 99/mo</span>
             </label>
 
             <!-- 6 Months -->
             <label
-              style="flex:1; border:1.5px solid var(--line); border-radius:10px; padding:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
+              style="flex:1; min-width:100px; border:1.5px solid var(--line); border-radius:10px; padding:10px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc;"
               class="subs-radio-label">
-              <input type="radio" name="subsPlan" value="6" data-price="534" style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--text);">6 Months</span>
-              <span style="color:var(--muted); font-size:12px;">SGD 89/mo (Save 10%)</span>
+              <input type="radio" name="subsPlan" value="6" data-price="534" style="margin-bottom:6px;">
+              <span style="font-weight:800; font-size:13px; color:var(--text);">6 Months</span>
+              <span style="color:var(--muted); font-size:11px;">SGD 89/mo</span>
             </label>
 
             <!-- 1 Year -->
             <label
-              style="flex:1; border:1.5px solid var(--primary); border-radius:10px; padding:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f0fdfa; position:relative;"
+              style="flex:1; min-width:100px; border:1.5px solid var(--primary); border-radius:10px; padding:10px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f0fdfa; position:relative;"
               class="subs-radio-label">
               <div
-                style="position:absolute; top:-10px; background:var(--primary); color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:0.5px;">
+                style="position:absolute; top:-9px; background:var(--primary); color:#fff; font-size:9px; font-weight:800; padding:2px 6px; border-radius:8px;">
                 BEST VALUE</div>
-              <input type="radio" name="subsPlan" value="12" data-price="948" checked style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--primary);">1 Year</span>
-              <span style="color:var(--primary-dark); font-size:12px;">SGD 79/mo (Save 20%)</span>
+              <input type="radio" name="subsPlan" value="12" data-price="948" checked style="margin-bottom:6px;">
+              <span style="font-weight:800; font-size:13px; color:var(--primary);">1 Year</span>
+              <span style="color:var(--primary-dark); font-size:11px;">SGD 79/mo</span>
             </label>
 
           </div>
         </div>
 
         <div
-          style="background:#f1f5f9; padding:16px; border-radius:10px; margin-bottom:16px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
+          style="background:#f8fafc; padding:14px; border-radius:10px; margin:16px 0; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
           <div>
-            <div style="font-size:12px; color:var(--muted); font-weight:600;">Total System Bill:</div>
-            <div style="font-size:11px; color:#64748b; margin-top:2px;">Will be billed to saved Credit Card</div>
+            <div style="font-size:12px; color:var(--muted); font-weight:600;">Total B2B System Bill:</div>
+            <div style="font-size:11px; color:#64748b;">Includes full branch operational access</div>
           </div>
-          <div style="font-size:22px; font-weight:900; color:var(--text);" id="totalBillingAmount">SGD 948.00</div>
+          <div style="font-size:20px; font-weight:900; color:var(--primary-dark);" id="totalBillingAmount">SGD 948.00</div>
         </div>
 
-        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:24px;">
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
           <button type="button" class="btn btn-soft" id="btnCancelNewBranch" data-i18n="branchAdmin.modalBtnCancel">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="btnSubmitBranch" style="width:100%;">🚀 Create Branch</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitBranch" style="padding:10px 20px;">Confirm &amp; Pay →</button>
         </div>
       </form>
     </div>
   </div>
+
+  <!-- Toast Notification Container -->
+  <div class="gateway-toast-container" id="gatewayToastContainer"></div>
 
   <!-- Page Script Bootstrap -->
   <script type="module" src="../../js/pages/branch-select.js"></script>

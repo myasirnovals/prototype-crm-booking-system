@@ -626,13 +626,15 @@
       </div>
       <div style="display:flex; align-items:center; gap:14px;">
         <div class="lang-switcher-wrap" style="display:inline-block;">
-          <select class="lang-dropdown lang-select" aria-label="Language selection" style="padding: 6px 10px; font-size: 12px; font-weight: 700; border: 1.5px solid var(--line); border-radius: var(--radius-sm); background: #ffffff; cursor: pointer; color: var(--text);">
+          <select class="lang-dropdown lang-select" aria-label="Language selection"
+            style="padding: 6px 10px; font-size: 12px; font-weight: 700; border: 1.5px solid var(--line); border-radius: var(--radius-sm); background: #ffffff; cursor: pointer; color: var(--text);">
             <option value="en">🇬🇧 English</option>
             <option value="zh">🇸🇬 新加坡 (华语)</option>
             <option value="ms">🇲🇾 Malaysia (Melayu)</option>
           </select>
         </div>
-        <span id="wizardLoggedInAs" style="font-size:12px; color:var(--muted); font-weight:600;">Signed in as <strong>Dennis Pratama</strong></span>
+        <span id="wizardLoggedInAs" style="font-size:12px; color:var(--muted); font-weight:600;">Signed in as
+          <strong>Dennis Pratama</strong></span>
         <button type="button" class="btn btn-sm btn-white" id="wizardSignOutBtn">Sign Out</button>
       </div>
     </div>
@@ -642,23 +644,34 @@
     <div class="wizard-card">
 
       <!-- RETURNING OWNER NOTIFICATION BANNER -->
-      <div id="returningOwnerBanner" style="display:none; background:#f0fdfa; border:2px solid var(--primary); border-radius:var(--radius-lg); padding:24px; margin-bottom:28px; box-shadow:0 8px 24px -6px rgba(15,118,110,0.18);">
+      <div id="returningOwnerBanner"
+        style="display:none; background:#f0fdfa; border:2px solid var(--primary); border-radius:var(--radius-lg); padding:24px; margin-bottom:28px; box-shadow:0 8px 24px -6px rgba(15,118,110,0.18);">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
           <div style="display:flex; gap:14px; align-items:flex-start;">
-            <div style="font-size:32px; line-height:1; background:#ffffff; border-radius:12px; padding:8px; border:1px solid #ccfbf1;">🏢</div>
+            <div
+              style="font-size:32px; line-height:1; background:#ffffff; border-radius:12px; padding:8px; border:1px solid #ccfbf1;">
+              🏢</div>
             <div>
-              <div class="pill" style="font-size:11px; padding:2px 8px; background:#ccfbf1; color:var(--primary-dark); font-weight:800; margin-bottom:6px;" data-i18n="owner.onboarding.returningTitle">Clinic Brand Already Established</div>
-              <h3 style="margin:0 0 6px; font-size:18px; font-weight:800; color:var(--text);" id="returningBrandName">Dennis Health &amp; Wellness Hub</h3>
-              <p style="margin:0; font-size:13px; color:var(--muted); line-height:1.5;" id="returningOwnerNotice" data-i18n="owner.onboarding.returningDesc">
-                You have already completed initial onboarding for your clinic enterprise. You can manage existing branches or provision an additional location below.
+              <div class="pill"
+                style="font-size:11px; padding:2px 8px; background:#ccfbf1; color:var(--primary-dark); font-weight:800; margin-bottom:6px;"
+                data-i18n="owner.onboarding.returningTitle">Clinic Brand Already Established</div>
+              <h3 style="margin:0 0 6px; font-size:18px; font-weight:800; color:var(--text);" id="returningBrandName">
+                Dennis Health &amp; Wellness Hub</h3>
+              <p style="margin:0; font-size:13px; color:var(--muted); line-height:1.5;" id="returningOwnerNotice"
+                data-i18n="owner.onboarding.returningDesc">
+                You have already completed initial onboarding for your clinic enterprise. You can manage existing
+                branches or provision an additional location below.
               </p>
             </div>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-            <a href="branch-select.html" class="btn btn-primary" style="font-weight:800; text-decoration:none; padding:10px 18px;" data-i18n="owner.onboarding.btnGoGateway">
+            <a href="branch-select.html" class="btn btn-primary"
+              style="font-weight:800; text-decoration:none; padding:10px 18px;"
+              data-i18n="owner.onboarding.btnGoGateway">
               🏢 Go to Branch Gateway →
             </a>
-            <button type="button" class="btn btn-soft" id="btnContinueFastTrack" style="font-weight:800; padding:10px 16px;" data-i18n="owner.onboarding.btnAddBranch">
+            <button type="button" class="btn btn-soft" id="btnContinueFastTrack"
+              style="font-weight:800; padding:10px 16px;" data-i18n="owner.onboarding.btnAddBranch">
               ➕ Provision Another Branch
             </button>
           </div>
@@ -689,9 +702,11 @@
       <div class="wizard-step-panel active" id="wizardStep1" style="display:block !important;">
         <div style="margin-bottom:20px;">
           <div class="pill" style="margin-bottom:8px; font-size:11px;">Step 1 of 4: Business Template</div>
-          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Select Your Specialty Practice Template</h2>
+          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Select Your Specialty Practice Template
+          </h2>
           <p style="color:var(--muted); font-size:14px; margin:0;">
-            Cliniva will automatically provision clinical intake forms, treatment workflows, pain maps, and appointment schemas tailored for this specialty.
+            Cliniva will automatically provision clinical intake forms, treatment workflows, pain maps, and appointment
+            schemas tailored for this specialty.
           </p>
         </div>
 
@@ -700,8 +715,10 @@
           <div class="template-carousel-container">
             <!-- Prev Button (Icon Only) -->
             <button type="button" class="btn-template-nav btn-template-prev" id="btnPrevTemplate"
-              aria-label="Previous Template" title="Previous Template" data-i18n-title="owner.onboarding.btnPrevTemplate">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              aria-label="Previous Template" title="Previous Template"
+              data-i18n-title="owner.onboarding.btnPrevTemplate">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="15 18 9 12 15 6"></polyline>
               </svg>
             </button>
@@ -713,12 +730,17 @@
                 <div class="template-card" data-template="tcm">
                   <div>
                     <div class="template-card-preview-wrap">
-                      <img src="../../assets/template-images/tcm-template.png" alt="Traditional Chinese Medicine Interface Preview" class="template-card-preview-img" loading="lazy">
+                      <img src="../../assets/template-images/tcm-template.png"
+                        alt="Traditional Chinese Medicine Interface Preview" class="template-card-preview-img"
+                        loading="lazy">
                       <div class="template-preview-tag-wrap">
-                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live
+                          Interface</span>
                         <div style="display:flex; gap:6px; align-items:center;">
                           <span class="template-active-badge">✓ Selected</span>
-                          <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/tcm-template.png" data-title="Traditional Chinese Medicine (TCM)" title="Zoom full screenshot">
+                          <button type="button" class="btn-preview-zoom"
+                            data-preview="../../assets/template-images/tcm-template.png"
+                            data-title="Traditional Chinese Medicine (TCM)" title="Zoom full screenshot">
                             🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
                           </button>
                         </div>
@@ -743,12 +765,17 @@
                 <div class="template-card" data-template="wellness">
                   <div>
                     <div class="template-card-preview-wrap">
-                      <img src="../../assets/template-images/spa-template.png" alt="Wellness &amp; Luxury Spa Care Interface Preview" class="template-card-preview-img" loading="lazy">
+                      <img src="../../assets/template-images/spa-template.png"
+                        alt="Wellness &amp; Luxury Spa Care Interface Preview" class="template-card-preview-img"
+                        loading="lazy">
                       <div class="template-preview-tag-wrap">
-                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live
+                          Interface</span>
                         <div style="display:flex; gap:6px; align-items:center;">
                           <span class="template-active-badge">✓ Selected</span>
-                          <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/spa-template.png" data-title="Wellness &amp; Luxury Spa Care" title="Zoom full screenshot">
+                          <button type="button" class="btn-preview-zoom"
+                            data-preview="../../assets/template-images/spa-template.png"
+                            data-title="Wellness &amp; Luxury Spa Care" title="Zoom full screenshot">
                             🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
                           </button>
                         </div>
@@ -773,12 +800,17 @@
                 <div class="template-card active" data-template="physio">
                   <div>
                     <div class="template-card-preview-wrap">
-                      <img src="../../assets/template-images/physio-template.png" alt="Physiotherapy &amp; Sports Rehab Interface Preview" class="template-card-preview-img" loading="lazy">
+                      <img src="../../assets/template-images/physio-template.png"
+                        alt="Physiotherapy &amp; Sports Rehab Interface Preview" class="template-card-preview-img"
+                        loading="lazy">
                       <div class="template-preview-tag-wrap">
-                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live
+                          Interface</span>
                         <div style="display:flex; gap:6px; align-items:center;">
                           <span class="template-active-badge">✓ Selected</span>
-                          <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/physio-template.png" data-title="Physiotherapy &amp; Sports Rehab" title="Zoom full screenshot">
+                          <button type="button" class="btn-preview-zoom"
+                            data-preview="../../assets/template-images/physio-template.png"
+                            data-title="Physiotherapy &amp; Sports Rehab" title="Zoom full screenshot">
                             🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
                           </button>
                         </div>
@@ -803,12 +835,17 @@
                 <div class="template-card" data-template="nutrition">
                   <div>
                     <div class="template-card-preview-wrap">
-                      <img src="../../assets/template-images/nutritionist-template.png" alt="Clinical Nutrition &amp; Dietetics Interface Preview" class="template-card-preview-img" loading="lazy">
+                      <img src="../../assets/template-images/nutritionist-template.png"
+                        alt="Clinical Nutrition &amp; Dietetics Interface Preview" class="template-card-preview-img"
+                        loading="lazy">
                       <div class="template-preview-tag-wrap">
-                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live
+                          Interface</span>
                         <div style="display:flex; gap:6px; align-items:center;">
                           <span class="template-active-badge">✓ Selected</span>
-                          <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/nutritionist-template.png" data-title="Clinical Nutrition &amp; Dietetics" title="Zoom full screenshot">
+                          <button type="button" class="btn-preview-zoom"
+                            data-preview="../../assets/template-images/nutritionist-template.png"
+                            data-title="Clinical Nutrition &amp; Dietetics" title="Zoom full screenshot">
                             🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
                           </button>
                         </div>
@@ -833,12 +870,17 @@
                 <div class="template-card" data-template="personal-trainer">
                   <div>
                     <div class="template-card-preview-wrap">
-                      <img src="../../assets/template-images/personal-trainer-template.png" alt="Personal Trainer &amp; Fitness Coaching Interface Preview" class="template-card-preview-img" loading="lazy">
+                      <img src="../../assets/template-images/personal-trainer-template.png"
+                        alt="Personal Trainer &amp; Fitness Coaching Interface Preview"
+                        class="template-card-preview-img" loading="lazy">
                       <div class="template-preview-tag-wrap">
-                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live Interface</span>
+                        <span class="template-preview-tag" data-i18n="owner.onboarding.visualPreview">👁️ Live
+                          Interface</span>
                         <div style="display:flex; gap:6px; align-items:center;">
                           <span class="template-active-badge">✓ Selected</span>
-                          <button type="button" class="btn-preview-zoom" data-preview="../../assets/template-images/personal-trainer-template.png" data-title="Personal Trainer &amp; Fitness Coaching" title="Zoom full screenshot">
+                          <button type="button" class="btn-preview-zoom"
+                            data-preview="../../assets/template-images/personal-trainer-template.png"
+                            data-title="Personal Trainer &amp; Fitness Coaching" title="Zoom full screenshot">
                             🔍 <span data-i18n="owner.onboarding.zoomPreview">Zoom</span>
                           </button>
                         </div>
@@ -864,7 +906,8 @@
             <!-- Next Button (Icon Only) -->
             <button type="button" class="btn-template-nav btn-template-next" id="btnNextTemplate"
               aria-label="Next Template" title="Next Template" data-i18n-title="owner.onboarding.btnNextTemplate">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </button>
@@ -872,11 +915,13 @@
 
           <!-- Carousel Indicators: Counter Pill & Nav Dots -->
           <div class="template-carousel-indicators" id="templateCarouselIndicators">
-            <div class="template-counter-pill" id="templateCounterPill">Template 3 of 5: Physiotherapy &amp; Sports Rehab</div>
+            <div class="template-counter-pill" id="templateCounterPill">Template 3 of 5: Physiotherapy &amp; Sports
+              Rehab</div>
             <div class="template-nav-dots" id="templateNavDots">
               <button type="button" class="template-dot" data-index="0" title="Traditional Chinese Medicine"></button>
               <button type="button" class="template-dot" data-index="1" title="Wellness &amp; Spa Care"></button>
-              <button type="button" class="template-dot active" data-index="2" title="Physiotherapy &amp; Sports Rehab"></button>
+              <button type="button" class="template-dot active" data-index="2"
+                title="Physiotherapy &amp; Sports Rehab"></button>
               <button type="button" class="template-dot" data-index="3" title="Clinical Nutrition"></button>
               <button type="button" class="template-dot" data-index="4" title="Personal Trainer"></button>
             </div>
@@ -893,7 +938,8 @@
       <div class="wizard-step-panel" id="wizardStep2" style="display:none;">
         <div style="margin-bottom:24px;">
           <div class="pill" style="margin-bottom:8px; font-size:11px;">Step 2 of 4: Setup Brand &amp; Branch</div>
-          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Configure Brand &amp; Operational Branch</h2>
+          <h2 style="font-size:24px; letter-spacing:-0.6px; margin:0 0 6px;">Configure Brand &amp; Operational Branch
+          </h2>
           <p style="color:var(--muted); font-size:14px; margin:0;">
             Establish your clinic enterprise identity and initialize your primary branch location.
           </p>
@@ -914,9 +960,12 @@
 
         <!-- Logo Uploader & Emoji Presets -->
         <div class="field">
-          <label for="brandLogoFileInput"><span data-i18n="onboarding.brandLogo">Clinic Brand Logo / Emblem</span> <span style="font-weight:400; color:var(--muted); font-size:12px;" data-i18n="onboarding.brandLogoSub">(Upload your clinic's official brand logo image file)</span></label>
-          
-          <input type="file" id="brandLogoFileInput" accept="image/png, image/jpeg, image/webp, image/svg+xml" style="display:none;">
+          <label for="brandLogoFileInput"><span data-i18n="onboarding.brandLogo">Clinic Brand Logo / Emblem</span> <span
+              style="font-weight:400; color:var(--muted); font-size:12px;" data-i18n="onboarding.brandLogoSub">(Upload
+              your clinic's official brand logo image file)</span></label>
+
+          <input type="file" id="brandLogoFileInput" accept="image/png, image/jpeg, image/webp, image/svg+xml"
+            style="display:none;">
           <input type="hidden" id="selectedLogoInput" value="🌿">
 
           <div class="logo-uploader-card" id="logoDropZone">
@@ -925,16 +974,21 @@
               <img id="logoPreviewImage" src="" alt="Clinic Logo" style="display:none;">
             </div>
             <div class="logo-uploader-info">
-              <h4 id="logoUploadTitle" data-i18n="onboarding.logoUploadTitle">Click to Upload Logo or Drag Image File Here</h4>
-              <p data-i18n="onboarding.logoUploadHint">Supports PNG, JPG, WebP, or SVG (Recommended 1:1 transparent ratio, max 3MB)</p>
+              <h4 id="logoUploadTitle" data-i18n="onboarding.logoUploadTitle">Click to Upload Logo or Drag Image File
+                Here</h4>
+              <p data-i18n="onboarding.logoUploadHint">Supports PNG, JPG, WebP, or SVG (Recommended 1:1 transparent
+                ratio, max 3MB)</p>
             </div>
             <div class="logo-uploader-actions">
-              <button type="button" class="btn btn-sm btn-white" id="btnBrowseLogo" data-i18n="onboarding.browseBtn">📁 Choose Image File</button>
-              <button type="button" class="btn btn-sm btn-soft" id="btnRemoveLogo" style="display:none; color:#ef4444;" data-i18n="onboarding.removeBtn">✕ Remove Image</button>
+              <button type="button" class="btn btn-sm btn-white" id="btnBrowseLogo" data-i18n="onboarding.browseBtn">📁
+                Choose Image File</button>
+              <button type="button" class="btn btn-sm btn-soft" id="btnRemoveLogo" style="display:none; color:#ef4444;"
+                data-i18n="onboarding.removeBtn">✕ Remove Image</button>
             </div>
 
             <div class="preset-emblem-container" id="presetEmblemContainer">
-              <span class="preset-emblem-heading" data-i18n="onboarding.presetHeading">Or choose a quick emblem icon if you don't have an image file yet:</span>
+              <span class="preset-emblem-heading" data-i18n="onboarding.presetHeading">Or choose a quick emblem icon if
+                you don't have an image file yet:</span>
               <div class="logo-picker-row" id="logoPickerContainer">
                 <button type="button" class="logo-choice-btn active" data-emoji="🌿" title="Herbal / TCM">🌿</button>
                 <button type="button" class="logo-choice-btn" data-emoji="🌸" title="Wellness / Spa">🌸</button>
@@ -959,48 +1013,65 @@
           </div>
           <div class="field">
             <label for="branchNameInput">Primary Branch Name (Branch 1) <span style="color:#ef4444;">*</span></label>
-            <input type="text" id="branchNameInput" placeholder="e.g. Paragon Medical Flagship" value="Paragon Medical Flagship (Branch 1)" required>
+            <input type="text" id="branchNameInput" placeholder="e.g. Paragon Medical Flagship"
+              value="Paragon Medical Flagship (Branch 1)" required>
           </div>
         </div>
 
         <!-- SERVICE DELIVERY MODEL (HOME CARE / IN-CLINIC / HYBRID) -->
-        <div class="field" style="margin-top:20px; margin-bottom:20px; padding:18px; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:var(--radius-lg);">
-          <label style="font-weight:800; font-size:13px; color:var(--text); margin-bottom:4px; display:block;" data-i18n="owner.onboarding.serviceModeLabel">
+        <div class="field"
+          style="margin-top:20px; margin-bottom:20px; padding:18px; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:var(--radius-lg);">
+          <label style="font-weight:800; font-size:13px; color:var(--text); margin-bottom:4px; display:block;"
+            data-i18n="owner.onboarding.serviceModeLabel">
             Service Delivery Model <span style="color:#ef4444;">*</span>
           </label>
-          <span style="font-size:12px; color:var(--muted); margin-bottom:12px; display:block;" data-i18n="owner.onboarding.serviceModeSub">
+          <span style="font-size:12px; color:var(--muted); margin-bottom:12px; display:block;"
+            data-i18n="owner.onboarding.serviceModeSub">
             (Select how clinical treatments and consultations are delivered to patients)
           </span>
 
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px;" id="serviceModeOptions">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px;"
+            id="serviceModeOptions">
             <!-- 1. In-Clinic Only -->
-            <label class="service-mode-label" style="border:1.5px solid #cbd5e1; border-radius:12px; padding:14px; cursor:pointer; background:#ffffff; display:flex; flex-direction:column; gap:6px; transition:all 0.2s ease;">
+            <label class="service-mode-label"
+              style="border:1.5px solid #cbd5e1; border-radius:12px; padding:14px; cursor:pointer; background:#ffffff; display:flex; flex-direction:column; gap:6px; transition:all 0.2s ease;">
               <div style="display:flex; align-items:center; justify-content:space-between;">
                 <span style="font-size:22px;">🏥</span>
                 <input type="radio" name="wizardServiceMode" value="in_clinic" style="cursor:pointer;">
               </div>
-              <strong style="font-size:13px; color:#1e293b;" data-i18n="owner.onboarding.modeInClinicTitle">🏥 In-Clinic Facility Only</strong>
-              <span style="font-size:11px; color:#64748b; line-height:1.4;" data-i18n="owner.onboarding.modeInClinicDesc">Patients visit your physical clinic location or private therapy rooms.</span>
+              <strong style="font-size:13px; color:#1e293b;" data-i18n="owner.onboarding.modeInClinicTitle">🏥
+                In-Clinic</strong>
+              <span style="font-size:11px; color:#64748b; line-height:1.4;"
+                data-i18n="owner.onboarding.modeInClinicDesc">Patients visit your physical clinic location or private
+                therapy rooms.</span>
             </label>
 
             <!-- 2. Home Care Only -->
-            <label class="service-mode-label" style="border:1.5px solid #cbd5e1; border-radius:12px; padding:14px; cursor:pointer; background:#ffffff; display:flex; flex-direction:column; gap:6px; transition:all 0.2s ease;">
+            <label class="service-mode-label"
+              style="border:1.5px solid #cbd5e1; border-radius:12px; padding:14px; cursor:pointer; background:#ffffff; display:flex; flex-direction:column; gap:6px; transition:all 0.2s ease;">
               <div style="display:flex; align-items:center; justify-content:space-between;">
                 <span style="font-size:22px;">🏠</span>
                 <input type="radio" name="wizardServiceMode" value="home_care" style="cursor:pointer;">
               </div>
-              <strong style="font-size:13px; color:#1e293b;" data-i18n="owner.onboarding.modeHomeCareTitle">🏠 Home Care Only (Home Visit)</strong>
-              <span style="font-size:11px; color:#64748b; line-height:1.4;" data-i18n="owner.onboarding.modeHomeCareDesc">Practitioners travel directly to patients' homes or designated addresses.</span>
+              <strong style="font-size:13px; color:#1e293b;" data-i18n="owner.onboarding.modeHomeCareTitle">🏠 Home Care
+              </strong>
+              <span style="font-size:11px; color:#64748b; line-height:1.4;"
+                data-i18n="owner.onboarding.modeHomeCareDesc">Practitioners travel directly to patients' homes or
+                designated addresses.</span>
             </label>
 
             <!-- 3. Hybrid (Both) -->
-            <label class="service-mode-label active" style="border:2px solid var(--primary); border-radius:12px; padding:14px; cursor:pointer; background:#f0fdfa; display:flex; flex-direction:column; gap:6px; transition:all 0.2s ease;">
+            <label class="service-mode-label active"
+              style="border:2px solid var(--primary); border-radius:12px; padding:14px; cursor:pointer; background:#f0fdfa; display:flex; flex-direction:column; gap:6px; transition:all 0.2s ease;">
               <div style="display:flex; align-items:center; justify-content:space-between;">
                 <span style="font-size:22px;">✨</span>
                 <input type="radio" name="wizardServiceMode" value="hybrid" checked style="cursor:pointer;">
               </div>
-              <strong style="font-size:13px; color:var(--primary-dark);" data-i18n="owner.onboarding.modeHybridTitle">✨ Hybrid (Both In-Clinic &amp; Home Care)</strong>
-              <span style="font-size:11px; color:#0f766e; line-height:1.4;" data-i18n="owner.onboarding.modeHybridDesc">Patients can flexibly choose either in-clinic or on-demand home visits during booking.</span>
+              <strong style="font-size:13px; color:var(--primary-dark);" data-i18n="owner.onboarding.modeHybridTitle">✨
+                Hybrid</strong>
+              <span style="font-size:11px; color:#0f766e; line-height:1.4;"
+                data-i18n="owner.onboarding.modeHybridDesc">Patients can flexibly choose either in-clinic or on-demand
+                home visits during booking.</span>
             </label>
           </div>
         </div>
@@ -1012,12 +1083,16 @@
               Postal Code (SG) <span style="color:#ef4444;">*</span>
             </label>
             <div style="display:flex; gap:6px; margin-top:2px;">
-              <input type="text" id="branchPostalInput" placeholder="e.g. 238859" maxlength="6" value="238859" autocomplete="off" style="font-weight:700; letter-spacing:0.5px;">
-              <button type="button" class="btn btn-primary btn-sm" id="btnLookupPostal" style="white-space:nowrap; padding:0 14px; font-weight:800; font-size:12px;" title="Lookup address from OneMap API">
+              <input type="text" id="branchPostalInput" placeholder="e.g. 238859" maxlength="6" value="238859"
+                autocomplete="off" style="font-weight:700; letter-spacing:0.5px;">
+              <button type="button" class="btn btn-primary btn-sm" id="btnLookupPostal"
+                style="white-space:nowrap; padding:0 14px; font-weight:800; font-size:12px;"
+                title="Lookup address from OneMap API">
                 🔍 <span data-i18n="owner.onboarding.postalBtn">Lookup</span>
               </button>
             </div>
-            <small id="wizardPostalFeedback" style="font-size:11px; font-weight:700; color:var(--primary); display:none; margin-top:5px; line-height:1.3;"></small>
+            <small id="wizardPostalFeedback"
+              style="font-size:11px; font-weight:700; color:var(--primary); display:none; margin-top:5px; line-height:1.3;"></small>
           </div>
 
           <div class="field" style="flex: 1;">
@@ -1034,7 +1109,8 @@
 
         <!-- HOME CARE COVERAGE RADIUS (HOME CARE & HYBRID) -->
         <div class="field" id="branchCoverageRadiusField" style="display:block; margin-top:14px;">
-          <label for="branchCoverageRadiusInput" id="branchCoverageRadiusLabel" data-i18n="owner.onboarding.coverageLabel">
+          <label for="branchCoverageRadiusInput" id="branchCoverageRadiusLabel"
+            data-i18n="owner.onboarding.coverageLabel">
             Home Visit Coverage Area &amp; Travel Radius <span style="color:#ef4444;">*</span>
           </label>
           <select id="branchCoverageRadiusInput">
@@ -1047,12 +1123,14 @@
 
         <div class="field-row">
           <div class="field">
-            <label for="branchPhoneInput" id="branchPhoneLabel">Branch WhatsApp / Reception Phone <span style="color:#ef4444;">*</span></label>
+            <label for="branchPhoneInput" id="branchPhoneLabel">Branch WhatsApp / Reception Phone <span
+                style="color:#ef4444;">*</span></label>
             <input type="tel" id="branchPhoneInput" placeholder="+65 6733 8899" value="+65 6733 8899" required>
           </div>
 
           <div class="field">
-            <label for="branchHoursInput" id="branchHoursLabel" data-i18n="owner.onboarding.hoursLabelClinic">Operating Hours</label>
+            <label for="branchHoursInput" id="branchHoursLabel" data-i18n="owner.onboarding.hoursLabelClinic">Operating
+              Hours</label>
             <input type="text" id="branchHoursInput" placeholder="e.g. 09:00 - 20:00 (Mon - Sat)"
               value="09:00 - 20:00 (Mon - Sat)">
           </div>
@@ -1097,7 +1175,8 @@
               style="flex:1; min-width:180px; border:1.5px solid var(--line); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
               class="subs-radio-label-wizard">
               <input type="radio" name="wizardSubsPlan" value="1" data-price="99" style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan1m">1 Month</span>
+              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan1m">1
+                Month</span>
               <span style="color:var(--muted); font-size:12px;" id="plan1mText">SGD 99/mo</span>
             </label>
 
@@ -1106,8 +1185,10 @@
               style="flex:1; min-width:180px; border:1.5px solid var(--line); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f8fafc; position:relative;"
               class="subs-radio-label-wizard">
               <input type="radio" name="wizardSubsPlan" value="6" data-price="534" style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan6m">6 Months</span>
-              <span style="color:var(--muted); font-size:12px;" id="plan6mText">SGD 89/mo (<span data-i18n="owner.onboarding.save10">Save 10%</span>)</span>
+              <span style="font-weight:800; font-size:14px; color:var(--text);" data-i18n="owner.onboarding.plan6m">6
+                Months</span>
+              <span style="color:var(--muted); font-size:12px;" id="plan6mText">SGD 89/mo (<span
+                  data-i18n="owner.onboarding.save10">Save 10%</span>)</span>
             </label>
 
             <!-- 1 Year (Decoy / Best Value) -->
@@ -1115,11 +1196,14 @@
               style="flex:1; min-width:180px; border:1.5px solid var(--primary); border-radius:10px; padding:14px; cursor:pointer; display:flex; flex-direction:column; align-items:center; background:#f0fdfa; position:relative;"
               class="subs-radio-label-wizard">
               <div
-                style="position:absolute; top:-10px; background:var(--primary); color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:0.5px;" data-i18n="owner.onboarding.bestValue">
+                style="position:absolute; top:-10px; background:var(--primary); color:#fff; font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; letter-spacing:0.5px;"
+                data-i18n="owner.onboarding.bestValue">
                 BEST VALUE</div>
               <input type="radio" name="wizardSubsPlan" value="12" data-price="948" checked style="margin-bottom:8px;">
-              <span style="font-weight:800; font-size:14px; color:var(--primary);" data-i18n="owner.onboarding.plan1y">1 Year</span>
-              <span style="color:var(--primary-dark); font-size:12px;" id="plan1yText">SGD 79/mo (<span data-i18n="owner.onboarding.save20">Save 20%</span>)</span>
+              <span style="font-weight:800; font-size:14px; color:var(--primary);" data-i18n="owner.onboarding.plan1y">1
+                Year</span>
+              <span style="color:var(--primary-dark); font-size:12px;" id="plan1yText">SGD 79/mo (<span
+                  data-i18n="owner.onboarding.save20">Save 20%</span>)</span>
             </label>
           </div>
         </div>
@@ -1127,10 +1211,13 @@
         <div
           style="background:#f1f5f9; padding:18px; border-radius:12px; margin-bottom:24px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
           <div>
-            <div style="font-size:12px; color:var(--muted); font-weight:600;" data-i18n="owner.onboarding.totalBilling">Total System Billing:</div>
-            <div style="font-size:11px; color:#64748b; margin-top:2px;" data-i18n="owner.onboarding.billedCard">Will be charged to Credit Card</div>
+            <div style="font-size:12px; color:var(--muted); font-weight:600;" data-i18n="owner.onboarding.totalBilling">
+              Total System Billing:</div>
+            <div style="font-size:11px; color:#64748b; margin-top:2px;" data-i18n="owner.onboarding.billedCard">Will be
+              charged to Credit Card</div>
           </div>
-          <div style="font-size:24px; font-weight:900; color:var(--text);" id="wizardTotalBillingAmount">SGD 948.00</div>
+          <div style="font-size:24px; font-weight:900; color:var(--text);" id="wizardTotalBillingAmount">SGD 948.00
+          </div>
         </div>
 
         <div style="display:flex; justify-content:space-between; margin-top:28px;">
@@ -1207,7 +1294,8 @@
           schedules for this branch will remain strictly isolated from other tenants and branches.
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:28px; gap:12px; flex-wrap:wrap;">
+        <div
+          style="display:flex; justify-content:space-between; align-items:center; margin-top:28px; gap:12px; flex-wrap:wrap;">
           <button type="button" class="btn btn-soft" id="btnPrev4">← Back to Subscription Plan</button>
           <button type="button" class="btn btn-primary" id="btnLaunchClinic"
             style="padding:14px 26px; font-size:15px; font-weight:800;" data-i18n="owner.onboarding.btnLaunch">
@@ -1220,24 +1308,32 @@
   </main>
 
   <!-- TEMPLATE PREVIEW LIGHTBOX MODAL -->
-  <div id="templateLightboxModal" style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.85); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
-    <div style="background:#ffffff; border-radius:18px; max-width:1150px; width:100%; max-height:92vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.5); border:1.5px solid #e2e8f0;">
-      <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-bottom:1px solid #e2e8f0; background:#f8fafc; flex-wrap:wrap; gap:12px;">
+  <div id="templateLightboxModal"
+    style="display:none; position:fixed; inset:0; background:rgba(15,23,42,0.85); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; padding:16px;">
+    <div
+      style="background:#ffffff; border-radius:18px; max-width:1150px; width:100%; max-height:92vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.5); border:1.5px solid #e2e8f0;">
+      <div
+        style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px; border-bottom:1px solid #e2e8f0; background:#f8fafc; flex-wrap:wrap; gap:12px;">
         <div>
-          <h3 id="lightboxTemplateTitle" style="margin:0 0 2px; font-size:18px; font-weight:800; color:var(--text);" data-i18n="owner.onboarding.fullPreviewTitle">Template Interface Preview</h3>
-          <span style="font-size:12px; color:var(--muted);" data-i18n="owner.onboarding.fullPreviewSub">Full prototype screenshot &amp; clinical workflow dashboard</span>
+          <h3 id="lightboxTemplateTitle" style="margin:0 0 2px; font-size:18px; font-weight:800; color:var(--text);"
+            data-i18n="owner.onboarding.fullPreviewTitle">Template Interface Preview</h3>
+          <span style="font-size:12px; color:var(--muted);" data-i18n="owner.onboarding.fullPreviewSub">Full prototype
+            screenshot &amp; clinical workflow dashboard</span>
         </div>
         <div style="display:flex; gap:10px; align-items:center;">
-          <button type="button" class="btn btn-primary" id="btnSelectFromLightbox" style="font-weight:800; padding:8px 18px;" data-i18n="owner.onboarding.chooseTemplate">
+          <button type="button" class="btn btn-primary" id="btnSelectFromLightbox"
+            style="font-weight:800; padding:8px 18px;" data-i18n="owner.onboarding.chooseTemplate">
             ✓ Choose This Template
           </button>
-          <button type="button" class="btn btn-white" id="btnCloseLightbox" style="font-weight:700; padding:8px 14px; font-size:13px;">
+          <button type="button" class="btn btn-white" id="btnCloseLightbox"
+            style="font-weight:700; padding:8px 14px; font-size:13px;">
             ✕ Close
           </button>
         </div>
       </div>
       <div style="flex:1; overflow-y:auto; padding:16px; background:#0f172a; text-align:center;">
-        <img id="lightboxImage" src="" alt="Template Full Screenshot" style="max-width:100%; height:auto; border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,0.4); display:inline-block;">
+        <img id="lightboxImage" src="" alt="Template Full Screenshot"
+          style="max-width:100%; height:auto; border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,0.4); display:inline-block;">
       </div>
     </div>
   </div>

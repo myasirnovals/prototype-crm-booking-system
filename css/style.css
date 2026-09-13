@@ -11,6 +11,7 @@
 /* 2. Modular UI Components */
 @import "components/hero.css?v=3";
 @import "components/features.css?v=3";
+@import "components/templates.css?v=3";
 @import "components/showcase.css?v=3";
 @import "components/booking.css?v=3";
 @import "components/notifications.css?v=3";

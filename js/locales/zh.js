@@ -6,6 +6,7 @@
 export const zh = {
   // Navigation & Header
   "nav.features": "功能特点",
+  "nav.templates": "专业诊疗模板",
   "nav.product": "核心产品",
   "nav.market": "区域市场",
   "nav.demo": "演示体验",
@@ -16,6 +17,23 @@ export const zh = {
   "nav.newBooking": "+ 预约新诊疗",
   "nav.signOut": "退出登录",
   "nav.verifiedPdpa": "● PDPA 隐私合规",
+
+  // Practice Specialty Templates
+  "templates.pill": "专科诊疗业务模板",
+  "templates.title": "专为医疗与身心健康产业量身定制的四大运营模板。",
+  "templates.subtitle": "每个分行严格继承其产品订阅对应的专科模型，拥有专属的问诊评估表单、智能防重排班引擎以及独立的分行预约门户。",
+  "templates.tcm.title": "中医专科诊疗 (TCM)",
+  "templates.tcm.desc": "配备经络穴位与疼痛视觉标记、脉诊病案记录、中药配方追踪以及针灸理疗室资源防撞调度。",
+  "templates.tcm.tag": "经络穴位图 · 脉诊记录 · 中草药房",
+  "templates.wellness.title": "高端身心康养与水疗 Spa",
+  "templates.wellness.desc": "支持芳香精油自选、按摩力度调节、理疗师偏好匹配以及私密水疗套房预约。",
+  "templates.wellness.tag": "芳香精油 · 按摩力度 · 独立套房",
+  "templates.physio.title": "物理治疗与运动康复 (Physio)",
+  "templates.physio.desc": "包含肌肉骨骼损伤视觉定位、VAS 疼痛等级评估（1-10分）、专业康复器械床位管理与关节活动度记录。",
+  "templates.physio.tag": "VAS 疼痛量表 · 活动度评估 · 专业器械",
+  "templates.nutrition.title": "临床营养与饮食调理 (Nutrition)",
+  "templates.nutrition.desc": "针对膳食摄入记录、代谢指标评估、食物过敏原筛查、定制化营养餐单规划及周期性随访设计。",
+  "templates.nutrition.tag": "代谢评估 · 定制膳食 · 过敏原筛查",
 
   // Hero Section
   "hero.pill": "🇸🇬 🇲🇾 专为新加坡与马来西亚现代诊所量身打造",
@@ -230,15 +248,21 @@ export const zh = {
 
   // Authentication (sign-in.html)
   "auth.welcomeTitle": "欢迎登录",
-  "auth.welcomeSubtitle": "登录系统以统筹管理预约排程、WhatsApp 提醒、病历摄入与日常门诊事务。",
-  "auth.staffTab": "医护与管理人员",
-  "auth.patientTab": "患者快捷验证码",
+  "auth.welcomeSubtitle": "面向平台超级管理员与多分支诊所业主的专属企业管理门户。",
+  "auth.staffTab": "企业登录",
+  "auth.patientTab": "患者门户",
   "auth.workEmail": "工作邮箱",
   "auth.password": "登录密码",
   "auth.signInBtn": "进入系统控制台 →",
   "auth.requestOnboarding": "申请入驻新诊所",
+  "auth.newClinicQuestion": "开设新诊所企业？",
+  "auth.tenantNoticeTitle": "寻找患者预约通道或诊所工作台？",
+  "auth.tenantUserNotice": "患者与分行医护人员请直接通过诊所专属的分行独立门户或预约链接访问。",
+  "auth.visual.kicker": "多租户医疗 SaaS 云端架构",
+  "auth.visual.title": "跨分行、多专科与订阅计划的集中式统筹控制。",
+  "auth.visual.desc": "Cliniva 为医疗与大健康企业业主提供集中式控制台，全面管理产品订阅、分行网络、执业人员与专科特色工作流程。",
   "auth.quickLoginTitle": "⚡ 1键免密快速演示登录",
-  "auth.quickOwner": "诊所老板 / 超级管理员",
+  "auth.quickOwner": "超级管理员",
   "auth.quickDoctor": "主治医师 / 理疗师",
   "auth.quickReception": "前台接待 / 导医",
   "auth.quickPatient": "就诊患者 / 客户",

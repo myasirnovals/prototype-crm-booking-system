@@ -9,18 +9,12 @@ import { isSupabaseConfigured, getActiveSupabaseConfig, setSupabaseCredentials }
 
 export class AuthController {
   constructor() {
-    this.modeButtons = document.querySelectorAll(".mode-btn");
     this.forms = document.querySelectorAll(".form");
     this.regionCards = document.querySelectorAll(".region-card");
     this.togglePasswordBtn = document.getElementById("togglePassword");
     this.staffPassword = document.getElementById("staffPassword");
     this.staffForm = document.getElementById("staffForm");
     this.staffStatus = document.getElementById("staffStatus");
-    this.sendOtpBtn = document.getElementById("sendOtpBtn");
-    this.otpArea = document.getElementById("otpArea");
-    this.patientStatus = document.getElementById("patientStatus");
-    this.patientForm = document.getElementById("patientForm");
-    this.otpInputs = document.querySelectorAll(".otp-input");
     this.quickRoleCards = document.querySelectorAll(".demo-role-card");
     this.selectedRegion = "sg";
 
@@ -38,34 +32,12 @@ export class AuthController {
   }
 
   init() {
-    this.setupModeSwitching();
     this.setupRegionSelection();
     this.setupPasswordToggle();
     this.setupStaffForm();
     this.setupForgotPasswordModal();
-    this.setupOtpWorkflow();
     this.setupQuickDemoLogin();
     this.setupCloudModal();
-  }
-
-  setupModeSwitching() {
-    this.modeButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const mode = button.dataset.mode;
-        soundService.playClickTone();
-
-        this.modeButtons.forEach((btn) => btn.classList.remove("active"));
-        button.classList.add("active");
-
-        this.forms.forEach((form) => form.classList.remove("active"));
-
-        if (mode === "staff") {
-          document.getElementById("staffForm")?.classList.add("active");
-        } else {
-          document.getElementById("patientForm")?.classList.add("active");
-        }
-      });
-    });
   }
 
   setupRegionSelection() {
@@ -219,24 +191,6 @@ export class AuthController {
       });
     }
 
-    // Quick action buttons (WhatsApp OTP & Email Magic Link)
-    const quickActionBtns = document.querySelectorAll(".quick-actions .btn");
-    quickActionBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        soundService.playClickTone?.();
-        const patientTab = document.querySelector('.mode-btn[data-mode="patient"]');
-        if (patientTab) patientTab.click();
-
-        const channelSelect = document.getElementById("patientChannel");
-        if (channelSelect) {
-          if (btn.textContent.includes("WhatsApp")) {
-            channelSelect.value = "whatsapp";
-          } else if (btn.textContent.includes("Email")) {
-            channelSelect.value = "email";
-          }
-        }
-      });
-    });
 
     this.staffForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -371,81 +325,6 @@ export class AuthController {
         }, 1300);
       });
     }
-  }
-
-  setupOtpWorkflow() {
-    if (!this.sendOtpBtn) return;
-
-    this.sendOtpBtn.addEventListener("click", () => {
-      const contact = document.getElementById("patientContact")?.value.trim() || "";
-      const channel = document.getElementById("patientChannel")?.value || "whatsapp";
-      const countryCode = document.getElementById("countryCode")?.value || "+65";
-
-      this.resetStatus(this.patientStatus);
-
-      const result = authService.requestPatientOtp(contact, channel, countryCode);
-
-      if (!result.success) {
-        this.showError(this.patientStatus, result.error);
-        return;
-      }
-
-      soundService.playClickTone();
-      if (this.otpArea) this.otpArea.style.display = "block";
-      this.showSuccess(
-        this.patientStatus,
-        `${result.message} Demo verification code: <strong>${result.demoOtp}</strong>`
-      );
-
-      const firstOtp = this.otpInputs[0];
-      if (firstOtp) firstOtp.focus();
-    });
-
-    // Auto advance between 6 OTP inputs
-    this.otpInputs.forEach((input, index) => {
-      input.addEventListener("input", () => {
-        input.value = input.value.replace(/[^0-9]/g, "");
-
-        if (input.value && index < this.otpInputs.length - 1) {
-          this.otpInputs[index + 1].focus();
-        }
-      });
-
-      input.addEventListener("keydown", (event) => {
-        if (event.key === "Backspace" && !input.value && index > 0) {
-          this.otpInputs[index - 1].focus();
-        }
-      });
-    });
-
-    if (!this.patientForm) return;
-
-    this.patientForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const otp = Array.from(this.otpInputs).map((input) => input.value).join("");
-      const consent = document.getElementById("consentCheck")?.checked;
-      const contact = document.getElementById("patientContact")?.value || "";
-
-      this.resetStatus(this.patientStatus);
-
-      const result = authService.verifyPatientOtp(otp, consent, contact);
-
-      if (!result.success) {
-        this.showError(this.patientStatus, result.error);
-        return;
-      }
-
-      soundService.playQueueChime();
-      this.showSuccess(
-        this.patientStatus,
-        `✓ OTP verified! Signed in as <strong>${result.session.user.name}</strong>. Redirecting to Patient Portal...`
-      );
-
-      setTimeout(() => {
-        window.location.href = this.resolveRedirect(result.targetRoute);
-      }, 900);
-    });
   }
 
   resolveRedirect(targetRoute) {

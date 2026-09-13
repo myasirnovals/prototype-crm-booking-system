@@ -501,7 +501,7 @@ export class OwnerDashboardController {
         if (confirm(`Remove staff member ${name} from this branch?`)) {
           this.activeBranchStaff.splice(idx, 1);
           storageService.set(`cliniva_staff_${this.activeBranch.id}`, this.activeBranchStaff);
-          soundService.playDelete();
+          try { soundService.playDelete?.(); } catch (_) {}
           notificationService.info(`Staff member ${name} removed from branch.`);
           this.renderPaneBranchStaff();
         }
@@ -552,7 +552,7 @@ export class OwnerDashboardController {
         if (confirm(`Remove practitioner ${name} from branch schedule?`)) {
           this.activeBranchPractitioners.splice(idx, 1);
           storageService.set(`cliniva_practitioners_${this.activeBranch.id}`, this.activeBranchPractitioners);
-          soundService.playDelete();
+          try { soundService.playDelete?.(); } catch (_) {}
           notificationService.info(`Practitioner ${name} removed from branch schedule.`);
           this.renderPaneBranchPractitioners();
         }
@@ -682,7 +682,7 @@ export class OwnerDashboardController {
         if (confirm(`Remove service "${name}" from this branch catalog?`)) {
           this.activeBranchServices.splice(idx, 1);
           storageService.set(`cliniva_services_${this.activeBranch.id}`, this.activeBranchServices);
-          soundService.playDelete();
+          try { soundService.playDelete?.(); } catch (_) {}
           notificationService.info(`Service "${name}" removed from catalog.`);
           this.renderPaneBranchServices();
         }
@@ -1002,9 +1002,13 @@ export class OwnerDashboardController {
   setupSignOut() {
     const btn = document.getElementById("ownerSignOutBtn");
     if (btn) {
-      btn.addEventListener("click", () => {
-        soundService.playSignOut();
-        authService.signOut();
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        try {
+          soundService.playSignOut?.();
+        } catch (_) {}
+        authService.logout();
+        window.location.href = "../../pages/public/sign-in.html";
       });
     }
   }

@@ -5,8 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title data-i18n="owner.gatewayPageTitle">Select Branch — Cliniva</title>
-  <meta name="description"
-    content="Active clinic branch selector and management gateway for clinic owners." />
+  <meta name="description" content="Active clinic branch selector and management gateway for clinic owners." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -260,8 +259,15 @@
     }
 
     @keyframes menuFadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .status-menu-item {
@@ -327,8 +333,15 @@
     }
 
     @keyframes toastSlideUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Modal Styling */
@@ -391,15 +404,18 @@
       <div style="display:flex; align-items:center; gap:14px;">
         <!-- Language Switcher -->
         <div class="lang-switcher-wrap" style="position:relative;">
-          <select class="lang-select" aria-label="Select Language" style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
+          <select class="lang-select" aria-label="Select Language"
+            style="padding:6px 12px; font-size:12px; font-weight:700; border-radius:var(--radius-sm); border:1px solid var(--line); background:#fff; cursor:pointer;">
             <option value="en">🇬🇧 English</option>
             <option value="zh">🇸🇬 华语 (Singapura)</option>
             <option value="ms">🇲🇾 Bahasa Melayu (Malaysia)</option>
           </select>
         </div>
 
-        <span id="gatewayLoggedInAs" style="font-size:12px; color:var(--muted); font-weight:600;">Signed in as <strong>Dennis Pratama</strong></span>
-        <button type="button" class="btn btn-sm btn-white" id="gatewaySignOutBtn" data-i18n="nav.signOut">Sign Out</button>
+        <span id="gatewayLoggedInAs" style="font-size:12px; color:var(--muted); font-weight:600;">Signed in as
+          <strong>Dennis Pratama</strong></span>
+        <button type="button" class="btn btn-sm btn-white" id="gatewaySignOutBtn" data-i18n="nav.signOut">Sign
+          Out</button>
       </div>
     </div>
   </header>
@@ -412,11 +428,13 @@
         <p data-i18n="owner.gateway.desc">Manage clinic operations or share booking links with patients.</p>
       </div>
       <div style="display:flex; align-items:center; gap:12px;">
-        <span class="pill" id="branchCountBadge" style="font-size:12px; padding:8px 14px; background:#ffffff; border:1px solid #e2e8f0; font-weight:700; color:#475569;">
+        <span class="pill" id="branchCountBadge"
+          style="font-size:12px; padding:8px 14px; background:#ffffff; border:1px solid #e2e8f0; font-weight:700; color:#475569;">
           -- Registered Branches
         </span>
-        <button type="button" class="btn btn-primary" id="btnOpenNewBranchModal" style="padding:10px 18px; font-weight:800; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(15,118,110,0.25);">
-          <span>➕</span> <span data-i18n="owner.gateway.btnNewBranch">+ Add Branch</span>
+        <button type="button" class="btn btn-primary" id="btnOpenNewBranchModal"
+          style="padding:10px 18px; font-weight:800; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 14px rgba(15,118,110,0.25);">
+          <span></span> <span data-i18n="owner.gateway.btnNewBranch">+ Add Branch</span>
         </button>
       </div>
     </div>
@@ -435,8 +453,10 @@
       <div
         style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; border-bottom:1px solid #e2e8f0; padding-bottom:14px;">
         <div>
-          <h3 style="margin:0 0 4px; font-size:18px; font-weight:800; color:var(--text);" data-i18n="owner.gateway.modalTitle">🏢 Register New Branch</h3>
-          <p style="margin:0; font-size:12px; color:var(--muted);">Add an operational clinic location under your brand.</p>
+          <h3 style="margin:0 0 4px; font-size:18px; font-weight:800; color:var(--text);"
+            data-i18n="owner.gateway.modalTitle">🏢 Register New Branch</h3>
+          <p style="margin:0; font-size:12px; color:var(--muted);">Add an operational clinic location under your brand.
+          </p>
         </div>
         <button type="button" id="btnCloseNewBranchModal" class="btn-close-modal" title="Close">&times;</button>
       </div>
@@ -459,20 +479,26 @@
         </div>
 
         <!-- Service Delivery Model -->
-        <div class="field" style="margin: 14px 0; padding: 12px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: var(--radius-md);">
-          <label style="font-weight: 800; font-size: 12px; color: var(--text); margin-bottom: 6px; display: block;" data-i18n="owner.onboarding.serviceModeLabel">
+        <div class="field"
+          style="margin: 14px 0; padding: 12px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: var(--radius-md);">
+          <label style="font-weight: 800; font-size: 12px; color: var(--text); margin-bottom: 6px; display: block;"
+            data-i18n="owner.onboarding.serviceModeLabel">
             Service Delivery Model <span style="color:#ef4444;">*</span>
           </label>
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;" id="newBranchServiceModeContainer">
-            <label class="new-branch-mode-label" style="border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; cursor: pointer; background: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700;">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;"
+            id="newBranchServiceModeContainer">
+            <label class="new-branch-mode-label"
+              style="border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; cursor: pointer; background: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700;">
               <input type="radio" name="newBranchServiceMode" value="in_clinic" style="cursor:pointer;">
               <span data-i18n="owner.onboarding.modeInClinicTitle">🏥 Clinic</span>
             </label>
-            <label class="new-branch-mode-label" style="border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; cursor: pointer; background: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700;">
+            <label class="new-branch-mode-label"
+              style="border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 8px; cursor: pointer; background: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700;">
               <input type="radio" name="newBranchServiceMode" value="home_care" style="cursor:pointer;">
               <span data-i18n="owner.onboarding.modeHomeCareTitle">🏠 Home</span>
             </label>
-            <label class="new-branch-mode-label active" style="border: 2px solid var(--primary); border-radius: 8px; padding: 8px; cursor: pointer; background: #f0fdfa; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--primary-dark);">
+            <label class="new-branch-mode-label active"
+              style="border: 2px solid var(--primary); border-radius: 8px; padding: 8px; cursor: pointer; background: #f0fdfa; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--primary-dark);">
               <input type="radio" name="newBranchServiceMode" value="hybrid" checked style="cursor:pointer;">
               <span data-i18n="owner.onboarding.modeHybridTitle">✨ Hybrid</span>
             </label>
@@ -500,19 +526,22 @@
           </div>
           <div class="field">
             <label for="newBranchHours">Operating Hours</label>
-            <input type="text" id="newBranchHours" placeholder="Mon - Sat (09:00 - 20:00)" value="Mon - Sat (09:00 - 20:00)">
+            <input type="text" id="newBranchHours" placeholder="Mon - Sat (09:00 - 20:00)"
+              value="Mon - Sat (09:00 - 20:00)">
           </div>
         </div>
 
         <!-- Compact Logo Picker / Upload -->
         <div class="field" style="display:none;">
-          <input type="file" id="newBranchLogoFileInput" accept="image/png, image/jpeg, image/webp" style="display:none;">
+          <input type="file" id="newBranchLogoFileInput" accept="image/png, image/jpeg, image/webp"
+            style="display:none;">
           <input type="hidden" id="newBranchSelectedLogoInput" value="">
         </div>
 
         <!-- PENAGIHAN LANGGANAN CABANG B2B -->
         <hr style="border:0; border-top:1px dashed #cbd5e1; margin:20px 0;">
-        <h4 style="margin:0 0 12px; font-size:14px; font-weight:800; color:var(--text);">💳 Subscription Plan &amp; Billing</h4>
+        <h4 style="margin:0 0 12px; font-size:14px; font-weight:800; color:var(--text);">💳 Subscription Plan &amp;
+          Billing</h4>
 
         <div class="field" style="margin-bottom: 8px;">
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
@@ -556,12 +585,15 @@
             <div style="font-size:12px; color:var(--muted); font-weight:600;">Total B2B System Bill:</div>
             <div style="font-size:11px; color:#64748b;">Includes full branch operational access</div>
           </div>
-          <div style="font-size:20px; font-weight:900; color:var(--primary-dark);" id="totalBillingAmount">SGD 948.00</div>
+          <div style="font-size:20px; font-weight:900; color:var(--primary-dark);" id="totalBillingAmount">SGD 948.00
+          </div>
         </div>
 
         <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
-          <button type="button" class="btn btn-soft" id="btnCancelNewBranch" data-i18n="branchAdmin.modalBtnCancel">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="btnSubmitBranch" style="padding:10px 20px;">Confirm &amp; Pay →</button>
+          <button type="button" class="btn btn-soft" id="btnCancelNewBranch"
+            data-i18n="branchAdmin.modalBtnCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitBranch" style="padding:10px 20px;">Confirm &amp;
+            Pay →</button>
         </div>
       </form>
     </div>

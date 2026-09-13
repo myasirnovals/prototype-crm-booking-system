@@ -1057,6 +1057,8 @@ export const en = {
   "owner.gateway.archiveBranch": "Archive Branch",
   "owner.gateway.archiveConfirm": "Archive this branch? It will be removed from your active branch list.",
   "owner.gateway.currentBranch": "CURRENT",
+  "owner.gateway.setCurrent": "Set as Current Branch",
+  "owner.gateway.currentSetNotice": "Selected as current active branch!",
   "owner.gateway.linkCopiedNotice": "Booking link copied to clipboard!",
   "owner.table.markFinished": "Mark Finished ✓",
   "owner.table.finished": "✓ Finished",

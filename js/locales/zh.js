@@ -1057,6 +1057,8 @@ export const zh = {
   "owner.gateway.archiveBranch": "归档分院",
   "owner.gateway.archiveConfirm": "确定要归档此分院吗？它将从当前活跃分院列表中移除。",
   "owner.gateway.currentBranch": "当前分院",
+  "owner.gateway.setCurrent": "设为当前分院",
+  "owner.gateway.currentSetNotice": "已设为当前活跃分院！",
   "owner.gateway.linkCopiedNotice": "预约链接已复制到剪贴板！",
   "owner.table.markFinished": "标记完成 ✓",
   "owner.table.finished": "✓ 已完成",

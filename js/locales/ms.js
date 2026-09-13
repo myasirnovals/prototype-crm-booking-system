@@ -1040,6 +1040,8 @@ export const ms = {
   "owner.gateway.archiveBranch": "Arkibkan Cawangan",
   "owner.gateway.archiveConfirm": "Arkibkan cawangan ini? Ia akan dikeluarkan dari senarai cawangan aktif anda.",
   "owner.gateway.currentBranch": "SEMASA",
+  "owner.gateway.setCurrent": "Tetapkan sebagai Cawangan Semasa",
+  "owner.gateway.currentSetNotice": "Dipilih sebagai cawangan aktif semasa!",
   "owner.gateway.linkCopiedNotice": "Pautan tempahan telah disalin!",
   "owner.table.markFinished": "Tandai Selesai ✓",
   "owner.table.finished": "✓ Selesai",

@@ -134,6 +134,10 @@ class SoundService {
       // Audio playback blocked or not supported
     }
   }
+
+  playSuccess() {
+    return this.playSuccessChime();
+  }
 }
 
 export const soundService = new SoundService();

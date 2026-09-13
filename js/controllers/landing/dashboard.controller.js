@@ -48,7 +48,7 @@ export class DashboardController {
 
     this.walkInBtn.addEventListener("click", () => {
       soundService.playClickTone();
-      const patientName = prompt("Enter Walk-in Patient Name (Fast Dispatch):", "Bambang Wijaya");
+      const patientName = prompt("Enter Walk-in Patient Name (Fast Dispatch):", "Tan Wei Ming");
       if (patientName) {
         soundService.playQueueChime();
         if (this.ui) {

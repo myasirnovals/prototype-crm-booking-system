@@ -18,12 +18,12 @@ export const en = {
   "nav.verifiedPdpa": "● PDPA Compliant",
 
   // Hero Section
-  "hero.pill": "🇸🇬 🇲🇾 Built for modern clinics in Singapore & Malaysia",
-  "hero.title": "Clinic booking,",
-  "hero.titleHighlight": "CRM & operations",
-  "hero.titleSuffix": "in one elegant platform.",
-  "hero.subtitle": "Cliniva helps clinics, therapy centers, wellness brands, and multi-branch practices manage appointment booking, WhatsApp reminders, patient intake, payments, referrals, and daily operations from one beautiful web app.",
-  "hero.startDemo": "Start Interactive Demo →",
+  "hero.pill": "🇸🇬 🇲🇾 Multi-Tenant Healthcare & Wellness SaaS Platform",
+  "hero.title": "Smart Clinic Booking,",
+  "hero.titleHighlight": "CRM & Multi-Branch Operations",
+  "hero.titleSuffix": "Simplified.",
+  "hero.subtitle": "Streamline appointment scheduling, automated WhatsApp reminders, and multi-branch operations for modern healthcare and wellness practices.",
+  "hero.startDemo": "Explore Interactive Demo →",
   "hero.viewFeatures": "View Key Features",
   "hero.viewTicket": "🎟️ View E-Ticket",
 
@@ -34,17 +34,17 @@ export const en = {
   "hero.stats.privacy": "Privacy Consent",
 
   // Features Section
-  "features.pill": "Core Platform Capabilities",
-  "features.title": "Everything a clinic needs to reduce no-shows and operate smoothly.",
-  "features.subtitle": "From patient self-booking to operational dashboards, Cliniva is designed to streamline appointment-heavy clinics without becoming a full EMR.",
+  "features.pill": "Core Capabilities",
+  "features.title": "Built for modern clinics to operate smoothly.",
+  "features.subtitle": "Streamline patient scheduling, automated communication, and branch coordination without operational overhead.",
   "features.f1.title": "Triple-Constraint Scheduling",
-  "features.f1.desc": "Prevent collisions with smart matching: practitioner + treatment room + specialized equipment validation in real time.",
-  "features.f2.title": "Two-Way WhatsApp Engine",
-  "features.f2.desc": "Deliver booking confirmations, H-24 reminder alerts, and interactive 1-click confirmation or reschedule buttons directly on WhatsApp.",
-  "features.f3.title": "Dynamic Intake & Pain Map",
-  "features.f3.desc": "Capture patient symptoms, history, consent, and visual body pain mapping tailored to Physio, TCM, and Spa workflows.",
-  "features.f4.title": "Referral Intake Bridge",
-  "features.f4.desc": "Upload referral documents temporarily, forward them securely to SIMRS or EMR webhook endpoints, then auto-delete files based on 72h retention policy.",
+  "features.f1.desc": "Smart real-time validation matching practitioners, treatment rooms, and specialized equipment to prevent collisions.",
+  "features.f2.title": "Automated WhatsApp Messaging",
+  "features.f2.desc": "Instant booking confirmations, 24-hour reminder alerts, and 1-click interactive reschedule buttons directly on WhatsApp.",
+  "features.f3.title": "Dynamic Clinical Intake & Pain Map",
+  "features.f3.desc": "Specialty pre-consultation questionnaires, visual pain mapping, and PDPA-compliant patient consent capture.",
+  "features.f4.title": "Centralized Multi-Branch CRM",
+  "features.f4.desc": "Manage multiple clinic locations, staff permissions, service catalogs, and localized pricing from one unified dashboard.",
   "features.f5.title": "Deposit & Flexible Payments",
   "features.f5.desc": "Collect flat or percentage deposits via PayNow (SG), DuitNow (MY), and Stripe cards to guarantee commitment.",
   "features.f6.title": "Multi-Tenant & Multi-Branch",
@@ -725,10 +725,10 @@ export const en = {
   "common.realtime": "Real-time",
 
   // Index Hero additions
-  "hero.trust": "Designed for clinics, physiotherapy, TCM, wellness & outpatient care.",
+  "hero.trust": "Trusted by TCM, Physiotherapy, Spa Wellness, and Clinical Nutrition practices.",
   "hero.chips.zeroDouble": "✅ Zero double-booking",
-  "hero.chips.whatsapp": "💬 WhatsApp reminders",
-  "hero.chips.pdpa": "🔐 PDPA-ready consent",
+  "hero.chips.whatsapp": "💬 Two-way WhatsApp engine",
+  "hero.chips.pdpa": "🔐 PDPA compliance ready",
   "hero.phone.title": "Book Your Appointment",
   "hero.phone.desc": "Choose clinic branch, service, practitioner and slot.",
   "hero.phone.search": "🔎 Search services, clinics, practitioners",
@@ -935,11 +935,11 @@ export const en = {
   "market.tagMultiBranch": "Multi-branch CRM",
 
   // Index CTA & Footer
-  "cta.title": "Modernize clinic booking without turning it into a complicated EMR.",
-  "cta.subtitle": "Cliniva focuses on appointment flow, CRM, notifications, payment deposit, operational dashboards, and referral bridging — exactly where clinics lose time every day.",
-  "cta.getStarted": "Get Started",
-  "cta.viewDemo": "View Dashboard Demo",
-  "footer.copyright": "© 2026 Cliniva. Integrated Clinic Booking & CRM Platform.",
+  "cta.title": "Ready to modernize your clinic operations?",
+  "cta.subtitle": "Launch specialized practice templates, automate WhatsApp reminders, and streamline multi-branch schedules today.",
+  "cta.getStarted": "Get Started Now",
+  "cta.viewDemo": "Explore Live Demo",
+  "footer.copyright": "© 2026 Cliniva. Multi-Tenant Clinic Management & Booking Platform.",
 
   // Receptionist Panel (receptionist.html)
   "reception.pageTitle": "Live Queue & Front Desk — Cliniva",
@@ -1076,11 +1076,11 @@ export const en = {
   "market.tagMultiBranch": "Multi-branch CRM",
 
   // Index CTA & Footer
-  "cta.title": "Modernize clinic booking without turning it into a complicated EMR.",
-  "cta.subtitle": "Cliniva focuses on appointment flow, CRM, notifications, payment deposit, operational dashboards, and referral bridging — exactly where clinics lose time every day.",
-  "cta.getStarted": "Get Started",
-  "cta.viewDemo": "View Dashboard Demo",
-  "footer.copyright": "© 2026 Cliniva. Integrated Clinic Booking & CRM Platform.",
+  "cta.title": "Ready to modernize your clinic operations?",
+  "cta.subtitle": "Launch specialized practice templates, automate WhatsApp reminders, and streamline multi-branch schedules today.",
+  "cta.getStarted": "Get Started Now",
+  "cta.viewDemo": "Explore Live Demo",
+  "footer.copyright": "© 2026 Cliniva. Multi-Tenant Clinic Management & Booking Platform.",
 
   // Branch Admin Console
   "branchAdmin.pageTitle": "Branch Admin & Operations Desk — Cliniva Clinic & CRM",

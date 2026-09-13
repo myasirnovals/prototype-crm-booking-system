@@ -15,6 +15,20 @@
   overflow-x: hidden;
 }
 
+.page:has(> .auth-panel:only-child),
+.page:not(:has(.visual-panel)) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+.page:has(> .auth-panel:only-child) .auth-panel,
+.page:not(:has(.visual-panel)) .auth-panel {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
 /* LEFT PANEL (AUTH FORM) */
 .auth-panel {
   position: relative;

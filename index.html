@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cliniva — Integrated Clinic Booking & CRM</title>
+  <title>Cliniva — Multi-Branch Clinic Management &amp; Booking Platform</title>
   <meta name="description"
-    content="Integrated clinic appointment booking, WhatsApp reminders, patient intake, multi-branch CRM, and operational scheduling platform for Singapore and Malaysia." />
+    content="Modern multi-tenant SaaS platform for healthcare and wellness clinics. Automated WhatsApp scheduling, multi-branch CRM, and specialized practice templates for Singapore and Malaysia." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="css/style.css?v=3">
 </head>
 
-<body>
+<body data-user-role="GUEST" class="role-GUEST">
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
@@ -28,11 +28,11 @@
       </a>
 
       <div class="nav-links">
-        <a href="#features" data-i18n="nav.features">Features</a>
         <a href="#templates" data-i18n="nav.templates">Practice Templates</a>
+        <a href="#features" data-i18n="nav.features">Features</a>
         <a href="#app" data-i18n="nav.product">Product</a>
         <a href="#markets" data-i18n="nav.market">Market</a>
-        <a href="#demo" data-i18n="nav.demo">Demo</a>
+        <a href="demo.html" data-i18n="nav.demo">Demo</a>
       </div>
 
       <div class="nav-actions">
@@ -58,20 +58,18 @@
         <div class="pill" data-i18n="hero.pill">🇸🇬 🇲🇾 Multi-Tenant Healthcare &amp; Wellness SaaS Platform</div>
 
         <h1>
-          <span data-i18n="hero.title">Clinic booking,</span>
-          <span data-i18n="hero.titleHighlight">CRM & operations</span>
-          <span data-i18n="hero.titleSuffix">in one elegant platform.</span>
+          <span data-i18n="hero.title">Smart Clinic Booking,</span>
+          <span data-i18n="hero.titleHighlight">CRM &amp; Multi-Branch Operations</span>
+          <span data-i18n="hero.titleSuffix">Simplified.</span>
         </h1>
 
         <p class="hero-text" data-i18n="hero.subtitle">
-          Cliniva helps clinics, therapy centers, wellness brands, and multi-branch practices manage appointment
-          booking,
-          WhatsApp reminders, patient intake, payments, referrals, and daily operations from one beautiful web app.
+          Streamline appointment scheduling, automated WhatsApp reminders, and multi-branch operations for modern healthcare and wellness practices.
         </p>
 
         <div class="hero-actions">
           <a href="pages/owner/onboarding.html" class="btn btn-primary" data-i18n="nav.getStarted">Get Started</a>
-          <a href="demo.html" class="btn btn-soft" data-i18n="hero.startDemo">Start Interactive Demo →</a>
+          <a href="demo.html" class="btn btn-soft" data-i18n="hero.startDemo">Explore Interactive Demo →</a>
         </div>
 
         <div class="trust-row">
@@ -81,85 +79,22 @@
             <div class="avatar a3">TCM</div>
             <div class="avatar a4">CRM</div>
           </div>
-          <span data-i18n="hero.trust">Designed for clinics, physiotherapy, TCM, wellness & outpatient care.</span>
+          <span data-i18n="hero.trust">Trusted by TCM, Physiotherapy, Spa Wellness, and Clinical Nutrition practices.</span>
         </div>
       </div>
 
       <div class="hero-visual">
-        <div class="floating-chip chip-1" data-i18n="hero.chips.zeroDouble">✅ Zero double-booking</div>
-        <div class="floating-chip chip-2" data-i18n="hero.chips.whatsapp">💬 WhatsApp reminders</div>
-        <div class="floating-chip chip-3" data-i18n="hero.chips.pdpa">🔐 PDPA-ready consent</div>
-
-        <!-- Phone Mockup Card -->
-        <div class="phone-card">
-          <div class="phone-screen">
-            <div class="phone-header">
-              <div class="phone-header-top">
-                <span>9:41</span>
-                <span>●●● 5G</span>
-              </div>
-              <h3 data-i18n="hero.phone.title">Book Your Appointment</h3>
-              <p style="margin-top:7px;color:rgba(255,255,255,.78);font-size:13px;line-height:1.5;"
-                data-i18n="hero.phone.desc">
-                Choose clinic branch, service, practitioner and slot.
-              </p>
-              <div class="search-box" data-i18n="hero.phone.search">
-                🔎 Search services, clinics, practitioners
-              </div>
-            </div>
-
-            <div class="booking-panel">
-              <div class="branch-card">
-                <div class="branch-top">
-                  <div class="branch-icon">🏥</div>
-                  <div>
-                    <h4 data-i18n="hero.phone.branchName">Orchard Wellness Clinic</h4>
-                    <small data-i18n="hero.phone.distance">Singapore · 1.8 km away</small>
-                  </div>
-                </div>
-
-                <div class="slot-grid">
-                  <div class="slot">09:00</div>
-                  <div class="slot active">10:30</div>
-                  <div class="slot">11:45</div>
-                  <div class="slot">14:00</div>
-                  <div class="slot">15:30</div>
-                  <div class="slot">17:00</div>
-                </div>
-              </div>
-
-              <div class="branch-card">
-                <div class="branch-top">
-                  <div class="branch-icon">🧘</div>
-                  <div>
-                    <h4 data-i18n="hero.phone.serviceName">TCM Physio Session</h4>
-                    <small data-i18n="hero.phone.physioMeta">60 min · Dr. Lim Wei Han</small>
-                  </div>
-                </div>
-                <small style="color:var(--muted);font-weight:600;" data-i18n="hero.phone.physioDesc">Includes dynamic
-                  intake form and referral document
-                  upload.</small>
-              </div>
-            </div>
-
-            <div class="mini-checkout">
-              <div class="mini-checkout-row">
-                <span data-i18n="hero.phone.deposit">Deposit</span>
-                <strong>SGD 30.00</strong>
-              </div>
-              <div class="mini-checkout-row">
-                <span data-i18n="hero.phone.slotHold">Slot hold</span>
-                <strong data-i18n="hero.phone.timeLeft">09:48 left</strong>
-              </div>
-              <div class="pay-bar">
-                <div class="pay-progress"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Live Operations Floating Dashboard -->
+        <!-- Unified Clinic Operations Showcase Window -->
         <div class="dashboard-card">
+          <div class="dash-window-bar">
+            <div class="window-dots">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <span class="window-branch-tag">🏥 Paragon Flagship · Orchard SG</span>
+          </div>
+
           <div class="dash-head">
             <h3 data-i18n="hero.dash.title">Today’s Operations</h3>
             <span class="badge-live" data-i18n="hero.dash.live">LIVE</span>
@@ -208,100 +143,27 @@
               <div class="status-dot blue"></div>
             </div>
           </div>
+
+          <!-- Integrated WhatsApp Notification Dock -->
+          <div class="hero-wa-dock">
+            <div class="wa-dock-icon">💬</div>
+            <div class="wa-dock-info">
+              <div class="wa-dock-top">
+                <strong data-i18n="hero.chips.whatsapp">Two-Way WhatsApp Engine</strong>
+                <span>Just now</span>
+              </div>
+              <p>"Hi Amanda, your physiotherapy slot at Orchard Flagship is confirmed for 10:30 AM."</p>
+              <span class="wa-badge">✓ Attendance Confirmed</span>
+            </div>
+          </div>
         </div>
+
+        <div class="floating-chip chip-zero" data-i18n="hero.chips.zeroDouble">✅ Zero double-booking</div>
       </div>
     </div>
   </header>
 
-  <!-- FEATURES -->
-  <section class="features" id="features">
-    <div class="container">
-      <div class="section-title">
-        <div class="pill" style="margin-bottom:16px;" data-i18n="features.pill">Core Platform Capabilities</div>
-        <h2 data-i18n="features.title">Everything a clinic needs to reduce no-shows and operate smoothly.</h2>
-        <p data-i18n="features.subtitle">
-          From patient self-booking to operational dashboards, Cliniva is designed to streamline appointment-heavy
-          clinics without becoming a full EMR.
-        </p>
-      </div>
-
-      <div class="feature-grid">
-        <article class="feature-card">
-          <div class="feature-icon">🧠</div>
-          <h3 data-i18n="features.f1.title">Triple-Constraint Scheduling</h3>
-          <p data-i18n="features.f1.desc">
-            Prevent collisions with smart matching: practitioner + treatment room + specialized equipment validation in
-            real time.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-icon">💬</div>
-          <h3 data-i18n="features.f2.title">Two-Way WhatsApp Engine</h3>
-          <p data-i18n="features.f2.desc">
-            Deliver booking confirmations, H-24 reminder alerts, and interactive 1-click confirmation or reschedule
-            buttons directly on WhatsApp.
-          </p>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-icon">📋</div>
-          <h3 data-i18n="features.f3.title">Dynamic Intake & Pain Map</h3>
-          <p data-i18n="features.f3.desc">
-            Capture patient symptoms, history, consent, and visual body pain mapping tailored to Physio, TCM, and Spa
-            workflows.
-          </p>
-        </article>
-
-        <article class="feature-card wide-card">
-          <div>
-            <div class="feature-icon">🔁</div>
-            <h3 data-i18n="features.f4.title">Referral Intake Bridge</h3>
-            <p data-i18n="features.f4.desc">
-              Upload referral documents temporarily, forward them securely to SIMRS or EMR webhook endpoints, then
-              auto-delete files based on retention policy.
-            </p>
-          </div>
-
-          <div class="mini-flow">
-            <div class="flow-step">
-              <div class="flow-num">1</div>
-              <div>
-                <strong data-i18n="features.flow.step1">Upload referral</strong><br>
-                <small data-i18n="features.flow.step1Desc">PDF, JPG, PNG up to 5MB</small>
-              </div>
-            </div>
-
-            <div class="flow-step">
-              <div class="flow-num">2</div>
-              <div>
-                <strong data-i18n="features.flow.step2">Forward to EMR</strong><br>
-                <small data-i18n="features.flow.step2Desc">Webhook + HMAC signature</small>
-              </div>
-            </div>
-
-            <div class="flow-step">
-              <div class="flow-num">3</div>
-              <div>
-                <strong data-i18n="features.flow.step3">Auto-delete file</strong><br>
-                <small data-i18n="features.flow.step3Desc">Maximum retention 72 hours</small>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-icon">🏢</div>
-          <h3 data-i18n="features.crm.title">Multi-Branch CRM</h3>
-          <p data-i18n="features.crm.desc">
-            Manage multiple brands, branches, practitioners, services, pricing, and staff access from one system.
-          </p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRACTICE SPECIALTY TEMPLATES (B2B SAAS SHOWCASE) -->
+  <!-- PRACTICE SPECIALTY TEMPLATES (B2B SAAS CORE SHOWCASE) -->
   <section class="templates-section" id="templates">
     <div class="container">
       <div class="section-title">
@@ -410,11 +272,58 @@
       <div class="template-callout-banner">
         <div style="font-size:32px; flex-shrink:0;">🏛️</div>
         <div>
-          <h4 style="margin:0 0 4px; font-size:15px; font-weight:800; color:var(--text);">Multi-Branch Architecture &amp; Template Inheritance</h4>
+          <h4 style="margin:0 0 4px; font-size:15px; font-weight:800; color:var(--text);">Multi-Branch Architecture &amp; Dedicated Branch Portals</h4>
           <p style="margin:0; font-size:13px; color:var(--muted); line-height:1.5;">
             Under Cliniva's multi-tenant design, clinic branches strictly inherit the template assigned to their product subscription. Every activated branch automatically gets its own standalone public landing page (e.g. <code>branch-name.cliniva.app</code>) allowing patients to book without exposing internal management portals.
           </p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION (STREAMLINED 4-PILLAR GRID) -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-title">
+        <div class="pill" style="margin-bottom:16px;" data-i18n="features.pill">Core Capabilities</div>
+        <h2 data-i18n="features.title">Built for modern clinics to operate smoothly.</h2>
+        <p data-i18n="features.subtitle">
+          Streamline patient scheduling, automated communication, and branch coordination without operational overhead.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-icon">🧠</div>
+          <h3 data-i18n="features.f1.title">Triple-Constraint Scheduling</h3>
+          <p data-i18n="features.f1.desc">
+            Smart real-time validation matching practitioners, treatment rooms, and specialized equipment to prevent collisions.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3 data-i18n="features.f2.title">Automated WhatsApp Messaging</h3>
+          <p data-i18n="features.f2.desc">
+            Instant booking confirmations, 24-hour reminder alerts, and 1-click interactive reschedule buttons directly on WhatsApp.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">🏢</div>
+          <h3 data-i18n="features.crm.title">Centralized Multi-Branch CRM</h3>
+          <p data-i18n="features.crm.desc">
+            Manage multiple clinic locations, staff permissions, service catalogs, and localized pricing from one unified dashboard.
+          </p>
+        </article>
+
+        <article class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3 data-i18n="features.f3.title">Dynamic Clinical Intake &amp; Pain Map</h3>
+          <p data-i18n="features.f3.desc">
+            Specialty pre-consultation questionnaires, visual pain mapping, and PDPA-compliant patient consent capture.
+          </p>
+        </article>
       </div>
     </div>
   </section>
@@ -426,15 +335,14 @@
         <div class="pill" style="margin-bottom:16px;" data-i18n="showcase.pill">Interactive UI Concept</div>
         <h2 data-i18n="showcase.title">A modern interface for patients, receptionists, doctors, and clinic owners.</h2>
         <p data-i18n="showcase.subtitle">
-          The layout below demonstrates the main product areas: operational dashboard, patient booking, notifications,
-          and referral/payment flow.
+          The layout below demonstrates the main product areas: operational dashboard, patient booking, and notification workflow.
         </p>
       </div>
 
       <div class="tabs">
-        <button class="tab-btn active" data-tab="dashboard" data-i18n="showcase.tab.ops">Dashboard</button>
-        <button class="tab-btn" data-tab="booking" data-i18n="showcase.tab.booking">Patient Booking</button>
-        <button class="tab-btn" data-tab="notifications" data-i18n="showcase.tab.notifications">Notifications</button>
+        <button class="tab-btn active" data-tab="dashboard" data-i18n="showcase.tab.ops">Operational Dashboard</button>
+        <button class="tab-btn" data-tab="booking" data-i18n="showcase.tab.booking">Patient Self-Booking</button>
+        <button class="tab-btn" data-tab="notifications" data-i18n="showcase.tab.notifications">Notifications &amp; WhatsApp</button>
       </div>
 
       <div class="app-shell">
@@ -457,8 +365,7 @@
 
             <div class="side-card">
               <h4 data-i18n="showcase.sidebar.pdpaTitle">PDPA-ready consent</h4>
-              <p data-i18n="showcase.sidebar.pdpaDesc">Collect patient communication consent for Singapore and Malaysia
-                operations.</p>
+              <p data-i18n="showcase.sidebar.pdpaDesc">Collect patient communication consent for Singapore and Malaysia operations.</p>
               <a href="pages/public/sign-in.html" class="btn btn-white"
                 style="width:100%;padding:10px;font-size:12px;display:block;text-align:center;"
                 data-i18n="showcase.sidebar.reviewBtn">Review</a>
@@ -608,13 +515,12 @@
               </div>
             </section>
 
-            <!-- BOOKING SCREEN -->
+            <!-- BOOKING SCREEN (PATIENT SELF-BOOKING ENGINE) -->
             <section class="screen" id="booking">
               <div class="panel-top">
                 <div>
                   <h3 data-i18n="booking.title">Patient Self-Booking Engine</h3>
-                  <p data-i18n="booking.subtitle">Interactive multi-template appointment flow with slot hold and deposit
-                    checkout.</p>
+                  <p data-i18n="booking.subtitle">Interactive multi-template appointment flow with slot hold and deposit checkout.</p>
                 </div>
               </div>
 
@@ -660,8 +566,7 @@
                   <div class="field">
                     <label for="bookingBranchSelect" data-i18n="booking.branchLabel">Clinic Branch Location</label>
                     <select id="bookingBranchSelect" class="input" style="width:100%;">
-                      <option value="sg-orchard">🇸🇬 Orchard Wellness Clinic — Paragon Medical #14-02, Singapore
-                      </option>
+                      <option value="sg-orchard">🇸🇬 Orchard Wellness Clinic — Paragon Medical #14-02, Singapore</option>
                       <option value="my-kl">🇲🇾 Kuala Lumpur Integrated Care — Pavilion Embassy, Malaysia</option>
                       <option value="my-penang">🇲🇾 Penang TCM &amp; Physio Center — Gurney Walk, Penang</option>
                     </select>
@@ -705,18 +610,13 @@
                     </label>
                     <div class="pain-spots-grid" id="bookingPainSpotsGrid"
                       style="display:flex; flex-wrap:wrap; gap:8px;">
-                      <span class="pain-spot-tag" data-spot="Head & Migraine" data-i18n="booking.pain.head">💆 Head
-                        &amp; Migraine</span>
-                      <span class="pain-spot-tag" data-spot="Stiff Neck & Shoulder" data-i18n="booking.pain.neck">🧣
-                        Neck &amp; Shoulder</span>
-                      <span class="pain-spot-tag" data-spot="Upper Back" data-i18n="booking.pain.upperBack">🦾 Upper
-                        Back</span>
+                      <span class="pain-spot-tag" data-spot="Head & Migraine" data-i18n="booking.pain.head">💆 Head &amp; Migraine</span>
+                      <span class="pain-spot-tag" data-spot="Stiff Neck & Shoulder" data-i18n="booking.pain.neck">🧣 Neck &amp; Shoulder</span>
+                      <span class="pain-spot-tag" data-spot="Upper Back" data-i18n="booking.pain.upperBack">🦾 Upper Back</span>
                       <span class="pain-spot-tag active" data-spot="Lower Back / Lumbar"
                         data-i18n="booking.pain.lowerBack">⚡ Lower Back / Lumbar</span>
-                      <span class="pain-spot-tag" data-spot="Knee Joint" data-i18n="booking.pain.knee">🦵 Knee
-                        Joint</span>
-                      <span class="pain-spot-tag" data-spot="Ankle & Foot" data-i18n="booking.pain.ankle">🦶 Ankle &amp;
-                        Foot</span>
+                      <span class="pain-spot-tag" data-spot="Knee Joint" data-i18n="booking.pain.knee">🦵 Knee Joint</span>
+                      <span class="pain-spot-tag" data-spot="Ankle & Foot" data-i18n="booking.pain.ankle">🦶 Ankle &amp; Foot</span>
                     </div>
                   </div>
 
@@ -727,14 +627,10 @@
                         <label for="bookingAromaSelect" style="font-size:12px; font-weight:700; color:#854d0e;"
                           data-i18n="booking.aromaLabel">Aroma Essential Oil</label>
                         <select id="bookingAromaSelect" class="input" style="width:100%; font-size:13px;">
-                          <option value="Lavender" data-i18n="booking.aroma.lavender">🌿 French Lavender (Calm &amp;
-                            Sleep)</option>
-                          <option value="Lemongrass" selected data-i18n="booking.aroma.lemongrass">🌱 Balinese
-                            Lemongrass (Detox)</option>
-                          <option value="Eucalyptus" data-i18n="booking.aroma.eucalyptus">🍃 Eucalyptus (Muscle Ease)
-                          </option>
-                          <option value="Frangipani" data-i18n="booking.aroma.frangipani">🌸 Tropical Frangipani (Glow)
-                          </option>
+                          <option value="Lavender" data-i18n="booking.aroma.lavender">🌿 French Lavender (Calm &amp; Sleep)</option>
+                          <option value="Lemongrass" selected data-i18n="booking.aroma.lemongrass">🌱 Balinese Lemongrass (Detox)</option>
+                          <option value="Eucalyptus" data-i18n="booking.aroma.eucalyptus">🍃 Eucalyptus (Muscle Ease)</option>
+                          <option value="Frangipani" data-i18n="booking.aroma.frangipani">🌸 Tropical Frangipani (Glow)</option>
                         </select>
                       </div>
                       <div class="field" style="margin-bottom:0;">
@@ -742,8 +638,7 @@
                           data-i18n="booking.pressureLabel">Massage Pressure</label>
                         <select id="bookingPressureSelect" class="input" style="width:100%; font-size:13px;">
                           <option value="Soft" data-i18n="booking.pressure.soft">Gentle / Soft (Light Touch)</option>
-                          <option value="Medium" selected data-i18n="booking.pressure.medium">Moderate / Medium
-                            (Balanced)</option>
+                          <option value="Medium" selected data-i18n="booking.pressure.medium">Moderate / Medium (Balanced)</option>
                           <option value="Deep" data-i18n="booking.pressure.deep">Deep Tissue / Firm (Intensive)</option>
                         </select>
                       </div>
@@ -751,8 +646,7 @@
                   </div>
 
                   <div class="field">
-                    <label for="bookingNotesInput" data-i18n="booking.notesLabel">Initial Complaint / Intake
-                      Notes</label>
+                    <label for="bookingNotesInput" data-i18n="booking.notesLabel">Initial Complaint / Intake Notes</label>
                     <textarea id="bookingNotesInput" rows="3" class="input" style="width:100%;"
                       placeholder="Describe symptoms, preferences, or allergies..."
                       data-i18n-placeholder="booking.notesPlaceholder"></textarea>
@@ -763,8 +657,7 @@
                   <div class="preview-card">
                     <h4 data-i18n="booking.previewTitle">Your appointment is almost ready.</h4>
                     <p data-i18n="booking.previewDesc">
-                      The selected slot is temporarily held for 10 minutes while the patient completes intake and
-                      payment.
+                      The selected slot is temporarily held for 10 minutes while the patient completes intake and payment.
                     </p>
                   </div>
 
@@ -796,8 +689,7 @@
 
                     <div class="summary-item">
                       <span data-i18n="booking.sumResourceCheck">Resource Check</span>
-                      <strong style="color:var(--success);" data-i18n="booking.sumResourcePass">Practitioner ✅ Room ✅
-                        Equipment ✅</strong>
+                      <strong style="color:var(--success);" data-i18n="booking.sumResourcePass">Practitioner ✅ Room ✅ Equipment ✅</strong>
                     </div>
 
                     <div class="summary-item">
@@ -825,8 +717,7 @@
               <div class="panel-top">
                 <div>
                   <h3 data-i18n="showcase.notif.title">Notification Engine</h3>
-                  <p data-i18n="showcase.notif.subtitle">Automated confirmations, reminders, reschedule links, and
-                    fallback delivery.</p>
+                  <p data-i18n="showcase.notif.subtitle">Automated confirmations, reminders, reschedule links, and fallback delivery.</p>
                 </div>
               </div>
 
@@ -904,15 +795,14 @@
     </div>
   </section>
 
-  <!-- MARKET SECTION -->
+  <!-- REGIONAL MARKET SECTION -->
   <section class="market" id="markets">
     <div class="container">
       <div class="section-title">
         <div class="pill" style="margin-bottom:16px;" data-i18n="market.pill">Regional-Ready Design</div>
         <h2 data-i18n="market.title">Designed for healthcare and wellness businesses across Southeast Asia.</h2>
         <p data-i18n="market.subtitle">
-          The interface supports regional payment habits, multilingual markets, privacy expectations, and multi-branch
-          clinic operations.
+          The interface supports regional payment habits, multilingual markets, privacy expectations, and multi-branch clinic operations.
         </p>
       </div>
 
@@ -920,8 +810,7 @@
         <div class="market-card">
           <h3 data-i18n="market.sgTitle">🇸🇬 Singapore Market</h3>
           <p data-i18n="market.sgDesc">
-            Clean, premium, compliance-aware user experience for private clinics, wellness centers, TCM practices, and
-            outpatient services.
+            Clean, premium, compliance-aware user experience for private clinics, wellness centers, TCM practices, and outpatient services.
           </p>
           <div class="market-tags">
             <span class="tag" data-i18n="market.tagPayNow">PayNow-ready</span>
@@ -934,8 +823,7 @@
         <div class="market-card">
           <h3 data-i18n="market.myTitle">🇲🇾 Malaysia Market</h3>
           <p data-i18n="market.myDesc">
-            Built for fast-growing multi-branch clinics with WhatsApp-first communication, flexible deposits, and
-            bilingual operational needs.
+            Built for fast-growing multi-branch clinics with WhatsApp-first communication, flexible deposits, and bilingual operational needs.
           </p>
           <div class="market-tags">
             <span class="tag" data-i18n="market.tagDuitNow">DuitNow-ready</span>
@@ -954,16 +842,15 @@
       <div class="cta-card">
         <div class="cta-content">
           <div>
-            <h2 data-i18n="cta.title">Modernize clinic booking without turning it into a complicated EMR.</h2>
+            <h2 data-i18n="cta.title">Ready to modernize your clinic operations?</h2>
             <p data-i18n="cta.subtitle">
-              Cliniva focuses on appointment flow, CRM, notifications, payment deposit, operational dashboards, and
-              referral bridging — exactly where clinics lose time every day.
+              Launch specialized practice templates, automate WhatsApp reminders, and streamline multi-branch schedules today.
             </p>
           </div>
 
           <div class="cta-actions">
-            <a href="pages/owner/onboarding.html" class="btn btn-white" data-i18n="cta.getStarted">Get Started</a>
-            <a href="demo.html" class="btn btn-glass" data-i18n="cta.viewDemo">View Dashboard Demo</a>
+            <a href="pages/owner/onboarding.html" class="btn btn-white" data-i18n="cta.getStarted">Get Started Now</a>
+            <a href="demo.html" class="btn btn-glass" data-i18n="cta.viewDemo">Explore Live Demo</a>
           </div>
         </div>
       </div>
@@ -973,11 +860,11 @@
   <!-- FOOTER -->
   <footer>
     <div class="container footer-inner">
-      <div data-i18n="footer.copyright">© 2026 Cliniva. Integrated Clinic Booking & CRM Platform.</div>
+      <div data-i18n="footer.copyright">© 2026 Cliniva. Multi-Tenant Clinic Management &amp; Booking Platform.</div>
       <div class="footer-links">
-        <a href="pages/public/sign-in.html" data-i18n="nav.signIn">🔐 Owner &amp; Admin Sign In</a>
-        <a href="pages/owner/onboarding.html" data-i18n="nav.getStarted">🚀 Request Onboarding</a>
-        <a href="demo.html" data-i18n="nav.demo">⚡ Interactive Demo</a>
+        <a href="pages/public/sign-in.html" data-i18n="nav.signIn">Sign In</a>
+        <a href="pages/owner/onboarding.html" data-i18n="nav.getStarted">Get Started</a>
+        <a href="demo.html" data-i18n="nav.demo">Demo</a>
         <a href="pages/public/branch.html?branch=sg-orchard" title="Preview White-label Branch Landing Page">🌐 Sample Branch Page</a>
       </div>
     </div>

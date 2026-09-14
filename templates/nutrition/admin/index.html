@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>NutriFlow Admin - Control Dashboard</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for premium interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#006e2f",
+                      "primary-container": "#22c55e",
+                      "on-primary": "#ffffff",
+                      "on-primary-container": "#004b1e",
+                      "secondary": "#006a61",
+                      "secondary-container": "#86f2e4",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-container": "#006f66",
+                      "tertiary": "#9d4300",
+                      "tertiary-container": "#ff8e4d",
+                      "on-tertiary-container": "#6d2d00",
+                      "background": "#f8f9ff",
+                      "on-background": "#0b1c30",
+                      "surface": "#f8f9ff",
+                      "on-surface": "#0b1c30",
+                      "surface-variant": "#d3e4fe",
+                      "on-surface-variant": "#3d4a3d",
+                      "surface-container": "#e5eeff",
+                      "surface-container-low": "#eff4ff",
+                      "surface-container-high": "#dce9ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-container-lowest": "#ffffff",
+                      "outline": "#6d7b6c",
+                      "outline-variant": "#bccbb9",
+                      "error": "#ba1a1a",
+                      "error-container": "#ffdad6",
+                      "on-error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "8px",
+                      "sm": "16px",
+                      "margin-mobile": "16px",
+                      "base": "4px",
+                      "md": "24px",
+                      "margin-desktop": "40px",
+                      "gutter": "24px",
+                      "xl": "48px",
+                      "lg": "32px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "stats-number": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "stats-number": ["20px", {"lineHeight": "24px", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-none {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <link href="/src/style.css" rel="stylesheet">
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased">
+
+    <!-- Admin Navigation Bar -->
+    <nav id="admin-desktop-navbar" class="bg-surface border-b border-outline-variant/30 grid grid-cols-[auto_1fr_auto] items-center gap-4 w-full px-6 md:px-margin-desktop h-20 z-50 sticky top-0 shadow-sm">
+        <!-- Logo -->
+        <div class="flex items-center gap-sm cursor-pointer" onclick="navigateTo('admin-clients')">
+            <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+            <div class="flex flex-col">
+                <span class="text-xl font-bold tracking-tight text-primary leading-none">NutriFlow Specialist</span>
+                <span class="text-[9px] uppercase tracking-widest text-[#9d4300] font-bold mt-0.5">Practitioner Portal</span>
+            </div>
+        </div>
+
+        <!-- Links -->
+        <div class="hidden md:flex gap-md h-full items-center justify-center">
+            <a onclick="navigateTo('admin-clients')" id="link-admin-clients" class="nav-link h-full flex items-center text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors px-3 cursor-pointer">Clients</a>
+            <a onclick="navigateTo('admin-meal-builder')" id="link-admin-meal-builder" class="nav-link h-full flex items-center text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors px-3 cursor-pointer">Programs</a>
+            <a onclick="navigateTo('admin-food-scans')" id="link-admin-food-scans" class="nav-link h-full flex items-center text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors px-3 cursor-pointer relative">
+                Food Scans
+                <span id="scan-badge" style="display:none;position:absolute;top:1rem;right:0.5rem;width:0.5rem;height:0.5rem;background:#ef4444;border-radius:50%;"></span>
+            </a>
+            <a onclick="navigateTo('admin-calendar')" id="link-admin-calendar" class="nav-link h-full flex items-center text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors px-3 cursor-pointer">Appointments</a>
+            <a onclick="navigateTo('admin-services')" id="link-admin-services" class="nav-link h-full flex items-center text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors px-3 cursor-pointer">Services</a>
+            <a onclick="navigateTo('admin-profile')" id="link-admin-profile" class="nav-link h-full flex items-center text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors px-3 cursor-pointer">Profile</a>
+        </div>
+
+        <!-- Right Side Icons -->
+        <div class="flex items-center gap-xs md:gap-sm justify-end relative">
+            <button onclick="toggleSpecialistNotifications(event)" id="admin-notifications-btn" class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-colors active:scale-95" title="Notifications">
+                <span class="material-symbols-outlined text-[20px]">notifications</span>
+            </button>
+            
+            <!-- Notifications Dropdown -->
+            <div id="admin-notifications-dropdown" class="hidden absolute top-[calc(100%+8px)] right-0 w-80 bg-surface rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-outline-variant/30 flex flex-col overflow-hidden z-50 transform origin-top-right transition-all">
+                <div class="px-5 py-4 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-lowest">
+                    <h3 class="text-sm font-bold tracking-wider text-on-background">NOTIFICATIONS</h3>
+                    <button onclick="markAdminNotificationsRead()" class="text-xs font-semibold text-primary hover:text-[#005321] transition-colors cursor-pointer">Mark all read</button>
+                </div>
+                <div id="admin-notifications-list" class="max-h-96 overflow-y-auto flex flex-col divide-y divide-outline-variant/20 bg-surface-container-lowest">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <button onclick="navigateTo('admin-profile')" class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/30 flex items-center justify-center cursor-pointer active:scale-95 transition-transform" title="Practitioner Profile">
+                <div class="w-full h-full bg-primary/10 text-primary font-bold text-[12px] flex items-center justify-center" id="practitioner-avatar-label">DH</div>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Notification Toast Alert -->
+    <div id="toast-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-50 pointer-events-none w-full max-w-sm flex flex-col gap-2 px-4"></div>
+
+    <!-- Main Container -->
+    <main id="admin-main-container" class="flex-grow w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-lg relative">
+
+        <!-- ==================== VIEW 1: ADMIN CLIENTS OVERVIEW ==================== -->
+        <section id="view-admin-clients" class="view-section hidden flex flex-col gap-gutter">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold tracking-tight text-on-surface">Client Overview</h1>
+                    <p class="text-body-md text-on-surface-variant mt-1" id="specialist-welcome-subtitle">Manage your active nutrition clients and monitor their progress.</p>
+                </div>
+                <button onclick="showAddNewClientModal()" class="bg-[#006e2f] hover:bg-[#005321] text-white font-bold text-xs px-5 py-3 rounded-full flex items-center gap-2 shadow-md transition-all active:scale-95">
+                    <span class="material-symbols-outlined text-[18px]">add</span> New Client
+                </button>
+            </div>
+
+            <!-- Stats grid -->
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-surface-container-lowest p-4 md:p-6 rounded-2xl border border-outline-variant/30 shadow-sm flex items-center justify-between">
+                    <div>
+                        <div class="text-[10px] md:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Total Active Clients</div>
+                        <div class="text-2xl md:text-3xl font-extrabold text-on-surface mt-2" id="admin-metric-clients">142</div>
+                        <div class="text-[9px] md:text-[10px] text-primary font-bold mt-1.5 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">trending_up</span> +12% this month</div>
+                    </div>
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-surface-container-low text-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-xl md:text-2xl">group</span></div>
+                </div>
+                <div class="bg-surface-container-lowest p-4 md:p-6 rounded-2xl border border-outline-variant/30 shadow-sm flex items-center justify-between">
+                    <div>
+                        <div class="text-[10px] md:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Avg. Compliance Rate</div>
+                        <div class="text-2xl md:text-3xl font-extrabold text-on-surface mt-2" id="admin-metric-compliance">87%</div>
+                        <div class="text-[9px] md:text-[10px] text-on-surface-variant font-semibold mt-2">Across all tracked plans</div>
+                    </div>
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#e5eeff] text-[#006a61] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-xl md:text-2xl">check_circle</span></div>
+                </div>
+                <div class="bg-surface-container-lowest p-4 md:p-6 rounded-2xl border border-outline-variant/30 shadow-sm flex items-center justify-between col-span-2 lg:col-span-1">
+                    <div>
+                        <div class="text-[10px] md:text-xs font-bold text-on-surface-variant uppercase tracking-wider">Consultations Today</div>
+                        <div class="text-2xl md:text-3xl font-extrabold text-on-surface mt-2" id="admin-metric-consultations">5</div>
+                        <div class="text-[9px] md:text-[10px] text-on-surface-variant font-semibold mt-2">Next at 11:30 AM</div>
+                    </div>
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#ffdbca] text-[#9d4300] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-xl md:text-2xl">calendar_month</span></div>
+                </div>
+            </div>
+
+            <!-- List table -->
+            <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden flex flex-col">
+                <div class="p-5 border-b border-surface-variant/30 flex flex-col sm:flex-row gap-4 items-center justify-between">
+                    <div class="w-full sm:max-w-md relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant/60">search</span>
+                        <input type="text" id="admin-client-search" oninput="filterAdminClients()" placeholder="Search clients..." class="w-full rounded-xl border-outline-variant/40 focus:border-primary focus:ring-primary text-xs pl-10 pr-4 py-2.5 bg-surface-container-low/55">
+                    </div>
+                    <div class="flex gap-2 w-full sm:w-auto">
+                        <select id="admin-client-filter-owner" onchange="filterAdminClients()" class="w-1/2 sm:w-auto text-xs bg-surface border border-outline-variant/30 rounded-xl px-3 py-2.5 text-on-surface-variant font-semibold focus:ring-primary focus:border-primary">
+                            <option value="mine">My Clients</option>
+                            <option value="all">All Clients</option>
+                        </select>
+                        <select id="admin-client-filter-goal" onchange="filterAdminClients()" class="w-1/2 sm:w-auto text-xs bg-surface border border-outline-variant/30 rounded-xl px-3 py-2.5 text-on-surface-variant font-semibold focus:ring-primary focus:border-primary">
+                            <option value="all">All Goals</option>
+                            <option value="Weight Loss">Weight Loss</option>
+                            <option value="Muscle Gain">Muscle Gain</option>
+                            <option value="Maintenance">Maintenance</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto p-4 lg:p-0">
+                    <table class="w-full text-left border-collapse block lg:table">
+                        <thead class="hidden lg:table-header-group">
+                            <tr class="bg-surface-container-low/40 border-b border-surface-variant/30 text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
+                                <th class="p-4 pl-6">Client</th>
+                                <th class="p-4">Goal</th>
+                                <th class="p-4">Last Check-In</th>
+                                <th class="p-4">Compliance</th>
+                                <th class="p-4">Weight Progress</th>
+                                <th class="p-4 pr-6 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-clients-table-body" class="block lg:table-row-group divide-y divide-surface-variant/20 text-xs"></tbody>
+                    </table>
+                </div>
+
+                <div class="p-4 border-t border-surface-variant/30 flex justify-between items-center text-xs text-on-surface-variant font-medium">
+                    <span id="admin-clients-count-label">Showing 1 to 3 of 142 clients</span>
+                    <div class="flex gap-1">
+                        <button id="admin-pagination-prev" onclick="changeAdminClientsPage(-1)" class="px-3 py-1.5 border border-outline-variant/30 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer" disabled>Prev</button>
+                        <button id="admin-pagination-next" onclick="changeAdminClientsPage(1)" class="px-3 py-1.5 border border-outline-variant/30 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer">Next</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 2: TARGETS & DIARIES ==================== -->
+        <section id="view-admin-meal-builder" class="view-section hidden grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+            <!-- Left Column: Food Library (Hidden in list mode) -->
+            <div id="library-sidebar" class="lg:col-span-3 order-2 bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm p-4 hidden flex-col gap-4">
+                <div class="flex justify-between items-center pb-2 border-b border-surface-variant/20">
+                    <div>
+                        <h3 class="text-sm font-extrabold text-on-background uppercase tracking-wider">Library</h3>
+                        <p class="text-[9px] text-on-surface-variant leading-none">Weekly food database</p>
+                    </div>
+                    <button onclick="openAddFoodModal()" class="bg-primary hover:bg-[#005321] text-white font-bold text-[9px] px-3 py-2 rounded-lg flex items-center gap-1 cursor-pointer shadow-sm transition-all hover:scale-105 active:scale-95 shrink-0">
+                        <span class="material-symbols-outlined text-[13px]">add</span> Add Food
+                    </button>
+                </div>
+                
+                <!-- Search Input -->
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant/60 text-base">search</span>
+                    <input type="text" id="library-search" oninput="filterLibraryFoods()" placeholder="Search foods or recipes..." class="w-full rounded-xl border-outline-variant/40 focus:border-primary focus:ring-primary text-xs pl-8 pr-3 py-2.5 bg-surface-container-low/55">
+                </div>
+
+                <!-- Chips/Filters Grid -->
+                <div class="grid grid-cols-4 gap-1" id="library-filter-chips">
+                    <button onclick="setLibraryFilter('all')" class="library-chip active bg-primary text-white text-[9px] font-bold py-1.5 rounded-lg hover:opacity-90 transition-all text-center">All</button>
+                    <button onclick="setLibraryFilter('Recipes')" class="library-chip bg-surface-container border border-outline-variant/30 text-[9px] font-bold text-on-surface-variant py-1.5 rounded-lg hover:bg-slate-100 transition-all text-center">Recipes</button>
+                    <button onclick="setLibraryFilter('Raw Foods')" class="library-chip bg-surface-container border border-outline-variant/30 text-[9px] font-bold text-on-surface-variant py-1.5 rounded-lg hover:bg-slate-100 transition-all text-center">Raw</button>
+                    <button onclick="setLibraryFilter('Favorites')" class="library-chip bg-surface-container border border-outline-variant/30 text-[9px] font-bold text-on-surface-variant py-1.5 rounded-lg hover:bg-slate-100 transition-all text-center">Favs</button>
+                </div>
+
+                <!-- Library List -->
+                <div class="flex-grow overflow-y-auto max-h-[550px] space-y-2 pr-1 hide-scrollbar" id="library-list-container">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Right Column: Main Content Area -->
+            <div id="meal-builder-main-content" class="lg:col-span-12 flex flex-col gap-4 transition-all">
+                
+                <!-- SUB-VIEW A: Programs Directory (List View) -->
+                <div id="programs-list-view" class="flex flex-col gap-4 w-full">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-surface-variant/20">
+                        <div>
+                            <h2 class="text-2xl font-bold text-on-background">Nutrition Programs</h2>
+                            <p class="text-xs text-on-surface-variant mt-1">Manage and assign custom meal plans for clients.</p>
+                        </div>
+                        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                            <button onclick="openProgramChatSelectionModal()" class="flex-1 sm:flex-none justify-center bg-surface hover:bg-slate-50 border border-outline-variant/40 text-on-surface-variant hover:text-primary font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-sm transition-all active:scale-95">
+                                <span class="material-symbols-outlined text-[16px] text-primary">forum</span> Program Chats
+                            </button>
+                            <button onclick="openCreateProgramModal()" class="flex-1 sm:flex-none justify-center bg-primary hover:bg-[#005321] text-white font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md transition-all active:scale-95">
+                                <span class="material-symbols-outlined text-[16px]">add</span> Create Program
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Search Programs -->
+                    <div class="flex gap-4 items-center">
+                        <div class="relative flex-grow">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant/60 text-base">search</span>
+                            <input type="text" id="programs-search" oninput="renderProgramsList()" placeholder="Search program name or description..." class="w-full rounded-xl border-outline-variant/40 focus:border-primary focus:ring-primary text-xs pl-8 pr-3 py-2.5 bg-surface-container-lowest border">
+                        </div>
+                    </div>
+                    
+                    <!-- Programs Cards Grid -->
+                    <div id="programs-cards-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+
+                <!-- SUB-VIEW B: Grid Editor (Weekly Meal Builder) -->
+                <div id="program-editor-view" class="hidden flex flex-col gap-4 w-full">
+                    <div class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/30 shadow-sm flex flex-col gap-4">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-surface-variant/20 pb-4">
+                            <div>
+                                <button onclick="exitProgramEditor()" class="mb-2 text-primary font-bold text-xs flex items-center gap-1 hover:underline cursor-pointer">
+                                    <span class="material-symbols-outlined text-xs">arrow_back</span> Back to Programs
+                                </button>
+                                <h2 class="text-2xl font-bold text-on-background" id="editor-program-title">Weekly Program Editor</h2>
+                                <p class="text-xs text-on-surface-variant mt-1" id="editor-program-description">Customize menu slot items for this program.</p>
+                                <div class="flex items-center gap-2 mt-2">
+                                    <span class="text-xs text-on-surface-variant font-medium">Target Calorie:</span>
+                                    <input type="number" id="target-kcal" onchange="saveProgramTargetKcal()" required value="2000" class="w-20 text-xs font-bold text-primary bg-primary/5 border border-primary/20 rounded-lg px-2 py-1 text-center focus:ring-1 focus:ring-primary focus:border-primary transition-all">
+                                    <span class="text-xs text-on-surface-variant font-medium">kcal/day</span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 sm:flex sm:flex-row gap-2 w-full sm:w-auto mt-4 sm:mt-0">
+                                 <button onclick="previewWeeklyPlan()" class="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-xs py-2.5 px-3 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer w-full sm:w-auto">
+                                     <span class="material-symbols-outlined text-[18px]">preview</span> Preview
+                                 </button>
+                                 <button onclick="shareProgramDirect()" class="bg-white border border-slate-300 text-[#006e2f] hover:bg-slate-50 font-bold text-xs py-2.5 px-3 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer w-full sm:w-auto">
+                                     <span class="material-symbols-outlined text-[18px]">share</span> Share Link
+                                 </button>
+                                 <button onclick="openProgramDiscussionDirect()" class="bg-[#e0f2fe] text-[#0369a1] hover:bg-[#bae6fd] font-bold text-xs py-2.5 px-3 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer w-full sm:w-auto">
+                                     <span class="material-symbols-outlined text-[18px]">forum</span> Chat Q&A
+                                 </button>
+                                 <button onclick="publishProgramDirect()" class="bg-[#006e2f] hover:bg-[#005321] text-white font-semibold text-xs py-2.5 px-4 rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer w-full sm:w-auto">
+                                     <span class="material-symbols-outlined text-[18px] rotate-[-30deg] translate-y-[-1px]" style="font-size:18px;">send</span> Publish Plan
+                                 </button>
+                            </div>
+                        </div>
+
+                        <!-- Weekly Meal Grid Container -->
+                        <div class="lg:hidden text-center bg-primary/5 text-primary text-[10px] font-bold py-2 px-3 rounded-xl border border-primary/10 mb-3 flex items-center justify-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">info</span>
+                            <span>Swipe horizontally to edit other days of the week</span>
+                        </div>
+                        <div class="overflow-x-auto w-full">
+                            <table class="w-full text-left border-collapse border border-outline-variant/20 rounded-xl overflow-hidden" style="table-layout: fixed; min-width: 1300px;">
+                                <thead>
+                                    <tr class="bg-surface-container-low/50 border-b border-surface-variant/30 text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">
+                                        <th class="p-3 w-[12%] text-center border-r border-outline-variant/20">Meals</th>
+                                        <th class="p-3 w-[12.5%] text-center border-r border-outline-variant/20 cursor-pointer hover:bg-slate-100/50 transition-colors" onclick="setSelectedTotalsDay('Mon')">Mon<span class="block text-[9px] font-normal text-on-surface-variant mt-0.5">May 12</span></th>
+                                        <th class="p-3 w-[12.5%] text-center border-r border-outline-variant/20 cursor-pointer hover:bg-slate-100/50 transition-colors" onclick="setSelectedTotalsDay('Tue')">Tue<span class="block text-[9px] font-normal text-on-surface-variant mt-0.5">May 13</span></th>
+                                        <th class="p-3 w-[12.5%] text-center border-r border-outline-variant/20 cursor-pointer hover:bg-slate-100/50 transition-colors" onclick="setSelectedTotalsDay('Wed')">Wed<span class="block text-[9px] font-normal text-on-surface-variant mt-0.5">May 14</span></th>
+                                        <th class="p-3 w-[12.5%] text-center border-r border-outline-variant/20 cursor-pointer hover:bg-slate-100/50 transition-colors" onclick="setSelectedTotalsDay('Thu')">Thu<span class="block text-[9px] font-normal text-on-surface-variant mt-0.5">May 15</span></th>
+                                        <th class="p-3 w-[12.5%] text-center border-r border-outline-variant/20 cursor-pointer hover:bg-slate-100/50 transition-colors" onclick="setSelectedTotalsDay('Fri')">Fri<span class="block text-[9px] font-normal text-on-surface-variant mt-0.5">May 16</span></th>
+                                        <th class="p-3 w-[12.5%] text-center border-r border-outline-variant/20 cursor-pointer hover:bg-slate-100/50 transition-colors" onclick="setSelectedTotalsDay('Sat')">Sat<span class="block text-[9px] font-normal text-on-surface-variant mt-0.5">May 17</span></th>
+                                        <th class="p-3 w-[12.5%] text-center cursor-pointer hover:bg-slate-100/50 transition-colors" onclick="setSelectedTotalsDay('Sun')">Sun<span class="block text-[9px] font-normal text-on-surface-variant mt-0.5">May 18</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="weekly-meal-table-body" class="divide-y divide-surface-variant/20 text-xs">
+                                    <!-- Generated Dynamically via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                
+                    <!-- Weekday Totals Dashboard at the bottom -->
+                    <div class="bg-surface-container-low/30 border border-outline-variant/20 rounded-2xl p-4 mt-2" id="weekly-totals-summary-container">
+                        <!-- Populated dynamically via JS showing protein, carbs, fats, kcal progress -->
+                    </div>
+                </div>
+
+                <!-- SUB-VIEW C: Dedicated Program Discussion Page -->
+                <div id="program-discussion-view" class="hidden flex flex-col gap-4 w-full">
+                    <div id="discussion-container-box" class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/30 shadow-sm flex flex-col gap-6">
+                        <!-- Page Header -->
+                        <div id="discussion-main-header" class="flex items-center justify-between border-b border-surface-variant/20 pb-4">
+                            <div class="flex items-center gap-3">
+                                <button onclick="exitProgramDiscussion()" class="text-primary font-bold text-xs flex items-center gap-1 hover:underline cursor-pointer bg-transparent border-0">
+                                    <span class="material-symbols-outlined text-xs">arrow_back</span> Back
+                                </button>
+                                <span class="h-5 w-px bg-slate-300"></span>
+                                <div>
+                                    <h2 class="text-xl font-bold text-on-background flex items-center gap-2" id="discussion-page-title">
+                                        <span class="material-symbols-outlined text-primary text-xl">forum</span> Program Discussion
+                                    </h2>
+                                    <p class="text-xs text-on-surface-variant mt-1" id="discussion-page-subtitle">Private conversation channel between you and the clients assigned to this program.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Split Content -->
+                        <div id="discussion-grid-container" class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-220px)] lg:h-[550px]">
+                            <!-- Left: Clients/Programs Sidebar List -->
+                            <div id="discussion-sidebar-panel" class="lg:col-span-4 border-r border-outline-variant/20 lg:pr-4 flex flex-col gap-3 h-full">
+                                <div id="sidebar-header-nav" class="flex flex-col gap-2"></div>
+                                <h3 id="sidebar-list-title" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Recipients</h3>
+                                <div id="discussion-page-clients-list" class="flex flex-col gap-2 overflow-y-auto flex-grow">
+                                    <!-- Populated dynamically with client or program list items -->
+                                </div>
+                            </div>
+
+                            <!-- Right: Chat Box Main -->
+                            <div id="discussion-chat-panel" class="hidden lg:flex lg:col-span-8 flex-col justify-between bg-surface border border-outline-variant/35 rounded-2xl overflow-hidden shadow-sm h-full">
+                                <!-- Chat Window Header -->
+                                <div class="flex items-center justify-between px-4 py-3 bg-surface border-b border-outline-variant/30 shrink-0">
+                                    <div class="flex items-center gap-3">
+                                        <!-- Mobile Back button to list -->
+                                        <button type="button" onclick="backToRecipients()" class="lg:hidden p-2 hover:bg-surface-container-low rounded-full transition-colors active:scale-95 text-on-surface-variant flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-lg">arrow_back</span>
+                                        </button>
+                                        <!-- Client Avatar & Status -->
+                                        <div class="flex items-center gap-2.5">
+                                            <div class="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center border border-outline-variant/30 overflow-hidden" id="chat-page-client-avatar">
+                                                --
+                                            </div>
+                                            <div class="text-left">
+                                                <h2 class="font-bold text-xs text-on-background leading-none" id="discussion-chat-with-label">Chatting with Client</h2>
+                                                <span class="text-[9px] text-primary font-bold block mt-1.5 flex items-center gap-1">
+                                                    <span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span> Active Client
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Message List -->
+                                <div id="admin-page-chat-container" class="flex-grow overflow-y-auto px-4 py-5 flex flex-col gap-4 bg-slate-50/50 scroll-smooth min-h-0">
+                                    <!-- Dynamic messages populate here -->
+                                </div>
+                                
+                                <!-- Chat Footer Input Area -->
+                                <div class="p-3 bg-surface border-t border-outline-variant/30 shrink-0">
+                                    <form onsubmit="handleAdminPageChatSubmit(event)" class="flex gap-2 items-center">
+                                        <input type="text" id="admin-page-chat-input" placeholder="Type a message..." required class="flex-1 bg-surface-container-low border border-outline-variant/30 text-xs px-4 py-3 rounded-full focus:outline-none focus:border-primary/50 text-slate-800 transition-all">
+                                        <button type="submit" class="bg-primary hover:bg-[#005321] text-white p-3 rounded-full shadow-md transition-all active:scale-95 flex items-center justify-center cursor-pointer">
+                                            <span class="material-symbols-outlined text-base">send</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 3: ADMIN APPOINTMENTS ==================== -->
+        <section id="view-admin-calendar" class="view-section hidden flex flex-col gap-6">
+            <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden flex flex-col min-h-[500px]">
+                
+                <!-- Header -->
+                <div class="px-6 py-5 border-b border-outline-variant/30 flex justify-between items-center bg-surface">
+                    <div>
+                        <h2 class="text-xl font-bold text-on-background">Appointments Hub</h2>
+                        <p class="text-xs text-on-surface-variant mt-1">Manage and review all patient consultations.</p>
+                    </div>
+                </div>
+
+                <!-- Filters & Search -->
+                <div class="px-6 py-4 border-b border-outline-variant/20 bg-surface-container-low flex flex-col sm:flex-row gap-4 justify-between items-center">
+                    <div class="flex gap-2 w-full sm:w-auto">
+                        <select id="appointments-filter-status" onchange="setAppointmentsFilter(this.value)" class="w-full sm:w-48 text-xs bg-surface border border-outline-variant/30 rounded-xl px-3 py-2.5 text-on-surface-variant font-semibold focus:ring-primary focus:border-primary">
+                            <option value="all">All Statuses</option>
+                            <option value="approved">Confirmed</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="relative w-full sm:w-64">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px]">search</span>
+                        <input type="text" id="appointments-search" oninput="renderAdminAppointmentsTable()" placeholder="Search patient..." class="w-full bg-surface border border-outline-variant/40 text-xs pl-9 pr-3 py-2.5 rounded-xl focus:border-primary focus:ring-primary transition-all">
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto w-full flex-grow bg-surface p-4 lg:p-0">
+                    <table class="w-full text-left border-collapse text-xs whitespace-nowrap block lg:table">
+                        <thead class="hidden lg:table-header-group">
+                            <tr class="border-b border-outline-variant/30 text-on-surface-variant font-bold uppercase tracking-wider text-[10px]">
+                                <th class="px-6 py-4">ID</th>
+                                <th class="px-6 py-4">Patient</th>
+                                <th class="px-6 py-4">Service</th>
+                                <th class="px-6 py-4">Therapist</th>
+                                <th class="px-6 py-4">Date & Time</th>
+                                <th class="px-6 py-4">Duration</th>
+                                <th class="px-6 py-4 text-center">Status</th>
+                                <th class="px-6 py-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointments-table-body" class="block lg:table-row-group divide-y divide-outline-variant/20">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Footer -->
+                <div class="px-6 py-4 border-t border-outline-variant/20 bg-surface-container-low text-xs text-on-surface-variant" id="appointments-table-footer">
+                    Showing 0 reservations
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 5: PRACTITIONER PROFILE ==================== -->
+        <section id="view-admin-profile" class="view-section hidden flex flex-col gap-gutter">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight text-on-surface">Practitioner Profile</h1>
+                <p class="text-body-md text-on-surface-variant mt-1">Manage your professional bio, specialties, and account settings.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+                <!-- Left: Info card -->
+                <div class="lg:col-span-4 flex flex-col gap-gutter">
+                    <div class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/30 shadow-sm flex flex-col items-center text-center gap-4">
+                        <div class="w-24 h-24 rounded-full bg-primary/10 text-primary font-bold text-3xl flex items-center justify-center border border-outline-variant/35" id="profile-practitioner-avatar">DH</div>
+                        <div>
+                            <h2 class="text-xl font-bold text-on-background" id="profile-practitioner-name">Dr. Hasan</h2>
+                            <p class="text-xs bg-primary/5 text-primary px-3 py-1 rounded-full font-bold w-fit mx-auto mt-2" id="profile-practitioner-specialty">Weight Management</p>
+                        </div>
+                        <div class="w-full border-t border-surface-variant/20 pt-4 flex flex-col gap-2 text-left text-xs font-semibold text-on-surface-variant">
+                            <div class="flex justify-between">
+                                <span>Email:</span>
+                                <span class="text-on-background" id="profile-practitioner-email">hasan@nutriflow.com</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Status:</span>
+                                <span class="text-emerald-700">ACTIVE</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Client Rating & Reviews Card -->
+                    <div class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/30 shadow-sm flex flex-col gap-4">
+                        <div class="flex items-center justify-between border-b border-surface-variant/20 pb-3">
+                            <h3 class="text-sm font-bold text-on-background">Client Reviews & Rating</h3>
+                            <div class="flex items-center gap-1 text-amber-600 font-extrabold text-sm bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                                <span class="text-amber-500">★</span> <span id="admin-profile-rating-num">4.9</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-3 max-h-72 overflow-y-auto hide-scrollbar" id="admin-profile-reviews-list">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>                <!-- Right: Profile Form + Platform Billing Card -->
+                <div class="lg:col-span-8 flex flex-col gap-gutter">
+                    <!-- Profile Form Card -->
+                    <div class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/30 shadow-sm flex flex-col gap-4">
+                        <h3 class="text-lg font-bold text-on-background">Edit Professional Information</h3>
+                        <form onsubmit="handleSavePractitionerProfile(event)" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Practitioner Name</label>
+                                    <input type="text" id="edit-practitioner-name" required class="w-full rounded-lg border-outline-variant/40 focus:border-primary focus:ring-primary text-sm px-3 py-2 bg-surface">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Professional Specialty</label>
+                                    <input type="text" id="edit-practitioner-specialty" required class="w-full rounded-lg border-outline-variant/40 focus:border-primary focus:ring-primary text-sm px-3 py-2 bg-surface">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Email Address</label>
+                                <input type="email" id="edit-practitioner-email" required class="w-full rounded-lg border-outline-variant/40 focus:border-primary focus:ring-primary text-sm px-3 py-2 bg-surface">
+                            </div>
+
+                            <div class="flex justify-between items-center pt-4 border-t border-outline-variant/30 mt-6">
+                                <button type="button" onclick="handleAdminSignOut()" class="border border-[#ba1a1a]/30 hover:bg-red-50 text-[#ba1a1a] font-bold text-xs py-2.5 px-5 rounded-xl transition-all flex items-center gap-1 shadow-sm cursor-pointer">
+                                    <span class="material-symbols-outlined text-[16px]">logout</span> Sign Out
+                                </button>
+                                <button type="submit" class="bg-primary hover:bg-[#005321] text-white font-bold text-xs py-2.5 px-6 rounded-xl transition-all shadow-md cursor-pointer">Save Profile Changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Platform Billing Card -->
+                    <div id="profile-billing-section" class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/30 shadow-sm flex flex-col gap-6 text-left">
+                        <div>
+                            <h3 class="text-lg font-bold text-on-background">Platform Billing & SaaS Plan</h3>
+                            <p class="text-xs text-on-surface-variant mt-0.5">Manage your NutriFlow SaaS subscription and billing details.</p>
+                        </div>
+
+                        <!-- Current Plan Card -->
+                        <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 border border-slate-700 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative overflow-hidden">
+                            <div class="absolute -top-16 -right-16 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                            <div class="z-10 flex items-center gap-4">
+                                <div id="sp-plan-icon" class="w-12 h-12 rounded-xl bg-slate-700/50 flex items-center justify-center shrink-0 border border-slate-600">
+                                    <span class="material-symbols-outlined text-white text-2xl" style="font-variation-settings:'FILL' 1">badge</span>
+                                </div>
+                                <div>
+                                    <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-0.5">Current Plan</p>
+                                    <h3 id="sp-plan-name" class="text-white text-2xl font-black tracking-tight">Basic EHR</h3>
+                                    <p class="text-slate-400 text-xs mt-0.5 flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Active — Billed monthly
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="z-10 flex flex-col sm:items-end gap-2 w-full sm:w-auto">
+                                <div id="sp-plan-price" class="text-white font-black text-3xl">RM0<span class="text-slate-400 text-xs font-normal">/mo</span></div>
+                                <button onclick="openSaaSUpgradeModal()" id="btn-upgrade-saas" class="w-full sm:w-auto bg-primary hover:bg-[#005321] text-white font-extrabold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer border border-primary-container/30">
+                                    <span class="material-symbols-outlined text-[16px]">rocket_launch</span> Change SaaS Plan
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Why Upgrade / Features comparison -->
+                            <div class="bg-surface border border-outline-variant/30 rounded-xl p-5 shadow-sm">
+                                <h4 class="font-bold text-sm text-on-background mb-3">Why Upgrade to Pro?</h4>
+                                <ul class="space-y-3 text-left">
+                                    <li class="flex items-start gap-2.5">
+                                        <span class="material-symbols-outlined text-primary text-lg mt-0.5">auto_awesome</span>
+                                        <div>
+                                            <h5 class="font-bold text-xs text-on-surface">Unlimited AI ADIME Scribes</h5>
+                                            <p class="text-[10px] text-on-surface-variant mt-0.5">Save hours of charting. Let AI draft your notes instantly.</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <span class="material-symbols-outlined text-emerald-600 text-lg mt-0.5">savings</span>
+                                        <div>
+                                            <h5 class="font-bold text-xs text-on-surface">0% Aggregator Commission</h5>
+                                            <p class="text-[10px] text-on-surface-variant mt-0.5">Keep 100% of your earnings. Direct-to-insurance billing included.</p>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start gap-2.5">
+                                        <span class="material-symbols-outlined text-blue-600 text-lg mt-0.5">group_add</span>
+                                        <div>
+                                            <h5 class="font-bold text-xs text-on-surface">Unlimited Clients</h5>
+                                            <p class="text-[10px] text-on-surface-variant mt-0.5">Scale your private practice without arbitrary limits.</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Billing History -->
+                            <div class="bg-surface border border-outline-variant/30 rounded-xl p-5 shadow-sm flex flex-col">
+                                <h4 class="font-bold text-sm text-on-background mb-3">Billing History</h4>
+                                <div class="flex-grow flex items-center justify-center text-center p-4 border border-dashed border-outline-variant/30 rounded-lg bg-slate-50/50 min-h-[120px]">
+                                    <div>
+                                        <span class="material-symbols-outlined text-3xl text-outline-variant mb-1">receipt_long</span>
+                                        <p class="text-xs font-bold text-on-surface-variant">No invoices yet</p>
+                                        <p class="text-[10px] text-outline mt-0.5" id="billing-status-desc">You are currently on the Free plan.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 6: SERVICES MANAGEMENT ==================== -->
+        <section id="view-admin-services" class="view-section hidden flex flex-col gap-gutter">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight text-on-surface">Consultation Services</h1>
+                <p class="text-body-md text-on-surface-variant mt-1">Manage the booking offerings that clients see when scheduling appointments with you.</p>
+            </div>
+
+            <div class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/30 shadow-sm flex flex-col gap-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-on-background">My Consultation Services</h3>
+                        <p class="text-xs text-on-surface-variant mt-0.5">Define your session durations, pricing, locations, and modes of consultations.</p>
+                    </div>
+                    <button onclick="openAddServiceModal()" class="w-full sm:w-auto bg-primary hover:bg-[#005321] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1 cursor-pointer">
+                        <span class="material-symbols-outlined text-[16px]">add</span> Add Service
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in" id="specialist-services-list">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- ==================== VIEW: FOOD SCANS HUB ==================== -->
+        <section id="view-admin-food-scans" class="view-section hidden flex flex-col gap-gutter" style="height: calc(100vh - 160px); min-height: 500px;">
+            <div class="flex justify-between items-center shrink-0">
+                <div>
+                    <h1 class="text-3xl font-bold tracking-tight text-on-surface">Food Scans & Nutrition Chat</h1>
+                    <p class="text-body-md text-on-surface-variant mt-1">Review client food photos and provide nutrition advice directly in the discussion thread.</p>
+                </div>
+            </div>
+
+            <!-- Workspace: Sidebar (Client List) + Chat Area -->
+            <div class="flex-grow flex bg-surface border border-outline-variant/30 rounded-3xl overflow-hidden shadow-sm min-h-0">
+                <!-- Sidebar (List of Clients) -->
+                <div class="w-80 border-r border-outline-variant/30 flex flex-col shrink-0 bg-slate-50/50">
+                    <div class="p-4 border-b border-outline-variant/20 shrink-0">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Client List</span>
+                    </div>
+                    <div id="admin-food-chat-client-list" class="flex-grow overflow-y-auto p-2 space-y-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Chat Pane -->
+                <div class="flex-1 flex flex-col min-w-0 bg-white">
+                    <!-- Chat Header -->
+                    <div class="px-6 py-4 border-b border-outline-variant/20 flex items-center justify-between shrink-0 bg-slate-50/30">
+                        <div class="flex items-center gap-3">
+                            <div id="admin-food-chat-header-avatar" class="w-10 h-10 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center border border-primary/20">
+                                -
+                            </div>
+                            <div>
+                                <h3 id="admin-food-chat-header-name" class="font-bold text-sm text-slate-800">Select a Client</h3>
+                                <p class="text-[10px] text-slate-400 font-semibold">Discussion history & nutrition scans</p>
+                            </div>
+                        </div>
+                        <button onclick="openAdminScannerModal()" class="flex items-center gap-1.5 bg-primary hover:bg-[#005321] text-white font-bold text-xs px-4 py-2.5 rounded-full shadow-md transition-all active:scale-95 cursor-pointer">
+                            <span class="material-symbols-outlined text-[16px]">center_focus_strong</span>
+                            Scan Food Recommendation
+                        </button>
+                    </div>
+
+                    <!-- Chat Messages List -->
+                    <div id="admin-food-chat-message-list" class="flex-grow overflow-y-auto p-6 flex flex-col gap-4 bg-slate-50/20 scroll-smooth min-h-0">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Chat Footer Input -->
+                    <div class="p-4 border-t border-outline-variant/20 shrink-0 bg-white">
+                        <div class="flex gap-2 items-center">
+                            <input type="text" id="admin-food-chat-input" placeholder="Write nutrition feedback or a message to the client..." class="flex-1 bg-slate-50 border border-slate-200 text-xs px-4 py-3 rounded-xl focus:outline-none focus:border-primary text-slate-800 transition-all font-medium" onkeydown="if(event.key === 'Enter') submitAdminFoodChatMessage()">
+                            <button onclick="submitAdminFoodChatMessage()" class="bg-primary hover:bg-[#005321] text-white p-3 rounded-xl shadow-sm transition-all active:scale-95 flex items-center justify-center cursor-pointer">
+                                <span class="material-symbols-outlined text-base">send</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Mobile Bottom Navigation (Only visible on mobile screens) -->
+    <div id="admin-mobile-navbar" class="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant/30 flex justify-around items-center h-16 z-50 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] px-2">
+        <button onclick="navigateTo('admin-clients')" id="mobile-link-admin-clients" class="mobile-nav-link flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all duration-200">
+            <span class="material-symbols-outlined text-[22px]">group</span>
+            <span class="text-[9px] font-bold mt-0.5">Clients</span>
+        </button>
+        <button onclick="navigateTo('admin-meal-builder')" id="mobile-link-admin-meal-builder" class="mobile-nav-link flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all duration-200">
+            <span class="material-symbols-outlined text-[22px]">assignment</span>
+            <span class="text-[9px] font-bold mt-0.5">Programs</span>
+        </button>
+        <button onclick="navigateTo('admin-calendar')" id="mobile-link-admin-calendar" class="mobile-nav-link flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all duration-200">
+            <span class="material-symbols-outlined text-[22px]">calendar_month</span>
+            <span class="text-[9px] font-bold mt-0.5">Appointments</span>
+        </button>
+        <button onclick="navigateTo('admin-services')" id="mobile-link-admin-services" class="mobile-nav-link flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all duration-200">
+            <span class="material-symbols-outlined text-[20px] mb-1">room_service</span>
+            <span class="text-[10px] font-bold">Services</span>
+        </button>
+        <button onclick="navigateTo('admin-profile')" id="mobile-link-admin-profile" class="mobile-nav-link flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all duration-200">
+            <span class="material-symbols-outlined text-[22px]">account_circle</span>
+            <span class="text-[9px] font-bold mt-0.5">Profile</span>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer id="admin-page-footer" class="bg-surface-container-low border-t border-outline-variant/30 w-full py-6 px-6 md:px-margin-desktop mt-auto pb-24 md:pb-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                <span class="font-bold text-primary text-base">NutriFlow</span>
+                <p class="text-[10px] text-on-surface-variant/80 mt-1">© 2024 NutriFlow Health Systems. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Assign Food Modal -->
+    <div id="assign-food-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-surface-container-lowest max-w-sm w-full rounded-2xl p-6 border border-outline-variant/30 shadow-2xl flex flex-col gap-4">
+            <div class="flex justify-between items-center border-b border-surface-variant/30 pb-3">
+                <h3 class="text-base font-bold text-on-background">Add Meal: <span id="assign-food-day-label">Mon</span> <span id="assign-food-type-label">Breakfast</span></h3>
+                <button onclick="closeAssignFoodModal()" class="text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined text-[20px]">close</span></button>
+            </div>
+            <div class="flex flex-col gap-3 max-h-[300px] overflow-y-auto hide-scrollbar" id="assign-food-options-container">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Add Client Modal -->
+    <div id="add-client-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-surface-container-lowest max-w-md w-full rounded-2xl p-6 border border-outline-variant/30 shadow-2xl flex flex-col gap-4">
+            <div class="flex justify-between items-center border-b border-surface-variant/30 pb-3">
+                <h3 class="text-lg font-bold text-on-background">Add New Client</h3>
+                <button onclick="closeAddNewClientModal()" class="text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined text-[20px]">close</span></button>
+            </div>
+            <form onsubmit="handleAddNewClientSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Full Name</label>
+                    <input type="text" id="new-client-name" required placeholder="e.g. John Doe" class="w-full rounded-lg border-outline-variant/40 focus:border-primary focus:ring-primary text-xs px-3 py-2 bg-surface">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Email Address</label>
+                    <input type="email" id="new-client-email" required placeholder="e.g. john@example.com" class="w-full rounded-lg border-outline-variant/40 focus:border-primary focus:ring-primary text-xs px-3 py-2 bg-surface">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Dietary Goal</label>
+                    <select id="new-client-goal" class="w-full rounded-lg border-outline-variant/40 focus:border-primary focus:ring-primary text-xs px-3 py-2 bg-surface">
+                        <option value="Weight Loss">Weight Loss</option>
+                        <option value="Muscle Gain">Muscle Gain</option>
+                        <option value="Maintenance">Maintenance</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Food Allergies (Optional)</label>
+                    <input type="text" id="new-client-allergies" placeholder="e.g. Peanuts, Seafood" class="w-full rounded-lg border-outline-variant/40 focus:border-primary focus:ring-primary text-xs px-3 py-2 bg-surface">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Medical Conditions (Optional)</label>
+                    <input type="text" id="new-client-conditions" placeholder="e.g. Diabetes Type 2, GERD" class="w-full rounded-lg border-outline-variant/40 focus:border-primary focus:ring-primary text-xs px-3 py-2 bg-surface">
+                </div>
+                <button type="submit" class="w-full bg-[#006e2f] hover:bg-[#005321] text-white font-bold text-xs py-2.5 rounded-lg transition-all shadow-sm cursor-pointer">Create Client & Save Intake</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Client Medical Intake Detail Modal (Specialist View) -->
+    <div id="client-intake-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-surface-container-lowest max-w-lg w-full rounded-2xl p-6 border border-outline-variant/30 shadow-2xl flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-surface-variant/30 pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-xl">medical_information</span>
+                    <div>
+                        <h3 class="text-base font-bold text-on-background" id="admin-intake-client-name">Sarah Jenkins</h3>
+                        <p class="text-[10px] text-on-surface-variant font-medium">Medical Intake & Health Questionnaire</p>
+                    </div>
+                </div>
+                <button onclick="closeClientIntakeModal()" class="text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined text-[20px]">close</span></button>
+            </div>
+            <form onsubmit="handleAdminSaveClientIntake(event)" class="space-y-4">
+                <input type="hidden" id="admin-intake-client-email">
+                
+                <!-- Food Allergies -->
+                <div>
+                    <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Food Allergies & Intolerances</label>
+                    <div class="grid grid-cols-2 gap-2 text-xs font-medium text-on-surface">
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" name="admin-intake-allergies" value="Peanuts" class="rounded text-primary focus:ring-primary"> Peanuts
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" name="admin-intake-allergies" value="Seafood/Shellfish" class="rounded text-primary focus:ring-primary"> Seafood / Shellfish
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" name="admin-intake-allergies" value="Lactose/Dairy" class="rounded text-primary focus:ring-primary"> Lactose / Dairy
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" name="admin-intake-allergies" value="Gluten/Wheat" class="rounded text-primary focus:ring-primary"> Gluten / Wheat
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" name="admin-intake-allergies" value="Eggs" class="rounded text-primary focus:ring-primary"> Eggs
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" name="admin-intake-allergies" value="Soy" class="rounded text-primary focus:ring-primary"> Soy
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Medical Conditions -->
+                <div>
+                    <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">Medical Conditions</label>
+                    <div class="grid grid-cols-2 gap-2 text-xs font-medium text-on-surface">
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" name="admin-intake-conditions" value="Diabetes Type 2" class="rounded text-primary focus:ring-primary"> Diabetes Tipe 2
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" name="admin-intake-conditions" value="Hypertension" class="rounded text-primary focus:ring-primary"> Hipertensi
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" name="admin-intake-conditions" value="High Cholesterol" class="rounded text-primary focus:ring-primary"> Kolesterol Tinggi
+                        </label>
+                        <label class="flex items-center gap-1.5 cursor-pointer">
+                            <input type="checkbox" name="admin-intake-conditions" value="GERD/Maag" class="rounded text-primary focus:ring-primary"> GERD / Asam Lambung
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Dietary Preference -->
+                <div>
+                    <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Dietary Preference</label>
+                    <select id="admin-intake-diet" class="w-full rounded-lg border border-outline-variant/40 focus:border-primary focus:ring-primary text-xs px-3 py-2 bg-surface font-semibold text-on-surface">
+                        <option value="None">Balanced / No Restriction</option>
+                        <option value="Halal">Halal</option>
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Vegan">Vegan</option>
+                        <option value="Keto">Keto / Low Carb</option>
+                        <option value="Low Sodium">Low Sodium (Darah Tinggi)</option>
+                    </select>
+                </div>
+
+                <!-- Notes & Medications -->
+                <div>
+                    <label class="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-1">Notes & Medications</label>
+                    <textarea id="admin-intake-notes" rows="3" placeholder="Additional medical notes or prescribed diet restrictions..." class="w-full rounded-lg border border-outline-variant/40 focus:border-primary focus:ring-primary text-xs px-3 py-2 bg-surface resize-none"></textarea>
+                </div>
+
+                <div class="flex gap-2 justify-end pt-2">
+                    <button type="button" onclick="closeClientIntakeModal()" class="px-4 py-2 border border-outline-variant/40 rounded-xl text-xs font-bold text-on-surface-variant hover:bg-surface-container-low transition-colors cursor-pointer">Cancel</button>
+                    <button type="submit" class="bg-[#006e2f] hover:bg-[#005321] text-white font-bold text-xs px-4 py-2 rounded-xl transition-all shadow-sm cursor-pointer">Save Medical Intake</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Chat Modal -->
+    <div id="admin-chat-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-surface-container-lowest max-w-md w-full rounded-2xl p-6 border border-outline-variant/30 shadow-2xl flex flex-col gap-4 h-[480px]">
+            <div class="flex justify-between items-center border-b border-surface-variant/30 pb-3 shrink-0">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs overflow-hidden" id="chat-client-avatar">SJ</div>
+                    <div>
+                        <h3 class="text-sm font-bold text-on-background" id="chat-client-name">Sarah Jenkins</h3>
+                        <p class="text-[9px] text-[#006a61] font-semibold">Active Consultation Channel</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminChatModal()" class="text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined text-[20px]">close</span></button>
+            </div>
+            <!-- Chat Messages Body -->
+            <div class="flex-grow overflow-y-auto space-y-3 p-1 flex flex-col" id="chat-messages-container">
+                <!-- Message items will be loaded dynamically -->
+            </div>
+            <!-- Input bar -->
+            <form id="admin-chat-form" onsubmit="handleSendAdminChatMessage(event)" class="flex gap-2 shrink-0 border-t border-surface-variant/20 pt-3">
+                <input type="text" id="admin-chat-input" required placeholder="Type a message to client..." class="flex-grow rounded-xl border border-outline-variant/30 focus:border-primary focus:ring-primary text-xs px-3 py-2 bg-surface">
+                <button type="submit" class="bg-primary hover:bg-[#005321] text-white font-bold text-xs px-4 py-2 rounded-xl transition-all shadow-sm flex items-center justify-center cursor-pointer"><span class="material-symbols-outlined text-[16px]">send</span></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Food Modal -->
+    <div id="add-food-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-surface max-w-sm w-full rounded-2xl p-6 border border-slate-100 shadow-2xl flex flex-col gap-4">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="text-sm font-bold text-slate-800">Add New Food / Recipe</h3>
+                <button onclick="closeAddFoodModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><span class="material-symbols-outlined text-[18px]">close</span></button>
+            </div>
+            <form onsubmit="handleAddFoodSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Food/Recipe Name</label>
+                    <input type="text" id="food-name" required placeholder="e.g. Avocado Toast" class="w-full rounded-lg border-slate-200 text-xs px-3 py-2 bg-slate-50 focus:border-primary focus:ring-primary">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Category Type</label>
+                    <select id="food-category" class="w-full rounded-lg border-slate-200 text-xs px-3 py-2 bg-slate-50 focus:border-primary focus:ring-primary">
+                        <option value="Recipes">Recipes (Masakan/Resep)</option>
+                        <option value="Raw Foods">Raw Foods (Makanan Mentah)</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Calories (kcal)</label>
+                        <input type="number" id="food-kcal" required placeholder="250" class="w-full rounded-lg border-slate-200 text-xs px-3 py-2 bg-slate-50 focus:border-primary focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Protein (g)</label>
+                        <input type="number" id="food-pro" required placeholder="15" class="w-full rounded-lg border-slate-200 text-xs px-3 py-2 bg-slate-50 focus:border-primary focus:ring-primary">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Carbs (g)</label>
+                        <input type="number" id="food-carb" required placeholder="30" class="w-full rounded-lg border-slate-200 text-xs px-3 py-2 bg-slate-50 focus:border-primary focus:ring-primary">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Fat (g)</label>
+                        <input type="number" id="food-fat" required placeholder="10" class="w-full rounded-lg border-slate-200 text-xs px-3 py-2 bg-slate-50 focus:border-primary focus:ring-primary">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Image URL (Optional)</label>
+                    <input type="url" id="food-image-url" placeholder="https://images.unsplash.com/..." class="w-full rounded-lg border-slate-200 text-xs px-3 py-2 bg-slate-50 focus:border-primary focus:ring-primary">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Recipe Ingredients</label>
+                    <textarea id="food-recipe-ingredients" required rows="2" placeholder="e.g. 150g salmon, 1/2 cup quinoa, 1 tsp olive oil..." class="w-full rounded-lg border-slate-200 text-xs px-3 py-2 bg-slate-50 focus:border-primary focus:ring-primary"></textarea>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Recipe Steps / Instructions</label>
+                    <textarea id="food-recipe-steps" required rows="2" placeholder="e.g. 1. Preheat oven. 2. Season salmon. 3. Bake for 12 mins..." class="w-full rounded-lg border-slate-200 text-xs px-3 py-2 bg-slate-50 focus:border-primary focus:ring-primary"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-[#005321] text-white font-bold text-xs py-2.5 rounded-lg transition-all shadow-sm cursor-pointer mt-2">Add to Library</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Comment Modal -->
+    <div id="edit-comment-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-surface max-w-sm w-full rounded-2xl p-6 border border-slate-100 shadow-2xl flex flex-col gap-4 text-slate-800">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="text-sm font-bold text-slate-800">Add/Edit Nutritionist Comment</h3>
+                <button onclick="closeEditCommentModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><span class="material-symbols-outlined text-[18px]">close</span></button>
+            </div>
+            <div>
+                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-2" id="comment-modal-meal-title">Avocado Egg Toast</p>
+                <textarea id="comment-textarea" rows="3" placeholder="e.g. Eat this before your workout, or chew slowly." class="w-full rounded-lg border-slate-200 text-xs px-3 py-2 bg-slate-50 focus:border-primary focus:ring-primary"></textarea>
+            </div>
+            <div class="flex justify-end gap-2 shrink-0">
+                <button onclick="closeEditCommentModal()" class="border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-xs px-4 py-2 rounded-xl transition-all cursor-pointer">Cancel</button>
+                <button onclick="saveMealComment()" class="bg-[#006e2f] hover:bg-[#005321] text-white font-semibold text-xs px-4 py-2 rounded-xl shadow-sm transition-all cursor-pointer">Save Comment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Preview Link Modal -->
+    <div id="share-preview-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-surface max-w-md w-full rounded-2xl p-6 border border-slate-100 shadow-2xl flex flex-col gap-4 text-slate-800">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">mail</span> Invite Client to Program
+                </h3>
+                <button onclick="closeSharePreviewModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><span class="material-symbols-outlined text-[18px]">close</span></button>
+            </div>
+            
+            <div class="flex flex-col gap-3">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Recipient Email Address(es)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="share-email-recipients" onkeydown="if(event.key === 'Enter') { event.preventDefault(); addRecipientEmail(); }" placeholder="Enter recipient email address..." class="flex-grow rounded-lg border-slate-200 text-xs px-3 py-2 bg-slate-50 focus:border-primary focus:ring-primary">
+                        <button onclick="addRecipientEmail()" type="button" class="bg-primary hover:bg-[#005321] text-white font-bold text-xs px-4 py-2 rounded-lg shadow-sm transition-all cursor-pointer shrink-0">Add</button>
+                    </div>
+                    <!-- Drafted Emails Container -->
+                    <div id="drafted-emails-container" class="flex flex-wrap gap-1.5 mt-2 max-h-[80px] overflow-y-auto hide-scrollbar">
+                        <!-- Chips loaded dynamically -->
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Generated Program Preview Link</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="share-preview-url-input" readonly class="w-full rounded-lg border-slate-200 text-xs px-3 py-2 bg-slate-50 focus:outline-none select-all text-slate-600">
+                        <button onclick="copySharePreviewLink()" class="bg-primary hover:bg-[#005321] text-white font-bold text-xs px-4 py-2 rounded-lg shadow-sm transition-all cursor-pointer shrink-0">Copy Link</button>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-100 pt-3">
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Invitation Email Template</label>
+                    <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/80 text-[11px] text-slate-600 space-y-2 max-h-[150px] overflow-y-auto hide-scrollbar">
+                        <p class="font-bold text-slate-800">Subject: <span id="share-email-subject">Your Personalized Nutrition Program from Dr. Hasan</span></p>
+                        <hr class="border-slate-200">
+                        <p id="share-email-body-salutation">Hi Elena Lopez,</p>
+                        <p>I have prepared your personalized nutrition program for this week to help you hit your daily goals.</p>
+                        <p>You can view your custom weekly plan directly on our client portal without needing to register first:</p>
+                        <div class="my-3 text-center">
+                            <span class="inline-block bg-primary text-white font-bold text-[10px] uppercase tracking-wider px-4 py-2 rounded-lg shadow-sm">View Your Program</span>
+                        </div>
+                        <p>After reviewing the menu, simply click the "Register" button to start logging your meals and message me directly.</p>
+                        <p>Best regards,<br><span id="share-email-doctor-name">Dr. Hasan</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-end gap-2 shrink-0 pt-2 border-t">
+                <button onclick="closeSharePreviewModal()" class="border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-xs px-4 py-2 rounded-xl transition-all cursor-pointer">Close</button>
+                <button onclick="copyInvitationEmailText()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs px-4 py-2 rounded-xl transition-all cursor-pointer">Copy Email Body</button>
+                <button onclick="sendPreviewEmails()" class="bg-primary hover:bg-[#005321] text-white font-semibold text-xs px-4 py-2 rounded-xl shadow-md transition-all cursor-pointer">Send Email(s)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Program Modal -->
+    <div id="create-program-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-surface max-w-lg w-full rounded-2xl p-7 border border-slate-100 shadow-2xl flex flex-col gap-5 text-slate-800 animate-fade-in">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="text-base font-bold text-slate-800">Create New Nutrition Program</h3>
+                <button onclick="closeCreateProgramModal()" class="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"><span class="material-symbols-outlined text-[20px]">close</span></button>
+            </div>
+            <form onsubmit="handleCreateProgramSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Program Name</label>
+                    <input type="text" id="new-prog-name" required placeholder="e.g. Keto Shred Protocol" class="w-full rounded-lg border-slate-200 text-sm px-3 py-2.5 bg-slate-50 focus:border-primary focus:ring-primary focus:bg-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Program Description</label>
+                    <textarea id="new-prog-description" required rows="3" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';" placeholder="e.g. A 7-day low carb program designed for fast fat loss..." class="w-full rounded-lg border-slate-200 text-sm px-3 py-2.5 bg-slate-50 focus:border-primary focus:ring-primary focus:bg-white transition-all overflow-hidden resize-none"></textarea>
+                </div>
+                <div class="flex justify-end gap-3 pt-3 border-t">
+                    <button type="button" onclick="closeCreateProgramModal()" class="border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-xs px-5 py-2.5 rounded-xl transition-all cursor-pointer">Cancel</button>
+                    <button type="submit" class="bg-primary hover:bg-[#005321] text-white font-semibold text-xs px-6 py-2.5 rounded-xl shadow-md transition-all cursor-pointer">Create Program</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Publish Program Modal -->
+    <div id="publish-program-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-surface max-w-sm w-full rounded-2xl p-6 border border-slate-100 shadow-2xl flex flex-col gap-4 text-slate-800">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="text-sm font-bold text-slate-800">Publish Program to Client</h3>
+                <button onclick="closePublishProgramModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><span class="material-symbols-outlined text-[18px]">close</span></button>
+            </div>
+            <p class="text-[10px] text-slate-500">Assign this nutrition program as the active program for your selected clients.</p>
+            <form onsubmit="handlePublishProgramSubmit(event)" class="space-y-3">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Select Clients</label>
+                    <div id="publish-target-clients-container" class="max-h-[150px] overflow-y-auto border border-slate-200 bg-slate-50 p-3 rounded-xl flex flex-col gap-2">
+                        <!-- Filled dynamically with checkboxes -->
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-[#005321] text-white font-bold text-xs py-2.5 rounded-lg transition-all shadow-sm cursor-pointer mt-2">Publish Program</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Service Modal -->
+    <div id="service-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-surface max-w-lg w-full rounded-2xl p-7 border border-slate-100 shadow-2xl flex flex-col gap-5 text-slate-800 animate-fade-in">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="text-base font-bold text-slate-800" id="service-modal-title">Add Consultation Service</h3>
+                <button onclick="closeServiceModal()" class="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"><span class="material-symbols-outlined text-[20px]">close</span></button>
+            </div>
+            <form onsubmit="handleSaveService(event)" class="space-y-4">
+                <input type="hidden" id="service-modal-id">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Service Title</label>
+                    <input type="text" id="service-modal-title-input" required placeholder="e.g. Initial Consultation" class="w-full rounded-lg border-slate-200 text-sm px-3 py-2.5 bg-slate-50 focus:border-primary focus:ring-primary focus:bg-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Description</label>
+                    <textarea id="service-modal-description" required rows="3" oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';" placeholder="e.g. A comprehensive session to review progress..." class="w-full rounded-lg border-slate-200 text-sm px-3 py-2.5 bg-slate-50 focus:border-primary focus:ring-primary focus:bg-white transition-all overflow-hidden resize-none"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Duration</label>
+                        <input type="text" id="service-modal-duration" required placeholder="e.g. 60 min" class="w-full rounded-lg border-slate-200 text-sm px-3 py-2.5 bg-slate-50 focus:border-primary focus:ring-primary focus:bg-white transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Price ($)</label>
+                        <input type="number" id="service-modal-price" required placeholder="e.g. 150" class="w-full rounded-lg border-slate-200 text-sm px-3 py-2.5 bg-slate-50 focus:border-primary focus:ring-primary focus:bg-white transition-all">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Type / Location</label>
+                    <select id="service-modal-type" class="w-full rounded-lg border-slate-200 text-sm px-3 py-2.5 bg-slate-50 focus:border-primary focus:ring-primary focus:bg-white transition-all">
+                        <option value="Virtual Only">Virtual Only</option>
+                        <option value="In-Person">In-Person</option>
+                        <option value="Virtual or In-Person">Virtual or In-Person</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-3 pt-3 border-t">
+                    <button type="button" onclick="closeServiceModal()" class="border border-slate-300 text-slate-700 hover:bg-slate-50 font-semibold text-xs px-5 py-2.5 rounded-xl transition-all cursor-pointer">Cancel</button>
+                    <button type="submit" class="bg-primary hover:bg-[#005321] text-white font-semibold text-xs px-6 py-2.5 rounded-xl shadow-md transition-all cursor-pointer">Save Service</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+
+
+    <!-- SaaS Upgrade Modal -->
+    <div id="saas-upgrade-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-surface max-w-4xl w-full rounded-3xl shadow-2xl border border-outline-variant/30 flex flex-col animate-fade-in overflow-hidden max-h-[90vh]">
+            <div class="px-8 pt-8 pb-6 border-b border-outline-variant/20 flex justify-between items-start shrink-0">
+                <div>
+                    <h2 class="text-2xl font-black text-on-surface tracking-tight">Upgrade Your SaaS Plan</h2>
+                    <p class="text-sm text-on-surface-variant mt-1">Select the best platform plan for your private practice.</p>
+                </div>
+                <button onclick="closeSaaSUpgradeModal()" class="text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer mt-1">
+                    <span class="material-symbols-outlined text-[22px]">close</span>
+                </button>
+            </div>
+            <div class="p-6 md:p-8 overflow-y-auto scrollbar-none">
+                <div id="saas-plans-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin dashboard logic -->
+    <script src="./admin-dashboard.js"></script>
+    <script type="module" src="../src/mvc/admin/AdminApp.js"></script>
+    <script type="module" src="./admin.js"></script>
+
+    <!-- AI Food Scanner Modal -->
+    <div id="ai-food-scanner-modal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-surface-container-lowest max-w-sm w-full rounded-3xl p-6 border border-outline-variant/30 shadow-2xl flex flex-col gap-4 text-center relative overflow-hidden">
+            
+            <button onclick="closeFoodScannerModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors z-10 cursor-pointer">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            
+            <div class="space-y-1 z-10">
+                <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary mx-auto flex items-center justify-center shadow-sm border border-primary/20 mb-2">
+                    <span class="material-symbols-outlined text-2xl">center_focus_strong</span>
+                </div>
+                <h3 class="text-lg font-black text-on-background tracking-tight">AI Food Scanner</h3>
+                <p class="text-[10px] text-on-surface-variant font-medium px-4 leading-relaxed">Upload a photo of a meal and our AI will estimate its nutritional values instantly.</p>
+            </div>
+            
+            <div id="ai-scanner-upload-area" class="border-2 border-dashed border-primary/30 rounded-2xl p-6 bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group flex flex-col items-center justify-center gap-2 relative h-40">
+                <input type="file" id="ai-scanner-file-input" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" onchange="processFoodScan(event)">
+                <span class="material-symbols-outlined text-3xl text-primary/60 group-hover:scale-110 transition-transform">cloud_upload</span>
+                <span class="text-xs font-bold text-primary">Tap to upload photo</span>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="ai-scanner-loading" class="hidden flex-col items-center justify-center gap-3 h-40">
+                <div class="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                <p class="text-xs font-bold text-primary animate-pulse">Analyzing image...</p>
+            </div>
+            
+            <!-- Result State -->
+            <div id="ai-scanner-result" class="hidden flex-col text-left border border-outline-variant/30 rounded-xl overflow-hidden bg-white shadow-sm mt-2">
+                <div class="h-32 bg-slate-100 relative">
+                    <img id="ai-scanner-preview-img" src="" class="w-full h-full object-cover">
+                    <div class="absolute top-2 right-2 bg-slate-900/80 backdrop-blur-sm text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[12px] text-primary">auto_awesome</span> AI Verified
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h4 id="ai-scanner-food-name" class="font-black text-base text-on-surface mb-1">Avocado Toast</h4>
+                    <div class="flex items-baseline gap-1 mb-3">
+                        <span id="ai-scanner-calories" class="text-xl font-black text-primary leading-none">320</span>
+                        <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">kcal</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-2 mb-4">
+                        <div class="bg-slate-50 rounded-lg p-2 text-center border border-slate-100">
+                            <div class="text-[9px] font-black text-slate-400 uppercase tracking-wide">Pro</div>
+                            <div id="ai-scanner-protein" class="text-xs font-bold text-slate-700">14g</div>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-2 text-center border border-slate-100">
+                            <div class="text-[9px] font-black text-slate-400 uppercase tracking-wide">Carb</div>
+                            <div id="ai-scanner-carbs" class="text-xs font-bold text-slate-700">28g</div>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-2 text-center border border-slate-100">
+                            <div class="text-[9px] font-black text-slate-400 uppercase tracking-wide">Fat</div>
+                            <div id="ai-scanner-fat" class="text-xs font-bold text-slate-700">18g</div>
+                        </div>
+                    </div>
+                    <!-- Client Selector Dropdown for Specialist -->
+                    <div id="scanner-client-selector-container" class="mb-4 text-left">
+                        <label for="scanner-client-select" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Pilih Client Tujuan</label>
+                        <select id="scanner-client-select" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold px-3 py-2 text-slate-700 focus:outline-none focus:border-primary">
+                        </select>
+                    </div>
+                    
+                    <button id="ai-scanner-send-btn" onclick="specialistSendScanToClient()" class="w-full bg-primary hover:bg-[#005321] text-white text-xs font-bold py-2.5 rounded-xl transition-all shadow-sm active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer">
+                        <span class="material-symbols-outlined text-base">send</span>
+                        Kirim ke Client
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- ==================== VIEW: FOOD SCANS HUB ==================== -->
+    <style>
+        .scan-hub-tab { padding: 0.5rem 1.25rem; font-size: 0.75rem; font-weight: 700; border-radius: 0.625rem; cursor: pointer; border: none; background: transparent; color: #64748b; transition: all 0.2s; }
+        .scan-hub-tab.active { background: #14833c; color: #fff; }
+        .scan-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 1rem; overflow: hidden; transition: box-shadow 0.2s; }
+        .scan-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+        #admin-scan-comment-modal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 1rem; }
+        #admin-scan-comment-modal.open { display: flex !important; }
+    </style>
+
+
+    <!-- Admin Scan Comment Modal -->
+    <div id="admin-scan-comment-modal">
+        <div style="background:#fff;max-width:520px;width:100%;border-radius:1.5rem;padding:1.5rem;display:flex;flex-direction:column;gap:1rem;position:relative;max-height:90vh;overflow-y:auto;">
+            <button onclick="closeAdminScanCommentModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;color:#94a3b8;font-size:1.5rem;">×</button>
+            <h3 style="font-size:1rem;font-weight:800;color:#1e293b;margin:0;">Food Scan Detail</h3>
+
+            <div id="scan-comment-food-info" style="display:flex;gap:0.75rem;padding:0.875rem;background:#f8fafc;border-radius:0.875rem;">
+                <!-- populated by JS -->
+            </div>
+
+            <!-- Comment Thread -->
+            <div id="scan-comment-thread" style="display:flex;flex-direction:column;gap:0.625rem;max-height:250px;overflow-y:auto;">
+                <!-- populated by JS -->
+            </div>
+
+            <!-- Reply box -->
+            <div style="display:flex;gap:0.5rem;border-top:1px solid #f1f5f9;padding-top:0.875rem;">
+                <textarea id="scan-comment-input" placeholder="Write a comment / feedback..." style="flex:1;border:1px solid #e2e8f0;border-radius:0.75rem;padding:0.625rem 0.875rem;font-size:0.75rem;resize:none;height:4.5rem;font-family:inherit;"></textarea>
+                <button onclick="submitScanComment()" style="background:#14833c;color:#fff;border:none;border-radius:0.75rem;padding:0 1rem;cursor:pointer;font-size:0.75rem;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.25rem;min-width:4rem;">
+                    <span class="material-symbols-outlined" style="font-size:1rem;">send</span>
+                    Send
+                </button>
+            </div>
+
+            <!-- Add to Meal Plan -->
+            <div style="border-top:1px solid #f1f5f9;padding-top:0.875rem;">
+                <button id="add-to-meal-btn" onclick="addScanToMealPlan()" style="width:100%;background:#f0fdf4;color:#15803d;border:1.5px solid #bbf7d0;border-radius:0.875rem;padding:0.625rem;font-size:0.75rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:background 0.2s;" onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">
+                    <span class="material-symbols-outlined" style="font-size:1rem;">add_circle</span>
+                    Add to Meal Plan
+                </button>
+                <p style="font-size:0.5625rem;color:#94a3b8;text-align:center;margin:0.375rem 0 0;">This scan will be added to the client's active program</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="light scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>NutriFlow - Articles & Education</title>
+    <meta name="description" content="Discover the latest nutrition science, diet tips, and healthy recipes curated by our specialists.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- i18n -->
+    <script type="module" src="/src/i18n.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#006e2f",
+                        "primary-container": "#22c55e",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#004b1e",
+                        secondary: "#006a61",
+                        "secondary-container": "#86f2e4",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#006f66",
+                        tertiary: "#9d4300",
+                        "tertiary-container": "#ff8e4d",
+                        background: "#f8f9ff",
+                        "on-background": "#0b1c30",
+                        surface: "#ffffff",
+                        "on-surface": "#0b1c30"
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+        }
+        .hero-pattern {
+            background-color: #f8f9ff;
+            background-image: radial-gradient(#22c55e 0.5px, transparent 0.5px), radial-gradient(#22c55e 0.5px, #f8f9ff 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-sans min-h-screen flex flex-col overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="glass-card mx-4 lg:mx-auto max-w-7xl mt-4 rounded-2xl px-6 py-4 flex items-center justify-between">
+            <a href="/index.html" class="flex items-center gap-2 group">
+                <span class="material-symbols-outlined text-primary text-3xl transition-transform group-hover:rotate-12" style="font-variation-settings: 'FILL' 1;">eco</span>
+                <span class="text-xl font-bold tracking-tight text-primary">NutriFlow</span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8 font-medium text-sm text-slate-600">
+                <a href="/index.html#features" data-i18n="nav.features" class="hover:text-primary transition-colors">Features</a>
+                <a href="/specialist.html" data-i18n="nav.specialists" class="hover:text-primary transition-colors">Specialists</a>
+                <a href="/index.html#testimonials" data-i18n="nav.success_stories" class="hover:text-primary transition-colors">Success Stories</a>
+                <a href="/article.html" data-i18n="nav.articles" class="text-primary font-bold transition-colors">Articles</a>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <select id="lang-selector" class="text-xs font-bold text-primary bg-transparent border-none cursor-pointer focus:ring-0 appearance-none pr-1">
+                    <option value="en">EN</option>
+                    <option value="my">MY</option>
+                </select>
+                <div class="w-[1px] h-4 bg-slate-300"></div>
+                <a href="/login.html" data-i18n="nav.sign_in" class="text-sm font-semibold text-primary hover:text-[#005321] transition-colors hidden sm:block">Sign In</a>
+                <a href="/login.html" class="bg-primary hover:bg-[#005321] text-white text-sm font-bold py-2.5 px-5 rounded-xl transition-all shadow-lg hover:shadow-primary/30 flex items-center gap-2">
+                    <span data-i18n="nav.get_started">Get Started</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header spacing -->
+    <div class="pt-32 pb-10 relative">
+        <div class="absolute inset-0 hero-pattern z-0 h-64"></div>
+    </div>
+
+    <!-- Articles Section -->
+    <section id="articles" class="py-12 bg-transparent relative z-10 flex-1">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-primary-container font-bold text-sm tracking-wider uppercase mb-2" data-i18n="blog.badge">Education & Tips</h2>
+                <h3 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4" data-i18n="blog.title">Learn from the experts.</h3>
+                <p class="text-slate-600 text-lg" data-i18n="blog.desc">Discover the latest nutrition science, diet tips, and healthy recipes curated by our specialists.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Article 1 -->
+                <div class="bg-white rounded-[2rem] overflow-hidden border border-slate-100 hover:shadow-xl transition-all group cursor-pointer flex flex-col">
+                    <div class="h-48 bg-slate-200 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80" alt="Food" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-xs font-bold text-primary rounded-full" data-i18n="blog.1.tag">Nutrition</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <h4 class="text-lg font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors line-clamp-2" data-i18n="blog.1.title">5 Myths About Carbs You Need to Stop Believing</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3" data-i18n="blog.1.desc">Carbohydrates often get a bad reputation, but they are essential for your body's energy.</p>
+                        <div class="mt-auto flex items-center gap-2 text-primary text-sm font-semibold group-hover:gap-3 transition-all">
+                            <span data-i18n="blog.read">Read Article</span>
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Article 2 -->
+                <div class="bg-white rounded-[2rem] overflow-hidden border border-slate-100 hover:shadow-xl transition-all group cursor-pointer flex flex-col">
+                    <div class="h-48 bg-slate-200 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=600&q=80" alt="Water" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-xs font-bold text-secondary rounded-full" data-i18n="blog.2.tag">Healthy Habits</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <h4 class="text-lg font-bold text-slate-900 mb-2 group-hover:text-secondary transition-colors line-clamp-2" data-i18n="blog.2.title">How to Stay Hydrated Throughout the Day</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3" data-i18n="blog.2.desc">Simple tricks to ensure you're drinking enough water, even on your busiest days.</p>
+                        <div class="mt-auto flex items-center gap-2 text-secondary text-sm font-semibold group-hover:gap-3 transition-all">
+                            <span data-i18n="blog.read">Read Article</span>
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Article 3 -->
+                <div class="bg-white rounded-[2rem] overflow-hidden border border-slate-100 hover:shadow-xl transition-all group cursor-pointer flex flex-col">
+                    <div class="h-48 bg-slate-200 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=600&q=80" alt="Breakfast" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-xs font-bold text-tertiary-container rounded-full" data-i18n="blog.3.tag">Recipes</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <h4 class="text-lg font-bold text-slate-900 mb-2 group-hover:text-tertiary-container transition-colors line-clamp-2" data-i18n="blog.3.title">High-Protein Breakfast Ideas Under 5 Minutes</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4 line-clamp-3" data-i18n="blog.3.desc">Start your day right with these quick, easy, and nutritious breakfast recipes.</p>
+                        <div class="mt-auto flex items-center gap-2 text-tertiary-container text-sm font-semibold group-hover:gap-3 transition-all">
+                            <span data-i18n="blog.read">Read Article</span>
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-100 py-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+                <span class="text-lg font-bold tracking-tight text-slate-900">NutriFlow</span>
+            </div>
+            
+            <div class="flex gap-6 text-sm text-slate-500">
+                <a href="#" class="hover:text-primary transition-colors" data-i18n="footer.privacy">Privacy Policy</a>
+                <a href="#" class="hover:text-primary transition-colors" data-i18n="footer.terms">Terms of Service</a>
+                <a href="#" class="hover:text-primary transition-colors" data-i18n="footer.support">Contact Support</a>
+            </div>
+            
+            <div class="text-sm text-slate-400" data-i18n="footer.copy">
+                &copy; 2026 NutriFlow Inc. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple navbar background transition on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.add('py-2');
+                nav.children[0].classList.add('shadow-lg', 'bg-white/90');
+                nav.children[0].classList.remove('bg-white/70', 'shadow-sm');
+            } else {
+                nav.classList.remove('py-2');
+                nav.children[0].classList.add('bg-white/70', 'shadow-sm');
+                nav.children[0].classList.remove('shadow-lg', 'bg-white/90');
+            }
+        });
+    </script>
+</body>
+</html>

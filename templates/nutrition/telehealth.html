@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="dark h-full overflow-hidden" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Video Consultation - NutriFlow</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#006e2f',
+                        secondary: '#006a61'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-white overflow-hidden fixed inset-0 w-full h-full relative antialiased">
+
+    <!-- Main Fullscreen Video Feed -->
+    <div class="absolute inset-0 w-full h-full z-0 bg-slate-950">
+        <!-- Dietitian Video Feed Placeholder -->
+        <div class="absolute inset-0 flex items-center justify-center bg-slate-900 text-slate-400 z-10" id="telehealth-video-placeholder" style="display: none;">
+            <div class="text-center flex flex-col items-center gap-3">
+                <span class="material-symbols-outlined text-6xl text-slate-500 animate-pulse">videocam_off</span>
+                <span class="text-base font-semibold">Feed suspended</span>
+            </div>
+        </div>
+
+        <!-- Main Video (Fills Viewport) -->
+        <img id="telehealth-main-video" class="w-full h-full object-cover z-0" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200" alt="Consultation feed">
+    </div>
+
+    <!-- Floating Top Header Overlay (Left only) -->
+    <header class="absolute top-0 left-0 right-0 z-30 bg-gradient-to-b from-black/75 to-transparent px-8 py-6 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse border-2 border-white"></span>
+            <div class="flex flex-col">
+                <h1 class="text-[10px] uppercase tracking-widest font-extrabold text-emerald-400 leading-none">NutriFlow Telehealth</h1>
+                <span class="text-sm font-bold text-white mt-1 shadow-sm drop-shadow" id="telehealth-session-subtitle">Session with Dr. Sarah Jenkins</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Floating PIP Video Screen (Client Video) -->
+    <div class="w-24 h-32 md:w-36 md:h-48 bg-slate-900/90 rounded-xl md:rounded-2xl overflow-hidden border-2 border-white/20 absolute top-20 right-4 md:top-24 md:right-8 shadow-2xl z-30 transition-all hover:scale-105 duration-350">
+        <img id="telehealth-pip-video" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400" alt="PIP feed">
+        <div id="telehealth-pip-placeholder" class="w-full h-full bg-slate-800 flex items-center justify-center text-slate-400" style="display: none;">
+            <span class="material-symbols-outlined text-3xl">videocam_off</span>
+        </div>
+    </div>
+
+    <!-- Floating Bottom Left Timer Badge -->
+    <div class="absolute bottom-8 left-8 z-30 bg-slate-950/60 backdrop-blur-xl text-white font-mono text-xs px-4 py-2.5 rounded-2xl border border-white/10 shadow-2xl flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="telehealth-timer">00:00</span>
+    </div>
+
+    <!-- Floating Bottom Controls Overlay -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-slate-950/60 backdrop-blur-xl border border-white/10 shadow-2xl px-8 py-3.5 rounded-full z-30">
+        <button onclick="toggleTelehealthMute()" id="btn-telehealth-mute" class="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer shadow-md" title="Mute Microphone">
+            <span class="material-symbols-outlined text-[20px]" id="icon-mute">mic</span>
+        </button>
+        <button onclick="toggleTelehealthCamera()" id="btn-telehealth-camera" class="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer shadow-md" title="Toggle Camera">
+            <span class="material-symbols-outlined text-[20px]" id="icon-camera">videocam</span>
+        </button>
+        <button onclick="shareTelehealthScreen()" id="btn-telehealth-share" class="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer shadow-md" title="Share Screen">
+            <span class="material-symbols-outlined text-[20px]" id="icon-share">screen_share</span>
+        </button>
+        <div class="w-[1px] h-6 bg-white/20 mx-1"></div>
+        <button onclick="endTelehealthCall()" class="w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition-all cursor-pointer shadow-md active:scale-90" title="End Call">
+            <span class="material-symbols-outlined text-[20px] font-bold">call_end</span>
+        </button>
+    </div>
+
+    <!-- Notification container -->
+    <div id="toast-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-80"></div>
+
+    <!-- Telehealth Script -->
+    <script>
+        let telehealthTimer = 0;
+        let telehealthInterval = null;
+        let telehealthMuted = false;
+        let telehealthCamOff = false;
+
+        // Get query params
+        const urlParams = new URLSearchParams(window.location.search);
+        const practitioner = urlParams.get('practitioner') || 'Dr. Eleanor Vance, RD';
+        const role = urlParams.get('role') || 'user';
+        const clientName = urlParams.get('client') || 'Sarah Jenkins';
+
+        // Secure authentication gate
+        if (role === 'admin') {
+            if (localStorage.getItem('nutriflow_admin_logged') !== 'true') {
+                window.location.href = './admin/login.html';
+            }
+        } else {
+            if (localStorage.getItem('nutriflow_client_logged') !== 'true') {
+                window.location.href = './login.html';
+            }
+        }
+
+        const mainVideoImg = document.getElementById('telehealth-main-video');
+        const pipVideoImg = document.getElementById('telehealth-pip-video');
+
+        // Dynamic Role Rendering
+        if (role === 'admin') {
+            // Admin/Doctor View
+            document.getElementById('telehealth-session-subtitle').innerText = `Consultation: Sarah Jenkins (Client)`;
+            
+            // Main video is the CLIENT
+            mainVideoImg.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1200';
+            
+            // PIP video is the DOCTOR
+            if (practitioner.includes('Sarah')) {
+                pipVideoImg.src = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400';
+            } else if (practitioner.includes('Eleanor')) {
+                pipVideoImg.src = 'https://images.unsplash.com/photo-1594824813573-246434e33963?w=400';
+            } else {
+                pipVideoImg.src = 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400';
+            }
+        } else {
+            // User/Client View
+            document.getElementById('telehealth-session-subtitle').innerText = `Session with ${practitioner}`;
+
+            // Main video is the DOCTOR
+            if (practitioner.includes('Sarah')) {
+                mainVideoImg.src = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200';
+            } else if (practitioner.includes('Eleanor')) {
+                mainVideoImg.src = 'https://images.unsplash.com/photo-1594824813573-246434e33963?w=1200';
+            } else {
+                mainVideoImg.src = 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=1200';
+            }
+
+            // PIP video is the CLIENT
+            pipVideoImg.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400';
+        }
+
+        // Start timer
+        telehealthInterval = setInterval(() => {
+            telehealthTimer++;
+            const mins = String(Math.floor(telehealthTimer / 60)).padStart(2, '0');
+            const secs = String(telehealthTimer % 60).padStart(2, '0');
+            document.getElementById('telehealth-timer').innerText = `${mins}:${secs}`;
+        }, 1000);
+
+        // Toast Notifications
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const toast = document.createElement('div');
+            toast.className = `p-4 rounded-xl shadow-lg text-white font-semibold text-xs flex items-center gap-3 transition-all duration-300 transform translate-y-4 opacity-0 border`;
+            
+            if (type === 'success') {
+                toast.className += ' bg-[#006e2f] border-[#005321]';
+            } else if (type === 'error') {
+                toast.className += ' bg-red-600 border-red-800';
+            } else {
+                toast.className += ' bg-[#006a61] border-[#005049]';
+            }
+
+            toast.innerHTML = `
+                <span class="material-symbols-outlined text-[20px]">${type === 'error' ? 'error' : 'check_circle'}</span>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-4', 'opacity-0'), 50);
+            setTimeout(() => {
+                toast.classList.add('translate-y-[-10px]', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function toggleTelehealthMute() {
+            telehealthMuted = !telehealthMuted;
+            const btn = document.getElementById('btn-telehealth-mute');
+            const icon = document.getElementById('icon-mute');
+            if (telehealthMuted) {
+                btn.className = 'w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center transition-all cursor-pointer shadow-md';
+                icon.innerText = 'mic_off';
+                showToast('Microphone muted', 'info');
+            } else {
+                btn.className = 'w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer shadow-md';
+                icon.innerText = 'mic';
+                showToast('Microphone active', 'success');
+            }
+        }
+
+        function toggleTelehealthCamera() {
+            telehealthCamOff = !telehealthCamOff;
+            const btn = document.getElementById('btn-telehealth-camera');
+            const icon = document.getElementById('icon-camera');
+            const pipVideo = document.getElementById('telehealth-pip-video');
+            const pipPlaceholder = document.getElementById('telehealth-pip-placeholder');
+            
+            if (telehealthCamOff) {
+                btn.className = 'w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center transition-all cursor-pointer shadow-md';
+                icon.innerText = 'videocam_off';
+                pipVideo.style.display = 'none';
+                pipPlaceholder.style.display = 'flex';
+                showToast('Camera disabled', 'info');
+            } else {
+                btn.className = 'w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer shadow-md';
+                icon.innerText = 'videocam';
+                pipVideo.style.display = 'block';
+                pipPlaceholder.style.display = 'none';
+                showToast('Camera enabled', 'success');
+            }
+        }
+
+        function shareTelehealthScreen() {
+            showToast('Screen sharing is not supported in this prototype.', 'info');
+        }
+
+        function endTelehealthCall() {
+            clearInterval(telehealthInterval);
+            showToast('Ending consultation call...', 'info');
+            setTimeout(() => {
+                if (role === 'admin') {
+                    window.location.href = './admin/index.html';
+                } else {
+                    window.location.href = './dashboard.html?view=appointments';
+                }
+            }, 850);
+        }
+    </script>
+</body>
+</html>

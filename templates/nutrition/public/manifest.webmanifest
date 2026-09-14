@@ -1,0 +1,18 @@
+{
+  "name": "NutriFlow Nutrition",
+  "short_name": "NutriFlow",
+  "description": "Catatan nutrisi, program makan, dan konsultasi NutriFlow.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f9ff",
+  "theme_color": "#006e2f",
+  "lang": "id-ID",
+  "icons": [
+    {
+      "src": "/icons/nutriflow-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

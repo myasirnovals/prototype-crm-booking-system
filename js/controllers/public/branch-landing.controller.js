@@ -35,6 +35,21 @@ export class BranchLandingController {
       window.location.replace(spaUrl);
       return;
     }
+    if (this.selectedBranch && this.selectedBranch.template === "physiotherapy") {
+      const physioUrl = `../../templates/physiotherapy/index.html?branch=${encodeURIComponent(this.selectedBranch.id)}`;
+      window.location.replace(physioUrl);
+      return;
+    }
+    if (this.selectedBranch && this.selectedBranch.template === "nutrition") {
+      const nutritionUrl = `../../templates/nutrition/index.html?branch=${encodeURIComponent(this.selectedBranch.id)}`;
+      window.location.replace(nutritionUrl);
+      return;
+    }
+    if (this.selectedBranch && (this.selectedBranch.template === "fitness" || this.selectedBranch.template === "personal_trainer")) {
+      const fitnessUrl = `../../templates/personal_trainer/index.html?branch=${encodeURIComponent(this.selectedBranch.id)}`;
+      window.location.replace(fitnessUrl);
+      return;
+    }
 
     // 2. Set DOM Body Theme Attribute for Instant CSS Theming
     if (this.templateConfig && this.templateConfig.id) {

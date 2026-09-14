@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>NutriFlow - Client Portal Login</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- i18n -->
+    <script type="module" src="/src/i18n.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#006e2f",
+                "secondary": "#006a61",
+                "background": "#f8f9ff",
+                "surface": "#ffffff",
+                "on-background": "#0b1c30"
+              }
+            }
+          }
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background font-sans min-h-screen flex items-center justify-center p-4 relative">
+
+    <!-- Language Switcher -->
+    <div class="absolute top-4 right-4 flex items-center gap-2 bg-white rounded-lg shadow-sm px-3 py-1.5 border border-slate-100">
+        <select id="lang-selector" class="text-xs font-bold text-slate-600 bg-transparent border-none cursor-pointer focus:ring-0 appearance-none pr-1">
+            <option value="en">EN</option>
+            <option value="my">MY</option>
+        </select>
+        <span class="material-symbols-outlined text-[14px] text-slate-400">language</span>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-white max-w-sm w-full rounded-2xl p-8 border border-slate-100 shadow-2xl flex flex-col items-center animate-fade-in">
+        <!-- Logo -->
+        <div class="flex items-center gap-2 mb-6">
+            <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+            <div class="flex flex-col text-left">
+                <span class="text-2xl font-bold tracking-tight text-primary leading-none">NutriFlow</span>
+                <span class="text-[9px] uppercase tracking-widest text-secondary font-bold mt-1" data-i18n="login.portal">Client Portal</span>
+            </div>
+        </div>
+
+        <!-- Mode Toggle Tabs -->
+        <div class="flex w-full p-1 bg-slate-100 rounded-xl mb-6 text-xs font-bold">
+            <button type="button" onclick="switchLoginTab('login')" id="tab-btn-login" class="flex-1 py-2 rounded-lg bg-white shadow-sm text-primary transition-all cursor-pointer" data-i18n="login.tab.signin">Sign In</button>
+            <button type="button" onclick="switchLoginTab('register')" id="tab-btn-register" class="flex-1 py-2 rounded-lg text-slate-500 hover:text-slate-800 transition-all cursor-pointer" data-i18n="login.tab.register">New Patient Sign Up</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="form-login" onsubmit="handleClientLogin(event)" class="w-full space-y-4">
+            <h2 class="text-base font-bold text-center mb-1" data-i18n="login.title.signin">Welcome Back</h2>
+            <p class="text-xs text-slate-500 text-center mb-4" data-i18n="login.desc.signin">Enter your credentials to manage your nutrition plans & consult with dietitians.</p>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" data-i18n="login.label.email">Email Address</label>
+                <input type="email" id="client-email" required placeholder="sarah.j@email.com" value="sarah.j@email.com" class="w-full rounded-xl border-slate-200 text-xs px-3 py-2.5 focus:border-primary focus:ring-primary bg-slate-50">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" data-i18n="login.label.password">Password</label>
+                <input type="password" id="client-password" required placeholder="••••••••" value="password" class="w-full rounded-xl border-slate-200 text-xs px-3 py-2.5 focus:border-primary focus:ring-primary bg-slate-50">
+            </div>
+            <div class="text-red-500 text-[10px] font-semibold hidden text-center" id="error-message" data-i18n="login.error">Invalid email or password combination. Try again.</div>
+
+            <button type="submit" class="w-full bg-primary hover:bg-[#005321] text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md mt-2 flex items-center justify-center gap-1 cursor-pointer">
+                <span class="material-symbols-outlined text-[16px]">lock_open</span> <span data-i18n="login.tab.signin">Sign In</span>
+            </button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="form-register" onsubmit="handleClientRegister(event)" class="w-full space-y-4 hidden">
+            <h2 class="text-base font-bold text-center mb-1" data-i18n="login.title.register">Create Patient Account</h2>
+            <p class="text-xs text-slate-500 text-center mb-4" data-i18n="login.desc.register">Register your account to unlock custom diet programs and medical intake onboarding.</p>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" data-i18n="login.label.name">Full Name</label>
+                <input type="text" id="reg-name" required placeholder="e.g. Alex Tan" class="w-full rounded-xl border-slate-200 text-xs px-3 py-2.5 focus:border-primary focus:ring-primary bg-slate-50">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1" data-i18n="login.label.email">Email Address</label>
+                <input type="email" id="reg-email" required placeholder="alex.tan@email.com" class="w-full rounded-xl border-slate-200 text-xs px-3 py-2.5 focus:border-primary focus:ring-primary bg-slate-50">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2" data-i18n="login.label.specialist">Assigned Specialist / Dietitian</label>
+                <input type="hidden" id="reg-therapist" value="Dr. Hasan">
+                
+                <div class="space-y-2" id="spec-select-container">
+                    <!-- Option 1: Dr. Hasan -->
+                    <div onclick="selectRegisterSpecialist('Dr. Hasan')" id="spec-opt-Dr. Hasan" class="spec-reg-opt border-2 border-primary bg-emerald-50/50 rounded-xl p-2.5 cursor-pointer flex items-center justify-between transition-all shadow-sm">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-full bg-primary text-white font-bold text-xs flex items-center justify-center shrink-0">DH</div>
+                            <div class="text-left">
+                                <h4 class="font-bold text-xs text-slate-800 leading-tight">Dr. Hasan</h4>
+                                <span class="text-[10px] text-slate-500 font-medium block" data-i18n="login.spec.desc1">Weight Loss & Wellness</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">★ 4.9</span>
+                            <span class="material-symbols-outlined text-primary text-lg check-icon">check_circle</span>
+                        </div>
+                    </div>
+
+                    <!-- Option 2: Dr. Amanda -->
+                    <div onclick="selectRegisterSpecialist('Dr. Amanda')" id="spec-opt-Dr. Amanda" class="spec-reg-opt border border-slate-200 bg-white rounded-xl p-2.5 cursor-pointer flex items-center justify-between hover:border-slate-300 transition-all">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-full bg-teal-100 text-teal-800 font-bold text-xs flex items-center justify-center shrink-0">DA</div>
+                            <div class="text-left">
+                                <h4 class="font-bold text-xs text-slate-800 leading-tight">Dr. Amanda</h4>
+                                <span class="text-[10px] text-slate-500 font-medium block" data-i18n="login.spec.desc3">Sports Nutritionist</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">★ 4.8</span>
+                            <span class="material-symbols-outlined text-slate-300 text-lg check-icon hidden">check_circle</span>
+                        </div>
+                    </div>
+
+                    <!-- Option 3: Dr. Eleanor Vance -->
+                    <div onclick="selectRegisterSpecialist('Dr. Eleanor Vance, RD')" id="spec-opt-Dr. Eleanor Vance, RD" class="spec-reg-opt border border-slate-200 bg-white rounded-xl p-2.5 cursor-pointer flex items-center justify-between hover:border-slate-300 transition-all">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-800 font-bold text-xs flex items-center justify-center shrink-0">EV</div>
+                            <div class="text-left">
+                                <h4 class="font-bold text-xs text-slate-800 leading-tight">Dr. Eleanor Vance, RD</h4>
+                                <span class="text-[10px] text-slate-500 font-medium block" data-i18n="login.spec.desc2">Clinical Nutrition</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">★ 4.9</span>
+                            <span class="material-symbols-outlined text-slate-300 text-lg check-icon hidden">check_circle</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-primary hover:bg-[#005321] text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md mt-2 flex items-center justify-center gap-1 cursor-pointer">
+                <span class="material-symbols-outlined text-[16px]">person_add</span> <span data-i18n="login.btn.register">Create Account</span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        function selectRegisterSpecialist(name) {
+            document.querySelectorAll('.spec-reg-opt').forEach(el => {
+                el.className = 'spec-reg-opt border border-slate-200 bg-white rounded-xl p-2.5 cursor-pointer flex items-center justify-between hover:border-slate-300 transition-all';
+                const icon = el.querySelector('.check-icon');
+                if (icon) {
+                    icon.className = 'material-symbols-outlined text-slate-300 text-lg check-icon hidden';
+                }
+            });
+            const target = document.getElementById(`spec-opt-${name}`);
+            if (target) {
+                target.className = 'spec-reg-opt border-2 border-primary bg-emerald-50/50 rounded-xl p-2.5 cursor-pointer flex items-center justify-between transition-all shadow-sm';
+                const icon = target.querySelector('.check-icon');
+                if (icon) {
+                    icon.className = 'material-symbols-outlined text-primary text-lg check-icon';
+                }
+            }
+            document.getElementById('reg-therapist').value = name;
+        }
+
+        function switchLoginTab(tab) {
+            const formLogin = document.getElementById('form-login');
+            const formRegister = document.getElementById('form-register');
+            const btnLogin = document.getElementById('tab-btn-login');
+            const btnRegister = document.getElementById('tab-btn-register');
+
+            if (tab === 'register') {
+                formLogin.classList.add('hidden');
+                formRegister.classList.remove('hidden');
+                btnLogin.className = 'flex-1 py-2 rounded-lg text-slate-500 hover:text-slate-800 transition-all cursor-pointer';
+                btnRegister.className = 'flex-1 py-2 rounded-lg bg-white shadow-sm text-primary transition-all cursor-pointer';
+            } else {
+                formRegister.classList.add('hidden');
+                formLogin.classList.remove('hidden');
+                btnRegister.className = 'flex-1 py-2 rounded-lg text-slate-500 hover:text-slate-800 transition-all cursor-pointer';
+                btnLogin.className = 'flex-1 py-2 rounded-lg bg-white shadow-sm text-primary transition-all cursor-pointer';
+            }
+        }
+
+        function handleClientLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('client-email').value;
+            const p = document.getElementById('client-password').value;
+
+            if (p === 'password' || p) {
+                let name = '';
+                if (u === 'sarah.j@email.com') name = 'Sarah Jenkins';
+                else if (u === 'm.reid@email.com') name = 'Marcus Reid';
+                else if (u === 'elena.l@email.com') name = 'Elena Lopez';
+                else name = u.split('@')[0].replace('.', ' ').toUpperCase();
+
+                if (name) {
+                    localStorage.setItem('nutriflow_client_logged', 'true');
+                    localStorage.setItem('nutriflow_client_logged_name', name);
+                    // Redirect to client dashboard
+                    window.location.href = './dashboard.html';
+                    return;
+                }
+            }
+            
+            const err = document.getElementById('error-message');
+            err.classList.remove('hidden');
+        }
+
+        function handleClientRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const chosenTherapist = document.getElementById('reg-therapist')?.value || 'Dr. Hasan';
+
+            if (!name || !email) return;
+
+            // Save patient to localStorage clients list
+            const existingClients = JSON.parse(localStorage.getItem('nutriflow_clients') || '[]');
+            const newPatient = {
+                id: `pat-${Date.now()}`,
+                name: name,
+                email: email,
+                therapist: chosenTherapist,
+                goal: 'Health Improvement',
+                compliance: 100,
+                registered: true
+            };
+            existingClients.unshift(newPatient);
+            localStorage.setItem('nutriflow_clients', JSON.stringify(existingClients));
+
+            // Log patient in
+            localStorage.setItem('nutriflow_client_logged', 'true');
+            localStorage.setItem('nutriflow_client_logged_name', name);
+
+            // Flag that this user needs onboarding intake form
+            localStorage.setItem('nutriflow_trigger_onboarding', 'true');
+
+            // Redirect to dashboard.html to launch onboarding
+            window.location.href = './dashboard.html';
+        }
+    </script>
+</body>
+</html>

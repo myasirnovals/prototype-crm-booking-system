@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>NutriFlow Specialist - Portal Login</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#006e2f",
+                "secondary": "#006a61",
+                "background": "#f8f9ff",
+                "surface": "#ffffff",
+                "on-background": "#0b1c30"
+              }
+            }
+          }
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background font-sans min-h-screen flex items-center justify-center p-4">
+
+    <!-- Card -->
+    <div class="bg-white max-w-sm w-full rounded-2xl p-8 border border-slate-100 shadow-2xl flex flex-col items-center">
+        <!-- Logo -->
+        <div class="flex items-center gap-2 mb-6">
+            <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+            <div class="flex flex-col">
+                <span class="text-2xl font-bold tracking-tight text-primary leading-none">NutriFlow</span>
+                <span class="text-[9px] uppercase tracking-widest text-[#9d4300] font-bold mt-1">Practitioner Portal</span>
+            </div>
+        </div>
+
+        <h2 class="text-xl font-bold text-center mb-1">Welcome Specialist</h2>
+        <p class="text-xs text-slate-500 text-center mb-6">Enter your practitioner credentials to access weekly planner and client tools.</p>
+
+        <!-- Form -->
+        <form onsubmit="handleAdminLogin(event)" class="w-full space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Username / Email</label>
+                <input type="text" id="admin-user" required placeholder="specialist@nutriflow.com" value="specialist@nutriflow.com" class="w-full rounded-xl border-slate-200 text-xs px-3 py-2.5 focus:border-primary focus:ring-primary bg-slate-50">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Security Key / Password</label>
+                <input type="password" id="admin-pass" required placeholder="••••••••" value="admin123" class="w-full rounded-xl border-slate-200 text-xs px-3 py-2.5 focus:border-primary focus:ring-primary bg-slate-50">
+            </div>
+            <div class="text-red-500 text-[10px] font-semibold hidden text-center" id="error-message">Invalid key combination. Try again.</div>
+
+            <button type="submit" class="w-full bg-primary hover:bg-[#005321] text-white font-bold text-xs py-3 rounded-xl transition-all shadow-md mt-2 flex items-center justify-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">lock_open</span> Sign In
+            </button>
+        </form>
+    </div>
+
+    <script>
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('admin-user').value;
+            const p = document.getElementById('admin-pass').value;
+
+            if ((u === 'specialist@nutriflow.com' || u === 'admin@nutriflow.com') && p === 'admin123') {
+                localStorage.setItem('nutriflow_admin_logged', 'true');
+                localStorage.setItem('nutriflow_specialist_name', 'Dr. Hasan');
+                window.location.href = './index.html'; // Redirect to specialist dashboard
+            } else if (u === 'amanda@nutriflow.com' && p === 'admin123') {
+                localStorage.setItem('nutriflow_admin_logged', 'true');
+                localStorage.setItem('nutriflow_specialist_name', 'Dr. Amanda');
+                window.location.href = './index.html';
+            } else if (u === 'm.reid@email.com' && p === 'admin123') {
+                localStorage.setItem('nutriflow_admin_logged', 'true');
+                localStorage.setItem('nutriflow_specialist_name', 'Dr. Marcus Reid');
+                window.location.href = './index.html';
+            } else {
+                const err = document.getElementById('error-message');
+                err.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

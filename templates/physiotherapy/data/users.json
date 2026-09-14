@@ -1,0 +1,28 @@
+[
+  {
+    "id": 1,
+    "name": "James Miller",
+    "email": "james@example.com",
+    "password": "password123",
+    "role": "patient",
+    "patientId": "PC-8842",
+    "activeTreatment": "Lower Back Rehab",
+    "nextSession": "Oct 24, 10:00 AM",
+    "recoveryProgress": 65,
+    "therapist": "Dr. Sarah Mitchell",
+    "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuDAJysqxSGiD_XGee9Pprut9gia7Z37LUisxLhFGn3xRJpj9rNZ7laX297nrI4lzpV33N6DvLk5WoYqg6sjFDRNGj8-zqZ05ZhgblsHpw-kcNfO_NGAb-UEtAWRReDGWxIGEdnFIO3axl4fqsqO7dmdK76MG_Zoro9sFycLkI8FhHJ1cAeAPlWY7G3DzV4NKr7B6u1dfjjbfPJTzVmoiTOntvobsgvTw214RYPIG0naoMCz12RVL46YKQ"
+  },
+  {
+    "id": 2,
+    "name": "Admin PhysioCare",
+    "email": "admin@physiocare.com",
+    "password": "admin123",
+    "role": "admin",
+    "patientId": "AD-001",
+    "activeTreatment": null,
+    "nextSession": null,
+    "recoveryProgress": 0,
+    "therapist": null,
+    "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuDTD0iHoZI5H1yRbyV7QwM9ZQiebuFni9ArtHBEjGcQTBo9gpxIxEfSX4cPdv1vYbq7HQ8Iw453yrfBCgnSFQkclJ0NH6wdvIUMStz6_pzVn1kvl1oBDX8DlH4JMo9SWr-T7Xu0Pn01qhqBIzDc2qDCRjmseaZQqXAueQjNEy35miNd_M7-fkt1sYtFqtOvV6RsIvQy6lRRVKA7K3n7xQ62cEa5ynbRoMJqX3oizTk_cXU5GoQpLYzlkQ"
+  }
+]

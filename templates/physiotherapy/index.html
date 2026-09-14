@@ -1,0 +1,111 @@
+<!doctype html>
+<html class="scroll-smooth" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="theme-color" content="#005a71" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="manifest" href="manifest.json" />
+    <title>PhysioCare | Professional Physiotherapy &amp; Rehabilitation</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/tailwind.config.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/app.css" rel="stylesheet" />
+  </head>
+  <body
+    class="bg-background text-on-surface font-body-md selection:bg-primary-fixed-dim selection:text-on-primary-fixed"
+  >
+    <!-- App Mount Point -->
+    <div id="app"></div>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('sw.js').then((registration) => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          }, (err) => {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+        });
+      }
+    </script>
+
+    <!-- Scripts -->
+    <script src="js/router.js"></script>
+
+    <!-- Models -->
+    <script src="js/models/Model.js"></script>
+    <script src="js/models/User.js"></script>
+    <script src="js/models/Therapist.js"></script>
+    <script src="js/models/Service.js"></script>
+    <script src="js/models/Appointment.js"></script>
+    <script src="js/models/PatientRecord.js"></script>
+    <script src="js/models/Condition.js"></script>
+
+    <!-- Components -->
+    <script src="js/components/whatsapp-fab.js"></script>
+    <script src="js/components/navbar-guest.js"></script>
+    <script src="js/components/navbar-patient.js"></script>
+    <script src="js/components/sidebar-admin.js"></script>
+    <script src="js/components/footer.js"></script>
+    <script src="js/components/therapist-card.js"></script>
+    <script src="js/components/service-card.js"></script>
+    <script src="js/components/booking-summary-card.js"></script>
+
+    <!-- Views: Guest -->
+    <script src="js/views/guest/home.js"></script>
+    <script src="js/views/guest/about.js"></script>
+    <script src="js/views/guest/services.js"></script>
+    <script src="js/views/guest/service-detail.js"></script>
+    <script src="js/views/guest/team.js"></script>
+    <script src="js/views/guest/articles.js"></script>
+    <script src="js/views/guest/contact.js"></script>
+    <script src="js/views/guest/ai-triage.js"></script>
+    <script src="js/views/guest/booking.js"></script>
+    <script src="js/views/guest/conditions.js"></script>
+    <script src="js/views/guest/condition-detail.js"></script>
+
+    <!-- Views: Auth -->
+    <script src="js/views/auth/login.js"></script>
+    <script src="js/views/auth/register.js"></script>
+    <script src="js/views/auth/forgot-password.js"></script>
+
+    <!-- Views: Patient -->
+    <script src="js/views/patient/dashboard.js"></script>
+    <script src="js/views/patient/assessment.js"></script>
+    <script src="js/views/patient/payment.js"></script>
+    <script src="js/views/patient/booking-success.js"></script>
+    <script src="js/views/patient/medical-records.js"></script>
+    <script src="js/views/patient/contact-confirmation.js"></script>
+    <script src="js/views/patient/update-booking.js"></script>
+    <script src="js/views/patient/teleconsultation.js"></script>
+
+    <!-- Views: Admin -->
+    <script src="js/views/admin/dashboard.js"></script>
+    <script src="js/views/admin/therapists.js"></script>
+    <script src="js/views/admin/branches.js"></script>
+    <script src="js/views/admin/patients.js"></script>
+    <script src="js/views/admin/login.js"></script>
+
+    <!-- Controllers -->
+    <script src="js/controllers/GuestController.js"></script>
+    <script src="js/controllers/AuthController.js"></script>
+    <script src="js/controllers/PatientController.js"></script>
+    <script src="js/controllers/AdminController.js"></script>
+
+    <!-- Internationalization -->
+    <script src="js/i18n.js"></script>
+
+    <!-- App Bootstrap -->
+    <script src="js/app.js"></script>
+  </body>
+</html>

@@ -1156,8 +1156,16 @@ export class OwnerDashboardController {
       const branchId = this.activeBranch ? this.activeBranch.id : "sg-orchard";
       const origin = window.location.origin + window.location.pathname.replace('/pages/owner/dashboard.html', '');
       let targetPage = '/pages/public/branch.html';
-      if (this.activeBranch && (this.activeBranch.template === 'wellness' || this.activeBranch.template === 'spa')) {
-        targetPage = '/templates/spa/index.html';
+      if (this.activeBranch) {
+        if (this.activeBranch.template === 'wellness' || this.activeBranch.template === 'spa') {
+          targetPage = '/templates/spa/index.html';
+        } else if (this.activeBranch.template === 'physiotherapy') {
+          targetPage = '/templates/physiotherapy/index.html';
+        } else if (this.activeBranch.template === 'nutrition') {
+          targetPage = '/templates/nutrition/index.html';
+        } else if (this.activeBranch.template === 'fitness' || this.activeBranch.template === 'personal_trainer') {
+          targetPage = '/templates/personal_trainer/index.html';
+        }
       }
       const shareUrl = `${origin}${targetPage}?branch=${encodeURIComponent(branchId)}`;
 

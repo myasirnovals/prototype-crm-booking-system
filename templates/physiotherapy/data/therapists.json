@@ -1,0 +1,112 @@
+[
+  {
+    "id": "sarah-wijaya",
+    "name": "Dr. Sarah Wijaya",
+    "title": "Physiotherapist",
+    "email": "sarah.w@physiocare.com",
+    "specialization": "Neurological Rehabilitation",
+    "experience": 12,
+    "rating": 4.9,
+    "reviews": 240,
+    "status": "available",
+    "strVerified": true,
+    "schedule": [
+      { "patient": "Budi Santoso", "time": "14:30 - 15:30" },
+      { "patient": "Ani Rahayu", "time": "16:00 - 17:00" }
+    ],
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDT3JG93EtZOPbAGJ-n2K9LEGQvD0wOpMJDDtwJEdSL2zKtK4M4TS6sjjZsmpRHGMrF9V3biCN5dILbrn-XxL9ySlEb-RPs1J204UKtgS2lVyCl7aNDlOmZkniPlxnWBI7KCLjmtx-FEsPBcG9CQxd6NRbG_AAYVLgUTTmQeQn86_IBAOelGyFFuA7px346YkNKyy0Ihw0V_TGHGxkfrf3Pif38a1U6BQgUSftmvavSxQB5oH0zs5meDA"
+  },
+  {
+    "id": "markus-thorne",
+    "name": "Dr. Marcus Thorne",
+    "title": "Senior Specialist",
+    "email": "marcus.t@physiocare.com",
+    "specialization": "Sports Injuries & Orthopedics",
+    "experience": 8,
+    "rating": 4.8,
+    "reviews": 185,
+    "status": "in-session",
+    "strVerified": true,
+    "schedule": [
+      { "patient": "Rudi Hermawan (Current)", "time": "Now - 15:00" },
+      { "patient": "Siska Amalia", "time": "15:15 - 16:15" }
+    ],
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAlAKmkq4gF8g2wvXw9U3GN2fjrfh8UnXcEyyV1bTeTWoKhhq8uJw3QL4KqNksHDVf5dIGeT0iDvbVsHKOzU0fOVNoJ4v7vsG6eidUipSakFgrVSC5nrbi348pzRJ4hAcjjkQkL5_CiMXpKdQyU228v3PxBxHsytDNUs1E_6UligYIZ2sWTSiYbV1gjTHhDNjyZlQIuOKNI2HUPF1Et81rhgrzPMaGXWFlqYO6l7HTn4ItnSMkVFj9FEA"
+  },
+  {
+    "id": "linda-kusumah",
+    "name": "Dr. Linda Kusumah",
+    "title": "Chief Consultant",
+    "email": "linda.k@physiocare.com",
+    "specialization": "Geriatric Care & Wellness",
+    "experience": 20,
+    "rating": 5.0,
+    "reviews": 310,
+    "status": "off-duty",
+    "strVerified": true,
+    "schedule": [],
+    "nextAvailability": "Returning tomorrow at 08:00 AM",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAGGIGfKtXFKM1IeuehmyHqfdMBGxr-pcRW08vr8j1l-ZVg0nur1kzUI0D7usYD3w0tBQx7HuaF7sLC68JVNRnwGihCA7dnc3y-_-R-HoaCKqVNRmI5rua1YOuTJizU1VZLZnIyj--ZlrsKRX_epuDaWFtcstMZa_7tS-c4klWZRLHCd4alZ4nTlJDHtWKtfX9NpXgqWciuTINL_OOum5gfLOdQRe6OfC0YcNzvKV9HupsAZ5c_UgqCHQ"
+  },
+  {
+    "id": "sarah-jenkins",
+    "name": "Dr. Sarah Jenkins",
+    "title": "Senior Specialist",
+    "email": "sarah.j@physiocare.com",
+    "specialization": "Standard Physiotherapy",
+    "experience": 12,
+    "rating": 4.9,
+    "reviews": 240,
+    "status": "available",
+    "strVerified": true,
+    "schedule": [
+      { "patient": "Budi Santoso", "time": "14:30 - 15:30" }
+    ],
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBv6j6t8w7xGP18svybdumyPmK54MnZex-_a3YJH1v4P0sknRbyTxTc6OT272dcwgWOx4JlxFOEHo4x6_G2j0-sUj4Xa9fAZ4EJnlQFVQpT783aflTzgX2VF3LQEK8zpdcKDOCgKpAPdLKx8y7YtfKIyYKkUuH5HeluE7BiIqHXjy-FGW6E6KqkB3L8N5anwxZZDL_c7nFWTqd68t_98n_4mTycKJ1C4xlIXCRlN5wvL4KGUvyYFrtcAg"
+  },
+  {
+    "id": "mark-thompson",
+    "name": "Mark Thompson, PT",
+    "title": "Sports Rehab Expert",
+    "email": "mark.t@physiocare.com",
+    "specialization": "Sports Rehabilitation",
+    "experience": 8,
+    "rating": 4.8,
+    "reviews": 185,
+    "status": "available",
+    "strVerified": true,
+    "schedule": [],
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAvh2WPpirZjpS1tb2knApRrEu0HnxEKMvJjBuVNhB7bqLyjOZbTepjXXBpJLCaY98q0JUYRbkn-A9dllTXciIdvvRnZxYfbKTOXFjJkpN3oTyfYLshdsu9YWLwivLnzW3pWifCaGuWQhSkjAXGwMuEaZWlUTBwqwOrXuDI4O1IctorgW3ofvtC0U3yw4Rzy6tUgx2os7NXjmfbuN_Ifk8oHLYl1UE5cuQAiKi1FHt3RfoenSFo7pxCKg"
+  },
+  {
+    "id": "aris-gunawan",
+    "name": "Dr. Aris Gunawan",
+    "title": "Senior Therapist",
+    "email": "aris.g@physiocare.com",
+    "specialization": "Orthopedic Rehab",
+    "experience": 10,
+    "rating": 4.9,
+    "reviews": 205,
+    "status": "available",
+    "strVerified": true,
+    "schedule": [
+      { "patient": "Sarah Johnson", "time": "09:00 AM" },
+      { "patient": "Emma Watson", "time": "11:15 AM" }
+    ],
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuAzV6HRqHvLLGHETihyPb5P3zU_L27fvJxk3P93lX34SbUaHjZjX5E0d_MPnCzbAyx8Il7xmooZ1TXDVuKmm8gHotnUHJCYkrT8dqPJnxH6J-oZjgf9nK3Yp4dNQ1NlYofADWs0vGZKSewCcYPiwNb5wWjCwrYvJ_5OXqRytEfKXNauOnKQgEX5EKPr0jT_gMnTIqjznZYeXWBAB1TObMo2MZXHoFp15FO-wiC9LW6VFOKzMlwIBSEsFg"
+  },
+  {
+    "id": "elena-rodriguez",
+    "name": "Dr. Elena Rodriguez",
+    "title": "Therapist",
+    "email": "elena.r@physiocare.com",
+    "specialization": "Pediatric Therapy",
+    "experience": 6,
+    "rating": 4.8,
+    "reviews": 145,
+    "status": "available",
+    "strVerified": true,
+    "schedule": [],
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDUTdEB3Kpq5DYKsTK_rqLrlOk4BfPiZDiKb9j8RQ1FnTisqcHA9HaXbR_DP68iwccsUnY8l3hV1grIufPb9s1rrMEgqdHqlrZR-WqXiH-c0ojTVwgD3P00lGGkaNwD04NoOLNfrh6c2dQQ9-46SIXxGHReE8z61GK_NoXiJy-QcM5RIkhMJhsyBK5zgz3RzQ5SGvcusgwIldmylWb1Nk1seLpYjhHWQxJQOzELer7l93ORqmfCqFbDvw"
+  }
+]

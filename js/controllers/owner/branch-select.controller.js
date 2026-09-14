@@ -306,8 +306,16 @@ export class BranchSelectController {
         const basePath = pathname.substring(0, pathname.lastIndexOf("/pages/"));
         const branch = this.branches?.find(b => b.id === branchId);
         let targetPage = "/pages/public/branch.html";
-        if (branch && (branch.template === "wellness" || branch.template === "spa")) {
-          targetPage = "/templates/spa/index.html";
+        if (branch) {
+          if (branch.template === "wellness" || branch.template === "spa") {
+            targetPage = "/templates/spa/index.html";
+          } else if (branch.template === "physiotherapy") {
+            targetPage = "/templates/physiotherapy/index.html";
+          } else if (branch.template === "nutrition") {
+            targetPage = "/templates/nutrition/index.html";
+          } else if (branch.template === "fitness" || branch.template === "personal_trainer") {
+            targetPage = "/templates/personal_trainer/index.html";
+          }
         }
         const url = `${origin}${basePath}${targetPage}?branch=${encodeURIComponent(branchId)}`;
 

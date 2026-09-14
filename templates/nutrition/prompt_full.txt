@@ -1,0 +1,797 @@
+<USER_REQUEST>
+@[\\wsl.localhost\Ubuntu\home\yusarius\Prototype_Application\Application_Nutrition] bro sekarang tuh gw punya tugas baru sambil menunggu feedback untuk yng prototype spa, nah gw di suruh untuk membuat prototype nutrisi bisa di lihat di bawah 
+
+<!-- Book Appointment - Select Service (Updated) -->
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Book Appointment - Select Service</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#006e2f",
+                      "surface-variant": "#d3e4fe",
+                      "secondary": "#006a61",
+                      "primary-fixed-dim": "#4ae176",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-container": "#6d2d00",
+                      "surface": "#f8f9ff",
+                      "on-surface-variant": "#3d4a3d",
+                      "surface-tint": "#006e2f",
+                      "surface-container-high": "#dce9ff",
+                      "outline": "#6d7b6c",
+                      "primary-fixed": "#6bff8f",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary": "#9d4300",
+                      "inverse-primary": "#4ae176",
+                      "outline-variant": "#bccbb9",
+                      "surface-container": "#e5eeff",
+                      "error-container": "#ffdad6",
+                      "surface-bright": "#f8f9ff",
+                      "error": "#ba1a1a",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-surface": "#0b1c30",
+                      "on-primary-container": "#004b1e",
+                      "on-secondary-container": "#006f66",
+                      "on-primary": "#ffffff",
+                      "on-secondary-fixed": "#00201d",
+                      "on-primary-fixed": "#002109",
+                      "on-background": "#0b1c30",
+                      "inverse-surface": "#213145",
+                      "tertiary-container": "#ff8e4d",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-container-low": "#eff4ff",
+                      "secondary-fixed": "#89f5e7",
+                      "on-secondary-fixed-variant": "#005049",
+                      "secondary-container": "#86f2e4",
+                      "on-tertiary-fixed": "#341100",
+                      "on-error-container": "#93000a",
+                      "surface-dim": "#cbdbf5",
+                      "secondary-fixed-dim": "#6bd8cb",
+                      "on-tertiary-fixed-variant": "#783200",
+                      "primary-container": "#22c55e",
+                      "tertiary-fixed": "#ffdbca",
+                      "on-primary-fixed-variant": "#005321",
+                      "on-tertiary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "background": "#f8f9ff",
+                      "tertiary-fixed-dim": "#ffb690"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "8px",
+                      "sm": "16px",
+                      "margin-mobile": "16px",
+                      "base": "4px",
+                      "md": "24px",
+                      "margin-desktop": "40px",
+                      "gutter": "24px",
+                      "xl": "48px",
+                      "lg": "32px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "stats-number": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "stats-number": ["20px", {"lineHeight": "24px", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+      </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 110, 47, 0.1), 0 8px 10px -6px rgba(0, 110, 47, 0.1);
+            border-color: #006e2f;
+        }
+        
+        .service-card.selected {
+            border-color: #006e2f;
+            background-color: #f8f9ff;
+            box-shadow: 0 0 0 2px #006e2f;
+        }
+      </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col">
+<!-- Top Navigation (Shared Component) -->
+<nav class="bg-surface dark:bg-on-background flex justify-between items-center w-full px-margin-desktop h-20 border-b border-outline-variant dark:border-outline docked full-width top-0 z-50 sticky relative">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="text-headline-md font-headline-md text-primary dark:text-primary-fixed-dim tracking-tight">NutriFlow</span>
+</div>
+<!-- Desktop Nav - Centered -->
+<div class="hidden md:flex gap-md h-full items-center absolute left-1/2 transform -translate-x-1/2">
+<a class="h-full flex items-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim font-label-md text-label-md transition-colors hover:bg-surface-container-low dark:hover:bg-inverse-surface px-sm" href="#">Dashboard</a>
+<a class="h-full flex items-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim font-label-md text-label-md transition-colors hover:bg-surface-container-low dark:hover:bg-inverse-surface px-sm" href="#">Meal Plans</a>
+<a class="h-full flex items-center text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary dark:border-primary-fixed-dim font-label-md text-label-md px-sm" href="#">Appointments</a>
+<a class="h-full flex items-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim font-label-md text-label-md transition-colors hover:bg-surface-container-low dark:hover:bg-inverse-surface px-sm" href="#">Profile</a>
+</div>
+<div class="flex items-center gap-xs">
+<button class="p-xs text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-lg">
+<!-- Header & Stepper Section -->
+<div class="mb-xl text-center md:text-left">
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Book Appointment</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Select the service that best fits your nutritional goals.</p>
+</div>
+<!-- Progress Stepper -->
+<div class="w-full max-w-3xl mx-auto mb-xl relative">
+<div class="flex items-center justify-between relative">
+<!-- Connecting Line -->
+<div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-surface-variant z-0 rounded-full"></div>
+<div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1/3 h-1 bg-primary z-0 rounded-full transition-all duration-500"></div>
+<!-- Steps -->
+<div class="relative z-10 flex flex-col items-center bg-surface px-2">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-md shadow-md">1</div>
+<span class="mt-2 font-label-md text-label-md text-primary">Service</span>
+</div>
+<div class="relative z-10 flex flex-col items-center bg-surface px-2">
+<div class="w-10 h-10 rounded-full bg-surface text-on-surface-variant border-2 border-surface-variant flex items-center justify-center font-bold text-label-md">2</div>
+<span class="mt-2 font-label-md text-label-md text-on-surface-variant">Date &amp; Time</span>
+</div>
+<div class="relative z-10 flex flex-col items-center bg-surface px-2">
+<div class="w-10 h-10 rounded-full bg-surface text-on-surface-variant border-2 border-surface-variant flex items-center justify-center font-bold text-label-md">3</div>
+<span class="mt-2 font-label-md text-label-md text-on-surface-variant">Details</span>
+</div>
+<div class="relative z-10 flex flex-col items-center bg-surface px-2">
+<div class="w-10 h-10 rounded-full bg-surface text-on-surface-variant border-2 border-surface-variant flex items-center justify-center font-bold text-label-md">4</div>
+<span class="mt-2 font-label-md text-label-md text-on-surface-variant">Confirm</span>
+</div>
+</div>
+</div>
+<!-- Service Selection Grid (Bento/Card Layout) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md mb-xl">
+<!-- Card 1: Initial Consultation -->
+<div class="service-card glass-card rounded-xl overflow-hidden cursor-pointer flex flex-col h-full bg-white relative group" onclick="selectService(this)">
+<div class="absolute top-sm right-sm z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary bg-white rounded-full p-1 shadow-sm">check_circle</span>
+</div>
+<div class="h-40 w-full relative">
+<img class="w-full h-full object-cover" data-alt="A bright, airy modern nutritionist office with a wooden desk, a sleek laptop, and a bowl of fresh green apples. Soft natural sunlight streams through a large window, creating a warm, inviting clinical aesthetic. Green and white color palette, minimal and clean." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI0OL4dSef_9_KtBWKJ_8d0de_3jKJ307lRmzwECWHykwC2Sh_-p2uUnTh-2y0Yyj2x5txHJ1-_Z9u3YVyIFYjVwQFMkm0ufr1Envl8PlT8JyiHkOB-hHpJszVsfgn9wthQZBcxDIFw3emAo4TPjLWJ43YEqFZsYmGT0kh9do_2JTuvnjgBOOrtceFxVxH_JZX7krm4i7Rjsz16LRwnXm93LXDXh78J5Agw0JsZToFhkL6qU3xrqPBtQ">
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+<span class="absolute bottom-sm left-sm bg-primary-container text-on-primary-container font-label-md text-label-md px-2 py-1 rounded-DEFAULT text-xs uppercase tracking-wider">Most Popular</span>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface text-xl">Initial Consultation</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mb-md flex-grow">A comprehensive 60-minute deep dive into your medical history, current habits, and nutritional goals to build your foundational plan.</p>
+<div class="flex items-center gap-sm mb-md text-on-surface-variant text-sm">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary" style="font-size: 18px;">schedule</span>
+<span>60 min</span>
+</div>
+<div class="w-1 h-1 bg-outline rounded-full"></div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary" style="font-size: 18px;">videocam</span>
+<span>Virtual or In-Person</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-outline-variant pt-sm mt-auto">
+<span class="font-stats-number text-stats-number text-on-surface">$150</span>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 group-hover:underline">
+                            Select <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Follow-up Session -->
+<div class="service-card glass-card rounded-xl overflow-hidden cursor-pointer flex flex-col h-full bg-white relative group" onclick="selectService(this)">
+<div class="absolute top-sm right-sm z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary bg-white rounded-full p-1 shadow-sm">check_circle</span>
+</div>
+<div class="h-40 w-full relative">
+<img class="w-full h-full object-cover" data-alt="A close-up shot of hands holding a modern tablet displaying a colorful nutrition chart, over a clean white marble table with a cup of herbal tea. Clinical yet lifestyle-focused, bright lighting, emphasizing ongoing tracking and progress." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGsbf12JBu1YUhQl78vA1aGmjNYjjGnyb8cmgHlmCOxHKWee0ybL9-1rqta2RUKAJJewh6CU3PkcStb675EhEkzaWohu52Oj7rEOvZZt5-KwE8CSpbidQcEI59WkIrdFAd1LKLAv1EB0t69XGbzUv3jpNPAxWeFPSO8fipEBXZWlqqzxB9GQ2cJzZSc6G7cGZVRlaCrNQ79-yv4AL_kM2EKJba8qTKqFux18RVXNHQHkGLV2pI17tZjw">
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface text-xl">Follow-up Session</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mb-md flex-grow">A 30-minute check-in to review progress, adjust macros, and troubleshoot any challenges with your current meal plan.</p>
+<div class="flex items-center gap-sm mb-md text-on-surface-variant text-sm">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary" style="font-size: 18px;">schedule</span>
+<span>30 min</span>
+</div>
+<div class="w-1 h-1 bg-outline rounded-full"></div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary" style="font-size: 18px;">videocam</span>
+<span>Virtual Only</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-outline-variant pt-sm mt-auto">
+<span class="font-stats-number text-stats-number text-on-surface">$75</span>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 group-hover:underline">
+                            Select <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Body Composition -->
+<div class="service-card glass-card rounded-xl overflow-hidden cursor-pointer flex flex-col h-full bg-white relative group" onclick="selectService(this)">
+<div class="absolute top-sm right-sm z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary bg-white rounded-full p-1 shadow-sm">check_circle</span>
+</div>
+<div class="h-40 w-full relative">
+<img class="w-full h-full object-cover" data-alt="A sleek, modern body composition scale with digital readout in a pristine, bright clinic room. The aesthetic is highly technical and precise, with cool white lighting and subtle teal accents. Emphasizes clinical reliability and data analysis." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmYwtQEKZuQeHbBcF8Z60P_F01JjQ-P01ItJBoz7lWy-FK2NVaEJb3Hqy6oemYRu6b2zWfF5bmfKj9u6PC4JZtGsHvyyUYGgU5hMj-BLnCgmbTc5VDZy-QI6zc259LqW5YPX2r_aCLcW5xsQzLAzlALozsVfWYENWIhLDvaf3jCLuApaunpIs9t0u-hPB3Rhks8C5OQ8Y2RQPiuPrtWg7JqSsunfQMLXnpQ4zAhuIl_qhOzqjCGJJPpw">
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+<span class="absolute bottom-sm left-sm bg-secondary-container text-on-secondary-container font-label-md text-label-md px-2 py-1 rounded-DEFAULT text-xs uppercase tracking-wider">In-Clinic Only</span>
+</div>
+<div class="p-md flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-headline-md text-headline-md text-on-surface text-xl">Body Composition Analysis</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mb-md flex-grow">Detailed DEXA/InBody scan to measure body fat percentage, muscle mass, and metabolic rate for precise macro calculations.</p>
+<div class="flex items-center gap-sm mb-md text-on-surface-variant text-sm">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary" style="font-size: 18px;">schedule</span>
+<span>45 min</span>
+</div>
+<div class="w-1 h-1 bg-outline rounded-full"></div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary" style="font-size: 18px;">location_on</span>
+<span>In-Person</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-outline-variant pt-sm mt-auto">
+<span class="font-stats-number text-stats-number text-on-surface">$120</span>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 group-hover:underline">
+                            Select <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="flex justify-end pt-md border-t border-outline-variant">
+<button class="bg-primary text-on-primary font-label-md text-label-md py-3 px-6 rounded-lg opacity-50 cursor-not-allowed transition-all shadow-sm flex items-center gap-2" disabled="" id="nextBtn">
+                Continue to Date &amp; Time
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-surface-dim dark:bg-on-background w-full py-lg px-margin-desktop flex flex-col md:flex-row justify-between items-center mx-auto border-t border-outline-variant dark:border-outline full-width bottom mt-auto">
+<div class="mb-4 md:mb-0">
+<span class="text-body-lg font-headline-md text-primary dark:text-primary-fixed-dim">NutriFlow</span>
+</div>
+<div class="flex flex-wrap justify-center gap-md mb-4 md:mb-0">
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Clinical Guidelines</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Help Center</a>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface dark:text-on-primary-fixed opacity-80">© 2024 NutriFlow Health Systems. All rights reserved.</p>
+</div>
+</footer>
+<script>
+        function selectService(clickedCard) {
+            // Remove selected class from all cards
+            const cards = document.querySelectorAll('.service-card');
+            cards.forEach(card => {
+                card.classList.remove('selected');
+                card.querySelector('.material-symbols-outlined.bg-white').classList.remove('opacity-100');
+                card.querySelector('.material-symbols-outlined.bg-white').classList.add('opacity-0');
+            });
+
+            // Add selected class to clicked card
+            clickedCard.classList.add('selected');
+            clickedCard.querySelector('.material-symbols-outlined.bg-white').classList.remove('opacity-0');
+            clickedCard.querySelector('.material-symbols-outlined.bg-white').classList.add('opacity-100');
+
+            // Enable Next Button
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            nextBtn.classList.add('hover:bg-on-primary-container', 'hover:shadow-md');
+            nextBtn.disabled = false;
+        }
+    </script>
+</body></html>
+
+<!-- Client Dashboard - My Plan -->
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>My Plan Dashboard - NutriFlow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#0b1c30",
+                    "surface-container": "#e5eeff",
+                    "on-secondary-fixed": "#00201d",
+                    "tertiary": "#9d4300",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary": "#006a61",
+                    "inverse-surface": "#213145",
+                    "inverse-primary": "#4ae176",
+                    "on-surface-variant": "#3d4a3d",
+                    "surface-variant": "#d3e4fe",
+                    "secondary-fixed": "#89f5e7",
+                    "tertiary-fixed-dim": "#ffb690",
+                    "on-error-container": "#93000a",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed": "#ffdbca",
+                    "secondary-container": "#86f2e4",
+                    "on-secondary-fixed-variant": "#005049",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed": "#341100",
+                    "primary-fixed-dim": "#4ae176",
+                    "on-secondary-container": "#006f66",
+                    "tertiary-container": "#ff8e4d",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-tertiary-container": "#6d2d00",
+                    "surface-container-low": "#eff4ff",
+                    "primary": "#006e2f",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#005321",
+                    "on-surface": "#0b1c30",
+                    "surface-tint": "#006e2f",
+                    "surface-dim": "#cbdbf5",
+                    "outline": "#6d7b6c",
+                    "surface-bright": "#f8f9ff",
+                    "primary-container": "#22c55e",
+                    "on-primary-fixed": "#002109",
+                    "on-primary-container": "#004b1e",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-high": "#dce9ff",
+                    "surface": "#f8f9ff",
+                    "secondary-fixed-dim": "#6bd8cb",
+                    "on-tertiary-fixed-variant": "#783200",
+                    "background": "#f8f9ff",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#bccbb9",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#6bff8f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "48px",
+                    "base": "4px",
+                    "lg": "32px",
+                    "sm": "16px",
+                    "xs": "8px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "md": "24px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "stats-number": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "stats-number": ["20px", {"lineHeight": "24px", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.8s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .water-glass.filled {
+            color: theme('colors.secondary');
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<nav class="hidden md:flex flex-row justify-between items-center px-margin-desktop w-full h-16 bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline shadow-sm z-50 sticky top-0">
+<div class="flex items-center gap-sm">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">NutriFlow</span>
+</div>
+<ul class="flex flex-row gap-lg">
+<li class="cursor-pointer active:opacity-70 text-primary dark:text-primary-fixed font-bold border-b-2 border-primary dark:border-primary-fixed pb-1 hover:text-primary dark:hover:text-primary-fixed transition-colors">
+<span class="font-body-md text-body-md">Dashboard</span>
+</li>
+<li class="cursor-pointer active:opacity-70 text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors pb-1">
+<span class="font-body-md text-body-md">Meal Plans</span>
+</li>
+<li class="cursor-pointer active:opacity-70 text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors pb-1">
+<span class="font-body-md text-body-md">Appointments</span>
+</li>
+<li class="cursor-pointer active:opacity-70 text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors pb-1">
+<span class="font-body-md text-body-md">Profile</span>
+</li>
+</ul>
+<div class="flex items-center gap-xs">
+<button aria-label="Notifications" class="p-xs text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button aria-label="Profile" class="p-xs text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container-low">
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional close up portrait photo of a smiling woman in her early 30s with light brown hair, wearing a casual but neat green blouse, well lit against a soft neutral background. Used for an avatar profile picture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACuxsdo8Z-Nl17WpH629BzA84HKeMAyR84ojL8M6_ChXIeE9bfCQBqPmwchAEQCT5lb5-2KDHD93QDQg2UUdEQJkacYZlIHcwjcLYGeVjP7qLy_IRIllE38Uzqf1QNJbaoVbJfU2d1xOmwzdumNrQrQWfgE1Jg6plIvgmlVhhKJnXCrpg0WjqXVw9AETngufeSZQaB8jSUc6wuYHyns96XH7QXmKMQDUc4xTIRPxACmKNRWwizJIHaSw">
+</div>
+</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-lg grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Hero & Daily Schedule -->
+<div class="lg:col-span-8 flex flex-col gap-gutter">
+<!-- Hero Section -->
+<section class="bg-surface-container-lowest rounded-xl p-lg border border-outline-variant shadow-sm relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-lg">
+<!-- Decorative abstract background shape -->
+<div class="absolute -top-24 -right-24 w-64 h-64 bg-surface-container-high rounded-full opacity-50 blur-3xl pointer-events-none"></div>
+<div class="flex-1 z-10">
+<h1 class="font-headline-lg text-headline-lg md:font-display-lg md:text-display-lg text-on-background mb-xs">Good morning, Sarah!</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-md">You're on track for your goals today.</p>
+<div class="inline-flex items-center gap-xs bg-surface-container-low px-sm py-xs rounded-full border border-surface-variant">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Current Streak: 12 Days</span>
+</div>
+</div>
+<div class="flex-shrink-0 z-10 flex flex-col items-center">
+<div class="relative w-40 h-40">
+<svg class="w-full h-full" viewBox="0 0 100 100">
+<!-- Background track -->
+<circle class="text-surface-variant stroke-current" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle>
+<!-- Progress track -->
+<circle class="text-primary stroke-current progress-ring__circle" cx="50" cy="50" fill="transparent" r="40" stroke-dasharray="251.2" stroke-dashoffset="80" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-stats-number text-stats-number text-on-background">1,200</span>
+<span class="font-label-md text-label-md text-on-surface-variant">kcal left</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Daily Meal Schedule -->
+<section class="flex flex-col gap-sm">
+<h2 class="font-headline-md text-headline-md text-on-background mb-xs">Today's Meals</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<!-- Breakfast Card -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden hover:shadow-md transition-shadow group cursor-pointer relative">
+<div class="h-32 bg-surface-variant relative">
+<img alt="Avocado Toast" class="w-full h-full object-cover" data-alt="A beautifully plated avocado toast on artisanal sourdough bread, topped with cherry tomatoes, microgreens, and a drizzle of olive oil, resting on a clean white ceramic plate, placed on a light oak wood table. Shot from a high angle, bright, natural morning light, highly detailed food photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhdLncVr5YHSg696oNNaWNcDNX27FpwShpuVV2sROhcLkU1xYKMhi-UtErJlr9jpaS1aHCEsYwaHknma9nw7SgPy1Fhbq3qbe0s13GK6BowfyxFbOHwCJIJQLBIWAEJ8-y7WFQl-rQadTyMya_y1kGIlKkclrRz4YAo636MVND2hDJ_kt5PVntLx-dw-UhQPiKXFvsUtAHf3MUYe_dhx77FGOyLPOJ4_BRXE7wQfQQrYmmQ4zb0E2J3A">
+<div class="absolute top-xs left-xs bg-surface-container-lowest px-2 py-1 rounded text-xs font-label-md text-on-background shadow-sm">Breakfast</div>
+</div>
+<div class="p-sm">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-body-lg text-body-lg font-semibold text-on-background group-hover:text-primary transition-colors">Avocado Toast</h3>
+<span class="font-label-md text-label-md font-bold text-on-surface-variant">350 kcal</span>
+</div>
+<!-- Macros Bar -->
+<div class="mt-sm flex h-2 rounded-full overflow-hidden w-full bg-surface-variant">
+<div class="bg-primary h-full" style="width: 40%;" title="Carbs: 35g"></div>
+<div class="bg-secondary h-full" style="width: 20%;" title="Protein: 15g"></div>
+<div class="bg-tertiary h-full" style="width: 40%;" title="Fat: 18g"></div>
+</div>
+<div class="flex justify-between mt-1 text-[10px] text-on-surface-variant uppercase tracking-wider">
+<span>35g C</span>
+<span>15g P</span>
+<span>18g F</span>
+</div>
+</div>
+</article>
+<!-- Lunch Card -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden hover:shadow-md transition-shadow group cursor-pointer relative">
+<div class="h-32 bg-surface-variant relative">
+<img alt="Grilled Chicken Salad" class="w-full h-full object-cover" data-alt="A vibrant grilled chicken salad in a wide bowl, featuring mixed leafy greens, sliced cucumber, cherry tomatoes, and strips of grill-marked chicken breast, lightly dressed. Bright overhead lighting, clean and appetizing presentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEJYji3THZ26fZU1y7s_UlX3R5JiXYh8bDKQCgoB_eeBrxiKFJKp983-OzaHO2s7bOGibm_Ffq78DZMIj37z6OO73EXDwTwUKe7WEXsg1ejJE92FBq-nT19yX8htJOacJuuKupzenZJZZPm_6PtBatL55KP4abBQyqSrEMeSFnzbk1OzrX8qcm8ByqZ6WrAMGgLkkRh7lCkTEF5E8WTVQEvDVIoyGeZykvJ7PO6fmFFWMRZ_FlYGtFOw">
+<div class="absolute top-xs left-xs bg-surface-container-lowest px-2 py-1 rounded text-xs font-label-md text-on-background shadow-sm">Lunch</div>
+</div>
+<div class="p-sm">
+<div class="flex justify-between items-start mb-xs">
+<h3 class="font-body-lg text-body-lg font-semibold text-on-background group-hover:text-primary transition-colors">Grilled Chicken Salad</h3>
+<span class="font-label-md text-label-md font-bold text-on-surface-variant">420 kcal</span>
+</div>
+<!-- Macros Bar -->
+<div class="mt-sm flex h-2 rounded-full overflow-hidden w-full bg-surface-variant">
+<div class="bg-primary h-full" style="width: 25%;" title="Carbs: 20g"></div>
+<div class="bg-secondary h-full" style="width: 50%;" title="Protein: 45g"></div>
+<div class="bg-tertiary h-full" style="width: 25%;" title="Fat: 15g"></div>
+</div>
+<div class="flex justify-between mt-1 text-[10px] text-on-surface-variant uppercase tracking-wider">
+<span>20g C</span>
+<span>45g P</span>
+<span>15g F</span>
+</div>
+</div>
+</article>
+<!-- Snacks Card -->
+<article class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden hover:shadow-md transition-shadow group cursor-pointer relative md:col-span-2 lg:col-span-1">
+<div class="p-sm flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">nutrition</span>
+</div>
+<div>
+<div class="text-xs font-label-md text-on-surface-variant mb-1">Snack</div>
+<h3 class="font-body-md text-body-md font-semibold text-on-background group-hover:text-primary transition-colors">Mixed Nuts &amp; Apple</h3>
+</div>
+</div>
+<span class="font-label-md text-label-md font-bold text-on-surface-variant">200 kcal</span>
+</div>
+</article>
+<!-- Dinner Placeholder -->
+<article class="bg-surface border border-dashed border-outline rounded-xl p-sm flex items-center justify-center cursor-pointer hover:bg-surface-container-low transition-colors md:col-span-2 lg:col-span-1 min-h-[80px]">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-label-md text-label-md font-medium">Log Dinner</span>
+</div>
+</article>
+</div>
+</section>
+</div>
+<!-- Right Column: Water Tracker & Quick Stats -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Quick Stats Summary -->
+<section class="bg-surface-container-lowest rounded-xl p-lg border border-outline-variant shadow-sm flex flex-col gap-sm">
+<h2 class="font-headline-md text-headline-md text-on-background mb-xs">Today's Summary</h2>
+<div class="space-y-sm">
+<div class="flex justify-between items-center pb-2 border-b border-surface-variant">
+<span class="font-body-md text-body-md text-on-surface-variant">Goal</span>
+<span class="font-body-md text-body-md font-semibold text-on-background">2,100 kcal</span>
+</div>
+<div class="flex justify-between items-center pb-2 border-b border-surface-variant">
+<span class="font-body-md text-body-md text-on-surface-variant">Consumed</span>
+<span class="font-body-md text-body-md font-semibold text-on-background">900 kcal</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Burned (Active)</span>
+<span class="font-body-md text-body-md font-semibold text-primary">350 kcal</span>
+</div>
+</div>
+<!-- Mini Macro Summary -->
+<div class="mt-sm grid grid-cols-3 gap-xs text-center border-t border-surface-variant pt-sm">
+<div>
+<div class="text-[10px] text-on-surface-variant uppercase tracking-wide">Carbs</div>
+<div class="font-label-md text-label-md font-bold text-on-background">55g</div>
+<div class="w-full bg-surface-variant h-1 mt-1 rounded-full"><div class="bg-primary h-1 rounded-full" style="width: 30%"></div></div>
+</div>
+<div>
+<div class="text-[10px] text-on-surface-variant uppercase tracking-wide">Protein</div>
+<div class="font-label-md text-label-md font-bold text-on-background">60g</div>
+<div class="w-full bg-surface-variant h-1 mt-1 rounded-full"><div class="bg-secondary h-1 rounded-full" style="width: 60%"></div></div>
+</div>
+<div>
+<div class="text-[10px] text-on-surface-variant uppercase tracking-wide">Fat</div>
+<div class="font-label-md text-label-md font-bold text-on-background">33g</div>
+<div class="w-full bg-surface-variant h-1 mt-1 rounded-full"><div class="bg-tertiary h-1 rounded-full" style="width: 45%"></div></div>
+</div>
+</div>
+</section>
+<!-- Water Tracker -->
+<section class="bg-surface-container-lowest rounded-xl p-lg border border-outline-variant shadow-sm flex flex-col gap-sm">
+<div class="flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-on-background">Hydration</h2>
+<span class="font-label-md text-label-md text-secondary font-bold">5 / 8</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm mb-xs">Glasses (250ml) consumed today</p>
+<div class="grid grid-cols-4 gap-sm mt-sm">
+<!-- Filled Glasses -->
+<button aria-label="Remove water glass" class="water-glass filled w-12 h-14 rounded-b-lg rounded-t-sm border-2 border-secondary bg-secondary-container flex items-center justify-center transition-transform hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</button>
+<button aria-label="Remove water glass" class="water-glass filled w-12 h-14 rounded-b-lg rounded-t-sm border-2 border-secondary bg-secondary-container flex items-center justify-center transition-transform hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</button>
+<button aria-label="Remove water glass" class="water-glass filled w-12 h-14 rounded-b-lg rounded-t-sm border-2 border-secondary bg-secondary-container flex items-center justify-center transition-transform hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</button>
+<button aria-label="Remove water glass" class="water-glass filled w-12 h-14 rounded-b-lg rounded-t-sm border-2 border-secondary bg-secondary-container flex items-center justify-center transition-transform hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</button>
+<button aria-label="Remove water glass" class="water-glass filled w-12 h-14 rounded-b-lg rounded-t-sm border-2 border-secondary bg-secondary-container flex items-center justify-center transition-transform hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</button>
+<!-- Empty Glasses -->
+<button aria-label="Add water glass" class="water-glass w-12 h-14 rounded-b-lg rounded-t-sm border-2 border-outline-variant bg-surface flex items-center justify-center text-outline-variant hover:border-secondary hover:text-secondary transition-all hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined">water_drop</span>
+</button>
+<button aria-label="Add water glass" class="water-glass w-12 h-14 rounded-b-lg rounded-t-sm border-2 border-outline-variant bg-surface flex items-center justify-center text-outline-variant hover:border-secondary hover:text-secondary transition-all hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined">water_drop</span>
+</button>
+<button aria-label="Add water glass" class="water-glass w-12 h-14 rounded-b-lg rounded-t-sm border-2 border-outline-variant bg-surface flex items-center justify-center text-outline-variant hover:border-secondary hover:text-secondary transition-all hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined">water_drop</span>
+</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="flex flex-col md:flex-row justify-between items-center py-lg px-margin-desktop w-full bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant mt-auto">
+<div class="mb-sm md:mb-0">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface dark:text-inverse-on-surface">NutriFlow</span>
+<p class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant mt-1">© 2024 NutriFlow. All rights reserved.</p>
+</div>
+<ul class="flex flex-row gap-md">
+<li>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:underline hover:text-primary transition-all" href="#">Help Center</a>
+</li>
+<li>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:underline hover:text-primary transition-all" href="#">Privacy Policy</a>
+</li>
+<li>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant hover:underline hover:text-primary transition-all" href="#">Terms of Service</a>
+</li>
+</ul>
+</footer>
+</body></html>
+
+<!-- Client Progress Tracker -->
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Client Progress Tracker - NutriFlow</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#0b1c30",
+                        "surface-container": "#e5eeff",
+                        "on-secondary-fixed": "#00201d",
+                        "tertiary": "#9d4300",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#006a61",
+                        "inverse-surface": "#213145",
+                        "inverse-primary": "#4ae176",
+                        "on-surface-variant": "#3d4a3d",
+                        "surface-variant": "#d3e4fe",
+                        "secondary-fixed": "#89f5e7",
+                        "tertiary-fixed-dim": "#ffb690",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed": "#ffdbca",
+                        "secondary-container": "#86f2e4",
+                        "on-secondary-fixed-variant": "#005049",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#341100",
+                        "primary-fixed-dim": "#4ae176",
+                        "on-secondary-container": "#006f66",
+                        "tertiary-container": "#ff8e4d",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-tertiary-container": "#6d2d00",
+                        "surface-container-low": "#eff4ff",
+                        "primary": "#006e2f",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#005321",
+                        "on-surface": "#0b1c30",
+                        "surface-tint": "#006e2f",
+                        "surface-dim": "#cbdbf5",
+                        "outline": "#6d7b6c",
+                        "surface-bright": "#f8f9ff",
+                        "primary-container": "#22c55e",
+                        "on-primary-fixed": "#002109",
+                        "on-primary-container": "#004b1e",
+                        "on-tertiary": "#ffffff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container-high": "#dce9ff",
+                        "surface": "#f8f9ff",
+                        "secondary-fixed-dim": "#6bd8cb",
+                        "on-tertiary-fixed-variant": "#783200",
+                        "background": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#bccbb9",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#6bff8f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "48px",
+                        "base": "4px",
+                        "lg": "32px",
+                        "sm": "16px",
+                        "xs": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "md": "24px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "stats-number": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-md
+<truncated 207186 bytes>
+
+NOTE: The output was truncated because it was too long. Use a more targeted query or a smaller range to get the information you need.

@@ -1,0 +1,134 @@
+[
+    {
+        "id": "frozen-shoulder",
+        "slug": "frozen-shoulder",
+        "name": "Frozen Shoulder (Adhesive Capsulitis)",
+        "area": "bahu",
+        "areaLabel": "Bahu",
+        "icon": "sports_gymnastics",
+        "shortDescription": "Kekakuan dan nyeri pada sendi bahu yang membatasi pergerakan.",
+        "symptoms": [
+            "Nyeri yang memburuk di malam hari",
+            "Kekakuan yang membuat sulit mengangkat lengan",
+            "Rentang gerak bahu sangat terbatas"
+        ],
+        "causes": [
+            "Imobilisasi lengan dalam waktu lama (misal setelah operasi/patah tulang)",
+            "Kondisi medis tertentu seperti diabetes",
+            "Peradangan pada kapsul sendi bahu"
+        ],
+        "treatment": "Fisioterapi berfokus pada peregangan bertahap (stretching) untuk mengembalikan rentang gerak (ROM), terapi manual untuk melemaskan kapsul sendi, dan modalitas seperti Ultrasound atau TENS untuk meredakan nyeri.",
+        "recoveryEstimate": "3 hingga 6 bulan (tergantung fase frozen shoulder)",
+        "recommendedServices": ["standard-physiotherapy", "musculoskeletal"]
+    },
+    {
+        "id": "hnp",
+        "slug": "hnp",
+        "name": "HNP / Saraf Terjepit",
+        "area": "punggung",
+        "areaLabel": "Punggung",
+        "icon": "man",
+        "shortDescription": "Kondisi dimana bantalan tulang belakang menonjol dan menjepit saraf.",
+        "symptoms": [
+            "Nyeri tajam yang menjalar dari punggung/bokong hingga ke kaki",
+            "Kesemutan atau mati rasa pada tungkai",
+            "Kelemahan otot pada salah satu atau kedua kaki"
+        ],
+        "causes": [
+            "Proses penuaan (degenerasi diskus)",
+            "Mengangkat benda berat dengan postur tubuh yang salah",
+            "Trauma atau cedera pada tulang belakang"
+        ],
+        "treatment": "Program terapi berfokus pada latihan stabilisasi inti (core stability), traksi tulang belakang untuk mengurangi tekanan pada saraf, serta edukasi postur tubuh yang benar.",
+        "recoveryEstimate": "1 hingga 3 bulan untuk gejala ringan-sedang",
+        "recommendedServices": ["standard-physiotherapy", "musculoskeletal"]
+    },
+    {
+        "id": "cedera-acl",
+        "slug": "cedera-acl",
+        "name": "Cedera ACL (Anterior Cruciate Ligament)",
+        "area": "lutut",
+        "areaLabel": "Lutut",
+        "icon": "accessibility_new",
+        "shortDescription": "Robekan atau regangan berlebih pada ligamen cruciatum anterior di lutut.",
+        "symptoms": [
+            "Suara 'pop' saat cedera terjadi",
+            "Pembengkakan parah pada lutut dalam hitungan jam",
+            "Lutut terasa tidak stabil atau 'goyang'"
+        ],
+        "causes": [
+            "Berhenti mendadak dan mengubah arah saat berlari (cutting)",
+            "Mendarat dari lompatan dengan posisi lutut yang salah",
+            "Benturan langsung pada sisi lutut"
+        ],
+        "treatment": "Fisioterapi (baik pra maupun pasca-operasi) berfokus pada pengembalian mobilitas sendi lutut, penguatan otot paha depan (quadriceps) & belakang (hamstrings), serta pelatihan keseimbangan (proprioception).",
+        "recoveryEstimate": "6 hingga 9 bulan (untuk kembali berolahraga kompetitif paska operasi)",
+        "recommendedServices": ["sports-rehabilitation", "musculoskeletal"]
+    },
+    {
+        "id": "tennis-elbow",
+        "slug": "tennis-elbow",
+        "name": "Tennis Elbow (Lateral Epicondylitis)",
+        "area": "lengan",
+        "areaLabel": "Lengan",
+        "icon": "back_hand",
+        "shortDescription": "Peradangan pada tendon yang menempel di siku bagian luar.",
+        "symptoms": [
+            "Nyeri pada sisi luar siku yang menjalar ke lengan bawah",
+            "Rasa sakit saat menggenggam objek, bersalaman, atau memutar gagang pintu",
+            "Otot lengan bawah terasa lemah"
+        ],
+        "causes": [
+            "Penggunaan otot lengan bawah secara berlebihan dan berulang (overuse)",
+            "Aktivitas repetitif seperti mengecat, mengetik, atau menggunakan obeng",
+            "Teknik pukulan yang salah dalam olahraga raket"
+        ],
+        "treatment": "Terapi menggunakan teknik myofascial release pada lengan bawah, shockwave therapy (ESWT) untuk mempercepat regenerasi tendon, serta latihan eksentrik untuk memperkuat otot dan tendon.",
+        "recoveryEstimate": "2 hingga 6 bulan (tergantung tingkat keparahan dan kepatuhan istirahat)",
+        "recommendedServices": ["standard-physiotherapy", "sports-rehabilitation"]
+    },
+    {
+        "id": "nyeri-leher",
+        "slug": "nyeri-leher",
+        "name": "Nyeri Leher (Cervicalgia)",
+        "area": "leher",
+        "areaLabel": "Leher",
+        "icon": "face",
+        "shortDescription": "Ketegangan otot atau kekakuan sendi pada area leher dan pundak bagian atas.",
+        "symptoms": [
+            "Otot terasa kaku dan nyeri, terutama setelah diam dalam satu posisi lama",
+            "Kesulitan atau nyeri saat menoleh",
+            "Sering disertai sakit kepala tegang (tension headache)"
+        ],
+        "causes": [
+            "Postur tubuh yang buruk (seperti 'text neck' saat menunduk melihat HP)",
+            "Bekerja di depan komputer berjam-jam tanpa peregangan",
+            "Posisi tidur yang tidak tepat"
+        ],
+        "treatment": "Terapi manual untuk merilis ketegangan otot leher (trigger point release), perbaikan postur tubuh ergonomis, serta senam/peregangan leher spesifik.",
+        "recoveryEstimate": "2 hingga 4 minggu untuk keluhan akut akibat postur",
+        "recommendedServices": ["standard-physiotherapy", "musculoskeletal"]
+    },
+    {
+        "id": "plantar-fasciitis",
+        "slug": "plantar-fasciitis",
+        "name": "Plantar Fasciitis",
+        "area": "pergelangan",
+        "areaLabel": "Pergelangan Kaki",
+        "icon": "directions_walk",
+        "shortDescription": "Peradangan pada jaringan ikat tebal di telapak kaki yang menghubungkan tumit ke jari.",
+        "symptoms": [
+            "Nyeri tajam di tumit saat langkah pertama setelah bangun tidur",
+            "Rasa sakit memburuk setelah berdiri lama atau bangun dari duduk",
+            "Nyeri biasanya membaik saat dibawa berjalan ringan namun kembali sakit setelah aktivitas berat"
+        ],
+        "causes": [
+            "Aktivitas berat yang membebani tumit (misal lari jarak jauh, menari)",
+            "Berdiri terlalu lama di permukaan keras",
+            "Penggunaan alas kaki yang tidak mendukung lengkungan kaki (flat shoes)"
+        ],
+        "treatment": "Latihan peregangan spesifik untuk otot betis (calf) dan fascia telapak kaki, penggunaan kinesio tape untuk penyangga, serta shockwave therapy untuk mengurangi peradangan lokal.",
+        "recoveryEstimate": "3 hingga 6 bulan (memerlukan modifikasi aktivitas secara konsisten)",
+        "recommendedServices": ["standard-physiotherapy", "sports-rehabilitation"]
+    }
+]

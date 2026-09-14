@@ -1,0 +1,26 @@
+# Panduan Login Prototype Aplikasi NutriFlow
+
+Proyek ini memiliki dua portal (Client dan Admin/Specialist) dengan sistem login statis (hardcoded) untuk keperluan demonstrasi/prototipe. Berikut adalah cara untuk login ke masing-masing portal:
+
+## 1. Client Portal (Aplikasi untuk Pasien/Klien)
+- **URL Login:** Buka `/login.html` di browser (contoh: `http://localhost:5173/login.html`)
+- **Password:** Bebas (disarankan menggunakan `password`)
+- **Email:** Anda bisa memasukkan email apa saja. Namun, untuk memuat profil data statis (dummy data) yang sudah disiapkan, gunakan salah satu email berikut:
+  - `sarah.j@email.com` (Login sebagai Sarah Jenkins)
+  - `m.reid@email.com` (Login sebagai Marcus Reid)
+  - `elena.l@email.com` (Login sebagai Elena Lopez)
+  *Catatan: Jika Anda memasukkan email lain (misal: `budi@email.com`), sistem akan otomatis membuat user baru dengan nama "BUDI".*
+
+## 2. Practitioner / Admin Portal (Aplikasi untuk Ahli Gizi/Dokter)
+- **URL Login:** Buka `/admin/login.html` di browser (contoh: `http://localhost:5173/admin/login.html`)
+- **Password:** `admin123` (Wajib menggunakan ini)
+- **Email/Username:** Gunakan salah satu email berikut untuk masuk sebagai dokter/spesialis tertentu:
+  - `specialist@nutriflow.com` atau `admin@nutriflow.com` (Login sebagai Dr. Hasan)
+  - `amanda@nutriflow.com` (Login sebagai Dr. Amanda)
+  - `m.reid@email.com` (Login sebagai Dr. Marcus Reid)
+
+### Tips Tambahan untuk Tim Dev:
+Karena ini adalah prototipe, sesi login disimpan menggunakan `localStorage`. 
+- Kunci `nutriflow_client_logged` digunakan untuk sesi Client.
+- Kunci `nutriflow_admin_logged` digunakan untuk sesi Admin.
+Jika Anda ingin mereset sesi atau mengalami error, Anda bisa menghapus data situs (Clear Site Data) atau menghapus key tersebut dari tab Application -> Local Storage di DevTools browser Anda.

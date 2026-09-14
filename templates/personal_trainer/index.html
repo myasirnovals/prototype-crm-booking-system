@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="light h-full scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title data-i18n="site_title">Elite Trainer - Elevate Your Fitness</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#a73b00",
+                        "primary-container": "#ff5f05",
+                        "background": "#f8f9ff",
+                        "surface": "#ffffff",
+                        "on-background": "#0b1c30"
+                    },
+                    fontFamily: {
+                        "headline": ["Montserrat"],
+                        "body": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col selection:bg-primary-container selection:text-white">
+<!-- Navbar -->
+<nav class="fixed w-full z-50 glass shadow-sm transition-all duration-300" id="navbar">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-20">
+<!-- Logo -->
+<div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+<span class="material-symbols-outlined text-primary text-4xl" data-i18n="fitness_center" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+<div class="flex flex-col">
+<span class="text-2xl font-headline font-extrabold tracking-tight text-primary leading-none" data-i18n="elite_trainer">ELITE TRAINER</span>
+</div>
+</div>
+<!-- Desktop Menu -->
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-sm font-semibold text-slate-600 hover:text-primary transition-colors" data-i18n="nav_features" href="#features">Features</a>
+<a class="text-sm font-semibold text-slate-600 hover:text-primary transition-colors" data-i18n="nav_about" href="./about.html">About</a>
+<div class="flex items-center gap-4">
+<a class="text-sm font-bold text-primary hover:text-[#8f3200] transition-colors" data-i18n="nav_sign_in" href="./login.html">Sign In</a>
+<a class="bg-primary hover:bg-[#8f3200] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5" data-i18n="nav_get_started" href="./login.html" onclick="localStorage.setItem('landing_action', 'register')">Get Started</a>
+<!-- Language Selector -->
+<div class="flex items-center">
+<select aria-label="Language" class="ml-4 bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-slate-100 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm cursor-pointer appearance-none pr-8 relative" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 0.5rem top 50%; background-size: 0.65rem auto;" id="lang-select">
+<option data-i18n="en" value="en">EN</option>
+<option data-i18n="ms" value="ms">MY</option>
+</select>
+</div>
+</div>
+</div>
+<!-- Mobile Menu Button -->
+<div class="md:hidden flex items-center">
+<button class="text-slate-600 hover:text-primary focus:outline-none" id="mobile-menu-btn">
+<span class="material-symbols-outlined text-3xl" data-i18n="menu">menu</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Mobile Menu -->
+<div class="hidden md:hidden bg-white border-t border-slate-100 absolute w-full" id="mobile-menu">
+<div class="px-4 pt-2 pb-6 space-y-2 flex flex-col">
+<a class="block px-3 py-3 text-base font-semibold text-slate-700 hover:text-primary hover:bg-slate-50 rounded-lg" data-i18n="nav_features" href="#features">Features</a>
+<a class="block px-3 py-3 text-base font-semibold text-slate-700 hover:text-primary hover:bg-slate-50 rounded-lg" data-i18n="nav_about" href="./about.html">About</a>
+<a class="block px-3 py-3 text-base font-bold text-primary hover:bg-slate-50 rounded-lg" data-i18n="nav_sign_in" href="./login.html">Sign In</a>
+<a class="block px-3 py-3 text-base font-bold text-white bg-primary text-center rounded-lg mt-2" data-i18n="nav_get_started" href="./login.html">Get Started</a>
+<div class="px-3 py-3">
+<label class="sr-only" data-i18n="admin_language" for="mobile-lang-select">Language</label>
+<select class="w-full bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-4 py-3 text-base font-medium hover:bg-slate-100 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm cursor-pointer appearance-none pr-10 relative" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 1rem top 50%; background-size: 0.85rem auto;" id="mobile-lang-select">
+<option data-i18n="english_en" value="en">English (EN)</option>
+<option data-i18n="bahasa_ms" value="ms">Bahasa Melayu (MY)</option>
+</select>
+</div>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section id="hero-section" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex-grow flex items-center bg-cover bg-no-repeat" style="background-image: linear-gradient(rgba(16, 16, 16, 0.58), rgba(16, 16, 16, 0.68)), url('/assets/images/screen1.png'); background-position: center 38%; transition: background-image 1s ease-in-out;">
+<!-- Background Decoration -->
+<div class="absolute inset-0 z-0 opacity-10 pointer-events-none">
+<div class="absolute -top-24 -right-24 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
+<div class="absolute top-1/2 -left-24 w-72 h-72 bg-primary-container rounded-full blur-3xl"></div>
+</div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+<div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+<div class="max-w-2xl">
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-100 text-primary font-semibold text-xs mb-6 border border-orange-200">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span data-i18n="new_feature_badge">New: AI-Powered Posture Analysis</span>
+</div>
+<h1 class="text-5xl lg:text-7xl font-headline font-extrabold text-white leading-[1.1] tracking-tight mb-6 drop-shadow-[0_4px_18px_rgba(0,0,0,0.35)]">
+<span data-i18n="hero_line1">Achieve Your</span> <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-200 to-orange-400" data-i18n="hero_elite">Elite Form</span>
+</h1>
+<p class="text-lg text-slate-200 mb-8 leading-relaxed max-w-xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.28)]" data-i18n="hero_sub">The ultimate management platform connecting world-class trainers with dedicated clients. Track progress, monitor habits, and achieve results.</p>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="inline-flex justify-center items-center gap-2 bg-primary hover:bg-[#8f3200] text-white px-8 py-4 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl transform hover:-translate-y-1" data-i18n="cta_start_journey" href="./login.html">
+                            <span data-i18n="hero_start">Start Your Journey</span> <span class="material-symbols-outlined" data-i18n="arrow_forward">arrow_forward</span>
+</a>
+<a class="inline-flex justify-center items-center gap-2 bg-white text-slate-700 hover:text-primary hover:bg-slate-50 px-8 py-4 rounded-xl font-bold text-base border-2 border-slate-200 hover:border-primary transition-all" data-i18n="cta_explore_features" href="#features">
+                            Explore Features
+                        </a>
+</div>
+<div class="mt-10 flex items-center gap-6 text-sm text-slate-500 font-medium">
+<div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-green-500" data-i18n="check_circle">check_circle</span> <span data-i18n="hero_cancel" class="text-green-500">Cancel Anytime</span></div>
+<div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-green-500" data-i18n="check_circle">check_circle</span> <span data-i18n="hero_dashboard" class="text-green-500">Personal Dashboard</span></div>
+</div>
+</div>
+<!-- Hero Image / Graphic -->
+<div class="relative lg:ml-auto w-full max-w-lg hidden sm:block">
+<!-- Glassmorphism Card Mockups -->
+<div class="relative z-10 bg-white p-6 rounded-3xl shadow-2xl border border-slate-100 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="font-headline font-bold text-lg" data-i18n="weekly_progress">Weekly Progress</h3>
+<p class="text-xs text-slate-500" data-i18n="muscle_mass_vs_body_fat">Muscle Mass vs Body Fat</p>
+</div>
+<span class="material-symbols-outlined text-primary bg-orange-50 p-2 rounded-xl" data-i18n="monitoring">monitoring</span>
+</div>
+<div class="space-y-4">
+<div class="w-full bg-slate-100 rounded-full h-2.5">
+<div class="bg-primary h-2.5 rounded-full" style="width: 75%"></div>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-2.5">
+<div class="bg-primary-container h-2.5 rounded-full" style="width: 45%"></div>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-2.5">
+<div class="bg-orange-300 h-2.5 rounded-full" style="width: 60%"></div>
+</div>
+</div>
+<div class="mt-6 flex gap-4">
+<div class="bg-background rounded-2xl p-4 flex-1 text-center border border-slate-100">
+<span class="block text-2xl font-headline font-bold text-primary" data-i18n="2_4kg">2.4kg</span>
+<span class="text-[10px] uppercase font-bold text-slate-500" data-i18n="muscle_gained">Muscle Gained</span>
+</div>
+<div class="bg-background rounded-2xl p-4 flex-1 text-center border border-slate-100">
+<span class="block text-2xl font-headline font-bold text-primary">-1.2%</span>
+<span class="text-[10px] uppercase font-bold text-slate-500" data-i18n="body_fat">Body Fat</span>
+</div>
+</div>
+</div>
+<!-- Decorative Element -->
+<div class="absolute -bottom-6 -left-6 z-20 bg-on-background text-white p-4 rounded-2xl shadow-xl flex items-center gap-4 animate-bounce hover:animate-none">
+<div class="bg-green-500/20 p-2 rounded-full">
+<span class="material-symbols-outlined text-green-400" data-i18n="task_alt">task_alt</span>
+</div>
+<div>
+<p class="text-sm font-bold" data-i18n="workout_complete">Workout Complete!</p>
+<p class="text-xs text-slate-400" data-i18n="upper_body_power">Upper Body Power</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="py-24 bg-white relative" id="features">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<h2 class="text-primary font-bold tracking-widest uppercase text-sm mb-2" data-i18n="platform_features">Platform Features</h2>
+<h3 class="text-3xl md:text-4xl font-headline font-extrabold text-slate-900 mb-4" data-i18n="everything_you_need">Everything you need to succeed</h3>
+<p class="text-slate-600 text-lg" data-i18n="a_comprehensive_suite_of_tools">A comprehensive suite of tools designed for both trainers and clients to maximize results and accountability.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="bg-background rounded-3xl p-8 border border-slate-100 hover:border-primary/30 transition-colors group hover:shadow-lg">
+<div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm text-primary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-i18n="fitness_center">fitness_center</span>
+</div>
+<h4 class="text-xl font-headline font-bold text-slate-900 mb-3" data-i18n="feature_custom_workouts">Custom Workouts</h4>
+<p class="text-slate-600 leading-relaxed text-sm" data-i18n="tailored_exercise_programs_cat">
+                        Tailored exercise programs categorized by mesocycles. Track your sets, reps, and RPE with precision.
+                    </p>
+</div>
+<!-- Feature 2 -->
+<div class="bg-background rounded-3xl p-8 border border-slate-100 hover:border-primary/30 transition-colors group hover:shadow-lg">
+<div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm text-primary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-i18n="query_stats">query_stats</span>
+</div>
+<h4 class="text-xl font-headline font-bold text-slate-900 mb-3" data-i18n="feature_progress_tracking">Progress Tracking</h4>
+<p class="text-slate-600 leading-relaxed text-sm" data-i18n="log_body_metrics_upload_progr">
+                        Log body metrics, upload progress photos, and visualize your journey with interactive charts and data.
+                    </p>
+</div>
+<!-- Feature 3 -->
+<div class="bg-background rounded-3xl p-8 border border-slate-100 hover:border-primary/30 transition-colors group hover:shadow-lg">
+<div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm text-primary mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-i18n="vital_signs">vital_signs</span>
+</div>
+<h4 class="text-xl font-headline font-bold text-slate-900 mb-3" data-i18n="feature_habit_monitoring">Habit Monitoring</h4>
+<p class="text-slate-600 leading-relaxed text-sm" data-i18n="build_sustainable_routines_by">
+                        Build sustainable routines by tracking daily water intake, sleep hours, and step counts seamlessly.
+                    </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Call To Action -->
+<section class="py-20 relative overflow-hidden">
+<div class="absolute inset-0 bg-primary"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-primary to-primary-container opacity-90"></div>
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+<h2 class="text-3xl md:text-5xl font-headline font-extrabold text-white mb-6" data-i18n="cta_ready">Ready to transform your life?</h2>
+<p class="text-orange-100 text-lg mb-10 max-w-2xl mx-auto" data-i18n="cta_join">
+                Join the Elite Trainer platform today. Whether you are a fitness professional or a client, we provide the tools you need.
+            </p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<a class="bg-white text-primary hover:bg-slate-50 px-8 py-4 rounded-xl font-bold text-base transition-all shadow-xl hover:shadow-2xl" data-i18n="nav_client_portal" href="./login.html">
+                    Client Portal
+                </a>
+<a class="bg-transparent text-white border-2 border-white/30 hover:border-white px-8 py-4 rounded-xl font-bold text-base transition-all" data-i18n="nav_trainer_portal" href="./login.html">
+                    Trainer Portal
+                </a>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-slate-900 pt-20 pb-10 border-t border-slate-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+<!-- Brand -->
+<div class="lg:col-span-1">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary text-3xl" data-i18n="fitness_center" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+<span class="text-xl font-headline font-extrabold tracking-tight text-white leading-none" data-i18n="elite_trainer">ELITE TRAINER</span>
+</div>
+<p class="text-slate-400 text-sm leading-relaxed mb-6" data-i18n="the_ultimate_platform_for_fitn">
+                        The ultimate platform for fitness professionals and dedicated clients to track progress, monitor habits, and achieve elite results together.
+                    </p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined text-[18px]" data-i18n="link">link</span></a>
+<a class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined text-[18px]" data-i18n="mail">mail</span></a>
+<a class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined text-[18px]" data-i18n="share">share</span></a>
+</div>
+</div>
+<!-- Quick Links -->
+<div>
+<h4 class="text-white font-headline font-bold mb-6 uppercase tracking-wider text-sm" data-i18n="footer_platform">Platform</h4>
+<ul class="space-y-4">
+<li><a class="text-slate-400 hover:text-primary transition-colors text-sm font-medium" data-i18n="nav_features" href="#features">Features</a></li>
+<li><a class="text-slate-400 hover:text-primary transition-colors text-sm font-medium" data-i18n="footer_about_us" href="./about.html">About Us</a></li>
+<li><a class="text-slate-400 hover:text-primary transition-colors text-sm font-medium" data-i18n="nav_client_portal" href="./login.html">Client Portal</a></li>
+<li><a class="text-slate-400 hover:text-primary transition-colors text-sm font-medium" data-i18n="nav_trainer_portal" href="./login.html">Trainer Portal</a></li>
+</ul>
+</div>
+<!-- Resources -->
+<div>
+<h4 class="text-white font-headline font-bold mb-6 uppercase tracking-wider text-sm" data-i18n="resources">Resources</h4>
+<ul class="space-y-4">
+<li><a class="text-slate-400 hover:text-primary transition-colors text-sm font-medium" data-i18n="help_center" href="#"><span data-i18n="footer_help">Help Center</span></a></li>
+<li><a class="text-slate-400 hover:text-primary transition-colors text-sm font-medium" data-i18n="workout_guides" href="#"><span data-i18n="footer_guides">Workout Guides</span></a></li>
+<li><a class="text-slate-400 hover:text-primary transition-colors text-sm font-medium" data-i18n="nutrition_tips" href="#"><span data-i18n="footer_nutrition">Nutrition Tips</span></a></li>
+<li><a class="text-slate-400 hover:text-primary transition-colors text-sm font-medium" data-i18n="community" href="#"><span data-i18n="footer_community">Community</span></a></li>
+</ul>
+</div>
+<!-- Legal / Newsletter -->
+<div>
+<h4 class="text-white font-headline font-bold mb-6 uppercase tracking-wider text-sm" data-i18n="stay_updated">Stay Updated</h4>
+<p class="text-slate-400 text-sm mb-4 font-medium" data-i18n="subscribe_to_our_newsletter_fo">Subscribe to our newsletter for the latest fitness tips and platform updates.</p>
+<form class="flex gap-2">
+<input class="w-full bg-slate-800 border-none rounded-xl text-sm text-white px-4 py-2.5 focus:ring-2 focus:ring-primary outline-none placeholder:text-slate-500 font-medium" placeholder="Enter your email" type="email"/>
+<button class="bg-primary hover:bg-[#8f3200] text-white px-4 py-2.5 rounded-xl transition-colors flex items-center justify-center" type="submit">
+<span class="material-symbols-outlined text-[18px]" data-i18n="send">send</span>
+</button>
+</form>
+</div>
+</div>
+<div class="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-sm text-slate-500 font-medium">
+                    © <span id="current-year"></span> Elite Trainer. All rights reserved.
+                </p>
+<div class="flex gap-6">
+<a class="text-sm text-slate-500 hover:text-slate-300 transition-colors font-medium" data-i18n="privacy_policy" href="#"><span data-i18n="footer_privacy">Privacy Policy</span></a>
+<a class="text-sm text-slate-500 hover:text-slate-300 transition-colors font-medium" data-i18n="terms_of_service" href="#"><span data-i18n="footer_terms">Terms of Service</span></a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Set current year
+        document.getElementById('current-year').innerText = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-md');
+                navbar.classList.remove('shadow-sm');
+            } else {
+                navbar.classList.add('shadow-sm');
+                navbar.classList.remove('shadow-md');
+            }
+        });
+
+        // Hero Section Background Transition
+        const heroSection = document.getElementById('hero-section');
+        if (heroSection) {
+            const heroImages = [
+                '/assets/images/screen1.png',
+                '/assets/images/screen2.png',
+                '/assets/images/screen3.png'
+            ];
+            let currentHeroImageIndex = 0;
+
+            setInterval(() => {
+                currentHeroImageIndex = (currentHeroImageIndex + 1) % heroImages.length;
+                heroSection.style.backgroundImage = `linear-gradient(rgba(16, 16, 16, 0.58), rgba(16, 16, 16, 0.68)), url('${heroImages[currentHeroImageIndex]}')`;
+            }, 5000); // Change image every 5 seconds
+        }
+    </script>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

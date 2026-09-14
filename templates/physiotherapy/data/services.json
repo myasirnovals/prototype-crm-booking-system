@@ -1,0 +1,104 @@
+[
+  {
+    "id": "standard-physiotherapy",
+    "name": "Standard Physiotherapy",
+    "icon": "physical_therapy",
+    "price": 85000,
+    "currency": "IDR",
+    "duration": "60 menit",
+    "shortDescription": "Asesmen dan penanganan muskuloskeletal umum.",
+    "description": "Layanan fisioterapi standar untuk berbagai kondisi muskuloskeletal seperti nyeri punggung, leher kaku, dan masalah sendi. Termasuk asesmen awal, terapi manual, dan program latihan individual.",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDb5cqv2xi4RaEf0jIBlS5uyYMKjtoN_RELsv5oyjI1MBryh8aTKVLL0aSgdGDHHyYb8OXfL_e-OJOs_cVZa822616n9dPvZylLJlc9Hxx7Dk5ERhcJwpW8VgFBCvGGQ-OMqKpQSxTkswyUSCfbpwB3_HcGVbqlSVt9jBzR_iOmwfYRCx26h2TKDfpdO5gH7gg8TAGiUc8NS-io576Ha7cKphKtG_-rT19PowXWhxX99nuXFb6NVS5coA",
+    "features": [
+      "Asesmen awal 60 menit",
+      "Terapi manual",
+      "Program latihan individual",
+      "Evaluasi berkala"
+    ]
+  },
+  {
+    "id": "sports-rehabilitation",
+    "name": "Sports Rehabilitation",
+    "icon": "sports_gymnastics",
+    "price": 95000,
+    "currency": "IDR",
+    "duration": "60 menit",
+    "shortDescription": "Rehabilitasi khusus untuk pemulihan atlet dan cedera olahraga.",
+    "description": "Program rehabilitasi yang dirancang untuk atlet dari semua level. Fokus pada pemulihan cedera olahraga seperti ACL, tendonitis, dan optimalisasi performa. Termasuk latihan fungsional dan pencegahan cedera.",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuA_SbMPuBTU0I7DIPl9eqKaFk3keQv1-M67_Trh2TjANrMb1Ogv9xQNP_lk1RcMp9eGpTJHXzIybU_2hUTcIMJAh3Z_frsA-uQCcs6pz5NGQawAaihYTzGocTQG3FUqt67ksHeS9V0DflbEY36gCK3Twfjkl9gxN20Ckt1aMSslGrxq2Ej8v9VIV95kJhEWXSFgnwMeNQQwx0259Wyg6UKu-ev6BGOjl6bVWQ0z2O7hr_OX8BKtSndp6g",
+    "features": [
+      "Rehabilitasi ACL",
+      "Terapi tendonitis",
+      "Latihan fungsional",
+      "Pencegahan cedera"
+    ]
+  },
+  {
+    "id": "stroke-rehabilitation",
+    "name": "Stroke Rehabilitation",
+    "icon": "neurology",
+    "price": 110000,
+    "currency": "IDR",
+    "duration": "90 menit",
+    "shortDescription": "Perawatan neurologis komprehensif untuk pemulihan pasca stroke.",
+    "description": "Program rehabilitasi neurologis yang komprehensif untuk membantu pesakit strok memulihkan keterampilan motorik, keseimbangan, dan kemandirian. Ditujukan untuk meningkatkan kualitas hidup secara keseluruhan.",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCbtJadryAoNN1cxuLP8fzP7K_bxgupKJF7sylG7Yq2--kZKnM7q6n2UT3BVLY89vrCDFfgHLO-MB-vZmrJx7z52bMzKEAbzYaH-vNxjUFK6_rBYeHzpHoS7eHA86TPnwBXvDjsOKlyBOaresIQmkKzmyClA9_mTXTJ1uFGBLAA9uXqm0jrSHCor7uywMRX9ISq4XD2rYOH35DNey8GKN-IJ44Iocs1tcKpO2VMw8XGiGIFeF3HhBCD1Q",
+    "features": [
+      "Terapi motorik",
+      "Latihan keseimbangan",
+      "Pelatihan kemandirian",
+      "Dukungan keluarga"
+    ]
+  },
+  {
+    "id": "geriatric-wellness",
+    "name": "Geriatric Wellness",
+    "icon": "elderly",
+    "price": 80000,
+    "currency": "IDR",
+    "duration": "60 menit",
+    "shortDescription": "Program khusus lansia untuk mobilitas dan keseimbangan.",
+    "description": "Perkhidmatan fisioterapi khusus untuk pesakit lanjut usia dengan fokus pada peningkatan mobilitas, pencegahan jatuh, dan pemeliharaan kemandirian jangka panjang.",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuA3l4YOXXFEYaAXbALbnXT_aahQzVdUGr-ci13qgEy55kp8QpIiSaG-02QjzpbVE6lO_ISCupuRctsiRcIhpai_5CJi-VXmRctqY-3pqx9wR1bStsdzTaq6p6fj9m_iuLAQNYrg3RxhbEsBfs8ZIJugW2c7cNIQdo-o7G-PekkLBVDGD3h_WVDdjgLdddG4I7FK6wnJ_hOMQyye6QQiUHD7_w1yqZ7Awo0Hz-IP36gjeG9h_Pz0T1eqxA",
+    "features": [
+      "Pencegahan jatuh",
+      "Latihan keseimbangan",
+      "Terapi mobilitas",
+      "Program pemeliharaan"
+    ]
+  },
+  {
+    "id": "pediatric-therapy",
+    "name": "Pediatric Therapy",
+    "icon": "child_care",
+    "price": 95000,
+    "currency": "IDR",
+    "duration": "45 menit",
+    "shortDescription": "Perawatan khusus untuk anak dengan keterlambatan perkembangan.",
+    "description": "Layanan fisioterapi khusus untuk anak-anak dengan keterlambatan perkembangan, masalah muskuloskeletal, atau kebutuhan pasca operasi. Pendekatan yang ramah anak dan menyenangkan.",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCy35A02ZsABQqVndWkpEnN_VR_A21JwaKj9OJzGMjf5TkkJwi0flFCjriIfkTCZMegpGTEJmsw91w51LzIKwJncdzKT3O-H208kCuL8WUA1aP0U8XqQ2jMspL1cvyHSY2lMeFBNQuOIbZ-hqACHytArIz9EYvj4TLUx0u4oQ7te0Hmu01KOKljSJqeFvU46sOyP_nE2cAqeTFOhLLI16Ij9Zc7w-03Ds8LJqvUYSxewHLt1jv_xv076Q",
+    "features": [
+      "Terapi perkembangan",
+      "Rehabilitasi pasca operasi",
+      "Pendekatan ramah anak",
+      "Libatkan orang tua"
+    ]
+  },
+  {
+    "id": "musculoskeletal",
+    "name": "Musculoskeletal Therapy",
+    "icon": "personal_injury",
+    "price": 110000,
+    "currency": "IDR",
+    "duration": "60 menit",
+    "shortDescription": "Penanganan ahli untuk nyeri punggung, leher, dan sendi.",
+    "description": "Penanganan ahli untuk nyeri punggung, kekakuan leher, dan masalah sendi menggunakan terapi manual dan program latihan yang ditargetkan.",
+    "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCjJKMKMvQOM0vyAyHVkqw0AsZ3g1WiJBin13vAHCauM-eXxZQ-LzR6OtMGA9H2VnH3TCQ9vH99WHS6qZXVRPXI06D3l88xXHwxb5T25vwV7ngU8aALk3VPNdy0mvEgUi_VQqQW3GJxPTV8ZmOtox018lN7f4kDVaJ3BUIgyhZkCa4tOGFeUQtKrQwcQRvcPUrwX0qvi54eIcjNLI3ce4BGw2Gv0KoSqx2StFULWLmIGVLkDW_RpXANSQ",
+    "features": [
+      "Terapi manual",
+      "Program latihan",
+      "Penanganan nyeri",
+      "Koreksi postur"
+    ]
+  }
+]

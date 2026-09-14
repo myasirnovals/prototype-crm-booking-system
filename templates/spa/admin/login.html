@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — Serenity &amp; Soul</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Manrope:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: #eef4f0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ambient background blobs */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob-1 { width: 500px; height: 500px; background: #a8c5a0; top: -120px; left: -120px; }
+  .blob-2 { width: 400px; height: 400px; background: #fed65b; bottom: -100px; right: -80px; }
+
+  /* Login card */
+  .login-wrap {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    padding: 16px;
+  }
+  .login-card {
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(22,29,29,0.12);
+    padding: 40px 36px 36px;
+  }
+
+  /* Brand */
+  .brand {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .brand-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #50613f;
+    letter-spacing: -0.02em;
+  }
+  .brand-sub {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #75786e;
+    margin-top: 4px;
+  }
+  .brand-divider {
+    width: 32px;
+    height: 2px;
+    background: linear-gradient(90deg, #50613f, #fed65b);
+    border-radius: 2px;
+    margin: 10px auto 0;
+  }
+
+  /* Form */
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #161d1d;
+    margin-bottom: 6px;
+  }
+  .sub {
+    font-size: 0.82rem;
+    color: #75786e;
+    margin-bottom: 28px;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 18px;
+  }
+  .field label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #45483f;
+  }
+  .input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .input-wrap > .material-symbols-outlined {
+    position: absolute;
+    left: 12px;
+    font-size: 18px;
+    color: #75786e;
+    pointer-events: none;
+  }
+  .input-wrap input {
+    width: 100%;
+    padding: 11px 14px 11px 40px;
+    border: 1.5px solid rgba(197,200,188,0.6);
+    border-radius: 12px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.9rem;
+    color: #161d1d;
+    background: rgba(255,255,255,0.7);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input-wrap input:focus {
+    border-color: #50613f;
+    box-shadow: 0 0 0 3px rgba(80,97,63,0.12);
+  }
+  .toggle-pw {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #75786e;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    transition: color 0.15s;
+  }
+  .toggle-pw:hover { color: #50613f; }
+
+  /* Error */
+  .error-msg {
+    display: none;
+    background: #ffdad6;
+    color: #93000a;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    align-items: center;
+    gap: 8px;
+  }
+  .error-msg.show { display: flex; }
+
+  /* Submit */
+  .btn-login {
+    width: 100%;
+    padding: 13px;
+    background: #50613f;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+  }
+  .btn-login:hover { filter: brightness(1.1); box-shadow: 0 6px 20px rgba(80,97,63,0.3); }
+  .btn-login:active { transform: scale(0.98); }
+
+  /* Demo credentials */
+  .demo-hint {
+    margin-top: 20px;
+    padding: 12px 16px;
+    background: rgba(254,214,91,0.18);
+    border: 1px solid rgba(254,214,91,0.45);
+    border-radius: 12px;
+    font-size: 0.78rem;
+    color: #5a4800;
+  }
+  .demo-hint strong { color: #745c00; }
+
+  /* Success flash */
+  .loading { display: none; }
+  .btn-login.loading-state .label { display: none; }
+  .btn-login.loading-state .loading { display: inline; }
+</style>
+</head>
+<body>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <!-- Brand -->
+    <div class="brand">
+      <div class="brand-logo">Serenity &amp; Soul</div>
+      <div class="brand-sub">Admin Panel</div>
+      <div class="brand-divider"></div>
+    </div>
+
+    <h2>Welcome back</h2>
+    <p class="sub">Sign in to access the admin dashboard.</p>
+
+    <!-- Error -->
+    <div class="error-msg" id="error-msg">
+      <span class="material-symbols-outlined" style="font-size:18px;">error</span>
+      <span id="error-text">Incorrect email or password.</span>
+    </div>
+
+    <!-- Form -->
+    <form id="login-form" onsubmit="handleLogin(event)">
+      <div class="field">
+        <label>Email</label>
+        <div class="input-wrap">
+          <span class="material-symbols-outlined">mail</span>
+          <input type="email" id="inp-email" placeholder="admin@serenity.com" autocomplete="email">
+        </div>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <div class="input-wrap">
+          <span class="material-symbols-outlined">lock</span>
+          <input type="password" id="inp-password" placeholder="••••••••" autocomplete="current-password">
+          <button type="button" class="toggle-pw" onclick="togglePw()" id="pw-toggle">
+            <span class="material-symbols-outlined" style="font-size:18px;" id="pw-eye">visibility</span>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-login" id="btn-login">
+        <span class="label">Sign In</span>
+        <span class="loading">Signing in…</span>
+      </button>
+    </form>
+
+    <!-- Demo hint -->
+    <div class="demo-hint" style="line-height:1.5;">
+      <strong>Note:</strong> You can click <strong>Sign In</strong> directly to log in without entering anything.<br><br>
+      <strong>Demo credentials:</strong><br>
+      Email: <strong>admin@serenity.com</strong><br>
+      Password: <strong>admin123</strong>
+    </div>
+  </div>
+</div>
+
+<script>
+  const DEFAULT_TENANTS = {
+    serenity: {
+      id: 'serenity',
+      name: 'Serenity & Soul',
+      logo: 'Serenity',
+      colors: {
+        primary: '#50613f',
+        secondary: '#fed65b',
+        background: '#f4fbfa',
+        surfaceContainer: '#e8efef'
+      },
+      adminEmail: 'admin@serenity.com',
+      adminPassword: 'admin123'
+    },
+    zenith: {
+      id: 'zenith',
+      name: 'Zenith Wellness',
+      logo: 'Zenith',
+      colors: {
+        primary: '#1e40af',
+        secondary: '#f59e0b',
+        background: '#f8fafc',
+        surfaceContainer: '#f1f5f9'
+      },
+      adminEmail: 'admin@zenith.com',
+      adminPassword: 'admin123'
+    }
+  };
+
+  const tenants = JSON.parse(localStorage.getItem('spa_tenants')) || DEFAULT_TENANTS;
+
+  // Apply visual styling on load
+  function initBranding() {
+    document.title = `SPA Admin Portal`;
+    
+    // Update brand logos
+    const brandLogo = document.querySelector('.brand-logo');
+    if (brandLogo) brandLogo.textContent = 'SPA Admin Portal';
+    
+    // Update demo credentials text
+    const demoHint = document.querySelector('.demo-hint');
+    if (demoHint) {
+      demoHint.innerHTML = `
+        <strong>Demo Admin Credentials:</strong><br><br>
+        <strong>Serenity & Soul:</strong><br>
+        Email: <strong>admin@serenity.com</strong><br>
+        Password: <strong>admin123</strong><br><br>
+        <strong>Zenith Wellness:</strong><br>
+        Email: <strong>admin@zenith.com</strong><br>
+        Password: <strong>admin123</strong>
+      `;
+    }
+  }
+  
+  initBranding();
+
+  // If already logged in, redirect to active dashboard
+  if (sessionStorage.getItem('admin_logged_in') === 'true') {
+    const activeTenantId = sessionStorage.getItem('admin_tenant') || 'serenity';
+    window.location.replace(`dashboard.html?tenant=${activeTenantId}`);
+  }
+
+  function togglePw() {
+    const inp = document.getElementById('inp-password');
+    const eye = document.getElementById('pw-eye');
+    if (inp.type === 'password') {
+      inp.type = 'text';
+      eye.textContent = 'visibility_off';
+    } else {
+      inp.type = 'password';
+      eye.textContent = 'visibility';
+    }
+  }
+
+  function handleLogin(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btn-login');
+    const errorMsg = document.getElementById('error-msg');
+    const errorText = document.getElementById('error-text');
+
+    const emailInput = document.getElementById('inp-email').value.trim();
+    const passwordInput = document.getElementById('inp-password').value;
+
+    let targetTenant = null;
+    let success = false;
+
+    // Find matching tenant credentials across ALL tenants
+    targetTenant = Object.values(tenants).find(t => t.adminEmail.toLowerCase() === emailInput.toLowerCase() && t.adminPassword === passwordInput);
+    
+    if (targetTenant) {
+      success = true;
+    }
+
+    if (success && targetTenant) {
+      errorMsg.classList.remove('show');
+      btn.classList.add('loading-state');
+      
+      sessionStorage.setItem('admin_tenant', targetTenant.id);
+      sessionStorage.setItem('admin_logged_in', 'true');
+      sessionStorage.setItem('admin_email', targetTenant.adminEmail);
+      
+      setTimeout(() => {
+        window.location.replace(`dashboard.html?tenant=${targetTenant.id}`);
+      }, 400);
+    } else {
+      errorText.textContent = "Incorrect email or password. Please try again.";
+      errorMsg.classList.add('show');
+    }
+  }
+</script>
+</body>
+</html>

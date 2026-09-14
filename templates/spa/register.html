@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — Serenity &amp; Soul</title>
+<meta name="description" content="Create your Serenity &amp; Soul account to enjoy exclusive spa treatments, track your bookings, and manage your wellness journey.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: #eef4f0;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Ambient blobs */
+  .blob { position: fixed; border-radius: 50%; filter: blur(90px); opacity: 0.3; pointer-events: none; z-index: 0; }
+  .blob-1 { width: 560px; height: 560px; background: #a8c5a0; top: -160px; left: -160px; }
+  .blob-2 { width: 420px; height: 420px; background: #fed65b; bottom: -120px; right: -100px; }
+  .blob-3 { width: 300px; height: 300px; background: #c5e0bb; top: 50%; right: 8%; }
+
+  /* Top nav */
+  .top-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(238,244,240,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(197,200,188,0.3);
+    padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand-logo { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: #50613f; text-decoration: none; }
+  .back-link {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 0.8rem; font-weight: 600; color: #50613f;
+    text-decoration: none; transition: opacity 0.2s;
+  }
+  .back-link:hover { opacity: 0.7; }
+
+  /* Main layout */
+  .page-wrap {
+    position: relative; z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 32px 16px 60px;
+  }
+
+  /* Header */
+  .page-header { text-align: center; margin-bottom: 32px; }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 700; color: #161d1d;
+    margin-bottom: 8px;
+  }
+  .page-header p { font-size: 0.9rem; color: #75786e; }
+
+  /* Card */
+  .card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 24px;
+    box-shadow: 0 16px 48px rgba(22,29,29,0.1);
+    padding: 36px 32px;
+  }
+  @media (max-width: 480px) { .card { padding: 24px 20px; } }
+
+  /* Section titles */
+  .section-title {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: #50613f; margin-bottom: 18px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::before, .section-title::after {
+    content: ''; flex: 1; height: 1px;
+    background: rgba(197,200,188,0.5);
+  }
+
+  /* Grid */
+  .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 20px; }
+  @media (max-width: 540px) { .fields-grid { grid-template-columns: 1fr; } }
+  .col-span-2 { grid-column: 1 / -1; }
+
+  /* Field */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #45483f;
+  }
+  .field label .req { color: #b45309; }
+  .input-wrap { position: relative; display: flex; align-items: center; }
+  .input-wrap .ico {
+    position: absolute; left: 12px; font-size: 17px;
+    color: #75786e; pointer-events: none;
+  }
+  .field input, .field select {
+    width: 100%;
+    padding: 11px 14px 11px 40px;
+    border: 1.5px solid rgba(197,200,188,0.6);
+    border-radius: 12px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.88rem; color: #161d1d;
+    background: rgba(255,255,255,0.7);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+  }
+  .field input:focus, .field select:focus {
+    border-color: #50613f;
+    box-shadow: 0 0 0 3px rgba(80,97,63,0.12);
+  }
+  .field input.no-ico, .field select.no-ico { padding-left: 14px; }
+
+  /* Gender radio group */
+  .gender-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 4px; }
+  .gender-option {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 0.82rem; font-weight: 600; color: #161d1d;
+    cursor: pointer; padding: 9px 16px;
+    border: 1.5px solid rgba(197,200,188,0.6);
+    border-radius: 10px; transition: all 0.15s;
+    user-select: none; flex: 1; min-width: 90px; justify-content: center;
+  }
+  .gender-option input { display: none; }
+  .gender-option:has(input:checked) {
+    background: rgba(80,97,63,0.08);
+    border-color: #50613f; color: #50613f; font-weight: 700;
+  }
+
+  /* Toggle password */
+  .pw-toggle {
+    position: absolute; right: 12px;
+    background: none; border: none; cursor: pointer;
+    color: #75786e; display: flex; align-items: center;
+    transition: color 0.15s;
+  }
+  .pw-toggle:hover { color: #50613f; }
+
+  /* Error / success */
+  .form-error {
+    display: none;
+    background: #ffdad6; color: #93000a;
+    font-size: 0.8rem; font-weight: 600;
+    padding: 12px 16px; border-radius: 12px;
+    margin-bottom: 20px; align-items: center; gap: 8px;
+  }
+  .form-error.show { display: flex; }
+
+  /* Submit */
+  .btn-submit {
+    width: 100%; padding: 14px;
+    background: #50613f; color: #fff;
+    border: none; border-radius: 12px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.9rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+    margin-top: 8px;
+  }
+  .btn-submit:hover { filter: brightness(1.1); box-shadow: 0 6px 20px rgba(80,97,63,0.3); }
+  .btn-submit:active { transform: scale(0.98); }
+
+  /* Login link */
+  .login-redirect {
+    text-align: center; margin-top: 20px;
+    font-size: 0.82rem; color: #45483f;
+  }
+  .login-redirect a { color: #50613f; font-weight: 700; text-decoration: none; }
+  .login-redirect a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<!-- Top Nav -->
+<nav class="top-nav">
+  <a href="/" class="brand-logo">Serenity &amp; Soul</a>
+  <div style="display: flex; align-items: center; gap: 14px;">
+    <!-- Language Toggle Button -->
+    <button onclick="toggleRegLanguage(event)" style="background: none; border: 1.5px solid rgba(197,200,188,0.6); border-radius: 20px; padding: 6px 12px; font-family: inherit; font-size: 0.72rem; font-weight: 700; color: #50613f; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s;" title="Toggle Language">
+      <span class="material-symbols-outlined" style="font-size:14px;">language</span>
+      <span id="lang-toggle-text">EN</span>
+    </button>
+    <a href="/" class="back-link" id="back-home-link">
+      <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span>
+      <span data-translate="back_home">Back to Home</span>
+    </a>
+  </div>
+</nav>
+
+<!-- Main -->
+<div class="page-wrap">
+  <div class="page-header">
+    <h1 data-translate="title">Create your account</h1>
+    <p data-translate="subtitle">Join Serenity &amp; Soul and start your wellness journey today.</p>
+  </div>
+
+  <div class="card">
+    <!-- Error display -->
+    <div class="form-error" id="form-error">
+      <span class="material-symbols-outlined" style="font-size:18px;">error</span>
+      <span id="error-text">An error occurred.</span>
+    </div>
+
+    <form id="register-form" onsubmit="handleRegister(event)" novalidate>
+
+      <!-- Section: Personal Info -->
+      <div class="section-title" data-translate="section_personal">Personal Information</div>
+      <div class="fields-grid" style="margin-bottom:24px;">
+        <div class="field col-span-2">
+          <label><span data-translate="lbl_name">Full Name</span> <span class="req">*</span></label>
+          <div class="input-wrap">
+            <span class="material-symbols-outlined ico">person</span>
+            <input type="text" id="reg-name" placeholder="e.g. Sarah Dewi" required autocomplete="name">
+          </div>
+        </div>
+
+        <div class="field">
+          <label><span data-translate="lbl_email">Email Address</span> <span class="req">*</span></label>
+          <div class="input-wrap">
+            <span class="material-symbols-outlined ico">mail</span>
+            <input type="email" id="reg-email" placeholder="sarah@email.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <div class="field">
+          <label><span data-translate="lbl_phone">Phone Number</span> <span class="req">*</span></label>
+          <div class="input-wrap">
+            <span class="material-symbols-outlined ico">call</span>
+            <input type="tel" id="reg-phone" placeholder="+60 12 345 6789" required autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="field">
+          <label data-translate="lbl_dob">Date of Birth</label>
+          <div class="input-wrap">
+            <span class="material-symbols-outlined ico">cake</span>
+            <input type="date" id="reg-dob" autocomplete="bday">
+          </div>
+        </div>
+
+        <div class="field">
+          <label data-translate="lbl_gender">Gender</label>
+          <div class="gender-group">
+            <label class="gender-option">
+              <input type="radio" name="reg-gender" value="female" checked>
+              <span class="material-symbols-outlined" style="font-size:15px;">female</span> <span data-translate="gender_female">Female</span>
+            </label>
+            <label class="gender-option">
+              <input type="radio" name="reg-gender" value="male">
+              <span class="material-symbols-outlined" style="font-size:15px;">male</span> <span data-translate="gender_male">Male</span>
+            </label>
+            <label class="gender-option" style="flex:none;padding:9px 12px;">
+              <input type="radio" name="reg-gender" value="other">
+              <span data-translate="gender_other">Other</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Security -->
+      <div class="section-title" data-translate="section_security">Account Security</div>
+      <div class="fields-grid" style="margin-bottom:32px;">
+        <div class="field">
+          <label><span data-translate="lbl_password">Password</span> <span class="req">*</span></label>
+          <div class="input-wrap">
+            <span class="material-symbols-outlined ico">lock</span>
+            <input type="password" id="reg-password" placeholder="Min. 8 characters" required autocomplete="new-password">
+            <button type="button" class="pw-toggle" onclick="togglePw('reg-password','pw-eye1')" id="pw-eye1-wrap">
+              <span class="material-symbols-outlined" style="font-size:18px;" id="pw-eye1">visibility</span>
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <label><span data-translate="lbl_confirm">Confirm Password</span> <span class="req">*</span></label>
+          <div class="input-wrap">
+            <span class="material-symbols-outlined ico">lock_reset</span>
+            <input type="password" id="reg-confirm" placeholder="Repeat password" required autocomplete="new-password">
+            <button type="button" class="pw-toggle" onclick="togglePw('reg-confirm','pw-eye2')">
+              <span class="material-symbols-outlined" style="font-size:18px;" id="pw-eye2">visibility</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="btn-submit" data-translate="btn_submit">
+        Create Account
+      </button>
+    </form>
+
+    <p class="login-redirect"><span data-translate="login_redirect">Already have an account?</span> <a href="/" data-translate="link_login">Sign in</a></p>
+  </div>
+</div>
+
+<script>
+  const REG_TRANSLATIONS = {
+    en: {
+      back_home: "Back to Home",
+      title: "Create your account",
+      subtitle: "Join Serenity & Soul and start your wellness journey today.",
+      section_personal: "Personal Information",
+      lbl_name: "Full Name",
+      placeholder_name: "e.g. Sarah Dewi",
+      lbl_email: "Email Address",
+      placeholder_email: "sarah@email.com",
+      lbl_phone: "Phone Number",
+      placeholder_phone: "+60 12 345 6789",
+      lbl_dob: "Date of Birth",
+      lbl_gender: "Gender",
+      gender_female: "Female",
+      gender_male: "Male",
+      gender_other: "Other",
+      section_security: "Account Security",
+      lbl_password: "Password",
+      placeholder_password: "Min. 8 characters",
+      lbl_confirm: "Confirm Password",
+      placeholder_confirm: "Repeat password",
+      btn_submit: "Create Account",
+      login_redirect: "Already have an account?",
+      link_login: "Sign in",
+      err_name: "Please enter your full name.",
+      err_email: "Please enter a valid email address.",
+      err_phone: "Please enter your phone number.",
+      err_password: "Password must be at least 8 characters.",
+      err_match: "Passwords do not match. Please try again.",
+      err_exists: "An account with this email already exists. Please sign in.",
+      redirecting: "Account created! Redirecting…"
+    },
+    ms: {
+      back_home: "Kembali ke Laman Utama",
+      title: "Cipta akaun anda",
+      subtitle: "Sertai Serenity & Soul dan mulakan perjalanan kesejahteraan anda hari ini.",
+      section_personal: "Maklumat Peribadi",
+      lbl_name: "Nama Penuh",
+      placeholder_name: "cth. Sarah Dewi",
+      lbl_email: "Alamat E-mel",
+      placeholder_email: "sarah@email.com",
+      lbl_phone: "Nombor Telefon",
+      placeholder_phone: "+60 12 345 6789",
+      lbl_dob: "Tarikh Lahir",
+      lbl_gender: "Jantina",
+      gender_female: "Perempuan",
+      gender_male: "Lelaki",
+      gender_other: "Lain-lain",
+      section_security: "Keselamatan Akaun",
+      lbl_password: "Kata Laluan",
+      placeholder_password: "Min. 8 aksara",
+      lbl_confirm: "Sahkan Kata Laluan",
+      placeholder_confirm: "Ulang kata laluan",
+      btn_submit: "Cipta Akaun",
+      login_redirect: "Sudah mempunyai akaun?",
+      link_login: "Log masuk",
+      err_name: "Sila masukkan nama penuh anda.",
+      err_email: "Sila masukkan alamat e-mel yang sah.",
+      err_phone: "Sila masukkan nombor telefon anda.",
+      err_password: "Kata laluan mestilah sekurang-kurangnya 8 aksara.",
+      err_match: "Kata laluan tidak sepadan. Sila cuba lagi.",
+      err_exists: "Akaun dengan e-mel ini sudah wujud. Sila log masuk.",
+      redirecting: "Akaun dicipta! Menghalakan semula…"
+    }
+  };
+
+  const DEFAULT_TENANTS = {
+    serenity: {
+      id: 'serenity',
+      name: 'Serenity & Soul',
+      logo: 'Serenity',
+      colors: {
+        primary: '#50613f',
+        secondary: '#fed65b',
+        background: '#f4fbfa',
+        surfaceContainer: '#e8efef'
+      }
+    },
+    zenith: {
+      id: 'zenith',
+      name: 'Zenith Wellness',
+      logo: 'Zenith',
+      colors: {
+        primary: '#1e40af',
+        secondary: '#f59e0b',
+        background: '#f8fafc',
+        surfaceContainer: '#f1f5f9'
+      }
+    }
+  };
+
+  function getTenantId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('tenant') || 'serenity';
+  }
+
+  const tenants = JSON.parse(localStorage.getItem('spa_tenants')) || DEFAULT_TENANTS;
+  const tenantId = getTenantId();
+  const currentTenant = tenants[tenantId] || tenants['serenity'];
+
+  // Apply visual styling and replace branding references
+  function initBranding() {
+    document.title = `Register — ${currentTenant.name}`;
+    
+    // Update headers and text references to "Serenity & Soul"
+    const heading = document.querySelector('.page-header h1');
+    if (heading) heading.textContent = heading.textContent.replace(/Serenity\s*&\s*Soul/i, currentTenant.name);
+    
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', metaDesc.getAttribute('content').replace(/Serenity\s*&\s*Soul/gi, currentTenant.name));
+
+    const brandLink = document.querySelector('.brand-logo');
+    if (brandLink) {
+      brandLink.textContent = currentTenant.name;
+      brandLink.setAttribute('href', `index.html?tenant=${tenantId}`);
+    }
+
+    const backLink = document.querySelector('.back-link');
+    if (backLink) {
+      backLink.setAttribute('href', `index.html?tenant=${tenantId}`);
+    }
+
+    const loginRedirect = document.querySelector('.login-redirect a');
+    if (loginRedirect) {
+      loginRedirect.setAttribute('href', `index.html?tenant=${tenantId}&showLogin=true`);
+    }
+
+  }
+
+  initBranding();
+
+  let currentLang = localStorage.getItem('spa_language') || 'en';
+
+  function applyLanguage() {
+    const t = REG_TRANSLATIONS[currentLang];
+    
+    // Set Lang Picker label
+    document.getElementById('lang-toggle-text').textContent = currentLang === 'ms' ? 'BM' : 'EN';
+    
+    // Translate data-translate elements
+    document.querySelectorAll('[data-translate]').forEach(el => {
+      const key = el.getAttribute('data-translate');
+      if (t[key]) {
+        // Dynamically replace brand names in translated strings
+        let text = t[key];
+        text = text.replace(/Serenity\s*&\s*Soul/gi, currentTenant.name).replace(/Serenity/gi, currentTenant.logo || currentTenant.name);
+        el.textContent = text;
+      }
+    });
+
+    // Translate Placeholders
+    document.getElementById('reg-name').placeholder = t.placeholder_name;
+    document.getElementById('reg-email').placeholder = t.placeholder_email;
+    document.getElementById('reg-phone').placeholder = t.placeholder_phone;
+    document.getElementById('reg-password').placeholder = t.placeholder_password;
+    document.getElementById('reg-confirm').placeholder = t.placeholder_confirm;
+  }
+
+  window.toggleRegLanguage = function(event) {
+    if (event) event.preventDefault();
+    currentLang = currentLang === 'en' ? 'ms' : 'en';
+    localStorage.setItem('spa_language', currentLang);
+    applyLanguage();
+  }
+
+  // Initialize Language
+  applyLanguage();
+
+  window.togglePw = function(inputId, eyeId) {
+    const input = document.getElementById(inputId);
+    const eye = document.getElementById(eyeId);
+    if (input.type === 'password') {
+      input.type = 'text';
+      eye.textContent = 'visibility_off';
+    } else {
+      input.type = 'password';
+      eye.textContent = 'visibility';
+    }
+  }
+
+  function showError(msg) {
+    document.getElementById('error-text').textContent = msg;
+    document.getElementById('form-error').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  window.handleRegister = function(e) {
+    e.preventDefault();
+    document.getElementById('form-error').classList.remove('show');
+
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim().toLowerCase();
+    const phone = document.getElementById('reg-phone').value.trim();
+    const dob = document.getElementById('reg-dob').value;
+    const gender = document.querySelector('input[name="reg-gender"]:checked')?.value || 'other';
+    const password = document.getElementById('reg-password').value;
+    const confirm = document.getElementById('reg-confirm').value;
+
+    const t = REG_TRANSLATIONS[currentLang];
+
+    if (!name) return showError(t.err_name);
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError(t.err_email);
+    if (!phone) return showError(t.err_phone);
+    if (!password || password.length < 8) return showError(t.err_password);
+    if (password !== confirm) return showError(t.err_match);
+
+    // Check for existing email under active tenant
+    const usersKey = `${tenantId}_registered_users`;
+    const users = JSON.parse(localStorage.getItem(usersKey) || '[]');
+    if (users.find(u => u.email === email)) {
+      return showError(t.err_exists);
+    }
+
+    // Save user
+    const newUser = { name, email, phone, dob, gender, password, createdAt: new Date().toISOString() };
+    users.push(newUser);
+    localStorage.setItem(usersKey, JSON.stringify(users));
+
+    // Auto-login under active tenant
+    localStorage.setItem(`${tenantId}_user_logged_in`, 'true');
+    localStorage.setItem(`${tenantId}_user_name`, name);
+    localStorage.setItem(`${tenantId}_user_email`, email);
+
+    // Redirect to home with tenant parameter
+    const btn = document.getElementById('btn-submit');
+    btn.textContent = t.redirecting;
+    btn.disabled = true;
+    btn.style.opacity = '0.8';
+    setTimeout(() => {
+      window.location.replace(`index.html?tenant=${tenantId}`);
+    }, 800);
+  }
+</script>
+</body>
+</html>

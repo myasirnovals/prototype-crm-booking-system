@@ -29,6 +29,13 @@ export class BranchLandingController {
 
     this.loadBranchData(targetParam, templateParam);
 
+    // If wellness / spa template, seamlessly transition to the luxury SPA storefront experience!
+    if (this.selectedBranch && (this.selectedBranch.template === "wellness" || this.selectedBranch.template === "spa")) {
+      const spaUrl = `../../templates/spa/index.html?branch=${encodeURIComponent(this.selectedBranch.id)}`;
+      window.location.replace(spaUrl);
+      return;
+    }
+
     // 2. Set DOM Body Theme Attribute for Instant CSS Theming
     if (this.templateConfig && this.templateConfig.id) {
       document.body.setAttribute("data-template", this.templateConfig.id);

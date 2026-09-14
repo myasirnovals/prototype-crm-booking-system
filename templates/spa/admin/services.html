@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>if(sessionStorage.getItem('admin_logged_in')!=='true'){window.location.replace('login.html');}</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — Serenity & Soul Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
+<link rel="stylesheet" href="admin.css">
+<style>
+  .service-grid { display:grid; grid-template-columns:1fr; gap:1.25rem; }
+  @media (min-width:640px) { .service-grid { grid-template-columns:repeat(2,1fr); } }
+  @media (min-width:1024px) { .service-grid { grid-template-columns:repeat(3,1fr); } }
+  .service-card { border-radius:16px; overflow:hidden; background:rgba(255,255,255,0.65); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.5); box-shadow:0 4px 24px rgba(44,51,51,0.07); }
+  .service-img { height:180px; overflow:hidden; position:relative; }
+  .service-img > div { width:100%; height:100%; background-size:cover; background-position:center; transition:transform 0.6s ease; }
+  .service-card:hover .service-img > div { transform:scale(1.06); }
+  .service-img-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.1); }
+  .service-badge { position:absolute; top:10px; right:10px; background:rgba(255,255,255,0.92); backdrop-filter:blur(8px); padding:4px 10px; border-radius:999px; font-size:0.72rem; font-weight:700; color:#50613f; }
+  .service-body { padding:1.25rem; }
+  .service-body h3 { font-family:'Manrope',sans-serif; font-size:1rem; font-weight:700; color:#50613f; margin:0; }
+  .service-price { font-size:1rem; font-weight:700; color:#735c00; }
+  .service-desc { font-size:0.78rem; color:#45483f; margin:6px 0 14px; line-height:1.6; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .service-footer { display:flex; justify-content:space-between; align-items:center; }
+  .service-tag { font-size:0.65rem; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; color:#75786e; background:#e8efef; padding:4px 10px; border-radius:999px; }
+  .builder-grid { display:grid; grid-template-columns:1fr; gap:1.25rem; }
+  @media (min-width:1024px) { .builder-grid { grid-template-columns:2fr 1fr; } }
+  .builder-card { background:rgba(255,255,255,0.65); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.5); box-shadow:0 4px 24px rgba(44,51,51,0.07); border-radius:16px; padding:2rem; }
+  .form-label { font-size:0.68rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#45483f; display:block; margin-bottom:6px; }
+  .form-input { background:none; border:none; border-bottom:1.5px solid rgba(197,200,188,0.6); padding:8px 0; font-family:'Manrope',sans-serif; font-size:0.9rem; color:#161d1d; outline:none; transition:border-color 0.2s; width:100%; }
+  .form-input::placeholder { color:#75786e; }
+  .form-input:focus { border-color:#50613f; }
+  .form-textarea { background:rgba(244,251,250,0.5); border:1.5px solid rgba(197,200,188,0.4); border-radius:10px; padding:12px; font-family:'Manrope',sans-serif; font-size:0.85rem; color:#161d1d; outline:none; transition:border-color 0.2s; width:100%; resize:none; }
+  .form-textarea:focus { border-color:#50613f; }
+  .service-check-label { display:flex; align-items:center; padding:12px 14px; border:1.5px solid rgba(197,200,188,0.4); border-radius:12px; cursor:pointer; transition:all 0.2s; gap:10px; }
+  .service-check-label:hover { background:rgba(80,97,63,0.05); }
+  .service-check-label.checked { background:rgba(80,97,63,0.08); border-color:rgba(80,97,63,0.4); }
+  .service-check-label input { accent-color:#50613f; width:15px; height:15px; flex-shrink:0; }
+  .preview-card { background:rgba(255,255,255,0.65); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.5); box-shadow:0 4px 24px rgba(44,51,51,0.07); border-radius:16px; padding:2rem; display:flex; flex-direction:column; position:relative; overflow:hidden; }
+  .preview-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:#735c00; }
+</style>
+</head>
+<body>
+<div class="ambient-bg"><div class="blob-1"></div><div class="blob-2"></div></div>
+
+<div class="admin-layout">
+  <header class="admin-header">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <div class="admin-brand">
+        <div class="brand-logo">Serenity &amp; Soul</div>
+        <div class="brand-sub">Admin Panel</div>
+      </div>
+      <div class="brand-divider"></div>
+      <nav class="admin-nav" id="desktop-nav" style="display:none;">
+        <a href="dashboard.html"><span class="material-symbols-outlined" style="font-size:18px">dashboard</span>Dashboard</a>
+        <a href="customers.html"><span class="material-symbols-outlined" style="font-size:18px">person_search</span>Customers CRM</a>
+        <a href="calendar.html"><span class="material-symbols-outlined" style="font-size:18px">calendar_today</span>Calendar</a>
+        <a href="reservations.html"><span class="material-symbols-outlined" style="font-size:18px">event_note</span>Reservations</a>
+        <a href="staff.html"><span class="material-symbols-outlined" style="font-size:18px">group</span>Staff</a>
+        <a href="services.html" class="active"><span class="material-symbols-outlined" style="font-size:18px;font-variation-settings:'FILL' 1">spa</span>Services</a>
+      </nav>
+    </div>
+    <div class="admin-header-right">
+      <div class="header-dropdown-wrap">
+        <button class="icon-btn" onclick="toggleDropdown('notif-panel','settings-panel')">
+          <span class="material-symbols-outlined" style="font-size:20px">notifications</span>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="header-dropdown notif-dropdown" id="notif-panel">
+          <div class="notif-dropdown-header"><span>Notifications</span><button onclick="markAllRead()">Mark all read</button></div>
+          <div class="notif-item unread"><div class="notif-icon" style="background:rgba(254,214,91,0.2);color:#745c00;"><span class="material-symbols-outlined" style="font-size:16px">event_note</span></div><div class="notif-body"><p>New booking: Sarah — Deep Tissue Massage</p><span>2 mins ago</span></div></div>
+          <div class="notif-item unread"><div class="notif-icon" style="background:rgba(80,97,63,0.12);color:#50613f;"><span class="material-symbols-outlined" style="font-size:16px">check_circle</span></div><div class="notif-body"><p>Reservation #R-012 confirmed by Siti</p><span>18 mins ago</span></div></div>
+          <div class="notif-item"><div class="notif-icon" style="background:#ffdad6;color:#ba1a1a;"><span class="material-symbols-outlined" style="font-size:16px">cancel</span></div><div class="notif-body"><p>Booking cancelled — Room 3 now free</p><span>1 hour ago</span></div></div>
+          <div class="notif-item"><div class="notif-icon" style="background:#e8e2d6;color:#4a473e;"><span class="material-symbols-outlined" style="font-size:16px">person_add</span></div><div class="notif-body"><p>New staff member added: Rina Dewi</p><span>Yesterday</span></div></div>
+        </div>
+      </div>
+      <div class="header-dropdown-wrap">
+        <img class="admin-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwISI3RWXAuyJRBcJgZ_5Xjp5trkz6EV2ldKtYyPTX_jNd8r51R3cse_7anKNIe87Nr80-EgwgMCMTJPWFUHkOoV_UDJ-X143KFsZsMA52xgXb3ShJyyvYeyNX224Qn_PKS3BnsaLLu_Dfhvjs4griQ7knYdkhJtflEsZkgo0wP7cBpn0o9h2mpLHif6abc9vBYQQtXeyVhUX34kVG6IqjkTAEYZFGvcQ326pKu7xuY1kFqSTna6npHA" alt="Admin" onclick="toggleDropdown('settings-panel','notif-panel')">
+        <div class="header-dropdown settings-dropdown" id="settings-panel">
+          <div class="settings-user-info"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwISI3RWXAuyJRBcJgZ_5Xjp5trkz6EV2ldKtYyPTX_jNd8r51R3cse_7anKNIe87Nr80-EgwgMCMTJPWFUHkOoV_UDJ-X143KFsZsMA52xgXb3ShJyyvYeyNX224Qn_PKS3BnsaLLu_Dfhvjs4griQ7knYdkhJtflEsZkgo0wP7cBpn0o9h2mpLHif6abc9vBYQQtXeyVhUX34kVG6IqjkTAEYZFGvcQ326pKu7xuY1kFqSTna6npHA" alt="Admin"><div><div class="settings-name">Admin</div><div class="settings-role">Super Admin</div></div></div>
+          <div class="settings-menu-item danger" onclick="adminSignOut()"><span class="material-symbols-outlined">logout</span>Sign Out</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="mobile-nav" style="background:rgba(244,251,250,0.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(197,200,188,0.35);padding:8px 16px;overflow-x:auto;display:flex;gap:4px;">
+    <a href="dashboard.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">dashboard</span>Dashboard</a>
+    <a href="customers.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">person_search</span>Customers CRM</a>
+    <a href="calendar.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">calendar_today</span>Calendar</a>
+    <a href="reservations.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">event_note</span>Reservations</a>
+    <a href="staff.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">group</span>Staff</a>
+    <a href="services.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:700;text-decoration:none;background:#fed65b;color:#745c00;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">spa</span>Services</a>
+  </div>
+
+  <main class="admin-main">
+    <div class="page-header-row">
+      <div class="page-header">
+        <h1>Service Management</h1>
+        <p>Curate and manage your spa's treatment menu and packages.</p>
+      </div>
+      <button class="btn-primary" onclick="openServiceModal()"><span class="material-symbols-outlined" style="font-size:18px">add</span>Add New Service</button>
+    </div>
+
+    <!-- Active Services & Treatments -->
+    <section>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#735c00;margin:0;">Active Services &amp; Treatments</h2>
+        <span style="font-size:0.75rem;color:#75786e;font-weight:600;" id="services-count">0 services</span>
+      </div>
+      <div class="service-grid" id="services-container">
+        <!-- Rendered Dynamically -->
+      </div>
+    </section>
+
+    <!-- Active Bundles & Packages -->
+    <section style="margin-top:2.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#735c00;margin:0;">Bundles &amp; Packages</h2>
+        <span style="font-size:0.75rem;color:#75786e;font-weight:600;" id="bundles-count">0 packages</span>
+      </div>
+      <div class="service-grid" id="bundles-container">
+        <!-- Rendered Dynamically -->
+      </div>
+    </section>
+
+    <!-- Bundle Builder -->
+    <section style="margin-top:2.5rem;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;">
+        <span class="material-symbols-outlined" style="color:#735c00;font-size:22px;">package_2</span>
+        <h2 style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#50613f;margin:0;">Bundle &amp; Package Builder</h2>
+      </div>
+      <div class="builder-grid">
+        <form class="builder-card" id="bundle-form">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-bottom:1.5rem;">
+            <div><label class="form-label">Package Name</label><input id="bundle-name" required class="form-input" type="text" placeholder="e.g. Radiance Bundle"></div>
+            <div><label class="form-label">Bundle Price (MYR)</label><input id="bundle-price" required class="form-input" type="number" placeholder="0.00"></div>
+            <div><label class="form-label">Total Sessions</label><input id="bundle-sessions" class="form-input" type="number" min="1" value="1"></div>
+            <div><label class="form-label">Image URL (optional)</label><input id="bundle-img" class="form-input" type="text" placeholder="https://..."></div>
+          </div>
+          <div style="margin-bottom:1.5rem;">
+            <label class="form-label" style="margin-bottom:10px;">Select Services</label>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;" id="builder-services-container">
+              <!-- Rendered Dynamically -->
+            </div>
+          </div>
+          <div style="margin-bottom:1.5rem;"><label class="form-label">Description</label><textarea id="bundle-desc" required class="form-textarea" rows="3" placeholder="Describe the experience of this package..."></textarea></div>
+          <div style="display:flex;justify-content:flex-end;"><button type="submit" class="btn-primary">Save Package</button></div>
+        </form>
+
+        <div class="preview-card">
+          <h3 style="font-size:0.85rem;font-weight:700;color:#735c00;letter-spacing:0.07em;text-transform:uppercase;margin:0 0 1.25rem;">Package Preview</h3>
+          <div id="preview-empty" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:1rem 0;">
+            <div style="width:60px;height:60px;border-radius:999px;background:#fed65b;display:flex;align-items:center;justify-content:center;"><span class="material-symbols-outlined" style="font-size:28px;color:#745c00;">auto_awesome</span></div>
+            <p style="font-size:0.78rem;color:#75786e;line-height:1.6;font-style:italic;margin:0;">Select services to preview your bundle here.</p>
+          </div>
+          <div id="preview-content" style="flex:1;display:none;flex-direction:column;gap:10px;">
+            <div><p style="font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;margin:0 0 4px;">Package Name</p><p id="preview-name" style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#161d1d;margin:0;">—</p></div>
+            <div id="preview-services" style="display:flex;flex-direction:column;gap:5px;"></div>
+            <div style="background:#eef5f4;border:1.5px dashed rgba(197,200,188,0.6);border-radius:10px;padding:10px 14px;"><span style="font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Est. Duration: <span id="preview-duration">—</span> min</span></div>
+          </div>
+          <div style="margin-top:auto;padding-top:1.25rem;border-top:1px solid rgba(197,200,188,0.35);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span style="font-size:0.82rem;color:#45483f;">Combined Value:</span><span id="preview-original" style="font-size:0.82rem;color:#c5c8bc;text-decoration:line-through;">MYR 0.00</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:0.85rem;font-weight:700;color:#50613f;">Bundle Price:</span><span id="preview-price" style="font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:700;color:#735c00;">MYR 0.00</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Service Modal -->
+<div class="modal-overlay" id="service-modal">
+  <div class="modal-content">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(197,200,188,0.3);padding-bottom:12px;">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:#50613f;margin:0;" id="modal-title">Add New Service</h3>
+      <button class="icon-btn" onclick="closeModal()"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <form id="service-form" style="display:flex;flex-direction:column;gap:1.15rem;">
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Service Name</label>
+        <input type="text" id="srv-name" required placeholder="e.g. Aromatherapy Massage" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Category</label>
+          <input type="text" id="srv-category" required placeholder="e.g. Massage, Skincare" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Price (MYR)</label>
+          <input type="number" id="srv-price" required placeholder="0.00" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Duration (mins)</label>
+          <input type="number" id="srv-duration" required placeholder="60" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Image URL (optional)</label>
+          <input type="text" id="srv-img" placeholder="https://..." style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;">
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Description</label>
+        <textarea id="srv-desc" required class="form-textarea" rows="3" placeholder="Describe the therapeutic benefits..."></textarea>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+        <input type="checkbox" id="srv-show-on-home" style="width:16px;height:16px;accent-color:#50613f;cursor:pointer;">
+        <label for="srv-show-on-home" style="font-size:0.75rem;font-weight:700;color:#45483f;cursor:pointer;text-transform:uppercase;letter-spacing:0.04em;">Show on Home Page</label>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;border-top:1px solid rgba(197,200,188,0.3);padding-top:14px;">
+        <button type="button" class="btn-outline" style="border-color:#d32f2f;color:#d32f2f;padding:8px 14px;display:none;" id="btn-delete-srv">Delete</button>
+        <div style="display:flex;gap:8px;margin-left:auto;">
+          <button type="button" class="btn-outline" style="padding:8px 16px;" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn-primary" style="padding:8px 18px;">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Bundle Modal -->
+<div class="modal-overlay" id="bundle-modal">
+  <div class="modal-content" style="max-width: 580px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(197,200,188,0.3);padding-bottom:12px;">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:#50613f;margin:0;" id="bundle-modal-title">Edit Package</h3>
+      <button type="button" class="icon-btn" onclick="closeBundleModal()"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <form id="bundle-modal-form" style="display:flex;flex-direction:column;gap:1.15rem;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Package Name</label>
+          <input type="text" id="bm-name" required placeholder="e.g. Radiance Bundle" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Bundle Price (MYR)</label>
+          <input type="number" id="bm-price" required placeholder="0.00" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;">
+        </div>
+      </div>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Total Sessions</label>
+          <input type="number" id="bm-sessions" required min="1" value="1" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Image URL (optional)</label>
+          <input type="text" id="bm-img" placeholder="https://..." style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;">
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Select Services</label>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-height:180px;overflow-y:auto;padding:6px;background:rgba(244,251,250,0.5);border:1px solid rgba(197,200,188,0.3);border-radius:12px;" id="bm-services-container">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Description</label>
+        <textarea id="bm-desc" required class="form-textarea" rows="3" placeholder="Describe the experience of this package..."></textarea>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+        <input type="checkbox" id="bm-show-on-home" style="width:16px;height:16px;accent-color:#50613f;cursor:pointer;">
+        <label for="bm-show-on-home" style="font-size:0.75rem;font-weight:700;color:#45483f;cursor:pointer;text-transform:uppercase;letter-spacing:0.04em;">Show on Home Page</label>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;border-top:1px solid rgba(197,200,188,0.3);padding-top:14px;">
+        <button type="button" class="btn-outline" style="border-color:#d32f2f;color:#d32f2f;padding:8px 14px;display:none;" id="btn-delete-bm">Delete</button>
+        <div style="display:flex;gap:8px;margin-left:auto;">
+          <button type="button" class="btn-outline" style="padding:8px 16px;" onclick="closeBundleModal()">Cancel</button>
+          <button type="submit" class="btn-primary" style="padding:8px 18px;">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+@media (min-width:768px) { #desktop-nav { display:flex !important; } #mobile-nav { display:none !important; } }
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(22, 29, 29, 0.4);
+  backdrop-filter: blur(8px); z-index: 100; display: none;
+  align-items: center; justify-content: center; padding: 1.5rem;
+}
+.modal-content {
+  background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 24px;
+  width: 100%; max-width: 500px; padding: 2rem; box-shadow: 0 16px 48px rgba(22, 29, 29, 0.15);
+  display: flex; flex-direction: column; gap: 1.5rem;
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+</style>
+<script src="admin-state.js" type="module"></script>
+<script type="module">
+  let searchQuery = '';
+  let editingServiceId = null;
+  let editingBundleId = null;
+
+  function renderServices() {
+    const list = AdminState.getServices();
+    const servicesContainer = document.getElementById('services-container');
+    const bundlesContainer = document.getElementById('bundles-container');
+    
+    servicesContainer.innerHTML = '';
+    bundlesContainer.innerHTML = '';
+
+    const query = searchQuery.toLowerCase();
+    const filtered = list.filter(s => s.name.toLowerCase().includes(query) || s.category.toLowerCase().includes(query));
+
+    const onlyServices = filtered.filter(s => s.category !== 'Package' && s.category !== 'Packages');
+    const onlyBundles = filtered.filter(s => s.category === 'Package' || s.category === 'Packages');
+
+    document.getElementById('services-count').textContent = `${onlyServices.length} services`;
+    document.getElementById('bundles-count').textContent = `${onlyBundles.length} packages`;
+
+    const makeCard = (s) => {
+      const defaultImg = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAITwrqOltnfvKuQeZY1uxmm9vb6Qdfic56l_uXZKbNu0tXzlwl1n4ejVoAdFTVx8_yqPZWtW9HW_UIcEhgKeDc95gwyChyS2Ua2e9hpiXuZNxuTDcGlKl4mu9wQyriwgoRgAjU_sYo7WYl5vLm4n97udJ4ZDhKVVehPxZ0e7GpWFZYoFPQ6IBkgV-zFzxT-jxw4_QAFdbLiAYvISsUvvT8v__rfmdQhJwNblCS5EdoXM6Wv2VNkZEE8Q';
+      const srvImg = s.img || defaultImg;
+      
+      const isShared = s.isShared === true;
+      const sharedBadge = isShared ? `<span class="chip" style="font-size:0.6rem;padding:2px 8px;margin-left:6px;background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-weight:700;">Shared: ${s.sharedFromName}</span>` : '';
+
+      const homeIcon = s.showOnHome ? 'home' : 'home';
+      const homeColor = s.showOnHome ? '#50613f' : '#b2b5a9';
+      const homeFill = s.showOnHome ? 'style="font-variation-settings:\'FILL\' 1;"' : '';
+      const homeTitle = s.showOnHome ? 'Featured on Home (Click to hide)' : 'Not on Home (Click to show)';
+      const homeBadge = s.showOnHome ? '<span class="chip chip-confirmed" style="font-size:0.6rem;padding:2px 8px;margin-left:6px;background:#e2ebd5;color:#3c4c2b;border:1px solid #c5d8a9;">Home</span>' : '';
+
+      const starIcon = s.bestValue ? 'star' : 'star';
+      const starColor = s.bestValue ? '#FACC15' : '#b2b5a9';
+      const starFill = s.bestValue ? 'style="font-variation-settings:\'FILL\' 1;"' : '';
+      const starTitle = s.bestValue ? 'Clear Best Value (Star)' : 'Set as Best Value (Star)';
+      const starBadge = s.bestValue ? '<span class="chip" style="font-size:0.6rem;padding:2px 8px;margin-left:6px;background:#fffbeb;color:#b45309;border:1px solid #fde68a;">Best Value</span>' : '';
+      
+      const starButton = (s.showOnHome && !isShared) ? `
+        <button class="tbl-action-btn" onclick="toggleBestValue('${s.id}')" title="${starTitle}">
+          <span class="material-symbols-outlined" style="font-size:18px;color:${starColor};" ${starFill}>${starIcon}</span>
+        </button>
+      ` : '';
+
+      const isBundle = s.category === 'Package' || s.category === 'Packages';
+      const editAction = isBundle ? `openBundleEditor('${s.id}')` : `openServiceModal('${s.id}')`;
+
+      const actionsHtml = isShared ? `
+        <span style="font-size: 0.72rem; color: #888; font-style: italic; font-weight: 700; align-self: center; margin-right: 4px;">Read-Only</span>
+      ` : `
+        ${starButton}
+        <button class="tbl-action-btn" onclick="toggleHomeVisibility('${s.id}')" title="${homeTitle}"><span class="material-symbols-outlined" style="font-size:18px;color:${homeColor};" ${homeFill}>${homeIcon}</span></button>
+        <button class="tbl-action-btn" onclick="${editAction}"><span class="material-symbols-outlined" style="font-size:18px">edit</span></button>
+        <button class="tbl-action-btn danger" onclick="deleteService('${s.id}')"><span class="material-symbols-outlined" style="font-size:18px">delete</span></button>
+      `;
+
+      return `
+        <div class="service-card">
+          <div class="service-img">
+            <div style="background-image:url('${srvImg}');"></div>
+            <div class="service-img-overlay"></div>
+            <span class="service-badge">${s.duration} MIN</span>
+          </div>
+          <div class="service-body">
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:6px;">
+              <h3>${s.name}</h3>
+              <span class="service-price">MYR ${s.price}</span>
+            </div>
+            <p class="service-desc">${s.desc || ''}</p>
+            <div class="service-footer">
+              <span class="service-tag">${s.category}${homeBadge}${starBadge}${sharedBadge}</span>
+              <div style="display:flex;gap:4px;">
+                ${actionsHtml}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    };
+
+    onlyServices.forEach(s => {
+      servicesContainer.innerHTML += makeCard(s);
+    });
+
+    onlyBundles.forEach(s => {
+      bundlesContainer.innerHTML += makeCard(s);
+    });
+
+    renderBuilderOptions();
+  }
+
+  window.toggleHomeVisibility = (id) => {
+    AdminState.toggleShowOnHome(id);
+    renderServices();
+  };
+
+  window.toggleBestValue = (id) => {
+    AdminState.toggleBestValue(id);
+    renderServices();
+  };
+
+  window.openServiceModal = (serviceId = null) => {
+    editingServiceId = serviceId;
+    const deleteBtn = document.getElementById('btn-delete-srv');
+
+    if (serviceId) {
+      document.getElementById('modal-title').textContent = 'Edit Service';
+      const list = AdminState.getServices();
+      const srv = list.find(s => s.id === serviceId);
+      if (!srv) return;
+
+      document.getElementById('srv-name').value = srv.name;
+      document.getElementById('srv-category').value = srv.category;
+      document.getElementById('srv-price').value = srv.price;
+      document.getElementById('srv-duration').value = srv.duration;
+      document.getElementById('srv-img').value = srv.img || '';
+      document.getElementById('srv-desc').value = srv.desc || '';
+      document.getElementById('srv-show-on-home').checked = srv.showOnHome !== false;
+      deleteBtn.style.display = 'block';
+    } else {
+      document.getElementById('modal-title').textContent = 'Add New Service';
+      document.getElementById('srv-name').value = '';
+      document.getElementById('srv-category').value = '';
+      document.getElementById('srv-price').value = '';
+      document.getElementById('srv-duration').value = '';
+      document.getElementById('srv-img').value = '';
+      document.getElementById('srv-desc').value = '';
+      document.getElementById('srv-show-on-home').checked = true;
+      deleteBtn.style.display = 'none';
+    }
+
+    document.getElementById('service-modal').style.display = 'flex';
+  };
+
+  window.closeModal = () => {
+    document.getElementById('service-modal').style.display = 'none';
+  };
+
+  window.deleteService = (id) => {
+    const list = AdminState.getServices();
+    const filtered = list.filter(s => s.id !== id);
+    AdminState.saveServices(filtered);
+    renderServices();
+  };
+
+  function renderBuilderOptions() {
+    const list = AdminState.getServices().filter(s => s.category !== 'Package' && s.category !== 'Packages');
+    const container = document.getElementById('builder-services-container');
+    if (!container) return;
+    container.innerHTML = list.map(s => `
+      <label class="service-check-label" id="lbl-${s.id}">
+        <input type="checkbox" class="service-checkbox" data-price="${s.price}" data-duration="${s.duration}" data-name="${s.name}" data-id="${s.id}" onchange="toggleCheckboxClass(this)">
+        <div>
+          <div style="font-weight:700;font-size:0.85rem;color:#50613f;">${s.name}</div>
+          <div style="font-size:0.72rem;color:#45483f;">MYR ${s.price} · ${s.duration}min</div>
+        </div>
+      </label>
+    `).join('');
+
+    updatePreview();
+  }
+
+  window.toggleCheckboxClass = (el) => {
+    el.closest('label').classList.toggle('checked', el.checked);
+    updatePreview();
+  };
+
+  function updatePreview() {
+    const checkboxes = document.querySelectorAll('.service-checkbox');
+    const bundleName = document.getElementById('bundle-name');
+    const bundlePrice = document.getElementById('bundle-price');
+    if (!bundleName || !bundlePrice) return;
+    
+    const checked = [...checkboxes].filter(c => c.checked);
+    const totalValue = checked.reduce((s,c) => s + parseInt(c.dataset.price), 0);
+    const totalDuration = checked.reduce((s,c) => s + parseInt(c.dataset.duration), 0);
+    const price = parseFloat(bundlePrice.value) || 0;
+    const name = bundleName.value.trim() || '—';
+    
+    document.getElementById('preview-name').textContent = name;
+    document.getElementById('preview-duration').textContent = totalDuration || '—';
+    document.getElementById('preview-original').textContent = `MYR ${totalValue.toFixed(2)}`;
+    document.getElementById('preview-price').textContent = `MYR ${price.toFixed(2)}`;
+    
+    document.getElementById('preview-services').innerHTML = checked.map(c => `
+      <div style="display:flex;justify-content:space-between;font-size:0.78rem;padding:5px 0;border-bottom:1px solid rgba(197,200,188,0.3);">
+        <span style="font-weight:600;color:#161d1d">${c.dataset.name}</span>
+        <span style="color:#45483f">${c.dataset.duration}min</span>
+      </div>
+    `).join('');
+    
+    const show = checked.length > 0 || name !== '—' || price > 0;
+    document.getElementById('preview-empty').style.display = show ? 'none' : 'flex';
+    document.getElementById('preview-content').style.display = show ? 'flex' : 'none';
+  }
+
+  window.openBundleModal = (bundleId = null) => {
+    editingBundleId = bundleId;
+    const deleteBtn = document.getElementById('btn-delete-bm');
+
+    if (bundleId) {
+      document.getElementById('bundle-modal-title').textContent = 'Edit Package';
+      const list = AdminState.getServices();
+      const bundle = list.find(s => s.id === bundleId);
+      if (!bundle) return;
+
+      document.getElementById('bm-name').value = bundle.name;
+      document.getElementById('bm-price').value = bundle.price;
+      document.getElementById('bm-sessions').value = bundle.sessions || 1;
+      document.getElementById('bm-img').value = bundle.img || '';
+      document.getElementById('bm-desc').value = bundle.desc || '';
+      document.getElementById('bm-show-on-home').checked = bundle.showOnHome !== false;
+      deleteBtn.style.display = 'block';
+      
+      renderBundleModalServices(bundle.services || []);
+    } else {
+      document.getElementById('bundle-modal-title').textContent = 'Add New Package';
+      document.getElementById('bm-name').value = '';
+      document.getElementById('bm-price').value = '';
+      document.getElementById('bm-sessions').value = '1';
+      document.getElementById('bm-img').value = '';
+      document.getElementById('bm-desc').value = '';
+      document.getElementById('bm-show-on-home').checked = true;
+      deleteBtn.style.display = 'none';
+
+      renderBundleModalServices([]);
+    }
+
+    document.getElementById('bundle-modal').style.display = 'flex';
+  };
+
+  window.closeBundleModal = () => {
+    document.getElementById('bundle-modal').style.display = 'none';
+  };
+
+  window.openBundleEditor = (bundleId) => {
+    window.openBundleModal(bundleId);
+  };
+
+  function renderBundleModalServices(includedServiceIds) {
+    const list = AdminState.getServices().filter(s => s.category !== 'Package' && s.category !== 'Packages');
+    const container = document.getElementById('bm-services-container');
+    container.innerHTML = list.map(s => {
+      const isChecked = includedServiceIds.includes(s.id);
+      return `
+        <label class="service-check-label ${isChecked ? 'checked' : ''}" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(197,200,188,0.4);border-radius:10px;cursor:pointer;transition:all 0.2s;" onchange="this.classList.toggle('checked', this.querySelector('input').checked)">
+          <input type="checkbox" class="bm-service-checkbox" data-price="${s.price}" data-duration="${s.duration}" data-id="${s.id}" ${isChecked ? 'checked' : ''} style="accent-color:#50613f;">
+          <div>
+            <div style="font-weight:700;font-size:0.78rem;color:#50613f;line-height:1.2;">${s.name}</div>
+            <div style="font-size:0.65rem;color:#45483f;margin-top:2px;">MYR ${s.price}</div>
+          </div>
+        </label>
+      `;
+    }).join('');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderServices();
+
+    // Page Bundle Builder listeners
+    const bundleNameInput = document.getElementById('bundle-name');
+    const bundlePriceInput = document.getElementById('bundle-price');
+    if (bundleNameInput) bundleNameInput.addEventListener('input', updatePreview);
+    if (bundlePriceInput) bundlePriceInput.addEventListener('input', updatePreview);
+
+    const bundleForm = document.getElementById('bundle-form');
+    if (bundleForm) {
+      bundleForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('bundle-name').value;
+        const price = parseFloat(document.getElementById('bundle-price').value) || 0;
+        const desc = document.getElementById('bundle-desc').value;
+        
+        const checkboxes = document.querySelectorAll('.service-checkbox');
+        const checked = [...checkboxes].filter(c => c.checked);
+        const totalDuration = checked.reduce((s,c) => s + parseInt(c.dataset.duration), 0);
+        const totalRegularPrice = checked.reduce((s,c) => s + parseFloat(c.dataset.price), 0);
+
+        const list = AdminState.getServices();
+        const currentFeatured = list.filter(s => s.showOnHome).length;
+        let showOnHome = true;
+        if (currentFeatured >= 5) {
+          showOnHome = false;
+          alert("Package created successfully. It will not be shown on the home page because you already have the maximum of 5 featured services/packages.");
+        }
+
+        const id = 'srv-' + (list.length + 1);
+        const bundleImgVal = document.getElementById('bundle-img').value;
+
+        list.push({
+          id,
+          name,
+          price,
+          regularPrice: totalRegularPrice || undefined,
+          duration: totalDuration,
+          category: 'Package',
+          services: checked.map(c => c.dataset.id),
+          sessions: parseInt(document.getElementById('bundle-sessions').value) || 1,
+          desc,
+          img: bundleImgVal || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAQmElNu7sUqoPsrT6pXQGkaROVE-lxrwld4VBffrGVoW8TMbhCN_shByBn0DF-OjMHRM5PwThF2H-T9pqKIP-HE2TASSDsbik-NdKAbSgUDJxRAi-jbCZ6uL35AZkrLsyOZoHWSenKk4QMoj6HCk8cE5tpG371S_RQ3wHbCV6lnDUWUzTaV71ovsiu2P-ERMHSgRCoulDsk8wRtlfYYx2CF6uThj9qURCP2IA9I-d3O3AV-_yBHm5KhQ',
+          showOnHome
+        });
+
+        AdminState.saveServices(list);
+        
+        // Reset form
+        bundleForm.reset();
+        checkboxes.forEach(cb => {
+          cb.checked = false;
+          cb.closest('label').classList.remove('checked');
+        });
+        updatePreview();
+        renderServices();
+      });
+    }
+
+    // Save bundle package (modal form)
+    document.getElementById('bundle-modal-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('bm-name').value;
+      const price = parseFloat(document.getElementById('bm-price').value) || 0;
+      const desc = document.getElementById('bm-desc').value;
+      const sessions = parseInt(document.getElementById('bm-sessions').value) || 1;
+      const showOnHome = document.getElementById('bm-show-on-home').checked;
+
+      const checkboxes = document.querySelectorAll('.bm-service-checkbox');
+      const checked = [...checkboxes].filter(c => c.checked);
+      const totalDuration = checked.reduce((s,c) => s + parseInt(c.dataset.duration), 0);
+      const totalRegularPrice = checked.reduce((s,c) => s + parseFloat(c.dataset.price), 0);
+
+      const list = AdminState.getServices();
+
+      if (showOnHome) {
+        const currentFeatured = list.filter(s => s.showOnHome && s.id !== editingBundleId).length;
+        if (currentFeatured >= 5) {
+          alert("Maximum of 5 featured services/packages can be displayed on the homepage.");
+          return;
+        }
+      }
+
+      const img = document.getElementById('bm-img').value;
+
+      if (editingBundleId) {
+        const index = list.findIndex(s => s.id === editingBundleId);
+        if (index !== -1) {
+          list[index] = {
+            ...list[index],
+            name,
+            price,
+            regularPrice: totalRegularPrice || undefined,
+            duration: totalDuration,
+            services: checked.map(c => c.dataset.id),
+            sessions,
+            desc,
+            img: img || undefined,
+            showOnHome
+          };
+        }
+        editingBundleId = null;
+      } else {
+        const id = 'srv-' + (list.length + 1);
+        list.push({
+          id,
+          name,
+          price,
+          regularPrice: totalRegularPrice || undefined,
+          duration: totalDuration,
+          category: 'Package',
+          services: checked.map(c => c.dataset.id),
+          sessions,
+          desc,
+          img: img || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAQmElNu7sUqoPsrT6pXQGkaROVE-lxrwld4VBffrGVoW8TMbhCN_shByBn0DF-OjMHRM5PwThF2H-T9pqKIP-HE2TASSDsbik-NdKAbSgUDJxRAi-jbCZ6uL35AZkrLsyOZoHWSenKk4QMoj6HCk8cE5tpG371S_RQ3wHbCV6lnDUWUzTaV71ovsiu2P-ERMHSgRCoulDsk8wRtlfYYx2CF6uThj9qURCP2IA9I-d3O3AV-_yBHm5KhQ',
+          showOnHome
+        });
+      }
+
+      AdminState.saveServices(list);
+      window.closeBundleModal();
+      renderServices();
+    });
+
+    // Delete bundle package inside modal
+    document.getElementById('btn-delete-bm').addEventListener('click', () => {
+      if (editingBundleId) {
+        if (confirm('Are you sure you want to delete this package?')) {
+          window.deleteService(editingBundleId);
+          window.closeBundleModal();
+        }
+      }
+    });
+
+    // Top Search input
+    const topSearch = document.querySelector('.header-search input');
+    if (topSearch) {
+      topSearch.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        renderServices();
+      });
+    }
+
+    // Service modal submit
+    document.getElementById('service-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('srv-name').value;
+      const category = document.getElementById('srv-category').value;
+      const price = parseFloat(document.getElementById('srv-price').value) || 0;
+      const duration = parseInt(document.getElementById('srv-duration').value) || 60;
+      const img = document.getElementById('srv-img').value;
+      const desc = document.getElementById('srv-desc').value;
+      const showOnHome = document.getElementById('srv-show-on-home').checked;
+
+      const list = AdminState.getServices();
+
+      if (showOnHome) {
+        const currentFeatured = list.filter(s => s.showOnHome && s.id !== editingServiceId).length;
+        if (currentFeatured >= 5) {
+          alert("Maximum of 5 featured services/packages can be displayed on the homepage.");
+          return;
+        }
+      }
+
+      if (editingServiceId) {
+        const index = list.findIndex(s => s.id === editingServiceId);
+        if (index !== -1) {
+          list[index] = {
+            ...list[index],
+            name,
+            category,
+            price,
+            duration,
+            img: img || undefined,
+            desc,
+            showOnHome
+          };
+        }
+      } else {
+        const id = 'srv-' + (list.length + 1);
+        list.push({
+          id,
+          name,
+          category,
+          price,
+          duration,
+          img: img || undefined,
+          desc,
+          showOnHome
+        });
+      }
+
+      AdminState.saveServices(list);
+      closeModal();
+      renderServices();
+    });
+
+    // Modal delete button
+    document.getElementById('btn-delete-srv').addEventListener('click', () => {
+      if (editingServiceId) {
+        window.deleteService(editingServiceId);
+        closeModal();
+      }
+    });
+
+    // Dropdown toggle
+    window.toggleDropdown = (openId, closeId) => {
+      const openEl = document.getElementById(openId);
+      const closeEl = closeId ? document.getElementById(closeId) : null;
+      if (closeEl) closeEl.classList.remove('open');
+      openEl.classList.toggle('open');
+    };
+    window.markAllRead = () => {
+      document.querySelectorAll('.notif-item.unread').forEach(el => el.classList.remove('unread'));
+      document.querySelector('.notif-dot')?.remove();
+    };
+    window.adminSignOut = () => {
+      sessionStorage.removeItem('admin_logged_in');
+      sessionStorage.removeItem('admin_email');
+      window.location.replace('login.html');
+    };
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.header-dropdown-wrap')) {
+        document.querySelectorAll('.header-dropdown').forEach(d => d.classList.remove('open'));
+      }
+    });
+  });
+</script>
+</body>
+</html>

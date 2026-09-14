@@ -1155,7 +1155,11 @@ export class OwnerDashboardController {
       soundService.playClickTone();
       const branchId = this.activeBranch ? this.activeBranch.id : "sg-orchard";
       const origin = window.location.origin + window.location.pathname.replace('/pages/owner/dashboard.html', '');
-      const shareUrl = `${origin}/pages/public/branch.html?branch=${encodeURIComponent(branchId)}`;
+      let targetPage = '/pages/public/branch.html';
+      if (this.activeBranch && (this.activeBranch.template === 'wellness' || this.activeBranch.template === 'spa')) {
+        targetPage = '/templates/spa/index.html';
+      }
+      const shareUrl = `${origin}${targetPage}?branch=${encodeURIComponent(branchId)}`;
 
       navigator.clipboard.writeText(shareUrl).then(() => {
         const msg = i18nService.t("owner.linkCopiedToast", "✅ Patient booking link copied to clipboard!");

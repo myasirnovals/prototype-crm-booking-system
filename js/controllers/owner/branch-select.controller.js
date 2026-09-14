@@ -304,7 +304,12 @@ export class BranchSelectController {
         const origin = window.location.origin;
         const pathname = window.location.pathname;
         const basePath = pathname.substring(0, pathname.lastIndexOf("/pages/"));
-        const url = `${origin}${basePath}/pages/public/branch.html?branch=${encodeURIComponent(branchId)}`;
+        const branch = this.branches?.find(b => b.id === branchId);
+        let targetPage = "/pages/public/branch.html";
+        if (branch && (branch.template === "wellness" || branch.template === "spa")) {
+          targetPage = "/templates/spa/index.html";
+        }
+        const url = `${origin}${basePath}${targetPage}?branch=${encodeURIComponent(branchId)}`;
 
         try {
           await navigator.clipboard.writeText(url);

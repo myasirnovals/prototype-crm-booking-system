@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>if(sessionStorage.getItem('admin_logged_in')!=='true'){window.location.replace('login.html');}</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reservations — Serenity & Soul Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="ambient-bg"><div class="blob-1"></div><div class="blob-2"></div></div>
+
+<div class="admin-layout">
+  <header class="admin-header">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <div class="admin-brand">
+        <div class="brand-logo">Serenity &amp; Soul</div>
+        <div class="brand-sub">Admin Panel</div>
+      </div>
+      <div class="brand-divider"></div>
+      <nav class="admin-nav" id="desktop-nav" style="display:none;">
+        <a href="dashboard.html"><span class="material-symbols-outlined" style="font-size:18px">dashboard</span>Dashboard</a>
+        <a href="customers.html"><span class="material-symbols-outlined" style="font-size:18px">person_search</span>Customers CRM</a>
+        <a href="calendar.html"><span class="material-symbols-outlined" style="font-size:18px">calendar_today</span>Calendar</a>
+        <a href="reservations.html" class="active"><span class="material-symbols-outlined" style="font-size:18px;font-variation-settings:'FILL' 1">event_note</span>Reservations</a>
+        <a href="staff.html"><span class="material-symbols-outlined" style="font-size:18px">group</span>Staff</a>
+        <a href="services.html"><span class="material-symbols-outlined" style="font-size:18px">spa</span>Services</a>
+      </nav>
+    </div>
+    <div class="admin-header-right">
+      <div class="header-dropdown-wrap">
+        <button class="icon-btn" onclick="toggleDropdown('notif-panel','settings-panel')">
+          <span class="material-symbols-outlined" style="font-size:20px">notifications</span>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="header-dropdown notif-dropdown" id="notif-panel">
+          <div class="notif-dropdown-header"><span>Notifications</span><button onclick="markAllRead()">Mark all read</button></div>
+          <div class="notif-item unread"><div class="notif-icon" style="background:rgba(254,214,91,0.2);color:#745c00;"><span class="material-symbols-outlined" style="font-size:16px">event_note</span></div><div class="notif-body"><p>New booking: Sarah — Deep Tissue Massage</p><span>2 mins ago</span></div></div>
+          <div class="notif-item unread"><div class="notif-icon" style="background:rgba(80,97,63,0.12);color:#50613f;"><span class="material-symbols-outlined" style="font-size:16px">check_circle</span></div><div class="notif-body"><p>Reservation #R-012 confirmed by Siti</p><span>18 mins ago</span></div></div>
+          <div class="notif-item"><div class="notif-icon" style="background:#ffdad6;color:#ba1a1a;"><span class="material-symbols-outlined" style="font-size:16px">cancel</span></div><div class="notif-body"><p>Booking cancelled — Room 3 now free</p><span>1 hour ago</span></div></div>
+          <div class="notif-item"><div class="notif-icon" style="background:#e8e2d6;color:#4a473e;"><span class="material-symbols-outlined" style="font-size:16px">person_add</span></div><div class="notif-body"><p>New staff member added: Rina Dewi</p><span>Yesterday</span></div></div>
+        </div>
+      </div>
+      <div class="header-dropdown-wrap">
+        <img class="admin-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkwq8rNhinuuMIOMl3fLpBafk2fYuBvr9XUXbDf15cCwBlYPWSLgLQf8fh36k4n7LnNH7hmAnKNaASMqLTdWE5gTqS9JvHVR01EPRSzixp_39XxxkEJPsMtQROUvVPAX28OahtGqJ-chaTprCy1y2inwAqa3mEmLyQsvPpvQ_24ZuFiew0hEOXwzL-1mlLbxIAN4ij87kFnuLPaYlULFWLpgFac6x7PmoBZd1LpBUrvq6so1f0Pw3CLw" alt="Admin" onclick="toggleDropdown('settings-panel','notif-panel')">
+        <div class="header-dropdown settings-dropdown" id="settings-panel">
+          <div class="settings-user-info"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkwq8rNhinuuMIOMl3fLpBafk2fYuBvr9XUXbDf15cCwBlYPWSLgLQf8fh36k4n7LnNH7hmAnKNaASMqLTdWE5gTqS9JvHVR01EPRSzixp_39XxxkEJPsMtQROUvVPAX28OahtGqJ-chaTprCy1y2inwAqa3mEmLyQsvPpvQ_24ZuFiew0hEOXwzL-1mlLbxIAN4ij87kFnuLPaYlULFWLpgFac6x7PmoBZd1LpBUrvq6so1f0Pw3CLw" alt="Admin"><div><div class="settings-name">Admin</div><div class="settings-role">Super Admin</div></div></div>
+          <div class="settings-menu-item danger" onclick="adminSignOut()"><span class="material-symbols-outlined">logout</span>Sign Out</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="mobile-nav" style="background:rgba(244,251,250,0.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(197,200,188,0.35);padding:8px 16px;overflow-x:auto;display:flex;gap:4px;">
+    <a href="dashboard.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">dashboard</span>Dashboard</a>
+    <a href="customers.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">person_search</span>Customers CRM</a>
+    <a href="calendar.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">calendar_today</span>Calendar</a>
+    <a href="reservations.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:700;text-decoration:none;background:#fed65b;color:#745c00;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">event_note</span>Reservations</a>
+    <a href="staff.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">group</span>Staff</a>
+    <a href="services.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">spa</span>Services</a>
+  </div>
+
+  <main class="admin-main">
+    <div class="page-header-row">
+      <div class="page-header">
+        <h1>Reservation List</h1>
+        <p>Manage and monitor all spa appointments.</p>
+      </div>
+      <button class="btn-primary"><span class="material-symbols-outlined" style="font-size:18px">add</span>New Reservation</button>
+    </div>
+
+    <!-- Summary Cards -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;">
+      <div class="glass-card" style="padding:1.5rem;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#45483f;margin:0 0 8px;">Pending</p>
+          <p style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:#161d1d;margin:0;" id="pending-kpi">0</p>
+        </div>
+        <div style="width:52px;height:52px;border-radius:999px;background:#fed65b;display:flex;align-items:center;justify-content:center;">
+          <span class="material-symbols-outlined" style="font-size:24px;color:#745c00;font-variation-settings:'FILL' 1">hourglass_empty</span>
+        </div>
+      </div>
+      <div class="glass-card" style="padding:1.5rem;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#45483f;margin:0 0 8px;">Confirmed</p>
+          <p style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:#161d1d;margin:0;" id="confirmed-kpi">0</p>
+        </div>
+        <div style="width:52px;height:52px;border-radius:999px;background:rgba(105,122,86,0.25);display:flex;align-items:center;justify-content:center;">
+          <span class="material-symbols-outlined" style="font-size:24px;color:#3c4c2b;font-variation-settings:'FILL' 1">check_circle</span>
+        </div>
+      </div>
+      <div class="glass-card" style="padding:1.5rem;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#45483f;margin:0 0 8px;">Completed</p>
+          <p style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:700;color:#161d1d;margin:0;" id="completed-kpi">0</p>
+        </div>
+        <div style="width:52px;height:52px;border-radius:999px;background:#e8e2d6;display:flex;align-items:center;justify-content:center;">
+          <span class="material-symbols-outlined" style="font-size:24px;color:#4a473e;font-variation-settings:'FILL' 1">done_all</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Row -->
+    <div class="filter-row" id="status-filters">
+      <button class="btn-outline active" data-filter="All">All</button>
+      <button class="btn-outline" data-filter="Confirmed">Confirmed</button>
+      <button class="btn-outline" data-filter="Pending">Pending</button>
+      <button class="btn-outline" data-filter="Completed">Completed</button>
+      <button class="btn-outline" data-filter="Cancelled">Cancelled</button>
+    </div>
+
+    <!-- Table -->
+    <div class="glass-card" style="overflow:hidden;">
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th><th>Customer</th><th>Service</th><th>Therapist</th><th>Date &amp; Time</th><th>Duration</th><th>Status</th><th style="text-align:right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Rendered Dynamically -->
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <span id="showing-counter">Showing 0 reservations</span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Create Reservation Modal -->
+<div class="modal-overlay" id="create-modal">
+  <div class="modal-content">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(197,200,188,0.3);padding-bottom:12px;">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:#50613f;margin:0;">New Reservation</h3>
+      <button class="icon-btn" onclick="closeModal('create-modal')"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <form id="create-form" style="display:flex;flex-direction:column;gap:1rem;">
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Customer Name</label>
+        <input type="text" id="c-customer" required placeholder="e.g. John Doe" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Service</label>
+          <select id="c-service" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;"></select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Duration</label>
+          <select id="c-duration" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;">
+            <option value="30">30 Mins</option>
+            <option value="45">45 Mins</option>
+            <option value="60" selected>60 Mins</option>
+            <option value="90">90 Mins</option>
+            <option value="120">120 Mins</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Time Slot</label>
+          <select id="c-time" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;">
+            <option value="09:00">09:00</option>
+            <option value="10:00">10:00</option>
+            <option value="11:00">11:00</option>
+            <option value="12:00">12:00</option>
+            <option value="13:00">13:00</option>
+            <option value="14:00">14:00</option>
+            <option value="15:00">15:00</option>
+            <option value="16:00">16:00</option>
+          </select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Therapist</label>
+          <select id="c-therapist" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:8px 0;font-family:'Manrope',sans-serif;font-size:0.9rem;outline:none;"></select>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px;">
+        <button type="button" class="btn-outline" style="padding:8px 16px;" onclick="closeModal('create-modal')">Cancel</button>
+        <button type="submit" class="btn-primary" style="padding:8px 18px;">Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Reservation Modal -->
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal-content">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(197,200,188,0.3);padding-bottom:12px;">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:#50613f;margin:0;">Reservation Details</h3>
+      <button class="icon-btn" onclick="closeModal('edit-modal')"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1.25rem;">
+      <input type="hidden" id="edit-res-id">
+      <div>
+        <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;margin:0 0 2px;">Customer</p>
+        <p id="edit-customer" style="font-size:0.95rem;font-weight:700;color:#161d1d;margin:0;"></p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;margin:0 0 2px;">Service</p>
+          <p id="edit-service" style="font-size:0.88rem;color:#161d1d;margin:0;"></p>
+        </div>
+        <div>
+          <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;margin:0 0 2px;">Therapist</p>
+          <p id="edit-therapist" style="font-size:0.88rem;color:#161d1d;margin:0;"></p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;margin:0 0 2px;">Time slot</p>
+          <p id="edit-time" style="font-size:0.88rem;color:#161d1d;margin:0;"></p>
+        </div>
+        <div>
+          <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;margin:0 0 2px;">Status</p>
+          <select id="edit-status" style="background:none;border:none;border-bottom:1.5px solid rgba(197,200,188,0.6);padding:4px 0;font-family:'Manrope',sans-serif;font-size:0.88rem;outline:none;width:100%;">
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;border-top:1px solid rgba(197,200,188,0.3);padding-top:14px;">
+        <button class="btn-outline" style="border-color:#d32f2f;color:#d32f2f;padding:8px 14px;" id="btn-cancel-res">Delete</button>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-outline" style="padding:8px 16px;" onclick="closeModal('edit-modal')">Close</button>
+          <button class="btn-primary" style="padding:8px 18px;" id="btn-save-status">Save Status</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+@media (min-width:768px) { #desktop-nav { display:flex !important; } #mobile-nav { display:none !important; } }
+.filter-row .btn-outline { transition: all 0.2s; }
+.filter-row .btn-outline:not(.active):hover { background:#eef5f4; }
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(22, 29, 29, 0.4);
+  backdrop-filter: blur(8px); z-index: 100; display: none;
+  align-items: center; justify-content: center; padding: 1.5rem;
+}
+.modal-content {
+  background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 24px;
+  width: 100%; max-width: 500px; padding: 2rem; box-shadow: 0 16px 48px rgba(22, 29, 29, 0.15);
+  display: flex; flex-direction: column; gap: 1.5rem;
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+</style>
+<script src="admin-state.js" type="module"></script>
+<script type="module">
+  let activeFilter = 'All';
+  let searchQuery = '';
+
+  function renderReservations() {
+    const list = AdminState.getReservations();
+    const staff = AdminState.getStaff();
+
+    // Update summary cards
+    const pendingCount = list.filter(r => r.status === 'Pending').length;
+    const confirmedCount = list.filter(r => r.status === 'Confirmed').length;
+    const completedCount = list.filter(r => r.status === 'Completed').length;
+
+    document.getElementById('pending-kpi').textContent = pendingCount;
+    document.getElementById('confirmed-kpi').textContent = confirmedCount;
+    document.getElementById('completed-kpi').textContent = completedCount;
+
+    // Filter
+    let filtered = list;
+    if (activeFilter !== 'All') {
+      filtered = list.filter(r => r.status === activeFilter);
+    }
+    if (searchQuery.trim() !== '') {
+      const q = searchQuery.toLowerCase();
+      filtered = filtered.filter(r => r.customer.toLowerCase().includes(q) || r.service.toLowerCase().includes(q));
+    }
+
+    // Render table
+    const tbody = document.querySelector('.admin-table tbody');
+    tbody.innerHTML = '';
+
+    document.getElementById('showing-counter').textContent = `Showing ${filtered.length} reservations`;
+
+    filtered.forEach(res => {
+      const therapist = staff.find(s => s.id === res.therapistId);
+      const therapistName = therapist ? therapist.name : 'Unknown';
+
+      const isConfirmed = res.status === 'Confirmed';
+      const isCompleted = res.status === 'Completed';
+      const isPending = res.status === 'Pending';
+      const isCancelled = res.status === 'Cancelled';
+
+      let chipClass = 'chip-confirmed';
+      if (isPending) chipClass = 'chip-pending';
+      else if (isCompleted) chipClass = 'chip-completed';
+      else if (isCancelled) chipClass = 'chip-cancelled';
+
+      const isShared = res.isShared === true;
+      const sharedBadge = isShared ? `<span style="font-size:0.68rem;padding:1px 5px;background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;border-radius:4px;margin-left:6px;font-weight:700;">Shared: ${res.sharedFromName}</span>` : '';
+
+      const clickAttr = isShared ? `alert('This is a read-only shared reservation and cannot be modified.')` : `openEditModal('${res.id}')`;
+
+      const actionsHtml = isShared ? `
+        <span style="font-size: 0.72rem; color: #888; font-style: italic; font-weight: 700; align-self: center; padding-right: 8px;">Read-Only</span>
+      ` : `
+        <button class="tbl-action-btn" onclick="openEditModal('${res.id}')"><span class="material-symbols-outlined" style="font-size:18px">edit</span></button>
+        <button class="tbl-action-btn danger" onclick="deleteReservation('${res.id}')"><span class="material-symbols-outlined" style="font-size:18px">delete</span></button>
+      `;
+
+      const row = `
+        <tr style="cursor:pointer;" onclick="${clickAttr}">
+          <td class="mono">#${res.id}</td>
+          <td><span style="font-weight:700;">${res.customer}</span>${sharedBadge}</td>
+          <td>${res.service}</td>
+          <td style="color:#45483f">${therapistName}</td>
+          <td style="color:#45483f">${res.date} · ${res.timeSlot}</td>
+          <td style="color:#45483f">${res.duration} min</td>
+          <td><span class="chip ${chipClass}">${res.status}</span></td>
+          <td style="text-align:right" onclick="event.stopPropagation();">
+            ${actionsHtml}
+          </td>
+        </tr>
+      `;
+      tbody.innerHTML += row;
+    });
+  }
+
+  // Modals management
+  window.openCreateModal = () => {
+    // Populate Services selection
+    const services = AdminState.getServices();
+    const cService = document.getElementById('c-service');
+    cService.innerHTML = services.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+
+    // Populate Staff selection
+    const staff = AdminState.getStaff();
+    const cTherapist = document.getElementById('c-therapist');
+    cTherapist.innerHTML = staff.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+
+    // Service duration lock logic
+    const setDurationFromService = () => {
+      const selectedServiceName = cService.value;
+      const selectedServiceObj = services.find(s => s.name === selectedServiceName);
+      if (selectedServiceObj) {
+        const cDuration = document.getElementById('c-duration');
+        cDuration.value = selectedServiceObj.duration.toString();
+        cDuration.disabled = true; // Lock duration selection
+      }
+    };
+    cService.onchange = setDurationFromService;
+    setDurationFromService();
+
+    // Therapist schedule check logic
+    cTherapist.onchange = window.updateAvailableTimeSlots;
+    window.updateAvailableTimeSlots();
+
+    document.getElementById('c-customer').value = '';
+    document.getElementById('create-modal').style.display = 'flex';
+  };
+
+  window.updateAvailableTimeSlots = () => {
+    const therapistId = document.getElementById('c-therapist').value;
+    const cTime = document.getElementById('c-time');
+    if (!therapistId) return;
+
+    const staffList = AdminState.getStaff();
+    const therapist = staffList.find(t => t.id === therapistId);
+    if (!therapist) return;
+
+    const standardSlots = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00"];
+
+    // 1. Get working slots from availability
+    let workingSlots = [];
+    if (therapist.availability && therapist.availability.days && therapist.availability.hours) {
+      if (therapist.availability.days.includes('Thursday')) {
+        workingSlots = therapist.availability.hours.map(h => {
+          const [time, ampm] = h.split(' ');
+          let [hh, mm] = time.split(':');
+          let hr = parseInt(hh);
+          if (ampm === 'PM' && hr < 12) hr += 12;
+          if (ampm === 'AM' && hr === 12) hr = 0;
+          return `${String(hr).padStart(2, '0')}:${mm}`;
+        });
+      }
+    } else {
+      workingSlots = [...standardSlots];
+    }
+
+    // 2. Query reservations on 2025-07-03 to filter out busy slots
+    const resList = AdminState.getReservations().filter(r => r.therapistId === therapistId && r.date === '2025-07-03' && r.status !== 'Cancelled');
+
+    // 3. Filter working slots that don't overlap with busy slots
+    const availableSlots = standardSlots.filter(slotTime => {
+      if (!workingSlots.includes(slotTime)) return false;
+
+      const slotMin = parseInt(slotTime.split(':')[0]) * 60 + parseInt(slotTime.split(':')[1]);
+      const overlaps = resList.some(r => {
+        const startMin = parseInt(r.timeSlot.split(':')[0]) * 60 + parseInt(r.timeSlot.split(':')[1]);
+        const endMin = startMin + r.duration;
+        return slotMin >= startMin && slotMin < endMin;
+      });
+
+      return !overlaps;
+    });
+
+    if (availableSlots.length === 0) {
+      cTime.innerHTML = `<option value="">No Slots Available</option>`;
+    } else {
+      cTime.innerHTML = availableSlots.map(s => `<option value="${s}">${s}</option>`).join('');
+    }
+  };
+
+  window.openEditModal = (resId) => {
+    const resList = AdminState.getReservations();
+    const res = resList.find(r => r.id === resId);
+    if (!res) return;
+
+    const staffList = AdminState.getStaff();
+    const therapist = staffList.find(t => t.id === res.therapistId);
+
+    document.getElementById('edit-res-id').value = res.id;
+    document.getElementById('edit-customer').textContent = res.customer;
+    document.getElementById('edit-service').textContent = res.service;
+    document.getElementById('edit-therapist').textContent = therapist ? therapist.name : 'Unknown';
+    document.getElementById('edit-time').textContent = `${res.timeSlot} (${res.duration} mins)`;
+    document.getElementById('edit-status').value = res.status;
+
+    document.getElementById('edit-modal').style.display = 'flex';
+  };
+
+  window.closeModal = (modalId) => {
+    document.getElementById(modalId).style.display = 'none';
+  };
+
+  window.deleteReservation = (id) => {
+    const list = AdminState.getReservations();
+    const filtered = list.filter(r => r.id !== id);
+    AdminState.saveReservations(filtered);
+    renderReservations();
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderReservations();
+
+    // Filters click handler
+    document.getElementById('status-filters').addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON') {
+        document.querySelectorAll('#status-filters button').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        activeFilter = e.target.dataset.filter;
+        renderReservations();
+      }
+    });
+
+    // Top Right new reservation
+    const topNewBtn = document.querySelector('.btn-primary');
+    if (topNewBtn) {
+      topNewBtn.addEventListener('click', () => openCreateModal());
+    }
+
+    // Search input
+    const searchInput = document.querySelector('.header-search input');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        renderReservations();
+      });
+    }
+
+    // Create form submission
+    document.getElementById('create-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const customer = document.getElementById('c-customer').value;
+      const service = document.getElementById('c-service').value;
+      const therapistId = document.getElementById('c-therapist').value;
+      const timeSlot = document.getElementById('c-time').value;
+      const duration = parseInt(document.getElementById('c-duration').value);
+
+      AdminState.addReservation({
+        customer,
+        service,
+        therapistId,
+        timeSlot,
+        duration,
+        date: '2025-07-03',
+        status: 'Confirmed'
+      });
+
+      closeModal('create-modal');
+      renderReservations();
+    });
+
+    // Save status change
+    document.getElementById('btn-save-status').addEventListener('click', () => {
+      const id = document.getElementById('edit-res-id').value;
+      const status = document.getElementById('edit-status').value;
+      AdminState.updateReservationStatus(id, status);
+      closeModal('edit-modal');
+      renderReservations();
+    });
+
+    // Delete Reservation inside Edit modal
+    document.getElementById('btn-cancel-res').addEventListener('click', () => {
+      const id = document.getElementById('edit-res-id').value;
+      window.deleteReservation(id);
+      closeModal('edit-modal');
+    });
+
+    // Dropdown toggle
+    window.toggleDropdown = (openId, closeId) => {
+      const openEl = document.getElementById(openId);
+      const closeEl = closeId ? document.getElementById(closeId) : null;
+      if (closeEl) closeEl.classList.remove('open');
+      openEl.classList.toggle('open');
+    };
+    window.markAllRead = () => {
+      document.querySelectorAll('.notif-item.unread').forEach(el => el.classList.remove('unread'));
+      document.querySelector('.notif-dot')?.remove();
+    };
+    window.adminSignOut = () => {
+      sessionStorage.removeItem('admin_logged_in');
+      sessionStorage.removeItem('admin_email');
+      window.location.replace('login.html');
+    };
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.header-dropdown-wrap')) {
+        document.querySelectorAll('.header-dropdown').forEach(d => d.classList.remove('open'));
+      }
+    });
+  });
+</script>
+</body>
+</html>

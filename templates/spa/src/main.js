@@ -1,0 +1,18 @@
+import './models/Tenant.js';
+import './models/Database.js';
+import './models/Translations.js';
+import './models/State.js';
+import './controllers/AuthController.js';
+import './controllers/Router.js';
+import './views/Renderers.js';
+import './views/SidebarSummary.js';
+import './controllers/BookingController.js';
+import './views/Toast.js';
+import './views/ProfileViews.js';
+import './views/CatalogViews.js';
+import './views/PaymentModal.js';
+import './views/PackageViews.js';
+import './controllers/WABotController.js';
+import './controllers/AppInit.js';
+console.log("MVC initialized");
+window.translateStaticHtml && window.translateStaticHtml();

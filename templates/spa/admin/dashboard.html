@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>if(sessionStorage.getItem('admin_logged_in')!=='true'){window.location.replace('login.html');}</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Serenity & Soul Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="ambient-bg"><div class="blob-1"></div><div class="blob-2"></div></div>
+
+<div class="admin-layout">
+
+  <!-- Header -->
+  <header class="admin-header">
+    <div class="flex items-center gap-4">
+      <div class="admin-brand">
+        <div class="brand-logo">Serenity &amp; Soul</div>
+        <div class="brand-sub">Admin Panel</div>
+      </div>
+      <div class="brand-divider"></div>
+      <nav class="admin-nav" style="display:none;" id="desktop-nav">
+        <a href="dashboard.html" class="active"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;font-size:18px">dashboard</span>Dashboard</a>
+        <a href="customers.html"><span class="material-symbols-outlined" style="font-size:18px">person_search</span>Customers CRM</a>
+        <a href="calendar.html"><span class="material-symbols-outlined" style="font-size:18px">calendar_today</span>Calendar</a>
+        <a href="reservations.html"><span class="material-symbols-outlined" style="font-size:18px">event_note</span>Reservations</a>
+        <a href="staff.html"><span class="material-symbols-outlined" style="font-size:18px">group</span>Staff</a>
+        <a href="services.html"><span class="material-symbols-outlined" style="font-size:18px">spa</span>Services</a>
+      </nav>
+    </div>
+    <div class="admin-header-right">
+      <!-- Notification Dropdown -->
+      <div class="header-dropdown-wrap" id="notif-wrap">
+        <button class="icon-btn" id="notif-btn" onclick="toggleDropdown('notif-panel','settings-panel')">
+          <span class="material-symbols-outlined" style="font-size:20px">notifications</span>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="header-dropdown notif-dropdown" id="notif-panel">
+          <div class="notif-dropdown-header">
+            <span>Notifications</span>
+            <button onclick="markAllRead()">Mark all read</button>
+          </div>
+          <div class="notif-item unread">
+            <div class="notif-icon" style="background:rgba(254,214,91,0.2);color:#745c00;"><span class="material-symbols-outlined" style="font-size:16px">event_note</span></div>
+            <div class="notif-body"><p>New booking: Sarah — Deep Tissue Massage</p><span>2 mins ago</span></div>
+          </div>
+          <div class="notif-item unread">
+            <div class="notif-icon" style="background:rgba(80,97,63,0.12);color:#50613f;"><span class="material-symbols-outlined" style="font-size:16px">check_circle</span></div>
+            <div class="notif-body"><p>Reservation #R-012 confirmed by Siti</p><span>18 mins ago</span></div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon" style="background:#ffdad6;color:#ba1a1a;"><span class="material-symbols-outlined" style="font-size:16px">cancel</span></div>
+            <div class="notif-body"><p>Booking cancelled — Room 3 now free</p><span>1 hour ago</span></div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon" style="background:#e8e2d6;color:#4a473e;"><span class="material-symbols-outlined" style="font-size:16px">person_add</span></div>
+            <div class="notif-body"><p>New staff member added: Rina Dewi</p><span>Yesterday</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- Settings / Profile Dropdown -->
+      <div class="header-dropdown-wrap" id="settings-wrap">
+        <img class="admin-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1ichZTzU0Z_XK4vzz8579J3-kuKecribQtB71-QD7xcwbORs_y_j1Y3-MN8HTLf7ZeyrfnP0IbEp91_lWINSiCdtoWiMY-_lnTKIUGPo5KVpf_U83KTXhim4tezFidknlUuN-NwQwT51wqTPJ5Yl-cDkS4_mfmD4dqCFnih_TuTJumIiXqP9soduAAGVogMuCS4Re-yppJ8D0jgg8TShSaeVFuOzA4uCXRksQs-lAYraTxQ9rAbZ7eA" alt="Admin" onclick="toggleDropdown('settings-panel','notif-panel')">
+        <div class="header-dropdown settings-dropdown" id="settings-panel">
+          <div class="settings-user-info">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1ichZTzU0Z_XK4vzz8579J3-kuKecribQtB71-QD7xcwbORs_y_j1Y3-MN8HTLf7ZeyrfnP0IbEp91_lWINSiCdtoWiMY-_lnTKIUGPo5KVpf_U83KTXhim4tezFidknlUuN-NwQwT51wqTPJ5Yl-cDkS4_mfmD4dqCFnih_TuTJumIiXqP9soduAAGVogMuCS4Re-yppJ8D0jgg8TShSaeVFuOzA4uCXRksQs-lAYraTxQ9rAbZ7eA" alt="Admin">
+            <div><div class="settings-name">Admin</div><div class="settings-role">Super Admin</div></div>
+          </div>
+          <div class="settings-menu-item danger" onclick="adminSignOut()"><span class="material-symbols-outlined">logout</span>Sign Out</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Nav -->
+  <div style="background:rgba(244,251,250,0.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(197,200,188,0.35);padding:8px 16px;overflow-x:auto;display:flex;gap:4px;" id="mobile-nav">
+    <a href="dashboard.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:700;text-decoration:none;background:#fed65b;color:#745c00;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">dashboard</span>Dashboard</a>
+    <a href="customers.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">person_search</span>Customers CRM</a>
+    <a href="calendar.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">calendar_today</span>Calendar</a>
+    <a href="reservations.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">event_note</span>Reservations</a>
+    <a href="staff.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">group</span>Staff</a>
+    <a href="services.html" style="display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:10px;font-size:0.78rem;font-weight:600;text-decoration:none;color:#45483f;white-space:nowrap;"><span class="material-symbols-outlined" style="font-size:16px">spa</span>Services</a>
+  </div>
+
+  <main class="admin-main">
+
+    <!-- Page Header Row -->
+    <div class="page-header-row">
+      <div class="page-header">
+        <h1>Today's Summary</h1>
+        <p>Overview of daily operations for Serenity &amp; Soul.</p>
+      </div>
+      <button onclick="window.print()" class="no-print" style="background:#50613f;color:#ffffff;border:none;padding:10px 18px;border-radius:12px;font-weight:700;font-size:0.82rem;display:inline-flex;align-items:center;gap:8px;cursor:pointer;box-shadow:0 2px 8px rgba(80,97,63,0.25);transition:all 0.2s;">
+        <span class="material-symbols-outlined" style="font-size:18px;">print</span>
+        Export PDF Report
+      </button>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="glass-card kpi-card">
+        <div class="kpi-card-header">
+          <span class="kpi-label">Total Reservations</span>
+          <span class="material-symbols-outlined kpi-icon">book_online</span>
+        </div>
+        <div class="kpi-value" id="kpi-total-res">24</div>
+      </div>
+      <div class="glass-card kpi-card">
+        <div class="kpi-card-header">
+          <span class="kpi-label">Available Rooms</span>
+          <span class="material-symbols-outlined kpi-icon">meeting_room</span>
+        </div>
+        <div class="kpi-value" id="kpi-avail-rooms">3<span class="kpi-sub">/10</span></div>
+      </div>
+      <div class="glass-card kpi-card">
+        <div class="kpi-card-header">
+          <span class="kpi-label">Active Therapists</span>
+          <span class="material-symbols-outlined kpi-icon">spa</span>
+        </div>
+        <div class="kpi-value" id="kpi-active-staff">8</div>
+      </div>
+      <div class="glass-card kpi-card">
+        <div class="kpi-card-header">
+          <span class="kpi-label">Revenue (MYR)</span>
+          <span class="material-symbols-outlined kpi-icon">payments</span>
+        </div>
+        <div class="kpi-value" id="kpi-revenue">3.2K</div>
+      </div>
+    </div>
+
+    <!-- Bottom Grid -->
+    <div style="display:grid;grid-template-columns:1fr;gap:1.5rem;">
+      <div style="display:grid;grid-template-columns:1fr;gap:1.5rem;" id="dashboard-bottom">
+
+        <!-- Room Status -->
+        <div class="glass-card" style="padding:2rem;">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#161d1d;margin:0 0 1.25rem;padding-bottom:1rem;border-bottom:1px solid #dde4e3;">Real-time Room Status</h3>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;" id="rooms-container">
+            <!-- Rendered Dynamically -->
+          </div>
+
+
+        </div>
+
+        <!-- Upcoming -->
+        <div class="glass-card" style="padding:2rem;display:flex;flex-direction:column;gap:1rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:1rem;border-bottom:1px solid #dde4e3;">
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#161d1d;margin:0;">Upcoming Reservations</h3>
+            <a href="reservations.html" style="font-size:0.72rem;font-weight:700;color:#50613f;text-decoration:none;letter-spacing:0.07em;text-transform:uppercase;">View All →</a>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;" id="upcoming-container">
+            <!-- Rendered Dynamically -->
+          </div>
+          <a href="calendar.html" class="btn-primary" style="justify-content:center;margin-top:auto;">
+            <span class="material-symbols-outlined" style="font-size:18px">calendar_today</span> Open Calendar
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<style>
+@media (min-width:768px) {
+  #dashboard-bottom { grid-template-columns: 2fr 1fr !important; }
+  #desktop-nav { display:flex !important; }
+  #mobile-nav { display:none !important; }
+}
+</style>
+<script src="admin-state.js" type="module"></script>
+<script type="module">
+  document.addEventListener('DOMContentLoaded', () => {
+    function renderDashboard() {
+      const staff = AdminState.getStaff();
+      const reservations = AdminState.getReservations();
+      const rooms = AdminState.getRooms();
+
+      // Total Reservations
+      document.getElementById('kpi-total-res').textContent = reservations.length;
+
+      // Available Rooms
+      const vacantCount = rooms.filter(r => r.status === 'Vacant').length;
+      document.getElementById('kpi-avail-rooms').innerHTML = `${vacantCount}<span class="kpi-sub">/${rooms.length}</span>`;
+
+      // Active Staff
+      const activeStaff = staff.filter(s => s.status === 'Active').length;
+      document.getElementById('kpi-active-staff').textContent = activeStaff;
+
+      // Dynamic Revenue Calculation (Private & isolated per tenant)
+      const tId = AdminState.getTenantId();
+      const ownReservations = JSON.parse(localStorage.getItem(`${tId}_admin_reservations`)) || [];
+      const services = AdminState.getServices();
+      let totalRevenue = 0;
+      ownReservations.forEach(r => {
+        if (r.status === 'Confirmed' || r.status === 'Completed') {
+          const s = services.find(x => x.name === r.service || x.id === r.service);
+          if (s) {
+            totalRevenue += (parseFloat(s.price) || 0);
+          }
+        }
+      });
+      if (totalRevenue >= 1000) {
+        document.getElementById('kpi-revenue').textContent = `${(totalRevenue / 1000).toFixed(1)}K`;
+      } else {
+        document.getElementById('kpi-revenue').textContent = `${totalRevenue}`;
+      }
+
+      // Dynamic Room Status
+      const roomsContainer = document.getElementById('rooms-container');
+      roomsContainer.innerHTML = rooms.map(room => {
+        const isOccupied = room.status === 'Occupied';
+        const bg = isOccupied ? 'rgba(105,122,86,0.12)' : '#eef5f4';
+        const border = isOccupied ? 'rgba(80,97,63,0.2)' : 'rgba(197,200,188,0.4)';
+        const iconColor = isOccupied ? '#50613f' : '#75786e';
+        const chipClass = isOccupied ? 'chip-occupied' : 'chip-vacant';
+        const fill = isOccupied ? 'style="font-variation-settings:\'FILL\' 1;"' : '';
+        return `
+          <div onclick="toggleRoom(${room.id})" style="background:${bg};border:1px solid ${border};border-radius:12px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;cursor:pointer;transition:transform 0.15s;" class="hover:scale-105">
+            <span class="material-symbols-outlined" style="color:${iconColor};font-size:22px;" ${fill}>spa</span>
+            <span style="font-size:0.72rem;font-weight:700;color:#161d1d;">${room.name}</span>
+            <span class="chip ${chipClass}">${room.status}</span>
+          </div>
+        `;
+      }).join('');
+
+      // Upcoming Reservations (Next 4)
+      const upcomingContainer = document.getElementById('upcoming-container');
+      const sorted = [...reservations].sort((a, b) => a.timeSlot.localeCompare(b.timeSlot)).slice(0, 4);
+      upcomingContainer.innerHTML = sorted.map(res => {
+        const therapist = staff.find(s => s.id === res.therapistId);
+        const therapistName = therapist ? therapist.name : 'Unknown';
+        const isConfirmed = res.status === 'Confirmed';
+        const bg = isConfirmed ? 'rgba(105,122,86,0.2)' : res.status === 'Pending' ? '#fed65b' : '#e8efef';
+        const color = isConfirmed ? '#3c4c2b' : res.status === 'Pending' ? '#745c00' : '#45483f';
+        const timePart = res.timeSlot.split(':');
+        const hour = timePart[0];
+        const min = timePart[1] || '00';
+        return `
+          <div onclick="window.location.href='calendar.html'" style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='#eef5f4'" onmouseout="this.style.background='none'">
+            <div style="background:${bg};color:${color};border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;align-items:center;min-width:52px;font-family:'Playfair Display',serif;">
+              <span style="font-size:1.2rem;font-weight:700;line-height:1;">${hour}</span>
+              <span style="font-size:0.62rem;font-weight:700;">${min}</span>
+            </div>
+            <div>
+              <p style="font-weight:700;font-size:0.85rem;color:#161d1d;margin:0;">${res.service}</p>
+              <p style="font-size:0.75rem;color:#45483f;margin:2px 0 0;">${res.customer} • ${therapistName}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.toggleRoom = (id) => {
+      AdminState.toggleRoomStatus(id);
+      renderDashboard();
+    };
+
+    renderDashboard();
+
+    // Shared dropdown toggle
+    window.toggleDropdown = (openId, closeId) => {
+      const openEl = document.getElementById(openId);
+      const closeEl = closeId ? document.getElementById(closeId) : null;
+      if (closeEl) closeEl.classList.remove('open');
+      openEl.classList.toggle('open');
+    };
+    window.markAllRead = () => {
+      document.querySelectorAll('.notif-item.unread').forEach(el => el.classList.remove('unread'));
+      document.querySelector('.notif-dot')?.remove();
+    };
+    window.adminSignOut = () => {
+      sessionStorage.removeItem('admin_logged_in');
+      sessionStorage.removeItem('admin_email');
+      window.location.replace('login.html');
+    };
+    // Close dropdowns on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.header-dropdown-wrap')) {
+        document.querySelectorAll('.header-dropdown').forEach(d => d.classList.remove('open'));
+      }
+    });
+  });
+</script>
+</body>
+</html>

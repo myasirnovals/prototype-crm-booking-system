@@ -1,0 +1,132 @@
+/* Custom Styles for Serenity & Soul Spa Application */
+
+/* Glassmorphism Cards */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 32px rgba(44, 51, 51, 0.08);
+}
+
+.dark .glass-card {
+    background: rgba(43, 50, 50, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Glassmorphism Panels */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px rgba(44, 51, 51, 0.08);
+}
+
+.dark .glass-panel {
+    background: rgba(43, 50, 50, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Hero Section Gradient Overlay */
+.hero-gradient {
+    background: linear-gradient(to bottom, rgba(244, 251, 250, 0.2), rgba(244, 251, 250, 1));
+}
+
+.dark .hero-gradient {
+    background: linear-gradient(to bottom, rgba(22, 29, 29, 0.2), rgba(22, 29, 29, 1));
+}
+
+/* Shimmer Loading Animation */
+.shimmer {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
+    background-size: 200% 100%;
+    animation: shimmer-anim 3s infinite;
+}
+
+@keyframes shimmer-anim {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Hide Scrollbars */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Stepper Active/Completed/Inactive States */
+.step-active .step-line { background-color: #50613f; }
+.step-active .step-icon { background-color: #50613f; color: white; border-color: #50613f; }
+.step-completed .step-line { background-color: #50613f; }
+.step-completed .step-icon { background-color: #50613f; color: white; border-color: #50613f; }
+.step-inactive .step-line { background-color: #c5c8bc; }
+.step-inactive .step-icon { background-color: transparent; color: #75786e; border-color: #c5c8bc; }
+
+/* Custom Micro-interactions */
+@keyframes slideUp {
+    from { transform: translate(-50%, 100%); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Base Body Styling Transitions */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Material Symbols Outlined Custom configurations */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    transition: font-variation-settings 0.2s ease;
+}
+
+.material-symbols-outlined.filled {
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Mobile-Friendly Adjustments */
+@media (max-w: 768px) {
+    /* Hide desktop-only nav components */
+    .wallet-nav-pill {
+        display: none !important;
+    }
+    
+    nav button[onclick="startBookingWithService(null)"] {
+        display: none !important;
+    }
+    
+    /* Shrink logo font on small screens to prevent wrap */
+    nav .font-headline-lg {
+        font-size: 0.95rem !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Add padding at bottom of main container so it does not get cut off by floating button */
+    main {
+        padding-bottom: 74px !important;
+    }
+    
+    /* Ensure user login modal fits nicely */
+    #user-login-modal {
+        padding-bottom: 0px;
+    }
+}
+
+/* Mobile Bottom Navigation Layout & Visibility Control */
+#mobile-bottom-nav {
+    display: none !important; /* Default hidden on all screen sizes */
+}
+
+@media (max-width: 767px) {
+    #mobile-bottom-nav.show-mobile-nav {
+        display: flex !important; /* Show as flex on mobile view only */
+    }
+}

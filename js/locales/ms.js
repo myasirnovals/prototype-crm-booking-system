@@ -12,7 +12,7 @@ export const ms = {
   "nav.demo": "Demo",
   "nav.signIn": "Log Masuk",
   "nav.getStarted": "Mula Sekarang",
-  "nav.backHome": "← Kembali ke Utama",
+  "nav.backHome": "Kembali",
   "nav.patientPortal": "← Portal Pesakit",
   "nav.newBooking": "+ Tempah Janji Temu",
   "nav.signOut": "Log Keluar",
@@ -888,7 +888,7 @@ export const ms = {
   "intake.tcm.selectedPoint": "Titik Meridian Terpilih:",
   "intake.tcm.notesTitle": "Nota Gejala & Kepekaan Sejuk/Panas",
   "intake.tcm.notesPlaceholder": "Terangkan sifat kesakitan (pedih, sengal, denyut), faktor pencetus dan sejarah rawatan..."
-,
+  ,
 
   // Penambahan Bahasa Melayu
   "common.today": "Hari ini",

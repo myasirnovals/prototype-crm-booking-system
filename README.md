@@ -1,4 +1,4 @@
-# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.12.0 [STABLE RELEASE]
+# 🏥 Cliniva — Integrated Clinic Booking & CRM Platform V1.13.0 [STABLE RELEASE]
 
 Dokumen ini berisi panduan arsitektur dan struktur kode dari aplikasi **Cliniva** (*Integrated Clinical Appointment & Patient Relationship Management System*), dirancang dengan prinsip **SOLID** dan modularitas penuh untuk kemudahan perawatan (*maintenance*), pengujian, dan deployment.
 
@@ -31,6 +31,7 @@ Desain/
 │   │   └── index.html                      # Portal Pasien: e-tiket, lacak antrean, reschedule
 │   └── public/
 │       ├── sign-in.html                    # Multi-role login, 1-click quick demo & reset password
+│       ├── branch.html                     # Dynamic Public Branch Landing Page (Multi-Template)
 │       ├── booking.html                    # Wizard reservasi janji temu pasien 4-langkah
 │       └── ticket.html                     # Viewer e-tiket digital & sinkronisasi .ics
 │
@@ -40,25 +41,29 @@ Desain/
 │   ├── base.css                            # CSS Reset, elemen dasar, tombol, pill, feedback box
 │   ├── layout.css                          # Navbar glassmorphism, drawer mobile, header & footer
 │   └── components/                         # CSS komponen spesifik per fitur/aktor
+│       ├── branch-landing.css              # Dynamic Multi-Template Branch Landing Theme & Tokens
+│       └── ...
 │
 └── ⚡ js/
     ├── config/
     │   ├── role-routes.js                  # RBAC Matrix, route mapping & kredensial master (OCP)
     │   ├── clinic-data.js                  # Master data: Cabang SG/MY, praktisi, layanan, slot
     │   ├── regional-config.js              # Konfigurasi regional: Mata uang, template WA, PDPA
-    │   └── templates/                      # Template spesialisasi klinik (physio, dental, tcm, wellness)
+    │   └── templates/                      # Template spesialisasi klinik (physio, dental, tcm, wellness, nutrition)
     ├── locales/
     │   ├── en.js                           # Kamus Bahasa Inggris (Default SG / Global)
-    │   ├── ms.js                           # Kamus Bahasa Melayu / Indonesia (MY / ID)
-    │   └── zh.js                           # Kamus Bahasa Mandarin (Simplified Chinese)
+    │   ├── ms.js                           # Kamus Bahasa Melayu Baku (Malaysia)
+    │   └── zh.js                           # Kamus Bahasa Mandarin Sederhana (Singapura)
     ├── services/
     │   ├── auth.service.js                 # AuthService: Kredensial, dynamic route guard, logout (SRP)
     │   ├── storage.service.js              # StorageService: LocalStorage abstraction + memory fallback
     │   ├── i18n.service.js                 # I18nService: Multilingual translation engine
     │   ├── booking.service.js              # BookingService: Triple-Constraint engine & slot hold
+    │   ├── subscription.service.js         # SubscriptionService: Multi-Product subscriptions & billing
     │   ├── navbar.service.js               # NavbarService: Dynamic nav, drawer & ticket sync
     │   ├── notification.service.js         # NotificationService: WhatsApp & .ics generator
-    │   └── sound.service.js                # SoundService: Web Audio API chime synthesizer
+    │   ├── sound.service.js                # SoundService: Web Audio API chime synthesizer
+    │   └── supabase.service.js             # SupabaseService: Cloud database persistence & sync
     ├── components/
     │   ├── intake-form.component.js        # Form intake adaptif spesialisasi
     │   ├── notification-bar.component.js   # Bar notifikasi live
@@ -70,7 +75,7 @@ Desain/
     │   ├── branch-admin/                   # BranchAdminController: Antrean, dokter cabang, jadwal, POS
     │   ├── practitioner/                   # PractitionerController: Timeline dokter, calling chime
     │   ├── patient/                        # PatientPortalController: Tiket, live queue, reschedule
-    │   ├── public/                         # Public controllers: auth.controller, booking.controller
+    │   ├── public/                         # Public controllers: auth, branch-landing, booking
     │   └── landing/                        # Landing page controllers: ui, booking, dashboard
     └── pages/                              # Bootstrap entry points per halaman
 ```
@@ -94,15 +99,15 @@ Pada halaman [`pages/public/sign-in.html`](pages/public/sign-in.html), tersedia 
 ## ⚡ Penerapan Prinsip SOLID
 
 1. **Single Responsibility Principle (SRP)**:
-   - Setiap berkas CSS hanya mengatur 1 komponen visual (`owner.css`, `practitioner.css`, `patient-portal.css`, `receptionist.css`, `auth.css`).
-   - Setiap JavaScript Service hanya melayani 1 domain fungsional (`auth.service.js` untuk otentikasi & proteksi sesi, `soundService` untuk sintesis audio chime, `storageService` untuk persistensi).
+   - Setiap berkas CSS hanya mengatur 1 komponen visual (`owner.css`, `practitioner.css`, `patient-portal.css`, `receptionist.css`, `auth.css`, `branch-landing.css`).
+   - Setiap JavaScript Service hanya melayani 1 domain fungsional (`auth.service.js` untuk otentikasi & proteksi sesi, `soundService` untuk sintesis audio chime, `storageService` untuk persistensi, `subscriptionService` untuk langganan).
    - Setiap Controller hanya bertanggung jawab atas interaksi DOM halaman spesifik tersebut.
 2. **Open/Closed Principle (OCP)**:
    - Menambahkan peran baru atau rute baru cukup didefinisikan di `role-routes.js` tanpa merombak logika inti pada service autentikasi.
 3. **Liskov Substitution & Interface Segregation (LSP / ISP)**:
    - Modul antarmuka controller memiliki kontrak inisialisasi yang seragam (`.init()`) dan service independen tanpa dependensi yang saling membebani.
 4. **Dependency Inversion Principle (DIP)**:
-   - Controller berinteraksi dengan state dan audio melalui service terabstraksi (`authService`, `soundService`, `storageService`).
+   - Controller berinteraksi dengan state dan audio melalui service terabstraksi (`authService`, `soundService`, `storageService`, `subscriptionService`).
 
 ---
 
@@ -118,6 +123,32 @@ Lalu buka:
 ---
 
 ## 📦 Riwayat Rilis & Semantic Versioning (SemVer)
+
+### 🏷️ V1.13.0 (Minor Release) ✅ *Stable Release*
+*Rilis resmi minor v1.13.0: Implementasi Single Project Dynamic Architecture untuk Landing Page Cabang Publik (Public Branch Landing Pages) pada 3 alur prioritas (Wellness/Spa, Fisioterapi, Nutrisi Klinis), integrasi alur langganan & pembayaran Owner (Subscription & Payment Workflow), pengunggah logo interaktif & pemilih lambang, pemesanan reservasi tamu tanpa paksaan login (Frictionless Guest Booking), sinkronisasi dinamis brand header pada dashboard owner, serta kepatuhan ketat kebijakan lokalisasi tri-bahasa.*
+
+- **🚀 New Features & Architecture (Minor)**:
+  - **Single Project Dynamic Branch Landing Architecture (`pages/public/branch.html` & `branch-landing.controller.js`)**:
+    - Mewujudkan seluruh etalase landing page cabang langsung di dalam satu repositori terintegrasi tanpa pengalihan ke URL eksternal atau demo statis Vercel.
+    - Data binding 100% dinamis dari penyimpanan lokal/cloud (`cliniva_branches`): nama cabang, logo/lambang, jam operasional, alamat fisik, kontak telepon, WhatsApp terintegrasi, katalog layanan spesifik, dan daftar praktisi bertugas.
+    - Adaptasi visual tema, warna, dan tipografi editorial mewah (Google Font *Playfair Display* untuk Spa/Wellness) serta metrik klinis unggulan untuk 3 alur prioritas:
+      - *Wellness & Spa (Gaya Serenity)*: Aksen Rose/Blush (`#9d174d`), tipografi serif anggun, kartu fasilitas hidroterapi & aromaterapi, serta kamar privat beraroma.
+      - *Physiotherapy (Gaya PhysioCare)*: Aksen Teal Klinis (`#0f766e`), kartu peralatan rehabilitasi canggih (Shockwave, Ultrasound, Laser Terapi), dan bay latihan aktif.
+      - *Nutrition & Dietetics (Gaya NutriFlow)*: Aksen Emerald Segar (`#166534`), analisa komposisi tubuh biometrik InBody 770, dan lab konseling diet metabolik.
+  - **Owner Subscription & Payment Workflow (`subscription.service.js` & `branch-select.html`)**:
+    - Dukungan langganan terpisah per produk/template (TCM, Wellness, Fisioterapi, Nutrisi) sesuai aturan isolasi multi-tenant SaaS.
+    - Pilihan durasi langganan fleksibel (3, 6, 12 bulan) dengan kalkulasi harga otomatis, penetapan kuota cabang, dan verifikasi status pembayaran sebelum aktivasi penuh cabang.
+  - **Interactive Logo Uploader & Emblem Picker (`branch-select.html`)**:
+    - Modal pendaftaran cabang baru dilengkapi fitur drag-and-drop unggah file logo resmi (PNG, JPG, WebP, SVG maks 3MB) dengan live preview instan serta koleksi tombol pemilih lambang emoji tematik (`🏃`, `🌸`, `🥗`, `🌿`, `🏋️`).
+  - **Frictionless Public Guest Booking (`booking.html` & `booking.controller.js`)**:
+    - Menghapus kewajiban login sebelum melakukan reservasi janji temu pasien pada landing page cabang publik. Pasien tamu dapat langsung memilih layanan, praktisi, dan jadwal dengan aman.
+- **🩹 Bug Fixes & Hardening (Patch)**:
+  - **Perbaikan Sinkronisasi Brand Header Dashboard Owner (`dashboard.controller.js` & `dashboard.html`)**:
+    - Memperbaiki pengikatan elemen topbar (`#topbarBrandName`, `#topbarBrandTagline`, `#topbarBrandLogo`) yang sebelumnya terkunci pada data onboarding TCM lama, sehingga kini otomatis menampilkan nama cabang aktif (misal: *Dennis Nutrition*), lambang spesifik template (`🥗`), dan slogan klinis yang relevan.
+  - **Resolusi Null-Pointer pada Booking Tamu**:
+    - Memperbaiki penanganan `session.user` di `booking.controller.js` saat pasien memesan sebagai tamu tanpa sesi login aktif.
+  - **Kepatuhan Ketat Lokalisasi Tri-Bahasa (EN, MS-MY, ZH-SG)**:
+    - Melengkapi kamus bahasa [en.js](js/locales/en.js), [ms.js](js/locales/ms.js), dan [zh.js](js/locales/zh.js) untuk seluruh kunci `branchLanding.*` dan `template.*`, serta membersihkan sisa teks non-standar pada jam operasional dan status antrean.
 
 ### 🏷️ V1.12.0 (Minor Release) ✅ *Stable Release*
 *Rilis resmi minor v1.12.0: Perapihan dan simplifikasi komprehensif antarmuka Branch Selector Gateway (`pages/owner/branch-select.html`), penataan tombol vertikal di kolom kanan, penambahan menu dropdown kontrol status operasional cabang langsung di kartu (`🟢 Open / Active`, `⏸️ Temporarily Closed`, `🗑️ Archive Branch`), eliminasi tumpukan badge berlebih, pembersihan otomatis kebocoran bahasa Indonesia pada jam operasional, penambahan alias `playSuccess()` pada `SoundService`, serta sinkronisasi penuh status cabang ke Supabase Cloud.*

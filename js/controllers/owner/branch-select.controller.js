@@ -315,6 +315,8 @@ export class BranchSelectController {
             targetPage = "/templates/nutrition/index.html";
           } else if (branch.template === "fitness" || branch.template === "personal_trainer") {
             targetPage = "/templates/personal_trainer/index.html";
+          } else if (branch.template === "tcm") {
+            targetPage = "/templates/tcm/index.html";
           }
         }
         const url = `${origin}${basePath}${targetPage}?branch=${encodeURIComponent(branchId)}`;

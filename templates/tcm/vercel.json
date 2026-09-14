@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": null,
+  "rewrites": [
+    { "source": "/register.html", "destination": "/register.html" },
+    { "source": "/admin/:path*", "destination": "/admin/:path*" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

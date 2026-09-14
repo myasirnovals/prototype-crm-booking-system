@@ -1165,6 +1165,8 @@ export class OwnerDashboardController {
           targetPage = '/templates/nutrition/index.html';
         } else if (this.activeBranch.template === 'fitness' || this.activeBranch.template === 'personal_trainer') {
           targetPage = '/templates/personal_trainer/index.html';
+        } else if (this.activeBranch.template === 'tcm') {
+          targetPage = '/templates/tcm/index.html';
         }
       }
       const shareUrl = `${origin}${targetPage}?branch=${encodeURIComponent(branchId)}`;

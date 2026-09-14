@@ -1,0 +1,2240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- SPA Vercel Rebuild Trigger -->
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Yong Kang TCM & Acupuncture - Traditional Chinese Medicine</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetBranchId = urlParams.get('branch') || urlParams.get('id') || 'default-tcm';
+
+        const DEFAULT_TCM_THEME = {
+            id: 'default-tcm',
+            name: 'Yong Kang TCM & Acupuncture',
+            tagline: 'Authentic Traditional Chinese Medicine, Acupuncture & Herbal Healing',
+            logo: '',
+            address: '88 Pagoda Street, Chinatown, Singapore',
+            phone: '+65 6223 8899',
+            hours: 'Mon - Sun (09:30 - 19:30 SGT)',
+            currency: 'SGD',
+            colors: {
+                primary: '#164e3f',
+                secondary: '#c89d53',
+                background: '#faf8f5',
+                surfaceContainer: '#f0eae1'
+            }
+        };
+
+        // Dynamically resolve branch from Cliniva multi-tenant database
+        let clinivaBranch = null;
+        try {
+            const clinivaBranches = JSON.parse(localStorage.getItem('cliniva_branches')) || [];
+            if (Array.isArray(clinivaBranches) && clinivaBranches.length > 0) {
+                clinivaBranch = clinivaBranches.find(b => 
+                    (b.id && b.id.toLowerCase() === targetBranchId.toLowerCase()) ||
+                    (b.name && b.name.toLowerCase() === targetBranchId.toLowerCase())
+                );
+                if (!clinivaBranch && (targetBranchId === 'default-tcm' || targetBranchId === 'yong-kang' || targetBranchId === 'tcm')) {
+                    clinivaBranch = clinivaBranches.find(b => b.template === 'tcm');
+                }
+            }
+        } catch (e) {}
+
+        const currentTenant = clinivaBranch ? {
+            id: clinivaBranch.id,
+            name: clinivaBranch.name || DEFAULT_TCM_THEME.name,
+            tagline: clinivaBranch.tagline || DEFAULT_TCM_THEME.tagline,
+            logo: clinivaBranch.logo || DEFAULT_TCM_THEME.logo,
+            address: clinivaBranch.address || DEFAULT_TCM_THEME.address,
+            phone: clinivaBranch.phone || DEFAULT_TCM_THEME.phone,
+            hours: clinivaBranch.hours || clinivaBranch.operatingHours || DEFAULT_TCM_THEME.hours,
+            currency: clinivaBranch.currency || DEFAULT_TCM_THEME.currency,
+            colors: clinivaBranch.colors || DEFAULT_TCM_THEME.colors
+        } : DEFAULT_TCM_THEME;
+
+        window.currentTenant = currentTenant;
+        window.currentBranch = currentTenant;
+        const primaryColor = currentTenant.colors?.primary || '#164e3f';
+        const secondaryColor = currentTenant.colors?.secondary || '#c89d53';
+        const backgroundColor = currentTenant.colors?.background || '#faf8f5';
+        const containerColor = currentTenant.colors?.surfaceContainer || '#f0eae1';
+
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#75786e",
+                        "on-primary-fixed-variant": "#3c4c2b",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#ffe088",
+                        "on-primary-fixed": "#111f05",
+                        "surface-container-low": containerColor + 'aa',
+                        "primary": primaryColor,
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#745c00",
+                        "inverse-on-surface": "#ebf2f2",
+                        "tertiary": "#5f5c52",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#241a00",
+                        "tertiary-fixed": "#e8e2d6",
+                        "surface-container-high": containerColor + 'f0',
+                        "surface-variant": containerColor,
+                        "on-background": "#161d1d",
+                        "inverse-surface": "#2b3232",
+                        "primary-container": primaryColor + 'cc',
+                        "on-secondary": "#ffffff",
+                        "primary-fixed-dim": "#bacda3",
+                        "on-tertiary-fixed-variant": "#4a473e",
+                        "on-tertiary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "background": backgroundColor,
+                        "on-surface-variant": "#45483f",
+                        "primary-fixed": "#d6e9bd",
+                        "surface-tint": primaryColor,
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": containerColor,
+                        "on-tertiary-fixed": "#1e1c14",
+                        "outline-variant": "#c5c8bc",
+                        "tertiary-container": "#78746a",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#161d1d",
+                        "tertiary-fixed-dim": "#cbc6ba",
+                        "secondary-container": secondaryColor,
+                        "secondary": "#735c00",
+                        "surface-dim": "#d4dbdb",
+                        "on-secondary-fixed-variant": "#574500",
+                        "inverse-primary": "#bacda3",
+                        "surface-bright": backgroundColor,
+                        "secondary-fixed-dim": "#e9c349",
+                        "surface": backgroundColor,
+                        "surface-container-highest": containerColor,
+                        "on-primary-container": "#f9ffeb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["Manrope"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "body-sm": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "label-caps": ["Manrope"],
+                        "display-lg": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "title-md": ["20px", { "lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.3", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS styles -->
+    <link href="./src/style.css" rel="stylesheet">
+</head>
+
+<body class="bg-background text-on-background font-body-lg min-h-screen flex flex-col antialiased">
+
+    <!-- Top Navigation Bar -->
+    <nav
+        class="fixed top-0 w-full z-50 flex justify-between items-center px-6 md:px-margin-desktop h-20 bg-surface/70 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm transition-all">
+        
+        <!-- Left Side -->
+        <div class="flex-1 flex justify-start">
+            <div onclick="resetBookingFlow()" id="topNavBrandWrap"
+                class="font-headline-lg text-xl md:text-headline-lg text-primary cursor-pointer hover:opacity-80 transition-opacity animate-fade-in whitespace-nowrap flex items-center gap-2">
+                <span id="spaNavBrandLogo" class="text-2xl">🌸</span>
+                <span id="spaNavBrandName">Yong Kang TCM &amp; Acupuncture</span>
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="hidden md:flex justify-center items-center gap-4 lg:gap-8 mx-2 lg:mx-4 whitespace-nowrap">
+            <a onclick="resetBookingFlow()"
+                class="text-sm font-semibold text-primary transition-colors duration-300 cursor-pointer"
+                data-translate="nav_home">Home</a>
+            <a onclick="navigateTo('services-catalog')"
+                class="text-sm font-semibold text-on-surface-variant/60 hover:text-primary transition-colors duration-300 cursor-pointer"
+                data-translate="nav_service">Service</a>
+            <a onclick="navigateTo('blog')"
+                class="text-sm font-semibold text-on-surface-variant/60 hover:text-primary transition-colors duration-300 cursor-pointer"
+                data-translate="nav_blog">Blog</a>
+            <a onclick="navigateTo('about')"
+                class="text-sm font-semibold text-on-surface-variant/60 hover:text-primary transition-colors duration-300 cursor-pointer"
+                data-translate="nav_about">About</a> <a onclick="navigateTo('contact')"
+                class="text-sm font-semibold text-on-surface-variant/60 hover:text-primary transition-colors duration-300 cursor-pointer"
+                data-translate="nav_contact">Contact</a>
+        </div>
+
+        <!-- Desktop Header Buttons (Hidden on Mobile) -->
+        <div class="hidden md:flex flex-1 justify-end items-center gap-3 md:gap-4">
+            <div onclick="requireLogin(() => navigateTo('wallet'))"
+                class="wallet-nav-pill flex items-center gap-2 text-primary bg-primary/5 px-3 py-1.5 md:px-4 md:py-2 rounded-full hover:bg-primary/10 transition-colors cursor-pointer">
+                <span class="material-symbols-outlined text-[18px] md:text-[20px]">account_balance_wallet</span>
+                <span class="wallet-balance-text font-title-md text-xs md:text-sm font-semibold">MYR 0.00</span>
+            </div>
+            <button onclick="startBookingWithService(null)"
+                class="bg-[#FACC15] text-on-secondary-fixed px-4 py-1.5 md:px-5 md:py-2 rounded-full font-label-caps text-[10px] md:text-xs hover:shadow-lg transition-all duration-300"
+                data-translate="btn_book_now">Book Now</button>
+
+            <!-- Language Switcher Desktop -->
+            <button onclick="toggleLanguage(event)"
+                class="text-primary hover:bg-primary/10 border border-outline rounded-full px-3 py-1.5 text-xs font-semibold uppercase flex items-center gap-1.5 shadow-sm cursor-pointer"
+                title="Toggle Language">
+                <span class="material-symbols-outlined text-[16px] md:text-[18px]">language</span>
+                <span id="lang-toggle-text">EN</span>
+            </button>
+
+            <button id="nav-user-btn" onclick="requireLogin(()=>navigateTo('profile'))"
+                class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary/5 text-primary flex items-center justify-center hover:bg-primary/10 transition-colors"
+                title="Login / Register">
+                <span class="material-symbols-outlined text-[20px] md:text-[24px]">person</span>
+            </button>
+        </div>
+
+        <!-- Hamburger Menu Button (Mobile Only) -->
+        <button id="mobile-hamburger-btn" onclick="toggleMobileMenu()"
+            class="md:hidden w-10 h-10 rounded-full bg-primary/5 text-primary flex items-center justify-center hover:bg-primary/10 transition-colors z-50">
+            <span class="material-symbols-outlined text-[24px]">menu</span>
+        </button>
+
+        <!-- Mobile Dropdown Menu Popover (Mobile Only, rendered outside nav to avoid stacking context issues) -->
+        <div id="mobile-menu-dropdown"
+            class="hidden fixed top-20 right-4 w-[280px] bg-white rounded-3xl shadow-xl border border-slate-100 p-6 z-[9998] animate-fade-in"
+            style="font-family: 'Manrope', sans-serif;">
+            <!-- Profile Section (Header) -->
+            <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+                <div class="w-12 h-12 rounded-full bg-[#50613f]/15 text-[#50613f] flex items-center justify-center text-sm font-bold overflow-hidden"
+                    id="mobile-menu-avatar-container">
+                    <span class="material-symbols-outlined text-[24px]" id="mobile-menu-avatar-icon">person</span>
+                </div>
+                <div class="flex flex-col text-left">
+                    <span class="text-sm font-bold text-slate-800" id="mobile-menu-username">Guest User</span>
+                    <span class="text-xs text-slate-500" id="mobile-menu-userrole">Not Logged In</span>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="flex flex-col gap-1">
+                <a onclick="closeMobileMenu(); resetBookingFlow();"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#50613f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    <span class="material-symbols-outlined text-[20px]">home</span>
+                    <span data-translate="nav_home">Home</span>
+                </a>
+                <a onclick="closeMobileMenu(); navigateTo('services-catalog');"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#50613f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    <span class="material-symbols-outlined text-[20px]">spa</span>
+                    <span data-translate="nav_service">Services</span>
+                </a>
+                <a onclick="closeMobileMenu(); navigateTo('blog');"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#50613f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    <span class="material-symbols-outlined text-[20px]">rss_feed</span>
+                    <span data-translate="nav_blog">Blog</span>
+                </a>
+                <a onclick="closeMobileMenu(); navigateTo('contact');"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#50613f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    <span class="material-symbols-outlined text-[20px]">mail</span>
+                    <span data-translate="nav_contact">Contact</span>
+                </a>
+                <a onclick="closeMobileMenu(); startBookingWithService(null);"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#50613f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    <span class="material-symbols-outlined text-[20px]">calendar_month</span>
+                    <span data-translate="btn_book_now">Book Now</span>
+                </a>
+                <a onclick="closeMobileMenu(); requireLogin(() => navigateTo('profile'));"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#50613f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    <span class="material-symbols-outlined text-[20px]">person</span>
+                    <span data-translate="nav_profile">Profile</span>
+                </a>
+
+                <!-- Language Toggle Mobile -->
+                <a onclick="toggleLanguage(event);"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#50613f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    <span class="material-symbols-outlined text-[20px]">language</span>
+                    <span id="mobile-lang-toggle-text">Language: EN</span>
+                </a>
+            </div>
+
+            <!-- Auth Button (Sign In / Sign Out) -->
+            <div class="border-t border-slate-100 pt-3 mt-1 text-left">
+                <a id="mobile-menu-auth-btn" onclick="handleMobileMenuAuth()"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-50 text-red-600 hover:text-red-700 transition-colors cursor-pointer text-sm font-semibold text-left">
+                    <span class="material-symbols-outlined text-[20px]">logout</span>
+                    <span data-translate="btn_sign_out">Sign Out</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Dynamic Container -->
+    <main class="flex-grow pt-20">
+
+        <!-- ==================== VIEW 1: HOME VIEW ==================== -->
+        <section id="view-home" class="view-section">
+            <!-- Full-Width Hero Section -->
+            <div class="relative w-full h-[716px] flex items-center justify-center -mt-6">
+                <div class="absolute inset-0 w-full h-full">
+                    <img class="w-full h-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC2dKdA31goS8qBgdOHObXluKPemSIKqRqClmw02I-0BYuKX_7BdjX18a3-gb_7rWQN1iZ0qV9kOzMQLVf4E9lxxvtHxatxaDAS5yBHcJAGcqfGbW6M7jyyjrnUOoT9amO5HKm2RvmAe8exd-1FaJNmTVNbM6MDVCwZcsKg6K5h14eUxtyaMovi1wrU09LWhfZFlrFIm0G7BXRc1oS2OpHiBFyJWfV6FWtvuKmhXhV6o0LTYeUMmldrg"
+                        alt="Spa interior">
+                    <div class="absolute inset-0 hero-gradient"></div>
+                </div>
+                <div
+                    class="relative z-10 text-center px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+                    <h1 class="font-display-lg text-display-lg md:text-[64px] text-primary mb-6 drop-shadow-sm font-serif font-bold"
+                        data-translate="hero_title">Find Your Inner Peace</h1>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10 leading-relaxed"
+                        data-translate="hero_subtitle">Unwind and restore your balance through our exclusive spa
+                        treatments designed for ultimate tranquility.</p>
+                    <button onclick="navigateTo('all-services')"
+                        class="bg-[#FACC15] hover:bg-[#eab308] text-[#241a00] px-8 py-4 rounded-full text-base shadow-md hover:shadow-xl transition-all duration-300 inline-block font-bold"
+                        data-translate="btn_explore_services">Explore Services</button>
+                </div>
+            </div>
+
+            <!-- Active Packages Widget (Hidden by default) -->
+            <div id="owned-packages-widget" class="hidden mt-8"></div>
+
+            <!-- Dynamic Home Content -->
+            <div id="home-dynamic-content">
+                <!-- Rendered dynamically by main.js -->
+            </div>
+
+            <!-- About Us & Vision-Mission Section -->
+            <div class="bg-surface-container-low py-16 border-y border-outline-variant/20 my-8"
+                style="font-family:'Manrope',sans-serif;">
+                <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                        <!-- Left Column: Visual Showcase -->
+                        <div class="lg:col-span-5 relative">
+                            <div
+                                class="relative rounded-3xl overflow-hidden shadow-lg border border-outline-variant/30 aspect-[4/5] bg-slate-100">
+                                <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop"
+                                    class="w-full h-full object-cover" alt="Yong Kang TCM & Acupuncture">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+                                </div>
+                                <div class="absolute bottom-6 left-6 right-6 text-white text-left">
+                                    <span class="font-serif text-xl font-bold block mb-1">Yong Kang TCM &amp; Acupuncture
+                                        Sanctuary</span>
+                                    <p class="text-xs text-white/80">Est. 2015 • Kuala Lumpur</p>
+                                </div>
+                            </div>
+                            <!-- Floating Stat Badge -->
+                            <div
+                                class="absolute -bottom-6 -right-4 md:right-4 bg-white rounded-2xl p-4 shadow-xl border border-slate-100 flex items-center gap-3 animate-fade-in">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-[#50613f]/10 text-[#50613f] flex items-center justify-center font-bold">
+                                    <span class="material-symbols-outlined text-xl">workspace_premium</span>
+                                </div>
+                                <div class="text-left">
+                                    <span class="text-sm font-bold text-slate-800 block leading-tight">10+ Years</span>
+                                    <span class="text-[10px] text-slate-500">Holistic Excellence</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Story, Vision & Mission -->
+                        <div class="lg:col-span-7 space-y-6 text-left">
+                            <div>
+                                <span
+                                    class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block mb-2"
+                                    data-translate="about_tag">Our Sanctuary Story</span>
+                                <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#1E293B] leading-tight"
+                                    data-translate="about_title">Harmonizing Body, Mind, &amp; Soul Through Natural
+                                    Healing</h2>
+                                <p class="text-xs md:text-sm text-on-surface-variant leading-relaxed mt-3"
+                                    data-translate="about_desc">
+                                    Founded with a deep commitment to holistic wellness, Yong Kang TCM &amp; Acupuncture is more
+                                    than a spa—it is a sacred retreat designed to restore equilibrium to your daily
+                                    life. We blend ancient Eastern touch therapies with pure organic botanical
+                                    formulations to provide a transformative sensory experience.
+                                </p>
+                            </div>
+
+                            <!-- Vision & Mission Cards Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                                <!-- Vision Card -->
+                                <div
+                                    class="bg-white rounded-2xl p-5 border border-outline-variant/30 shadow-sm flex flex-col gap-2">
+                                    <div
+                                        class="w-8 h-8 rounded-lg bg-[#50613f]/10 text-[#50613f] flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-lg">visibility</span>
+                                    </div>
+                                    <h3 class="font-serif text-sm font-bold text-slate-800"
+                                        data-translate="about_vision_title">Our Vision</h3>
+                                    <p class="text-xs text-slate-500 leading-relaxed"
+                                        data-translate="about_vision_desc">To be the region's leading eco-conscious
+                                        holistic sanctuary, empowering individuals to cultivate lifelong physical
+                                        vitality and mental tranquility.</p>
+                                </div>
+                                <!-- Mission Card -->
+                                <div
+                                    class="bg-white rounded-2xl p-5 border border-outline-variant/30 shadow-sm flex flex-col gap-2">
+                                    <div
+                                        class="w-8 h-8 rounded-lg bg-[#B45309]/10 text-[#B45309] flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-lg">flag</span>
+                                    </div>
+                                    <h3 class="font-serif text-sm font-bold text-slate-800"
+                                        data-translate="about_mission_title">Our Mission</h3>
+                                    <p class="text-xs text-slate-500 leading-relaxed"
+                                        data-translate="about_mission_desc">Delivering tailored, ethical therapeutic
+                                        treatments with certified practitioners, sustainable organic oils, and
+                                        uncompromised personal care.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Why Choose Us Section -->
+            <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop py-16 text-center">
+                <h2 class="font-display-lg text-2xl text-[#1E293B] mb-12 font-bold font-serif"
+                    data-translate="why_choose_us_title">Why Choose Us?</h2>
+                <div class="grid grid-cols-2 gap-x-8 gap-y-12 max-w-4xl mx-auto">
+                    <!-- Feature 1 -->
+                    <div class="flex flex-col items-center text-center">
+                        <div
+                            class="w-12 h-12 rounded-full bg-[#50613f]/10 flex items-center justify-center text-[#50613f] mb-4">
+                            <span class="material-symbols-outlined text-xl">spa</span>
+                        </div>
+                        <h3 class="font-title-md text-sm font-semibold text-[#1E293B] mb-2"
+                            data-translate="why_choose_us_feat1_title">Expert Therapists</h3>
+                        <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed max-w-xs"
+                            data-translate="why_choose_us_feat1_desc">Our professional team is trained to provide a
+                            healing touch that personalizes every session.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="flex flex-col items-center text-center">
+                        <div
+                            class="w-12 h-12 rounded-full bg-[#50613f]/10 flex items-center justify-center text-[#50613f] mb-4">
+                            <span class="material-symbols-outlined text-xl">nature</span>
+                        </div>
+                        <h3 class="font-title-md text-sm font-semibold text-[#1E293B] mb-2"
+                            data-translate="why_choose_us_feat2_title">Natural Products</h3>
+                        <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed max-w-xs"
+                            data-translate="why_choose_us_feat2_desc">We only use high-quality organic ingredients that
+                            are friendly to the skin and the environment.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="flex flex-col items-center text-center col-span-2 mx-auto max-w-xs">
+                        <div
+                            class="w-12 h-12 rounded-full bg-[#50613f]/10 flex items-center justify-center text-[#50613f] mb-4">
+                            <span class="material-symbols-outlined text-xl">self_improvement</span>
+                        </div>
+                        <h3 class="font-title-md text-sm font-semibold text-[#1E293B] mb-2"
+                            data-translate="why_choose_us_feat3_title">Serene Atmosphere</h3>
+                        <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed max-w-xs"
+                            data-translate="why_choose_us_feat3_desc">Our minimalist interior design creates an oasis of
+                            peace amidst the hustle and bustle of the city.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials & Guest Reviews Section -->
+            <div class="bg-gradient-to-b from-transparent via-[#50613f]/5 to-transparent py-16 border-t border-outline-variant/20 my-8"
+                style="font-family:'Manrope',sans-serif;">
+                <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop text-center">
+                    <div class="max-w-2xl mx-auto mb-12">
+                        <span
+                            class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block mb-2"
+                            data-translate="testimonials_tag">Guest Experiences</span>
+                        <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#1E293B]"
+                            data-translate="testimonials_title">Loved &amp; Trusted by Over 1,200+ Guests</h2>
+                        <p class="text-xs md:text-sm text-on-surface-variant leading-relaxed mt-2"
+                            data-translate="testimonials_desc">Discover how our certified practitioners bring pure
+                            relaxation, stress relief, and holistic healing to life.</p>
+                    </div>
+
+                    <!-- Testimonials Cards Grid -->
+                    <div id="home-testimonials-grid"
+                        class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-6xl mx-auto">
+                        <!-- Review Card 1 -->
+                        <div
+                            class="bg-white rounded-3xl p-6 border border-outline-variant/30 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-1 text-amber-500">
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400 font-semibold">2 days ago</span>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed font-medium mb-6 italic">
+                                    "The hot stone therapy was sheer perfection. Sari's intuitive pressure melted away
+                                    months of shoulder tension. The herbal infusion tea at the end was such a thoughtful
+                                    touch."
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop"
+                                    class="w-10 h-10 rounded-full object-cover border border-[#50613f]/20"
+                                    alt="Eleanor Vance">
+                                <div>
+                                    <h4 class="font-serif text-xs font-bold text-slate-800">Eleanor Vance</h4>
+                                    <p class="text-[10px] text-slate-500 font-semibold">Healing Stone Therapy • Sari</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review Card 2 -->
+                        <div
+                            class="bg-white rounded-3xl p-6 border border-outline-variant/30 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-1 text-amber-500">
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400 font-semibold">1 week ago</span>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed font-medium mb-6 italic">
+                                    "As a marathon runner, chronic muscle knotting has always bothered me. Budi is truly
+                                    a master healer! Left the sanctuary feeling completely revitalized and light."
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
+                                    class="w-10 h-10 rounded-full object-cover border border-[#50613f]/20"
+                                    alt="Marcus Tan">
+                                <div>
+                                    <h4 class="font-serif text-xs font-bold text-slate-800">Marcus Tan</h4>
+                                    <p class="text-[10px] text-slate-500 font-semibold">Deep Tissue Therapy • Budi</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review Card 3 -->
+                        <div
+                            class="bg-white rounded-3xl p-6 border border-outline-variant/30 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center gap-1 text-amber-500">
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                        <span class="material-symbols-outlined text-sm fill-current">star</span>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400 font-semibold">2 weeks ago</span>
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed font-medium mb-6 italic">
+                                    "The serene atmosphere, soothing ambient music, and pure organic oils make this my
+                                    monthly sacred retreat. My skin has never glowed like this before."
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop"
+                                    class="w-10 h-10 rounded-full object-cover border border-[#50613f]/20"
+                                    alt="Aisha Rosli">
+                                <div>
+                                    <h4 class="font-serif text-xs font-bold text-slate-800">Aisha Rosli</h4>
+                                    <p class="text-[10px] text-slate-500 font-semibold">Botanical Facial • Dewi</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Awards Section -->
+            <div class="py-16 my-8 bg-surface-container-low" style="font-family:'Manrope',sans-serif;">
+                <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop text-center">
+                    <div class="max-w-2xl mx-auto mb-10">
+                        <span
+                            class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block mb-2"
+                            data-translate="awards_tag">Excellence & Recognition</span>
+                        <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#1E293B]"
+                            data-translate="awards_title">Award-Winning Traditional Chinese Medicine</h2>
+                        <p class="text-xs md:text-sm text-on-surface-variant leading-relaxed mt-2"
+                            data-translate="awards_desc">We are humbled to be recognized by leading wellness
+                            organizations for our commitment to holistic healing and exceptional service.</p>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-center opacity-80">
+                        <div
+                            class="flex flex-col items-center gap-3 grayscale hover:grayscale-0 transition-all duration-300">
+                            <span class="material-symbols-outlined text-4xl text-[#B45309]">workspace_premium</span>
+                            <span class="text-xs font-bold text-slate-700">Best Holistic Spa 2025</span>
+                        </div>
+                        <div
+                            class="flex flex-col items-center gap-3 grayscale hover:grayscale-0 transition-all duration-300">
+                            <span class="material-symbols-outlined text-4xl text-[#B45309]">military_tech</span>
+                            <span class="text-xs font-bold text-slate-700">Top Spa Awards 2024</span>
+                        </div>
+                        <div
+                            class="flex flex-col items-center gap-3 grayscale hover:grayscale-0 transition-all duration-300">
+                            <span class="material-symbols-outlined text-4xl text-[#B45309]">star</span>
+                            <span class="text-xs font-bold text-slate-700">5-Star Wellness Center</span>
+                        </div>
+                        <div
+                            class="flex flex-col items-center gap-3 grayscale hover:grayscale-0 transition-all duration-300">
+                            <span class="material-symbols-outlined text-4xl text-[#B45309]">diamond</span>
+                            <span class="text-xs font-bold text-slate-700">Luxury Spa Excellence</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 1B: USER DASHBOARD VIEW ==================== -->
+        <section id="view-dashboard" class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div id="dashboard-container" class="w-full">
+                <!-- Rendered dynamically by JS -->
+            </div>
+        </section>
+
+
+        <!-- ==================== VIEW: SERVICES CATALOG VIEW ==================== -->
+        <section id="view-services-catalog" class="view-section hidden">
+            <div id="services-catalog-container" class="w-full"></div>
+        </section>
+
+
+        <!-- ==================== VIEW 2: STEP 1: SELECT SERVICE ==================== -->
+        <section id="view-select-service"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop pt-8 pb-28 lg:py-8">
+            <div id="stepper-select-service"></div>
+            <div class="mb-8 text-center md:text-left">
+                <h1 class="font-display-lg text-2xl md:text-headline-lg text-[#1E293B] mb-2 font-bold font-serif"
+                    data-translate="step1_title">Select Service (Step 1)</h1>
+                <p class="font-body-sm text-xs text-on-surface-variant" data-translate="step1_subtitle">Discover the
+                    perfect treatment for your needs.</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-gutter">
+                <!-- Left Content -->
+                <div class="flex-grow flex flex-col gap-6">
+                    <!-- Tabs -->
+                    <div class="flex gap-3 overflow-x-auto pb-3 hide-scrollbar border-b border-outline-variant/20">
+                        <button id="cat-tab-all" onclick="filterServiceCategory('all')"
+                            class="cat-tab-btn px-5 py-2 rounded-full font-title-md text-xs whitespace-nowrap bg-primary/10 text-primary font-semibold border border-primary/20"
+                            data-translate="cat_all">All</button>
+                        <button id="cat-tab-signature" onclick="filterServiceCategory('signature')"
+                            class="cat-tab-btn px-5 py-2 rounded-full font-title-md text-xs whitespace-nowrap bg-surface-variant text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                            data-translate="cat_signature">Signature</button>
+                        <button id="cat-tab-massage" onclick="filterServiceCategory('massage')"
+                            class="cat-tab-btn px-5 py-2 rounded-full font-title-md text-xs whitespace-nowrap bg-surface-variant text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                            data-translate="cat_massage">Massage</button>
+                        <button id="cat-tab-facial" onclick="filterServiceCategory('facial')"
+                            class="cat-tab-btn px-5 py-2 rounded-full font-title-md text-xs whitespace-nowrap bg-surface-variant text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                            data-translate="cat_facial">Facial</button>
+                        <button id="cat-tab-body" onclick="filterServiceCategory('body')"
+                            class="cat-tab-btn px-5 py-2 rounded-full font-title-md text-xs whitespace-nowrap bg-surface-variant text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                            data-translate="cat_body">Body Treatments</button>
+                        <button id="cat-tab-packages" onclick="filterServiceCategory('packages')"
+                            class="cat-tab-btn px-5 py-2 rounded-full font-title-md text-xs whitespace-nowrap bg-surface-variant text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                            data-translate="cat_packages">Packages</button>
+                    </div>
+
+                    <!-- Services list container -->
+                    <div id="services-list-container" class="flex flex-col gap-4">
+                        <!-- Dynamic list -->
+                    </div>
+                </div>
+
+                <!-- Booking Summary (always visible: bottom on mobile, right sidebar on desktop) -->
+                <aside class="hidden lg:block w-full lg:w-[350px] shrink-0">
+                    <div id="booking-sidebar-summary" class="glass-panel rounded-xl p-6 lg:sticky lg:top-24">
+                        <!-- Dynamic summary rendering -->
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 3: STEP 2: SELECT THERAPIST ==================== -->
+        <section id="view-select-therapist"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop pt-8 pb-28 lg:py-8">
+            <div id="stepper-select-therapist"></div>
+            <div class="mb-8 text-center md:text-left">
+                <h1 class="font-display-lg text-2xl md:text-headline-lg text-[#1E293B] mb-2 font-bold font-serif"
+                    data-translate="step2_title">Select Your Therapist</h1>
+                <p class="font-body-sm text-xs text-on-surface-variant" data-translate="step2_subtitle">Choose from our
+                    experienced practitioners for your deeply relaxing session.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+                <!-- Left Column: Therapist Cards -->
+                <div class="lg:col-span-8">
+                    <div id="therapist-grid-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <!-- Dynamic list -->
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Sidebar Summary -->
+                <aside class="lg:col-span-4 hidden lg:block">
+                    <div id="booking-sidebar-summary-therapist" class="glass-panel rounded-xl p-6 sticky top-24">
+                        <!-- Dynamic summary rendering -->
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 4: STEP 3: SELECT DATE & TIME ==================== -->
+        <section id="view-select-time"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop pt-8 pb-28 lg:py-8">
+            <div class="mb-8 text-center md:text-left">
+                <h1 class="font-display-lg text-2xl md:text-headline-lg text-[#1E293B] mb-2 font-bold font-serif"
+                    data-translate="step3_title">New Reservation</h1>
+                <p class="font-body-sm text-xs text-on-surface-variant" data-translate="step3_subtitle">Follow the steps
+                    below to schedule your appointment.</p>
+            </div>
+            <div id="stepper-select-time"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+                <!-- Left Content Form -->
+                <div class="lg:col-span-8 space-y-6">
+                    <div class="glass-panel rounded-xl p-6 md:p-8">
+                        <h2 class="font-title-md text-base text-primary mb-6 flex items-center gap-2 font-semibold">
+                            <span class="material-symbols-outlined">calendar_month</span> Select Date &amp; Time
+                        </h2>
+
+                        <!-- Interactive Calendar UI -->
+                        <div class="mb-8 border border-outline-variant/30 rounded-xl p-4 bg-white/45">
+                            <div class="flex justify-between items-center mb-6">
+                                <button onclick="prevMonth()"
+                                    class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </button>
+                                <span id="calendar-month-text"
+                                    class="font-title-md text-base font-semibold text-[#1E293B]">October 2024</span>
+                                <button onclick="nextMonth()"
+                                    class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+                                    <span class="material-symbols-outlined">chevron_right</span>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-7 gap-2 text-center mb-2">
+                                <div class="font-label-caps text-[10px] text-outline uppercase font-semibold">Sun</div>
+                                <div class="font-label-caps text-[10px] text-outline uppercase font-semibold">Mon</div>
+                                <div class="font-label-caps text-[10px] text-outline uppercase font-semibold">Tue</div>
+                                <div class="font-label-caps text-[10px] text-outline uppercase font-semibold">Wed</div>
+                                <div class="font-label-caps text-[10px] text-outline uppercase font-semibold">Thu</div>
+                                <div class="font-label-caps text-[10px] text-outline uppercase font-semibold">Fri</div>
+                                <div class="font-label-caps text-[10px] text-outline uppercase font-semibold">Sat</div>
+                            </div>
+                            <div id="calendar-days-grid" class="grid grid-cols-7 gap-2 text-center">
+                                <!-- Calendar days generate dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Time Slots UI -->
+                        <div class="border-t border-outline-variant/30 pt-6">
+                            <div class="space-y-6">
+                                <div>
+                                    <h3
+                                        class="font-title-md text-xs font-bold text-on-surface-variant mb-3 uppercase tracking-wider">
+                                        Morning (09:00 - 12:00)</h3>
+                                    <div id="morning-slots-container" class="flex flex-wrap gap-3">
+                                        <!-- Morning slots generate here -->
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3
+                                        class="font-title-md text-xs font-bold text-on-surface-variant mb-3 uppercase tracking-wider">
+                                        Afternoon (13:00 - 18:00)</h3>
+                                    <div id="afternoon-slots-container" class="flex flex-wrap gap-3">
+                                        <!-- Afternoon slots generate here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Summary Sidebar -->
+                <aside class="lg:col-span-4 hidden lg:block">
+                    <div id="booking-sidebar-summary-time" class="glass-panel rounded-xl p-6 sticky top-24">
+                        <!-- We reuse the sidebar inside JS rendering -->
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 5: STEP 4: CONFIRM BOOKING ==================== -->
+        <section id="view-confirm-booking"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div id="stepper-confirm-booking"></div>
+            <div class="mb-8 text-center md:text-left">
+                <h1 class="font-display-lg text-2xl md:text-headline-lg text-[#1E293B] mb-2 font-bold font-serif"
+                    data-translate="step4_title">Review &amp; Confirm</h1>
+                <p class="font-body-sm text-xs text-on-surface-variant" data-translate="step4_subtitle">Please review
+                    your reservation details below before finalizing your booking.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+                <!-- Left Content Details -->
+                <div class="lg:col-span-8 space-y-8">
+                    <!-- Guest Details Card -->
+                    <section id="confirm-guest-container" class="glass-panel rounded-xl p-6 md:p-8">
+                        <!-- Rendered by JS -->
+                    </section>
+
+                    <!-- Payment Selector Card -->
+                    <section class="glass-panel rounded-xl p-6 md:p-8 relative z-20">
+                        <div class="flex items-center justify-between mb-6 border-b border-surface-variant pb-4">
+                            <h2 class="font-title-md text-base text-primary flex items-center gap-2 font-semibold">
+                                <span class="material-symbols-outlined text-primary">payment</span> Payment Method
+                            </h2>
+                        </div>
+                        <div id="payment-methods-container" class="flex flex-col gap-4">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Summary Sidebar -->
+                <aside class="lg:col-span-4">
+                    <div id="booking-sidebar-summary-confirm" class="glass-panel rounded-xl p-6 sticky top-24">
+                        <!-- Rendered by JS -->
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 6: SUCCESS VIEW ==================== -->
+        <section id="view-success" class="view-section hidden max-w-4xl mx-auto px-4 py-12 flex flex-col items-center">
+            <!-- Check Icon & Headline -->
+            <div class="text-center mb-8">
+                <div
+                    class="w-12 h-12 rounded-full bg-[#50613f]/10 flex items-center justify-center text-[#50613f] mx-auto mb-6">
+                    <span class="material-symbols-outlined text-2xl font-bold">check_circle</span>
+                </div>
+                <h1 class="font-display-lg text-3xl md:text-4xl text-[#1E293B] mb-3 font-bold font-serif"
+                    data-translate="success_title">Your Tranquil Journey is Confirmed!</h1>
+                <p class="font-body-sm text-xs text-on-surface-variant max-w-md mx-auto"
+                    data-translate="success_subtitle">We look forward to welcoming you to your sanctuary of peace. Your
+                    reservation details are below.</p>
+            </div>
+
+            <!-- Reservation Card (2 columns on desktop) -->
+            <div id="success-details-card" class="w-full glass-panel rounded-2xl p-6 md:p-8 mb-12">
+                <!-- Rendered Dynamically by JS -->
+            </div>
+
+            <!-- Preparation Tips Section -->
+            <div class="w-full mb-12">
+                <h2 class="font-display-lg text-xl text-[#1E293B] mb-6 font-bold font-serif text-left"
+                    data-translate="prep_tips_title">Preparation Tips</h2>
+                <div class="grid grid-cols-2 gap-6">
+                    <!-- Tip 1 -->
+                    <div class="glass-panel rounded-xl p-6 flex flex-col items-center text-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-[#50613f]/5 flex items-center justify-center text-[#50613f] mb-4">
+                            <span class="material-symbols-outlined">schedule</span>
+                        </div>
+                        <h3 class="font-title-md text-sm font-semibold text-[#1E293B] mb-2" data-translate="tip1_title">
+                            Arrive Early</h3>
+                        <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed"
+                            data-translate="tip1_desc">Please arrive 15 minutes before your treatment to complete intake
+                            and unwind.</p>
+                    </div>
+                    <!-- Tip 2 -->
+                    <div class="glass-panel rounded-xl p-6 flex flex-col items-center text-center">
+                        <div
+                            class="w-10 h-10 rounded-full bg-[#50613f]/5 flex items-center justify-center text-[#50613f] mb-4">
+                            <span class="material-symbols-outlined">water_drop</span>
+                        </div>
+                        <h3 class="font-title-md text-sm font-semibold text-[#1E293B] mb-2" data-translate="tip2_title">
+                            Stay Hydrated</h3>
+                        <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed"
+                            data-translate="tip2_desc">Drink plenty of water before and after your deep tissue session.
+                        </p>
+                    </div>
+                    <!-- Tip 3 -->
+                    <div
+                        class="glass-panel rounded-xl p-6 flex flex-col items-center text-center col-span-2 mx-auto max-w-md w-full">
+                        <div
+                            class="w-10 h-10 rounded-full bg-[#50613f]/5 flex items-center justify-center text-[#50613f] mb-4">
+                            <span class="material-symbols-outlined">notifications_off</span>
+                        </div>
+                        <h3 class="font-title-md text-sm font-semibold text-[#1E293B] mb-2" data-translate="tip3_title">
+                            Unplug</h3>
+                        <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed"
+                            data-translate="tip3_desc">We encourage silencing your devices to fully immerse in the
+                            experience.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Return Home Link -->
+            <button onclick="resetBookingFlow()"
+                class="flex items-center gap-2 text-xs font-semibold text-[#50613f] hover:underline transition-all">
+                <span class="material-symbols-outlined text-sm">arrow_back</span> <span
+                    data-translate="btn_return_home">Return to Home</span>
+            </button>
+        </section>
+
+        <!-- ==================== VIEW 7: PROFILE VIEW ==================== -->
+        <section id="view-profile"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div id="profile-container" class="w-full">
+                <!-- Rendered Dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 8: WALLET VIEW ==================== -->
+        <section id="view-wallet"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div id="wallet-container" class="w-full">
+                <!-- Rendered Dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 9: TOP-UP VIEW ==================== -->
+        <section id="view-topup" class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div id="topup-container" class="w-full">
+                <!-- Rendered Dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 10: PERSONAL DETAILS VIEW ==================== -->
+        <section id="view-personal-details"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div id="personal-details-container" class="w-full">
+                <!-- Rendered Dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 11: BOOKING HISTORY VIEW ==================== -->
+        <section id="view-booking-history"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div id="booking-history-container" class="w-full">
+                <!-- Rendered Dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 12: NOTIFICATIONS VIEW ==================== -->
+        <section id="view-notifications"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div id="notifications-container" class="w-full">
+                <!-- Rendered Dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== VIEW: BLOG VIEW ==================== -->
+        <section id="view-blog" class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8"
+            style="font-family:'Manrope',sans-serif;">
+            <div class="text-center max-w-2xl mx-auto mb-12 animate-fade-in">
+                <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block mb-2"
+                    data-translate="blog_subtitle">Wellness Insights</span>
+                <h1 class="font-serif text-3xl md:text-4xl text-[#1E293B] font-black tracking-tight"
+                    data-translate="blog_title">Yong Kang TCM &amp; Acupuncture Journal</h1>
+                <p class="text-xs text-on-surface-variant leading-relaxed mt-2" data-translate="blog_desc">Explore our
+                    curated collection of articles, tips, and insights on holistic wellness, skincare, and spa
+                    treatments.</p>
+            </div>
+
+            <!-- Blog Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Blog Card 1 -->
+                <div
+                    class="bg-white rounded-3xl overflow-hidden border border-outline-variant/35 shadow-sm hover:shadow-md transition-all flex flex-col h-full group">
+                    <div class="relative overflow-hidden aspect-video bg-slate-100">
+                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=600&auto=format&fit=crop"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            alt="Meditation and Relaxation">
+                        <span
+                            class="absolute top-4 left-4 bg-[#50613f] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Mindfulness</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow text-left">
+                        <span class="text-[10px] text-slate-400 font-bold mb-2">October 24, 2025 • 5 min read</span>
+                        <h3
+                            class="font-serif text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#50613f] transition-colors">
+                            The Science of Relaxation: How Spa Treatments Lower Cortisol</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-6">Discover how professional
+                            massage and spa therapies trigger your parasympathetic nervous system, actively lowering
+                            cortisol levels and reducing chronic stress.</p>
+                        <button onclick="openBlogArticle(1)"
+                            class="mt-auto flex items-center gap-1.5 text-xs font-bold text-[#50613f] hover:underline self-start cursor-pointer">
+                            Read Full Article <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Blog Card 2 -->
+                <div
+                    class="bg-white rounded-3xl overflow-hidden border border-outline-variant/35 shadow-sm hover:shadow-md transition-all flex flex-col h-full group">
+                    <div class="relative overflow-hidden aspect-video bg-slate-100">
+                        <img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=600&auto=format&fit=crop"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            alt="Spa Therapy Selection">
+                        <span
+                            class="absolute top-4 left-4 bg-[#B45309] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Therapy
+                            Guide</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow text-left">
+                        <span class="text-[10px] text-slate-400 font-bold mb-2">October 18, 2025 • 4 min read</span>
+                        <h3
+                            class="font-serif text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#50613f] transition-colors">
+                            Deep Tissue vs. Aromatherapy: Which Massage is Right for You?</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-6">Struggling to choose between
+                            muscle-release pressure and sensory relaxation? We break down the structural and holistic
+                            differences to help you select the ideal treatment.</p>
+                        <button onclick="openBlogArticle(2)"
+                            class="mt-auto flex items-center gap-1.5 text-xs font-bold text-[#50613f] hover:underline self-start cursor-pointer">
+                            Read Full Article <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Blog Card 3 -->
+                <div
+                    class="bg-white rounded-3xl overflow-hidden border border-outline-variant/35 shadow-sm hover:shadow-md transition-all flex flex-col h-full group">
+                    <div class="relative overflow-hidden aspect-video bg-slate-100">
+                        <img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=600&auto=format&fit=crop"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            alt="Post-Spa Aftercare">
+                        <span
+                            class="absolute top-4 left-4 bg-[#50613f] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Wellness
+                            Tips</span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow text-left">
+                        <span class="text-[10px] text-slate-400 font-bold mb-2">October 12, 2025 • 6 min read</span>
+                        <h3
+                            class="font-serif text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#50613f] transition-colors">
+                            Post-Spa Aftercare: 5 Habits to Maximize Treatment Benefits</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-6">Your relaxation shouldn't
+                            end when you walk out the door. Learn the critical steps to hydrate, rest, and care for your
+                            skin to prolong the positive effects of your spa session.</p>
+                        <button onclick="openBlogArticle(3)"
+                            class="mt-auto flex items-center gap-1.5 text-xs font-bold text-[#50613f] hover:underline self-start cursor-pointer">
+                            Read Full Article <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </section>
+
+        <!-- ==================== VIEW: ABOUT VIEW ==================== -->
+        <section id="view-about" class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8"
+            style="font-family:'Manrope',sans-serif;">
+            <div class="text-center mb-12">
+                <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block mb-2"
+                    data-translate="about_tag">Our Story</span>
+                <h1 class="font-serif text-3xl md:text-4xl text-[#1E293B] font-black tracking-tight"
+                    data-translate="about_title">Yong Kang TCM & Acupuncture</h1>
+                <p class="text-xs md:text-sm text-on-surface-variant leading-relaxed mt-4 max-w-2xl mx-auto"
+                    data-translate="about_desc">Established in 2024, Yong Kang TCM & Acupuncture was born from a simple
+                    belief: that everyone deserves a moment of absolute peace. Our sanctuary is a haven in the bustling
+                    city, designed to harmonize your body, mind, and spirit through holistic treatments and expert care.
+                </p>
+            </div>
+
+            <div class="mb-12">
+                <h2 class="font-serif text-2xl text-[#1E293B] font-bold text-center mb-8"
+                    data-translate="about_team_title">Meet Our Therapists</h2>
+                <div id="about-therapists-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <!-- Therapists will be dynamically rendered here -->
+                </div>
+            </div>
+        </section>
+        <!-- ==================== VIEW: CONTACT VIEW ==================== -->
+        <section id="view-contact"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8"
+            style="font-family:'Manrope',sans-serif;">
+            <div class="text-center max-w-2xl mx-auto mb-12 animate-fade-in">
+                <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block mb-2"
+                    data-translate="contact_tag">Get In Touch</span>
+                <h1 class="font-serif text-3xl md:text-4xl text-[#1E293B] font-black tracking-tight"
+                    data-translate="contact_title">We'd Love to Hear From You</h1>
+                <p class="text-xs text-on-surface-variant leading-relaxed mt-2" data-translate="contact_desc">Whether
+                    you have a question about treatments, bookings, or anything else, our team is ready to answer all
+                    your questions.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
+                <div class="flex flex-col gap-8">
+                    <div
+                        class="bg-white p-6 rounded-3xl shadow-sm border border-outline-variant/30 flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-2xl">location_on</span>
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-base font-bold text-slate-800 mb-1">Our Sanctuary</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">Kuala Lumpur City Centre,<br>50088 Kuala
+                                Lumpur,<br>Malaysia</p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white p-6 rounded-3xl shadow-sm border border-outline-variant/30 flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-2xl">mail</span>
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-base font-bold text-slate-800 mb-1">Email Us</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">
+                                hello@serenitysoul.com<br>support@serenitysoul.com</p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white p-6 rounded-3xl shadow-sm border border-outline-variant/30 flex items-start gap-4">
+                        <div
+                            class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-2xl">phone</span>
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-base font-bold text-slate-800 mb-1">Call Us</h3>
+                            <p class="text-xs text-slate-500 leading-relaxed">+60 3-1234 5678<br>Mon-Sun, 9:00 AM - 8:00
+                                PM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl shadow-md border border-outline-variant/30">
+                    <h3 class="font-serif text-2xl font-bold text-slate-800 mb-6">Send a Message</h3>
+                    <form id="contact-form"
+                        onsubmit="event.preventDefault(); window.submitContactForm && window.submitContactForm();"
+                        class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-1">
+                            <label
+                                class="font-label-caps text-[9px] text-outline font-bold uppercase tracking-wider">Your
+                                Name</label>
+                            <input type="text" id="contact-name" required placeholder="Jane Doe"
+                                class="px-4 py-3 rounded-xl border border-outline-variant/60 focus:outline-none focus:border-primary text-xs text-on-surface">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label
+                                class="font-label-caps text-[9px] text-outline font-bold uppercase tracking-wider">Email
+                                Address</label>
+                            <input type="email" id="contact-email" required placeholder="jane@example.com"
+                                class="px-4 py-3 rounded-xl border border-outline-variant/60 focus:outline-none focus:border-primary text-xs text-on-surface">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label
+                                class="font-label-caps text-[9px] text-outline font-bold uppercase tracking-wider">Subject</label>
+                            <input type="text" id="contact-subject" required placeholder="How can we help?"
+                                class="px-4 py-3 rounded-xl border border-outline-variant/60 focus:outline-none focus:border-primary text-xs text-on-surface">
+                        </div>
+                        <div class="flex flex-col gap-1 mb-2">
+                            <label
+                                class="font-label-caps text-[9px] text-outline font-bold uppercase tracking-wider">Message</label>
+                            <textarea id="contact-message" required rows="4" placeholder="Your message here..."
+                                class="px-4 py-3 rounded-xl border border-outline-variant/60 focus:outline-none focus:border-primary text-xs text-on-surface resize-none"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-primary hover:bg-[#3e4b30] text-white py-3 rounded-xl font-bold text-xs shadow-sm transition-colors">Send
+                            Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 13: PRIVACY & SECURITY VIEW ==================== -->
+        <section id="view-privacy-security"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div id="privacy-security-container" class="w-full">
+                <!-- Rendered Dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 15: BOOK PACKAGE SESSION VIEW ==================== -->
+        <section id="view-book-package"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div id="book-package-container" class="w-full">
+                <!-- Rendered Dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 20: RESCHEDULE VIEW ==================== -->
+        <section id="view-reschedule"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div id="reschedule-container" class="w-full">
+                <!-- Rendered Dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 16: ACTIVE PACKAGES VIEW ==================== -->
+        <section id="view-active-packages"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div class="mb-8 flex items-center justify-between">
+                <div>
+                    <h1 class="font-serif text-3xl text-[#1E293B] font-bold mb-1">My Active Packages</h1>
+                    <p class="font-body-sm text-xs text-on-surface-variant">View and manage your purchased massage
+                        packages and facial sessions.</p>
+                </div>
+                <button onclick="navigateTo('home')"
+                    class="px-4 py-2 rounded-xl border border-outline hover:bg-slate-50 text-secondary font-bold text-xs flex items-center gap-1 transition-colors">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span> Back to Home
+                </button>
+            </div>
+            <div id="all-active-packages-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Rendered Dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 14: ALL SERVICES & PACKAGES VIEW ==================== -->
+        <section id="view-all-services"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div id="all-services-container" class="w-full">
+                <!-- Rendered Dynamically by JS -->
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 17: FAQ VIEW ==================== -->
+        <section id="view-faq" class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div class="mb-8 flex items-center justify-between">
+                <div>
+                    <h1 class="font-serif text-3xl text-[#1E293B] font-bold mb-1">Frequently Asked Questions</h1>
+                    <p class="font-body-sm text-xs text-on-surface-variant">Find answers to common questions about our
+                        services and booking process.</p>
+                </div>
+                <button onclick="navigateTo('home')"
+                    class="px-4 py-2 rounded-xl border border-outline hover:bg-slate-50 text-secondary font-bold text-xs flex items-center gap-1 transition-colors">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span> Back to Home
+                </button>
+            </div>
+
+            <div class="space-y-4 max-w-3xl mx-auto">
+                <details
+                    class="group glass-panel rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden border border-outline-variant/30 cursor-pointer">
+                    <summary class="flex justify-between items-center font-bold text-sm text-[#1E293B]">
+                        <span>How do I book a spa treatment?</span>
+                        <span class="transition group-open:rotate-180"><span
+                                class="material-symbols-outlined">expand_more</span></span>
+                    </summary>
+                    <p class="mt-4 text-xs text-on-surface-variant leading-relaxed">
+                        Booking is simple! You can click "Book Now" in the navbar, select your preferred service, choose
+                        an available therapist, pick your desired date and time, and confirm. You can proceed without
+                        logging in initially, and you will only be asked to sign in or register at the final step to
+                        secure your reservation.
+                    </p>
+                </details>
+
+                <details
+                    class="group glass-panel rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden border border-outline-variant/30 cursor-pointer">
+                    <summary class="flex justify-between items-center font-bold text-sm text-[#1E293B]">
+                        <span>What is Clinic Wallet and how does it work?</span>
+                        <span class="transition group-open:rotate-180"><span
+                                class="material-symbols-outlined">expand_more</span></span>
+                    </summary>
+                    <p class="mt-4 text-xs text-on-surface-variant leading-relaxed">
+                        Clinic Wallet is your prepaid credit account in our app. You can top up your wallet with
+                        custom amounts, and use it to instantly pay for spa treatments and packages at checkout. It
+                        makes booking fast and secure.
+                    </p>
+                </details>
+
+                <details
+                    class="group glass-panel rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden border border-outline-variant/30 cursor-pointer">
+                    <summary class="flex justify-between items-center font-bold text-sm text-[#1E293B]">
+                        <span>How do Session Packages work?</span>
+                        <span class="transition group-open:rotate-180"><span
+                                class="material-symbols-outlined">expand_more</span></span>
+                    </summary>
+                    <p class="mt-4 text-xs text-on-surface-variant leading-relaxed">
+                        We offer packages of 10 sessions for signature treatments like Aromatherapy Massage and Radiance
+                        Facials. Once purchased, these packages will appear in the "Your Active Packages" section on
+                        your Home dashboard. You can click "Use Package" at any time to instantly schedule a session
+                        from your remaining quota.
+                    </p>
+                </details>
+
+                <details
+                    class="group glass-panel rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden border border-outline-variant/30 cursor-pointer">
+                    <summary class="flex justify-between items-center font-bold text-sm text-[#1E293B]">
+                        <span>What is the cancellation policy?</span>
+                        <span class="transition group-open:rotate-180"><span
+                                class="material-symbols-outlined">expand_more</span></span>
+                    </summary>
+                    <p class="mt-4 text-xs text-on-surface-variant leading-relaxed">
+                        You can cancel or reschedule your reservation up to 24 hours before your scheduled treatment
+                        time directly from your Booking History profile. Cancellations made within 24 hours of the
+                        appointment may incur a late cancellation fee.
+                    </p>
+                </details>
+
+                <details
+                    class="group glass-panel rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden border border-outline-variant/30 cursor-pointer">
+                    <summary class="flex justify-between items-center font-bold text-sm text-[#1E293B]">
+                        <span>Do I need to select a specific therapist?</span>
+                        <span class="transition group-open:rotate-180"><span
+                                class="material-symbols-outlined">expand_more</span></span>
+                    </summary>
+                    <p class="mt-4 text-xs text-on-surface-variant leading-relaxed">
+                        No, selecting a specific therapist is optional. If you choose "No Preference", the system will
+                        automatically allocate your booking to the next available specialist for your chosen time slot.
+                    </p>
+                </details>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 18: HOW TO USE VIEW ==================== -->
+        <section id="view-how-to-use"
+            class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div class="mb-8 flex items-center justify-between">
+                <div>
+                    <h1 class="font-serif text-3xl text-[#1E293B] font-bold mb-1">How to Use</h1>
+                    <p class="font-body-sm text-xs text-on-surface-variant">Learn how to easily navigate our spa booking
+                        system and packages.</p>
+                </div>
+                <button onclick="navigateTo('home')"
+                    class="px-4 py-2 rounded-xl border border-outline hover:bg-slate-50 text-secondary font-bold text-xs flex items-center gap-1 transition-colors">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span> Back to Home
+                </button>
+            </div>
+
+            <div class="max-w-4xl mx-auto space-y-12">
+                <!-- Step grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="glass-panel rounded-3xl p-8 flex gap-6 items-start">
+                        <div
+                            class="w-12 h-12 rounded-2xl bg-[#50613f] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
+                            1</div>
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-[#1E293B] mb-2">Browse and Pick Service</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                Go to the Service catalog or explore our featured packages. Choose from massage
+                                treatments, rejuvenating skin therapies, body wraps, or pre-purchased bundles.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-3xl p-8 flex gap-6 items-start">
+                        <div
+                            class="w-12 h-12 rounded-2xl bg-[#50613f] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
+                            2</div>
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-[#1E293B] mb-2">Select Your Therapist</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                View available specialists and select one that fits your treatment. Or choose "No
+                                Preference" if you want the first available professional.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-3xl p-8 flex gap-6 items-start">
+                        <div
+                            class="w-12 h-12 rounded-2xl bg-[#50613f] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
+                            3</div>
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-[#1E293B] mb-2">Pick Date and Time</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                Our calendar dynamically displays available time slots based on your selected
+                                therapist's schedule and the duration of your treatment. Choose what fits your day.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-3xl p-8 flex gap-6 items-start">
+                        <div
+                            class="w-12 h-12 rounded-2xl bg-[#50613f] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
+                            4</div>
+                        <div>
+                            <h3 class="font-serif text-lg font-bold text-[#1E293B] mb-2">Confirm and Secure</h3>
+                            <p class="text-xs text-on-surface-variant leading-relaxed">
+                                Review your details at the confirmation step. When you click confirm, you will be
+                                prompted to log in or register. Once authenticated, your booking is securely saved!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package Guide -->
+                <div class="glass-panel rounded-3xl p-8 md:p-10 border border-primary/20 bg-primary-fixed/10">
+                    <h3 class="font-serif text-xl font-bold text-primary mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined">stars</span> Using Purchased Multi-Session Packages
+                    </h3>
+                    <p class="text-xs text-on-surface-variant leading-relaxed mb-6">
+                        Purchasing a package saves you money and credits your account with 10 sessions. Here is how you
+                        schedule them:
+                    </p>
+                    <ol class="list-decimal list-inside space-y-3 text-xs text-on-surface-variant">
+                        <li>Ensure you are logged into your account.</li>
+                        <li>On the Home page, look at the <strong>"Your Active Packages"</strong> widget.</li>
+                        <li>Click <strong>"Use Package"</strong> next to the package you wish to schedule.</li>
+                        <li>Pick a date and time slot. Your session will be booked immediately, deducting one session
+                            from your active package balance without requiring checkout payment.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== VIEW 19: LEGAL AGREEMENT VIEW ==================== -->
+        <section id="view-legal" class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
+            <div class="mb-8 flex items-center justify-between">
+                <div>
+                    <h1 class="font-serif text-3xl text-[#1E293B] font-bold mb-1">Terms & Legal Agreements</h1>
+                    <p class="font-body-sm text-xs text-on-surface-variant">Read our privacy policies, guidelines, and
+                        terms of services.</p>
+                </div>
+                <button onclick="navigateTo('home')"
+                    class="px-4 py-2 rounded-xl border border-outline hover:bg-slate-50 text-secondary font-bold text-xs flex items-center gap-1 transition-colors">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span> Back to Home
+                </button>
+            </div>
+
+            <div class="max-w-3xl mx-auto glass-panel rounded-3xl p-8 md:p-10 space-y-8 text-on-surface-variant">
+                <div class="space-y-3">
+                    <h2 class="font-serif text-lg font-bold text-[#1E293B]">1. Terms of Service</h2>
+                    <p class="text-xs leading-relaxed">
+                        Welcome to Yong Kang TCM & Acupuncture. By accessing our application and booking our services, you agree to
+                        comply with and be bound by the following terms. All bookings are subject to availability and
+                        therapist schedules.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="font-serif text-lg font-bold text-[#1E293B]">2. Privacy Policy</h2>
+                    <p class="text-xs leading-relaxed">
+                        We value your privacy. We collect guest details (name, email, phone number) only to manage your
+                        appointments, wallet, and notification history. Your credit card information is processed
+                        securely through simulated payment networks and is not stored or shared.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="font-serif text-lg font-bold text-[#1E293B]">3. Wallet and Refund Policies</h2>
+                    <p class="text-xs leading-relaxed">
+                        The Clinic Wallet is a simulated account for interactive prototype testing. Funds loaded onto
+                        the wallet are for demonstration purposes and cannot be redeemed for real currency.
+                        Re-scheduling is permitted up to 24 hours prior to appointment time. Late cancellations may be
+                        subject to a fee.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h2 class="font-serif text-lg font-bold text-[#1E293B]">4. Safety and Health Guidelines</h2>
+                    <p class="text-xs leading-relaxed">
+                        Guests are required to disclose any health issues, allergies, or physical sensitivities in the
+                        "special requests" field when finalizing their reservation. We prioritize guest comfort and
+                        safety at all times.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="w-full py-12 px-6 md:px-margin-desktop bg-surface-container-highest border-t border-outline-variant/30 text-primary font-body-sm text-xs mt-auto">
+        <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start gap-8">
+            <div class="mb-6 md:mb-0">
+                <div class="font-headline-lg text-lg text-primary mb-3 font-semibold">Yong Kang TCM &amp; Acupuncture</div>
+                <p class="text-on-surface-variant" data-translate="footer_rights">© 2024 Yong Kang TCM &amp; Acupuncture. All Rights
+                    Reserved.</p>
+            </div>
+            <div class="flex flex-wrap gap-8 md:gap-16">
+                <div class="flex flex-col gap-3">
+                    <span class="font-bold text-[10px] uppercase tracking-wider text-outline">Information</span>
+                    <a onclick="navigateTo('faq')" class="hover:underline cursor-pointer">FAQs</a>
+                    <a onclick="navigateTo('how-to-use')" class="hover:underline cursor-pointer">How to Use</a>
+                    <a onclick="navigateTo('legal')" class="hover:underline cursor-pointer">Terms & Agreements</a>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <span class="font-bold text-[10px] uppercase tracking-wider text-outline"
+                        data-translate="footer_location">Our Location</span>
+                    <div
+                        class="rounded-xl overflow-hidden shadow-sm border border-outline-variant/30 w-[180px] h-[100px] md:w-[220px] md:h-[120px]">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.784992523293!2d101.69176317454932!3d3.1517983535560662!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc37d12d62d667%3A0x6b7d34190c1f6ec0!2sKuala%20Lumpur%20City%20Centre%2C%2050088%20Kuala%20Lumpur%2C%20Federal%20Territory%20of%20Kuala%20Lumpur%2C%20Malaysia!5e0!3m2!1sen!2s!4v1717904000000!5m2!1sen!2s"
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== DIALOG/MODAL: PAYMENT METHODS ==================== -->
+    <div id="modal-payment-methods"
+        class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-50 flex items-center justify-center hidden transition-opacity duration-300">
+        <div
+            class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-xl border border-outline-variant/30 transition-transform duration-300 flex flex-col gap-6">
+            <div class="flex justify-between items-center pb-4 border-b border-outline-variant/20">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">credit_card</span>
+                    <h3 class="font-serif text-lg text-[#1E293B] font-bold">Saved Payment Methods</h3>
+                </div>
+                <button onclick="closePaymentMethodsModal()"
+                    class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors">
+                    <span class="material-symbols-outlined text-base">close</span>
+                </button>
+            </div>
+
+            <!-- Cards list -->
+            <div id="saved-cards-list" class="flex flex-col gap-3 max-h-[220px] overflow-y-auto pr-1 hide-scrollbar">
+                <!-- Dynamically generated list of saved cards -->
+            </div>
+
+            <!-- Add new card button -->
+            <button onclick="showAddNewCardForm()" id="btn-add-card-toggle"
+                class="w-full py-2.5 border-2 border-dashed border-outline hover:border-primary text-secondary hover:text-primary rounded-2xl font-bold text-xs flex items-center justify-center gap-2 transition-colors">
+                <span class="material-symbols-outlined text-sm">add</span> Add Payment Method
+            </button>
+
+            <!-- Add new card form (hidden by default) -->
+            <form id="add-card-form"
+                class="hidden flex flex-col gap-4 border-t border-outline-variant/20 pt-4 animate-fade-in"
+                onsubmit="handleAddNewCard(event)">
+                <div class="flex flex-col gap-1">
+                    <label class="font-label-caps text-[9px] text-outline font-bold uppercase tracking-wider">Card
+                        Number</label>
+                    <input type="text" id="new-card-number" required placeholder="XXXX XXXX XXXX XXXX" maxlength="19"
+                        class="px-4 py-2.5 rounded-xl border border-outline-variant/60 focus:outline-none focus:border-primary text-xs text-on-surface">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-1">
+                        <label class="font-label-caps text-[9px] text-outline font-bold uppercase tracking-wider">Expiry
+                            Date</label>
+                        <input type="text" id="new-card-expiry" required placeholder="MM/YY" maxlength="5"
+                            class="px-4 py-2.5 rounded-xl border border-outline-variant/60 focus:outline-none focus:border-primary text-xs text-on-surface">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label
+                            class="font-label-caps text-[9px] text-outline font-bold uppercase tracking-wider">CVV</label>
+                        <input type="password" id="new-card-cvv" required placeholder="XXX" maxlength="3"
+                            class="px-4 py-2.5 rounded-xl border border-outline-variant/60 focus:outline-none focus:border-primary text-xs text-on-surface">
+                    </div>
+                </div>
+                <div class="flex gap-3 justify-end mt-2">
+                    <button type="button" onclick="hideAddNewCardForm()"
+                        class="px-4 py-2 rounded-xl border border-outline hover:bg-slate-50 font-bold text-xs text-secondary transition-colors">Cancel</button>
+                    <button type="submit"
+                        class="px-4 py-2 rounded-xl bg-primary hover:bg-[#3e4b30] font-bold text-xs text-white transition-all shadow-sm">Save
+                        Card</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== DIALOG/MODAL: QR CODE TICKET ==================== -->
+    <div id="modal-qr-ticket"
+        class="fixed inset-0 bg-black/60 backdrop-blur-[2px] z-50 flex items-center justify-center hidden transition-opacity duration-300">
+        <div
+            class="bg-white rounded-3xl p-6 md:p-8 max-w-2xl w-full mx-4 shadow-xl border border-outline-variant/30 transition-transform duration-300 flex flex-col relative">
+            <button onclick="closeQrTicketModal()"
+                class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors">
+                <span class="material-symbols-outlined text-base">close</span>
+            </button>
+            <div id="qr-ticket-modal-content" class="w-full">
+                <!-- Dynamically generated ticket details -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Connect elements to JS helpers -->
+    <script>
+        // Redirect sidebar targets to unified containers on state updates
+        function syncSidebarContainers() {
+            const activeView = state.currentView;
+            const source = document.getElementById('booking-sidebar-summary');
+            const targetTime = document.getElementById('booking-sidebar-summary-time');
+            const targetConfirm = document.getElementById('booking-sidebar-summary-confirm');
+
+            if (activeView === 'select-service' && source) {
+                // keep in main sidebar
+                source.classList.remove('hidden');
+            } else if (activeView === 'select-time' && targetTime && source) {
+                targetTime.appendChild(source);
+            } else if (activeView === 'confirm-booking' && targetConfirm && source) {
+                targetConfirm.appendChild(source);
+            }
+        }
+
+        // Add hook to navigateTo
+        const originalNavigateTo = window.navigateTo;
+        window.navigateTo = function (viewId) {
+            originalNavigateTo(viewId);
+            syncSidebarContainers();
+        };
+    </script>
+    <!-- ==================== USER LOGIN MODAL ==================== -->
+    <div id="user-login-modal"
+        style="display:none;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;">
+        <!-- Blur backdrop -->
+        <div onclick="closeLoginModal()"
+            style="position:absolute;inset:0;background:rgba(22,29,29,0.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);">
+        </div>
+        <!-- Modal card -->
+        <div
+            style="position:relative;z-index:1;width:100%;max-width:400px;margin:16px;background:rgba(255,255,255,0.92);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.6);border-radius:24px;box-shadow:0 24px 64px rgba(22,29,29,0.18);padding:36px 32px 28px;font-family:'Manrope',sans-serif;">
+            <!-- Close button -->
+            <button onclick="closeLoginModal()"
+                style="position:absolute;top:14px;right:14px;background:none;border:none;cursor:pointer;color:#75786e;display:flex;align-items:center;">
+                <span class="material-symbols-outlined" style="font-size:22px;">close</span>
+            </button>
+            <!-- Brand -->
+            <div style="text-align:center;margin-bottom:24px;">
+                <div id="login-modal-brand"
+                    style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#50613f;">
+                    Yong Kang TCM &amp; Acupuncture</div>
+                <div
+                    style="width:28px;height:2px;background:linear-gradient(90deg,#50613f,#fed65b);border-radius:2px;margin:8px auto 0;">
+                </div>
+            </div>
+            <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#161d1d;margin:0 0 4px;"
+                data-translate="login_modal_title">Welcome back</h2>
+            <p style="font-size:0.8rem;color:#75786e;margin:0 0 22px;" data-translate="login_modal_subtitle">Sign in to
+                book treatments and view your profile.</p>
+            <!-- Error -->
+            <div id="login-modal-error"
+                style="display:none;background:#ffdad6;color:#93000a;font-size:0.78rem;font-weight:600;padding:10px 14px;border-radius:10px;margin-bottom:14px;">
+            </div>
+            <!-- Form -->
+            <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:14px;">
+                <label
+                    style="font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Email</label>
+                <div style="position:relative;display:flex;align-items:center;">
+                    <span class="material-symbols-outlined"
+                        style="position:absolute;left:11px;font-size:17px;color:#75786e;pointer-events:none;">mail</span>
+                    <input id="lm-email" type="email" placeholder="your@email.com" data-translate="placeholder_email"
+                        autocomplete="email"
+                        style="width:100%;padding:10px 14px 10px 36px;border:1.5px solid rgba(197,200,188,0.6);border-radius:11px;font-family:'Manrope',sans-serif;font-size:0.88rem;color:#161d1d;background:rgba(255,255,255,0.7);outline:none;box-sizing:border-box;">
+                </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:20px;">
+                <label
+                    style="font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#45483f;">Password</label>
+                <div style="position:relative;display:flex;align-items:center;">
+                    <span class="material-symbols-outlined"
+                        style="position:absolute;left:11px;font-size:17px;color:#75786e;pointer-events:none;">lock</span>
+                    <input id="lm-password" type="password" placeholder="••••••••" data-translate="placeholder_password"
+                        autocomplete="current-password"
+                        style="width:100%;padding:10px 14px 10px 36px;border:1.5px solid rgba(197,200,188,0.6);border-radius:11px;font-family:'Manrope',sans-serif;font-size:0.88rem;color:#161d1d;background:rgba(255,255,255,0.7);outline:none;box-sizing:border-box;">
+                </div>
+            </div>
+            <button onclick="handleUserLogin()"
+                style="width:100%;padding:12px;background:#50613f;color:#fff;border:none;border-radius:11px;font-family:'Manrope',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:filter 0.2s;"
+                data-translate="btn_sign_in_now">Sign In</button>
+            <!-- Demo credentials -->
+            <div
+                style="margin-top:14px;padding:10px 12px;background:rgba(254,214,91,0.18);border:1px solid rgba(254,214,91,0.35);border-radius:10px;font-size:0.75rem;color:#5a4800;line-height:1.45;">
+                <strong>Note:</strong> You can click <strong>Sign In</strong> directly to log in without entering
+                anything.<br><br>
+                <strong>Demo Account:</strong><br>
+                Email: <strong>user@example.com</strong><br>
+                Password: <strong>password123</strong>
+            </div>
+            <!-- Divider -->
+            <div style="display:flex;align-items:center;gap:10px;margin:18px 0;">
+                <div style="flex:1;height:1px;background:rgba(197,200,188,0.5);"></div>
+                <span style="font-size:0.72rem;color:#75786e;">or</span>
+                <div style="flex:1;height:1px;background:rgba(197,200,188,0.5);"></div>
+            </div>
+            <p style="text-align:center;font-size:0.82rem;color:#45483f;margin:0;"><span
+                    data-translate="no_account_lbl">Don't have an account?</span> <a href="/register.html"
+                    style="color:#50613f;font-weight:700;text-decoration:none;"
+                    data-translate="btn_register">Register</a></p>
+        </div>
+    </div>
+    <script>
+        // Get active tenant
+        const lmUrlParams = new URLSearchParams(window.location.search);
+        const lmTenantId = lmUrlParams.get('tenant') || 'serenity';
+
+        // Initialize default demo user in localStorage
+        function initDemoUser() {
+            const usersKey = `${lmTenantId}_registered_users`;
+            const users = JSON.parse(localStorage.getItem(usersKey) || '[]');
+            const demoExists = users.some(u => u.email === 'user@example.com');
+            if (!demoExists) {
+                users.push({
+                    name: lmTenantId === 'serenity' ? 'Eleanor Vance' : 'Zenith Guest',
+                    email: 'user@example.com',
+                    phone: '+65 9123 4567',
+                    dob: '1994-08-14',
+                    gender: 'female',
+                    password: 'password123',
+                    createdAt: new Date().toISOString()
+                });
+                localStorage.setItem(usersKey, JSON.stringify(users));
+            }
+        }
+        initDemoUser();
+
+        window.handleUserLogin = function () {
+            const emailInput = document.getElementById('lm-email').value.trim();
+            const passwordInput = document.getElementById('lm-password').value;
+            const errorEl = document.getElementById('login-modal-error');
+
+            const usersKey = `${lmTenantId}_registered_users`;
+            const users = JSON.parse(localStorage.getItem(usersKey) || '[]');
+
+            let matchedUser = null;
+
+            // Look up input credentials
+            matchedUser = users.find(u => u.email.toLowerCase() === emailInput.toLowerCase() && u.password === passwordInput);
+
+            if (matchedUser) {
+                if (errorEl) errorEl.style.display = 'none';
+                localStorage.setItem(`${lmTenantId}_user_logged_in`, 'true');
+                localStorage.setItem(`${lmTenantId}_user_name`, matchedUser.name);
+                localStorage.setItem(`${lmTenantId}_user_email`, matchedUser.email);
+
+                // Clear inputs
+                document.getElementById('lm-email').value = '';
+                document.getElementById('lm-password').value = '';
+
+                if (window.onLoginSuccess) window.onLoginSuccess();
+            } else {
+                if (errorEl) {
+                    errorEl.textContent = "Incorrect email or password for this tenant.";
+                    errorEl.style.display = 'block';
+                }
+            }
+        }
+        // Allow Enter key to submit and apply dynamic branding
+        document.addEventListener('DOMContentLoaded', () => {
+            ['lm-email', 'lm-password'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') handleUserLogin(); });
+            });
+
+            // Dynamic branding update for User interface
+            document.title = `${currentTenant.name} - Traditional Chinese Medicine`;
+
+            // Update all text occurrences of Yong Kang TCM & Acupuncture in logos safely
+            const logoElements = document.querySelectorAll('nav div.font-headline-lg, footer div.font-headline-lg, #login-modal-brand');
+            logoElements.forEach(el => {
+                if (el.textContent.includes('Yong Kang TCM & Acupuncture') || el.textContent.includes('Yong Kang TCM &amp; Acupuncture')) {
+                    el.textContent = currentTenant.name;
+                }
+            });
+
+            const registerLink = document.querySelector('#user-login-modal a[href*="register.html"]');
+            if (registerLink) {
+                registerLink.setAttribute('href', `register.html?tenant=${lmTenantId}`);
+            }
+        });
+    </script>
+
+
+    <!-- Mobile Bottom Navigation Bar (Steps 1-3, Mobile Only) -->
+    <div id="mobile-bottom-nav"
+        class="fixed bottom-0 left-0 right-0 z-[9990] bg-white border-t border-slate-100 px-4 py-3 items-center gap-3 shadow-[0_-4px_24px_rgba(0,0,0,0.08)]"
+        style="font-family:'Manrope',sans-serif;">
+        <button id="mobile-back-btn"
+            class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-200 text-[#50613f] font-bold text-sm active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            Back
+        </button>
+        <button id="mobile-continue-btn"
+            class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#50613f] text-white font-bold text-sm hover:bg-[#3e4b30] active:scale-95 transition-all shadow-md">
+            Continue
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </button>
+    </div>
+
+
+    <!-- Floating WhatsApp Bot Button -->
+    <button onclick="window.openWABot && window.openWABot()"
+        class="fixed bottom-24 right-6 z-50 w-12 h-12 md:w-14 md:h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:bg-[#20ba5a] hover:scale-105 active:scale-95 transition-all duration-300 group"
+        title="Expert System Chat">
+        <svg class="w-6 h-6 md:w-7 md:h-7 fill-current" viewBox="0 0 24 24">
+            <path
+                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.97C16.528 2.01 14.069.835 11.5.835c-5.441 0-9.87 4.372-9.874 9.802-.001 1.734.469 3.426 1.36 4.966L2.012 21.84l6.096-1.597.539.311zM16.91 14.88c-.27-.135-1.591-.785-1.838-.875-.246-.09-.426-.135-.606.135-.18.27-.696.875-.853 1.053-.157.178-.315.202-.585.067-.27-.135-1.14-.42-2.172-1.341-.803-.715-1.344-1.6-1.502-1.87-.157-.271-.017-.417.118-.552.122-.121.27-.315.405-.471.135-.158.18-.27.27-.45.09-.18.045-.337-.023-.472-.067-.135-.606-1.458-.83-2.001-.219-.527-.44-.455-.606-.464-.157-.008-.337-.008-.517-.008-.18 0-.472.067-.719.337-.247.27-.942.921-.942 2.247 0 1.326.966 2.607 1.101 2.787.135.18 1.902 2.904 4.607 4.069.643.277 1.145.443 1.536.567.646.206 1.233.177 1.697.108.517-.077 1.591-.65 1.816-1.277.225-.628.225-1.166.157-1.277-.067-.111-.247-.202-.517-.337z" />
+        </svg>
+        <!-- Tooltip -->
+        <span
+            class="absolute right-16 bg-slate-800 text-white text-[10px] font-bold py-1.5 px-3 rounded-lg shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            Expert System
+        </span>
+    </button>
+
+    <!-- Blog Detail Modal -->
+    <div id="blog-article-modal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-[9999] flex items-center justify-center hidden p-4"
+        style="font-family:'Manrope',sans-serif;">
+        <div
+            class="bg-white rounded-3xl p-6 md:p-8 max-w-xl w-full mx-4 shadow-xl border border-outline-variant/30 flex flex-col gap-4 relative max-h-[85vh] overflow-hidden">
+            <button onclick="closeBlogArticle()"
+                class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors z-10 cursor-pointer">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="overflow-y-auto pr-2 flex flex-col gap-4 text-left">
+                <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-100 shrink-0">
+                    <img id="blog-modal-img" src="" class="w-full h-full object-cover" alt="Article Cover">
+                </div>
+                <div>
+                    <span id="blog-modal-meta" class="text-[10px] text-slate-400 font-bold block mb-1">Category</span>
+                    <h2 id="blog-modal-title"
+                        class="font-serif text-lg md:text-xl text-[#1E293B] font-bold leading-tight">Article Title</h2>
+                </div>
+                <div id="blog-modal-content" class="text-xs text-slate-600 leading-relaxed space-y-4 font-medium">
+                    <!-- Content populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Therapist Bio Modal -->
+    <div id="therapist-bio-modal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-[9999] flex items-center justify-center hidden p-4"
+        style="font-family:'Manrope',sans-serif;">
+        <div
+            class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-xl border border-outline-variant/30 flex flex-col gap-4 relative max-h-[88vh] overflow-hidden">
+            <button onclick="closeTherapistBio()"
+                class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors z-10 cursor-pointer">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="overflow-y-auto pr-1 flex flex-col gap-4 text-left">
+                <!-- Top Profile Header -->
+                <div class="flex items-center gap-4 pb-3 border-b border-slate-100">
+                    <div id="therapist-modal-img-container"
+                        class="w-16 h-16 rounded-2xl overflow-hidden shrink-0 border-2 border-[#50613f]/20 bg-slate-100 shadow-sm">
+                        <img id="therapist-modal-img" src="" class="w-full h-full object-cover" alt="Therapist Profile">
+                    </div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-1.5 mb-1">
+                            <span
+                                class="bg-[#50613f]/10 text-[#50613f] text-[9px] font-bold px-2 py-0.5 rounded-full uppercase"
+                                id="therapist-modal-role">Therapist</span>
+                            <span class="flex items-center gap-0.5 text-amber-500 font-bold text-xs"
+                                id="therapist-modal-rating">
+                                <span class="material-symbols-outlined text-sm">star</span> <span
+                                    id="therapist-modal-score">4.9</span>
+                            </span>
+                        </div>
+                        <h2 id="therapist-modal-name" class="font-serif text-lg font-bold text-slate-800">Siti Rahmawati
+                        </h2>
+                        <p id="therapist-modal-exp" class="text-[11px] text-slate-500 font-semibold mt-0.5">8+ Years
+                            Experience</p>
+                    </div>
+                </div>
+
+                <!-- Bio Paragraph -->
+                <div>
+                    <h4 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">About Practitioner
+                    </h4>
+                    <p id="therapist-modal-bio" class="text-xs text-slate-600 leading-relaxed font-medium">
+                        Siti is a master practitioner with over 8 years of dedicated experience in deep muscle therapy
+                        and sensory healing.
+                    </p>
+                </div>
+
+                <!-- Specialties Badges -->
+                <div>
+                    <h4 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Specialties</h4>
+                    <div id="therapist-modal-specialties" class="flex flex-wrap gap-1.5">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Certifications & Accreditations -->
+                <div>
+                    <h4 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Certifications</h4>
+                    <div id="therapist-modal-certs" class="space-y-1.5 text-xs text-slate-700">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="pt-2 border-t border-slate-100 flex gap-2 mt-1">
+                    <button onclick="closeTherapistBio()"
+                        class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-50 transition-all">
+                        Close
+                    </button>
+                    <button id="therapist-modal-select-btn"
+                        class="flex-1 py-2.5 rounded-xl bg-[#50613f] hover:bg-[#3e4b30] text-white font-bold text-xs transition-all shadow-md">
+                        Select Practitioner
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leave Review / Rate Treatment Modal -->
+    <div id="leave-review-modal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-[9999] flex items-center justify-center hidden p-4"
+        style="font-family:'Manrope',sans-serif;">
+        <div
+            class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-xl border border-outline-variant/30 flex flex-col gap-5 relative overflow-hidden">
+            <button onclick="closeLeaveReviewModal()"
+                class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors z-10 cursor-pointer">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="text-left">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-[#B45309] block mb-1">Feedback &amp;
+                    Rating</span>
+                <h2 class="font-serif text-xl font-bold text-slate-800">Rate Your Spa Experience</h2>
+                <p id="review-modal-subtitle" class="text-xs text-slate-500 font-medium mt-1">Share your experience for
+                    your completed treatment</p>
+            </div>
+
+            <!-- Star Rating Picker -->
+            <div class="flex flex-col items-center gap-2 py-3 bg-slate-50 rounded-2xl border border-slate-100">
+                <span class="text-xs font-bold text-slate-600">Overall Satisfaction</span>
+                <div id="review-star-picker" class="flex items-center gap-2 cursor-pointer text-amber-400">
+                    <button onclick="setReviewRating(1)" type="button"
+                        class="star-btn hover:scale-110 transition-transform"><span
+                            class="material-symbols-outlined text-3xl">star</span></button>
+                    <button onclick="setReviewRating(2)" type="button"
+                        class="star-btn hover:scale-110 transition-transform"><span
+                            class="material-symbols-outlined text-3xl">star</span></button>
+                    <button onclick="setReviewRating(3)" type="button"
+                        class="star-btn hover:scale-110 transition-transform"><span
+                            class="material-symbols-outlined text-3xl">star</span></button>
+                    <button onclick="setReviewRating(4)" type="button"
+                        class="star-btn hover:scale-110 transition-transform"><span
+                            class="material-symbols-outlined text-3xl">star</span></button>
+                    <button onclick="setReviewRating(5)" type="button"
+                        class="star-btn hover:scale-110 transition-transform"><span
+                            class="material-symbols-outlined text-3xl">star</span></button>
+                </div>
+                <span id="review-rating-label" class="text-[11px] font-bold text-[#50613f]">5.0 - Outstanding</span>
+            </div>
+
+            <!-- Review Textarea -->
+            <div class="text-left">
+                <label for="review-comments-input" class="block text-xs font-bold text-slate-700 mb-1">Your Review &amp;
+                    Comments</label>
+                <textarea id="review-comments-input" rows="3"
+                    class="w-full rounded-xl border border-slate-200 p-3 text-xs text-slate-800 focus:outline-none focus:border-[#50613f] resize-none"
+                    placeholder="Tell us about the therapist touch, room atmosphere, or any special moments..."></textarea>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-3 pt-2 border-t border-slate-100">
+                <button onclick="closeLeaveReviewModal()" type="button"
+                    class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-50 transition-all">
+                    Cancel
+                </button>
+                <button id="submit-review-btn" onclick="submitTreatmentReview()" type="button"
+                    class="flex-1 py-3 rounded-xl bg-[#50613f] hover:bg-[#3e4b30] text-white font-bold text-xs transition-all shadow-md">
+                    Submit Review
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancel Booking Confirmation Modal (Task 5) -->
+    <div id="cancel-booking-modal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-[99999] flex items-center justify-center hidden p-4"
+        style="font-family:'Manrope',sans-serif;">
+        <div
+            class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-xl border border-outline-variant/30 flex flex-col gap-5 relative overflow-hidden text-left">
+            <button onclick="closeCancelBookingModal()"
+                class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors z-10 cursor-pointer">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-200">
+                    <span class="material-symbols-outlined text-2xl">warning</span>
+                </div>
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 block">Cancellation
+                        Policy</span>
+                    <h2 class="font-serif text-lg font-bold text-slate-800">Cancel Reservation?</h2>
+                </div>
+            </div>
+            <div class="bg-amber-50/60 rounded-2xl p-4 border border-amber-200/60 space-y-2 text-xs">
+                <p id="cancel-modal-service-name" class="font-bold text-slate-800">Service Name</p>
+                <div class="flex justify-between text-slate-600">
+                    <span>50% Deposit Paid:</span>
+                    <span id="cancel-modal-deposit-amount" class="font-bold text-amber-800">MYR 0.00</span>
+                </div>
+                <div class="text-[11px] text-amber-800 leading-relaxed pt-2 border-t border-amber-200/60">
+                    ⚠️ <strong>Important Note:</strong> Cancellations made within 24 hours prior to your scheduled
+                    session will forfeit the 50% deposit amount.
+                </div>
+            </div>
+            <div class="flex gap-3 pt-2">
+                <button onclick="closeCancelBookingModal()" type="button"
+                    class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-50 transition-all">
+                    Keep Appointment
+                </button>
+                <button onclick="confirmCancelBooking()" type="button"
+                    class="flex-1 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-all shadow-md">
+                    Confirm & Forfeit Deposit
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Send E-Gift Card Modal (Task 6) -->
+    <div id="send-giftcard-modal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-[99999] flex items-center justify-center hidden p-4"
+        style="font-family:'Manrope',sans-serif;">
+        <div
+            class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full mx-4 shadow-xl border border-outline-variant/30 flex flex-col gap-5 relative overflow-hidden text-left">
+            <button onclick="closeSendGiftCardModal()"
+                class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors z-10 cursor-pointer">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-200">
+                    <span class="material-symbols-outlined text-2xl">card_giftcard</span>
+                </div>
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 block">Serenity E-Gift
+                        Card</span>
+                    <h2 class="font-serif text-lg font-bold text-slate-800">Send Gift Credit</h2>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Recipient Name</label>
+                    <input id="giftcard-recipient-name" type="text" placeholder="e.g. Sarah Jenkins"
+                        class="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#50613f]">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Recipient Email</label>
+                    <input id="giftcard-recipient-email" type="email" placeholder="sarah@example.com"
+                        class="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#50613f]">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Select Amount (MYR)</label>
+                    <div class="grid grid-cols-4 gap-2">
+                        <button onclick="setGiftAmount(25)" type="button"
+                            class="gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#50613f] hover:bg-[#50613f]/5 transition-all">MYR
+                            25</button>
+                        <button onclick="setGiftAmount(50)" type="button"
+                            class="gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#50613f] hover:bg-[#50613f]/5 transition-all">MYR
+                            50</button>
+                        <button onclick="setGiftAmount(100)" type="button"
+                            class="gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#50613f] hover:bg-[#50613f]/5 transition-all">MYR
+                            100</button>
+                        <button onclick="setGiftAmount(150)" type="button"
+                            class="gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#50613f] hover:bg-[#50613f]/5 transition-all">MYR
+                            150</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Personal Message</label>
+                    <textarea id="giftcard-message-input" rows="2" placeholder="Wishing you a peaceful spa day..."
+                        class="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#50613f] resize-none"></textarea>
+                </div>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button onclick="closeSendGiftCardModal()" type="button"
+                    class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-50 transition-all">
+                    Cancel
+                </button>
+                <button onclick="submitSendGiftCard()" type="button"
+                    class="flex-1 py-3 rounded-xl bg-[#50613f] hover:bg-[#3e4b30] text-white font-bold text-xs transition-all shadow-md flex items-center justify-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm">send</span> Send Gift Card
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Redeem Points (Clinic Health Rewards) -->
+    <div id="redeem-points-modal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 relative space-y-5">
+            <button onclick="closeRedeemPointsModal()"
+                class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1.5 rounded-full hover:bg-slate-100 transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-md">
+                    <span class="material-symbols-outlined text-2xl">stars</span>
+                </div>
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-amber-600 block">Clinic Health Rewards</span>
+                    <h2 class="font-serif text-lg font-bold text-slate-800">Redeem Points</h2>
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-600 leading-relaxed">
+                Tebus Mata Ganjaran Klinik anda untuk Kredit Dompet atau Pakej Rawatan Istimewa!
+            </p>
+
+            <div class="space-y-2.5">
+                <div class="p-3.5 rounded-2xl border border-amber-200 bg-amber-50/60 flex items-center justify-between">
+                    <div>
+                        <div class="font-bold text-xs text-slate-800">Voucher Kredit Dompet MYR 15</div>
+                        <div class="text-[10px] text-amber-700 font-semibold">Tukar 150 Pts → Tambah MYR 15 Saldo</div>
+                    </div>
+                    <button onclick="redeemRewardItem(150, 15, 'Wallet Credit MYR 15')"
+                        class="bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl hover:bg-amber-700 transition-all shadow-sm">
+                        Redeem
+                    </button>
+                </div>
+
+                <div class="p-3.5 rounded-2xl border border-amber-200 bg-amber-50/60 flex items-center justify-between">
+                    <div>
+                        <div class="font-bold text-xs text-slate-800">Free Hot Stone Upgrade</div>
+                        <div class="text-[10px] text-amber-700 font-semibold">Tukar 200 Pts → Tambah MYR 25 Saldo</div>
+                    </div>
+                    <button onclick="redeemRewardItem(200, 25, 'Hot Stone Upgrade Voucher')"
+                        class="bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl hover:bg-amber-700 transition-all shadow-sm">
+                        Redeem
+                    </button>
+                </div>
+
+                <div class="p-3.5 rounded-2xl border border-amber-200 bg-amber-50/60 flex items-center justify-between">
+                    <div>
+                        <div class="font-bold text-xs text-slate-800">Voucher Diskon MYR 50</div>
+                        <div class="text-[10px] text-amber-700 font-semibold">Tukar 400 Pts → Tambah MYR 50 Saldo</div>
+                    </div>
+                    <button onclick="redeemRewardItem(400, 50, 'VIP Discount MYR 50')"
+                        class="bg-amber-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl hover:bg-amber-700 transition-all shadow-sm">
+                        Redeem
+                    </button>
+                </div>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="closeRedeemPointsModal()" type="button"
+                    class="w-full py-3 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-50 transition-all">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Therapist Profile Modal -->
+    <div id="modal-therapist-profile" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeTherapistModal()"></div>
+
+        <!-- Modal Content -->
+        <div class="relative bg-white w-full max-w-2xl rounded-[32px] shadow-2xl overflow-hidden flex flex-col md:flex-row transform transition-all scale-95 opacity-0 duration-300"
+            id="therapist-modal-content">
+            <!-- Close Button -->
+            <button onclick="closeTherapistModal()"
+                class="absolute top-4 right-4 z-10 w-8 h-8 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white text-slate-800 transition-all shadow-sm">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+
+            <!-- Image Section -->
+            <div class="w-full md:w-5/12 h-64 md:h-auto relative shrink-0">
+                <img id="tp-image" src="" alt="Therapist" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-4 left-4 right-4">
+                    <h2 id="tp-name" class="font-serif text-2xl font-bold text-white mb-1">Name</h2>
+                    <p id="tp-role" class="text-[11px] font-bold text-white/80 uppercase tracking-wider">Role</p>
+                </div>
+            </div>
+
+            <!-- Details Section -->
+            <div class="w-full md:w-7/12 p-6 md:p-8 flex flex-col max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="flex items-center gap-1.5 bg-[#FACC15]/20 text-[#B45309] px-3 py-1.5 rounded-xl">
+                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                        <span id="tp-rating" class="text-xs font-bold">4.9</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 bg-slate-100 text-slate-600 px-3 py-1.5 rounded-xl">
+                        <span class="material-symbols-outlined text-[16px]">schedule</span>
+                        <span id="tp-experience" class="text-xs font-bold">5+ Years</span>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="font-serif text-base font-bold text-slate-800 mb-2">About</h3>
+                    <p id="tp-bio" class="text-xs text-slate-500 leading-relaxed">Biography goes here...</p>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="font-serif text-base font-bold text-slate-800 mb-3">Certifications</h3>
+                    <ul id="tp-certs" class="space-y-2 text-xs text-slate-600 font-medium">
+                        <!-- Certs injected here -->
+                    </ul>
+                </div>
+
+                <div class="mt-auto pt-6 border-t border-slate-100">
+                    <button id="tp-select-btn"
+                        class="w-full bg-[#50613f] hover:bg-[#3e4b30] text-white py-3 rounded-xl font-bold text-xs shadow-sm transition-colors flex items-center justify-center gap-2">
+                        Select Therapist <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Expert System Bot Modal -->
+    <div id="modal-wa-bot"
+        class="fixed inset-0 z-[100] hidden items-end sm:items-center justify-center sm:p-4 pointer-events-none">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm pointer-events-auto"
+            onclick="window.closeWABot && window.closeWABot()"></div>
+        <div id="wa-bot-content"
+            class="relative bg-[#efeae2] w-full h-full sm:h-auto sm:max-h-[85vh] sm:max-w-md sm:rounded-[24px] shadow-2xl overflow-hidden flex flex-col transform transition-all translate-y-full sm:translate-y-8 opacity-0 duration-300 pointer-events-auto border border-[#d1d7db]">
+            <!-- WA Header -->
+            <div class="bg-[#005c4b] text-white p-3 flex items-center gap-3 shrink-0">
+                <button onclick="window.closeWABot && window.closeWABot()"
+                    class="sm:hidden text-white flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+                </button>
+                <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0 overflow-hidden">
+                    <img src="https://ui-avatars.com/api/?name=Serenity+Bot&background=50613f&color=fff" alt="Bot"
+                        class="w-full h-full object-cover">
+                </div>
+                <div class="flex-grow">
+                    <h3 class="font-bold text-[15px] leading-tight">TCM Health Assistant</h3>
+                    <p class="text-[11px] text-white/80">Online</p>
+                </div>
+                <button onclick="window.closeWABot && window.closeWABot()"
+                    class="hidden sm:flex text-white hover:bg-white/10 p-1.5 rounded-full transition-colors">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
+            </div>
+
+            <!-- WA Chat Area -->
+            <div id="wa-chat-area"
+                class="flex-grow p-4 overflow-y-auto bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-cover flex flex-col gap-3 custom-scrollbar">
+                <!-- Messages injected here -->
+            </div>
+
+            <!-- WA Input Area -->
+            <div class="bg-[#f0f2f5] p-3 flex items-center gap-2 shrink-0 border-t border-[#d1d7db]">
+                <div class="flex-grow bg-white rounded-full px-4 py-2 flex items-center shadow-sm">
+                    <input type="text" id="wa-input" placeholder="Type a message (e.g. 1)"
+                        class="w-full bg-transparent outline-none text-[15px] text-[#111b21]"
+                        onkeypress="if(event.key === 'Enter') window.sendWAMessage && window.sendWAMessage()">
+                </div>
+                <button onclick="window.sendWAMessage && window.sendWAMessage()"
+                    class="w-10 h-10 rounded-full bg-[#00a884] text-white flex items-center justify-center hover:bg-[#008f6f] transition-colors shrink-0 shadow-sm">
+                    <span class="material-symbols-outlined text-[20px]">send</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./src/main.js"></script>
+</body>
+
+</html>

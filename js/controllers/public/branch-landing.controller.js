@@ -50,6 +50,11 @@ export class BranchLandingController {
       window.location.replace(fitnessUrl);
       return;
     }
+    if (this.selectedBranch && this.selectedBranch.template === "tcm") {
+      const tcmUrl = `../../templates/tcm/index.html?branch=${encodeURIComponent(this.selectedBranch.id)}`;
+      window.location.replace(tcmUrl);
+      return;
+    }
 
     // 2. Set DOM Body Theme Attribute for Instant CSS Theming
     if (this.templateConfig && this.templateConfig.id) {

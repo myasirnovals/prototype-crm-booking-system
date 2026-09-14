@@ -121,7 +121,7 @@ export class PatientBookingController {
     this.bookingDraft.branchAddress = this.selectedBranch.address;
     this.bookingDraft.currency = this.selectedBranch.currency;
 
-    this.renderPatientHeader(session.user);
+    this.renderPatientHeader(currentUser);
     this.renderBranchPills();
     this.initInteractiveMap();
     this.setupBranchPills();
@@ -134,7 +134,7 @@ export class PatientBookingController {
 
     this.setupStepNavigation();
     this.setupSlotChoices();
-    this.setupCheckoutAction(session.user);
+    this.setupCheckoutAction(currentUser);
 
     // Listen for template changes dispatched by Super Admin / Owner portal
     document.addEventListener("cliniva:templateChanged", (e) => {

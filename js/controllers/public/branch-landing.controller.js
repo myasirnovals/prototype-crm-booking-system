@@ -1,8 +1,8 @@
 /**
  * Cliniva — Public Branch Landing Page Controller (branch.html)
  * SOLID: Single Responsibility Principle for Public B2C Clinic Branch Storefront
- * Handles dynamic branch lookup, template theme auras, services & specialists display,
- * simulated prototype URL generation, and frictionless guest booking routing.
+ * Handles dynamic branch lookup, template theme auras (Wellness/Spa, Physio, Nutrition),
+ * services & specialists display, simulated prototype URL generation, and frictionless guest booking routing.
  */
 
 import { storageService } from "../../services/storage.service.js";
@@ -22,62 +22,112 @@ export class BranchLandingController {
   }
 
   init() {
-    // 1. Resolve Target Branch from URL Parameter or Default
+    // 1. Resolve Target Branch & Template from URL Parameters
     const urlParams = new URLSearchParams(window.location.search);
-    this.branchId = urlParams.get("branch") || "sg-orchard";
+    const targetParam = urlParams.get("branch") || urlParams.get("id");
+    const templateParam = urlParams.get("template");
 
-    this.loadBranchData(this.branchId);
+    this.loadBranchData(targetParam, templateParam);
 
-    // 2. Initialize Language Switcher & Reactive Translation Listener
+    // 2. Set DOM Body Theme Attribute for Instant CSS Theming
+    if (this.templateConfig && this.templateConfig.id) {
+      document.body.setAttribute("data-template", this.templateConfig.id);
+    }
+
+    // 3. Initialize Language Switcher & Reactive Translation Listener
     this.initLanguageSwitcher();
 
-    // 3. Render Dynamic UI Components
+    // 4. Render Dynamic UI Components
     this.renderAll();
 
-    // 4. Bind Interactive Events (Copy Link, QR Modal, etc.)
+    // 5. Bind Interactive Events (Copy Link, QR Modal, etc.)
     this.bindEvents();
 
-    console.info("[BranchLandingController] Initialized for branch:", this.selectedBranch?.id, "template:", this.templateConfig?.id);
+    console.info(
+      "[BranchLandingController] Initialized for branch:",
+      this.selectedBranch?.id,
+      "name:",
+      this.selectedBranch?.name,
+      "template:",
+      this.templateConfig?.id
+    );
   }
 
-  loadBranchData(targetBranchId) {
-    // Check stored branches (created by Owner or Super Admin)
+  loadBranchData(targetBranchId, templateOverride = null) {
     const storedBranches = storageService.get(this.BRANCHES_KEY, []);
     let match = null;
 
+    // A. Match target branch from stored branches (Owner / Super Admin created)
     if (Array.isArray(storedBranches) && storedBranches.length > 0) {
-      match = storedBranches.find((b) => b.id === targetBranchId);
+      if (targetBranchId) {
+        const cleanTarget = String(targetBranchId).trim().toLowerCase();
+        // Exact ID match
+        match = storedBranches.find((b) => b.id && b.id.toLowerCase() === cleanTarget);
+
+        // Slug / sanitized match
+        if (!match) {
+          match = storedBranches.find((b) => {
+            const slug = b.id ? b.id.toLowerCase().replace(/[^a-z0-9]/g, "-") : "";
+            const nameSlug = b.name ? b.name.toLowerCase().replace(/[^a-z0-9]/g, "-") : "";
+            return slug === cleanTarget || nameSlug.includes(cleanTarget) || cleanTarget.includes(nameSlug);
+          });
+        }
+      }
+
+      // If no target provided or not matched, check active branch ID or fallback to first stored branch
+      if (!match) {
+        const activeBranchId = storageService.get("cliniva_active_branch_id", null);
+        if (activeBranchId) {
+          match = storedBranches.find((b) => b.id === activeBranchId);
+        }
+        if (!match && !targetBranchId) {
+          match = storedBranches[0];
+        }
+      }
     }
 
-    // If not found in custom branches, match against master CLINIC_LOCATIONS
+    // B. If still no match, check Master CLINIC_LOCATIONS or default template profiles
     if (!match) {
-      const loc = CLINIC_LOCATIONS.find((l) => l.id === targetBranchId) || CLINIC_LOCATIONS[0];
-      const templateKey = bookingService.getActiveTemplateId() || DEFAULT_TEMPLATE_ID;
-      const tData = loc.templates[templateKey] || loc.templates[DEFAULT_TEMPLATE_ID] || loc.templates.wellness;
+      const loc = (targetBranchId && CLINIC_LOCATIONS.find((l) => l.id === targetBranchId)) || CLINIC_LOCATIONS[0];
+      const templateKey = templateOverride || bookingService.getActiveTemplateId() || DEFAULT_TEMPLATE_ID;
+      const tData = loc.templates?.[templateKey] || loc.templates?.[DEFAULT_TEMPLATE_ID] || loc.templates?.wellness || {};
 
       match = {
-        id: loc.id,
-        name: tData.name,
-        badge: tData.badge,
-        icon: tData.icon,
+        id: loc.id || "sg-orchard",
+        name: tData.name || (templateKey === "physio" ? "PhysioCare Elite Rehab" : templateKey === "nutrition" ? "NutriFlow Dietetics Center" : "Orchard Wellness & Luxury Spa"),
+        badge: tData.badge || (templateKey === "physio" ? "🏃 CLINICAL SPORTS REHAB" : templateKey === "nutrition" ? "🥗 CLINICAL NUTRITION & DIETETICS" : "🌸 LUXURY WELLNESS SPA"),
+        icon: tData.icon || (templateKey === "physio" ? "🏃" : templateKey === "nutrition" ? "🥗" : "🌸"),
         template: templateKey,
-        region: loc.region,
-        regionCode: loc.regionCode,
-        currency: loc.currency,
-        address: loc.address,
-        hours: loc.hours,
-        phone: loc.phone,
-        rooms: tData.rooms || ["Consultation Suite 01", "Therapy Room 02"],
-        equipment: tData.equipment || ["Standard Clinical Kit"]
+        region: loc.region || "Singapore",
+        regionCode: loc.regionCode || "sg",
+        currency: loc.currency || "SGD",
+        address: loc.address || "290 Orchard Road, Paragon Medical Suites #14-02, Singapore 238859",
+        hours: loc.hours || "Mon - Sat (08:30 - 20:00 SGT)",
+        phone: loc.phone || "+65 6738 1234",
+        rooms: tData.rooms || ["Suite 01", "Suite 02", "Therapy Room 03", "VIP Room 04"],
+        equipment: tData.equipment || []
       };
+    }
+
+    // Allow explicit query param override (e.g. ?template=physio) for demonstration testing
+    if (templateOverride) {
+      match.template = templateOverride;
     }
 
     this.selectedBranch = match;
     this.currency = match.currency || (match.regionCode === "my" ? "MYR" : "SGD");
 
-    // Resolve Template Configuration
+    // Resolve Template Configuration (Wellness, Physio, Nutrition, etc.)
     const templateId = match.template || match.templateId || bookingService.getActiveTemplateId() || DEFAULT_TEMPLATE_ID;
     this.templateConfig = getTemplateById(templateId);
+
+    // Apply template fallback badge and icon if missing
+    if (!this.selectedBranch.badge && this.templateConfig) {
+      this.selectedBranch.badge = `${this.templateConfig.shortName || this.templateConfig.name}`.toUpperCase();
+    }
+    if (!this.selectedBranch.icon && this.templateConfig) {
+      this.selectedBranch.icon = templateId === "physio" ? "🏃" : templateId === "nutrition" ? "🥗" : "🌸";
+    }
   }
 
   renderAll() {
@@ -99,7 +149,7 @@ export class BranchLandingController {
     // Simulated Subdomain (e.g. orchard-wellness.cliniva.app)
     const slug = branch.id
       ? branch.id.toLowerCase().replace(/[^a-z0-9]/g, "-")
-      : "branch";
+      : (branch.name || "branch").toLowerCase().replace(/[^a-z0-9]/g, "-");
     const protoUrl = `https://${slug}.cliniva.app`;
 
     const protoEl = document.getElementById("protoUrlDisplay");
@@ -117,11 +167,7 @@ export class BranchLandingController {
 
     const headerBadge = document.getElementById("branchHeaderBadge");
     if (headerBadge) {
-      headerBadge.textContent = branch.badge || `${template.name.toUpperCase()}`;
-      if (template.accentColor) {
-        headerBadge.style.color = template.accentColor;
-        headerBadge.style.borderColor = `${template.accentColor}40`;
-      }
+      headerBadge.textContent = branch.badge || `${template.shortName || template.name}`.toUpperCase();
     }
 
     // Update Header CTA Link
@@ -134,36 +180,36 @@ export class BranchLandingController {
   renderHeroSection() {
     const branch = this.selectedBranch;
     const template = this.templateConfig;
+    const tId = template.id || "wellness";
 
     const heroTitle = document.getElementById("branchHeroTitle");
     if (heroTitle) heroTitle.textContent = branch.name;
 
     const heroTagline = document.getElementById("branchHeroTagline");
-    if (heroTagline) heroTagline.textContent = template.tagline || `${template.name} consultation and therapy services.`;
+    if (heroTagline) {
+      heroTagline.textContent = branch.tagline || template.tagline || `${template.name} consultation and therapy services in a private clinical environment.`;
+    }
 
     const catIcon = document.getElementById("heroCategoryIcon");
-    if (catIcon) catIcon.textContent = branch.icon || "🏥";
+    if (catIcon) {
+      catIcon.textContent = branch.icon || (tId === "physio" ? "🏃" : tId === "nutrition" ? "🥗" : "🌸");
+    }
 
     const catText = document.getElementById("heroCategoryText");
-    if (catText) catText.textContent = template.category ? template.category.toUpperCase() : template.name.toUpperCase();
+    if (catText) {
+      catText.textContent = (template.category || template.name).toUpperCase();
+    }
 
     const regionText = document.getElementById("heroRegionText");
     if (regionText) regionText.textContent = (branch.region || "SINGAPORE").toUpperCase();
 
-    // Backdrop Accent Aura
-    const heroBackdrop = document.getElementById("branchHeroBackdrop");
-    if (heroBackdrop && template.accentColor) {
-      heroBackdrop.style.background = `radial-gradient(circle, ${template.accentColor}22 0%, ${template.accentColor}00 70%)`;
-    }
+    // Template-Specific Trust Metrics
+    this.renderTrustMetrics(tId);
 
     // Book CTA Link
     const heroBookBtn = document.getElementById("heroBookBtn");
     if (heroBookBtn) {
       heroBookBtn.href = `../../pages/public/booking.html?branch=${encodeURIComponent(branch.id)}`;
-      if (template.accentColor) {
-        heroBookBtn.style.backgroundColor = template.accentColor;
-        heroBookBtn.style.borderColor = template.accentColor;
-      }
     }
 
     // WhatsApp Front Desk Link
@@ -175,12 +221,92 @@ export class BranchLandingController {
     }
   }
 
+  renderTrustMetrics(templateId) {
+    const trustRow = document.querySelector(".branch-trust-row");
+    if (!trustRow) return;
+
+    if (templateId === "physio" || templateId === "physiotherapy") {
+      trustRow.innerHTML = `
+        <div class="trust-item">
+          <span class="trust-stars">★★★★★</span>
+          <span class="trust-text"><strong>4.9 / 5.0</strong> (2,100+ Recovered Patients)</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">🩺</span>
+          <span class="trust-text">Board-Certified Physiotherapists</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">🔬</span>
+          <span class="trust-text">Shockwave &amp; Ultrasound Labs</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">⏱️</span>
+          <span class="trust-text">1-on-1 Dedicated Rehab Care</span>
+        </div>
+      `;
+    } else if (templateId === "nutrition") {
+      trustRow.innerHTML = `
+        <div class="trust-item">
+          <span class="trust-stars">★★★★★</span>
+          <span class="trust-text"><strong>4.9 / 5.0</strong> (1,800+ Personalized Meal Plans)</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">🥗</span>
+          <span class="trust-text">Registered Clinical Dietitians</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">📊</span>
+          <span class="trust-text">Dual-Frequency InBody Composition</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">📱</span>
+          <span class="trust-text">Digital Diet &amp; Calorie App Sync</span>
+        </div>
+      `;
+    } else {
+      // Default: Wellness & Spa (Serenity Style)
+      trustRow.innerHTML = `
+        <div class="trust-item">
+          <span class="trust-stars">★★★★★</span>
+          <span class="trust-text"><strong>4.9 / 5.0</strong> (1,450+ Verified Spa Guests)</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">🌸</span>
+          <span class="trust-text">Licensed Spa Masseurs &amp; Therapists</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">🚪</span>
+          <span class="trust-text">Private Soundproof Suites</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">⏱️</span>
+          <span class="trust-text">60/75/90 Min Full Relaxation</span>
+        </div>
+      `;
+    }
+  }
+
   renderHighlights() {
     const branch = this.selectedBranch;
+    const template = this.templateConfig;
+    const tId = template.id || "wellness";
 
-    const roomCount = branch.rooms ? branch.rooms.length : 4;
+    const roomCount = branch.rooms ? (Array.isArray(branch.rooms) ? branch.rooms.length : branch.rooms) : 4;
     const roomEl = document.getElementById("statRoomCount");
-    if (roomEl) roomEl.textContent = `${roomCount} Private Suites`;
+    const roomSubEl = document.querySelector('[data-i18n="branchLanding.statRoomsSub"]');
+
+    if (roomEl) {
+      if (tId === "physio") {
+        roomEl.textContent = `${roomCount} Rehab Suites`;
+        if (roomSubEl) roomSubEl.textContent = "Ergonomic clinical beds";
+      } else if (tId === "nutrition") {
+        roomEl.textContent = `${roomCount} Consultation Suites`;
+        if (roomSubEl) roomSubEl.textContent = "Private metabolic analysis";
+      } else {
+        roomEl.textContent = `${roomCount} Private Suites`;
+        if (roomSubEl) roomSubEl.textContent = "Sanitized & soundproofed";
+      }
+    }
 
     const hoursEl = document.getElementById("statOperatingHours");
     if (hoursEl) hoursEl.textContent = branch.hours || "Mon - Sat (08:30 - 20:00)";
@@ -197,7 +323,9 @@ export class BranchLandingController {
     if (!container) return;
 
     const template = this.templateConfig;
-    const services = template.services || bookingService.getServices(template.id);
+    const services = (this.selectedBranch.services && this.selectedBranch.services.length > 0)
+      ? this.selectedBranch.services
+      : (template.services || bookingService.getServices(template.id));
     const isSGD = this.currency === "SGD";
 
     if (!services || services.length === 0) {
@@ -220,7 +348,7 @@ export class BranchLandingController {
           </div>
 
           <h3 class="service-title">${localizedTitle}</h3>
-          <p class="service-desc">${localizedDesc || "Clinical therapy session with personalized assessment and dedicated practitioner care."}</p>
+          <p class="service-desc">${localizedDesc || "Comprehensive treatment session with personalized assessment and dedicated practitioner care."}</p>
 
           <div class="service-meta-box">
             <div class="service-meta-row">
@@ -240,7 +368,7 @@ export class BranchLandingController {
               <div class="service-price-amount">${priceFormatted}</div>
               <span class="service-price-sub">Pay at Clinic Counter</span>
             </div>
-            <a href="${bookUrl}" class="btn btn-primary btn-book-service" style="${template.accentColor ? `background:${template.accentColor}; border-color:${template.accentColor};` : ""}">
+            <a href="${bookUrl}" class="btn btn-primary btn-book-service">
               Select &amp; Book →
             </a>
           </div>
@@ -256,11 +384,19 @@ export class BranchLandingController {
     if (!container) return;
 
     const template = this.templateConfig;
-    const specialists = bookingService.getPractitioners(this.selectedBranch.id, template.id);
+    const specialists = (this.selectedBranch.practitioners && this.selectedBranch.practitioners.length > 0)
+      ? this.selectedBranch.practitioners
+      : bookingService.getPractitioners(this.selectedBranch.id, template.id);
 
     const countEl = document.getElementById("statSpecialistCount");
     if (countEl) {
-      countEl.textContent = `${specialists.length} Attending Specialists`;
+      if (template.id === "physio") {
+        countEl.textContent = `${specialists.length} Attending Physiotherapists`;
+      } else if (template.id === "nutrition") {
+        countEl.textContent = `${specialists.length} Registered Dietitians`;
+      } else {
+        countEl.textContent = `${specialists.length} Licensed Spa Therapists`;
+      }
     }
 
     if (!specialists || specialists.length === 0) {
@@ -278,12 +414,12 @@ export class BranchLandingController {
             <div class="specialist-avatar">🧑‍⚕️</div>
             <div class="specialist-name-group">
               <h3 class="specialist-name">${spec.name}</h3>
-              <span class="specialist-title" style="${template.accentColor ? `color:${template.accentColor};` : ""}">${title}</span>
+              <span class="specialist-title">${title}</span>
             </div>
           </div>
 
           <div class="specialist-tags">
-            <span class="specialist-tag">Specialty: ${spec.specialty || "General Practice"}</span>
+            <span class="specialist-tag">Specialty: ${spec.specialty || "General Care"}</span>
             <span class="specialist-tag">1-on-1 Consultation</span>
           </div>
 
@@ -304,9 +440,20 @@ export class BranchLandingController {
 
   renderFacilitiesSection() {
     const branch = this.selectedBranch;
+    const template = this.templateConfig;
+    const tId = template.id || "wellness";
+
     const equipDesc = document.getElementById("facilityEquipmentDesc");
-    if (equipDesc && branch.equipment && branch.equipment.length > 0) {
-      equipDesc.textContent = `Equipped with professional clinical hardware: ${branch.equipment.join(", ")} regularly calibrated to international standards.`;
+    if (equipDesc) {
+      if (branch.equipment && branch.equipment.length > 0) {
+        equipDesc.textContent = `Equipped with professional hardware: ${branch.equipment.join(", ")} regularly calibrated to clinical standards.`;
+      } else if (tId === "physio") {
+        equipDesc.textContent = `Equipped with certified clinical rehabilitation gear: Radial Shockwave Therapy Unit, Dual-Frequency Ultrasound Scanners, Spinal Decompression Traction Table, EMG Biofeedback Monitors, and Functional Rehabilitation Gym.`;
+      } else if (tId === "nutrition") {
+        equipDesc.textContent = `Equipped with medical-grade assessment technology: InBody 770 Multi-Frequency Body Composition Analyzer, Indirect Calorimeter (RMR Metabolic Chamber), Continuous Glucose Monitoring (CGM) Sensors, and Private Dietary Planning Suites.`;
+      } else {
+        equipDesc.textContent = `Equipped with luxury spa hardware: Aromatherapy Essential Diffusers, Heated Hydrotherapy Tables, Himalayan Salt Ionizers, Thermal Herbal Steamers, and Private Jacuzzi Suites.`;
+      }
     }
   }
 
@@ -369,10 +516,6 @@ export class BranchLandingController {
     const mobBtn = document.getElementById("mobStickyBookBtn");
     if (mobBtn) {
       mobBtn.href = `../../pages/public/booking.html?branch=${encodeURIComponent(branch.id)}`;
-      if (this.templateConfig?.accentColor) {
-        mobBtn.style.backgroundColor = this.templateConfig.accentColor;
-        mobBtn.style.borderColor = this.templateConfig.accentColor;
-      }
     }
   }
 
@@ -403,6 +546,7 @@ export class BranchLandingController {
     document.addEventListener("cliniva:languageChanged", (e) => {
       if (select) select.value = e.detail?.locale || "en";
       this.renderServicesGrid();
+      this.renderSpecialistsGrid();
     });
   }
 

@@ -1330,3 +1330,179 @@
 .footer-links a:hover {
   color: var(--primary, #0f766e);
 }
+
+/* ==========================================================================
+   5 Industry Specialty Template Themes (Single Project Dynamic Architecture)
+   ========================================================================== */
+
+/* ── 1. Wellness & Spa (Serenity Theme) ────────────────────────────────── */
+body[data-template="wellness"],
+body[data-template="spa"] {
+  --theme-primary: #50613f;
+  --theme-primary-hover: #3e4d30;
+  --theme-accent: #b45309;
+  --theme-bg: #f4fbfa;
+  --theme-surface-soft: #e8efef;
+  --theme-card-border: #d5e2df;
+  background-color: var(--theme-bg);
+}
+
+body[data-template="wellness"] .branch-hero-title,
+body[data-template="spa"] .branch-hero-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #27361a;
+}
+
+body[data-template="wellness"] .section-title,
+body[data-template="spa"] .section-title {
+  font-family: "Playfair Display", Georgia, serif;
+  color: #27361a;
+}
+
+body[data-template="wellness"] .btn-primary,
+body[data-template="spa"] .btn-primary {
+  background-color: #50613f !important;
+  border-color: #50613f !important;
+  color: #ffffff !important;
+}
+
+body[data-template="wellness"] .btn-primary:hover,
+body[data-template="spa"] .btn-primary:hover {
+  background-color: #3e4d30 !important;
+  border-color: #3e4d30 !important;
+}
+
+body[data-template="wellness"] .branch-badge-pill,
+body[data-template="spa"] .branch-badge-pill {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+body[data-template="wellness"] .service-card:hover,
+body[data-template="spa"] .service-card:hover {
+  border-color: #50613f;
+  box-shadow: 0 12px 28px -6px rgba(80, 97, 63, 0.18);
+}
+
+body[data-template="wellness"] .service-duration-badge,
+body[data-template="spa"] .service-duration-badge {
+  background: #fdf6ec;
+  color: #b45309;
+  border-color: #fed7aa;
+}
+
+body[data-template="wellness"] .branch-hero-backdrop,
+body[data-template="spa"] .branch-hero-backdrop {
+  background: radial-gradient(circle at 50% 30%, rgba(80, 97, 63, 0.18) 0%, rgba(244, 251, 250, 0) 70%);
+}
+
+/* ── 2. Physiotherapy (PhysioCare Theme) ────────────────────────────────── */
+body[data-template="physio"],
+body[data-template="physiotherapy"] {
+  --theme-primary: #005a71;
+  --theme-primary-hover: #004557;
+  --theme-accent: #0284c7;
+  --theme-bg: #f0f9ff;
+  --theme-surface-soft: #e0f2fe;
+  --theme-card-border: #bae6fd;
+  background-color: var(--theme-bg);
+}
+
+body[data-template="physio"] .branch-hero-title,
+body[data-template="physiotherapy"] .branch-hero-title {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #0c4a6e;
+}
+
+body[data-template="physio"] .btn-primary,
+body[data-template="physiotherapy"] .btn-primary {
+  background-color: #005a71 !important;
+  border-color: #005a71 !important;
+  color: #ffffff !important;
+}
+
+body[data-template="physio"] .btn-primary:hover,
+body[data-template="physiotherapy"] .btn-primary:hover {
+  background-color: #004557 !important;
+  border-color: #004557 !important;
+}
+
+body[data-template="physio"] .branch-badge-pill,
+body[data-template="physiotherapy"] .branch-badge-pill {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
+
+body[data-template="physio"] .service-card:hover,
+body[data-template="physiotherapy"] .service-card:hover {
+  border-color: #0284c7;
+  box-shadow: 0 12px 28px -6px rgba(2, 132, 199, 0.18);
+}
+
+body[data-template="physio"] .service-duration-badge,
+body[data-template="physiotherapy"] .service-duration-badge {
+  background: #f0f9ff;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
+
+body[data-template="physio"] .branch-hero-backdrop,
+body[data-template="physiotherapy"] .branch-hero-backdrop {
+  background: radial-gradient(circle at 50% 30%, rgba(0, 90, 113, 0.16) 0%, rgba(240, 249, 255, 0) 70%);
+}
+
+/* ── 3. Nutrition (NutriFlow Theme) ─────────────────────────────────────── */
+body[data-template="nutrition"] {
+  --theme-primary: #006e2f;
+  --theme-primary-hover: #005223;
+  --theme-accent: #16a34a;
+  --theme-bg: #f8f9ff;
+  --theme-surface-soft: #f0fdf4;
+  --theme-card-border: #bbf7d0;
+  background-color: var(--theme-bg);
+}
+
+body[data-template="nutrition"] .branch-hero-title {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #064e3b;
+}
+
+body[data-template="nutrition"] .btn-primary {
+  background-color: #006e2f !important;
+  border-color: #006e2f !important;
+  color: #ffffff !important;
+}
+
+body[data-template="nutrition"] .btn-primary:hover {
+  background-color: #005223 !important;
+  border-color: #005223 !important;
+}
+
+body[data-template="nutrition"] .branch-badge-pill {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+body[data-template="nutrition"] .service-card:hover {
+  border-color: #16a34a;
+  box-shadow: 0 12px 28px -6px rgba(22, 163, 74, 0.18);
+}
+
+body[data-template="nutrition"] .service-duration-badge {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+body[data-template="nutrition"] .branch-hero-backdrop {
+  background: radial-gradient(circle at 50% 30%, rgba(0, 110, 47, 0.15) 0%, rgba(248, 249, 255, 0) 70%);
+}

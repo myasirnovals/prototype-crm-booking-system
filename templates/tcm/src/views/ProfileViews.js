@@ -65,7 +65,7 @@ export function renderProfileView() {
             <!-- Welcome Banner Card -->
             <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-outline-variant/30 flex flex-col md:flex-row items-center gap-6 mb-8">
                 <div class="relative shrink-0">
-                    <img class="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-[#164e3f]/10" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&h=300&q=80" alt="${state.guestInfo.name}">
+                    <img class="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-[#046bd2]/10" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&h=300&q=80" alt="${state.guestInfo.name}">
                     <button onclick="navigateTo('personal-details')" class="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-[#B45309] text-white flex items-center justify-center border-2 border-white hover:bg-[#92400e] transition-colors shadow-sm">
                         <span class="material-symbols-outlined text-sm font-bold">edit</span>
                     </button>
@@ -114,7 +114,7 @@ export function renderProfileView() {
                                         <div class="flex-shrink-0 w-[85vw] sm:w-[320px] md:w-auto bg-white rounded-2xl p-5 border border-outline-variant/30 relative flex flex-col justify-between shadow-sm">
                                             <div>
                                                 <div class="flex justify-between items-center mb-4">
-                                                    <div class="w-10 h-10 rounded-lg bg-[#164e3f]/10 flex items-center justify-center text-primary">
+                                                    <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center text-primary">
                                                         <span class="material-symbols-outlined text-lg">${icon}</span>
                                                     </div>
                                                     ${statusBadge}
@@ -123,8 +123,8 @@ export function renderProfileView() {
                                                 <p class="font-body-sm text-xs text-on-surface-variant mb-3 line-clamp-2">${bundle.description}</p>
                                                 ${therapist ? `
                                                 <div class="flex items-center gap-2 bg-[#f0f4e8] rounded-lg px-3 py-2 mb-3">
-                                                    <span class="material-symbols-outlined text-[#164e3f] text-sm">person</span>
-                                                    <span class="text-[11px] font-semibold text-[#0f3d32]">${state.language === 'ms' ? 'Pengamal' : 'Therapist'}: ${therapist.name}</span>
+                                                    <span class="material-symbols-outlined text-[#046bd2] text-sm">person</span>
+                                                    <span class="text-[11px] font-semibold text-[#045cb4]">${state.language === 'ms' ? 'Pengamal' : 'Therapist'}: ${therapist.name}</span>
                                                 </div>` : ''}
                                             </div>
                                             <div>
@@ -133,7 +133,7 @@ export function renderProfileView() {
                                                     <span>${sessionsLeft} / ${totalSessions}</span>
                                                 </div>
                                                 <div class="w-full bg-[#F1F5F9] rounded-full h-1.5 mb-4 overflow-hidden">
-                                                    <div class="bg-[#164e3f] h-1.5 rounded-full transition-all" style="width: ${pct}%"></div>
+                                                    <div class="bg-[#046bd2] h-1.5 rounded-full transition-all" style="width: ${pct}%"></div>
                                                 </div>
                                                 ${isActive ? `
                                                 <button onclick="bookPackageSession('${bundleId}')" class="w-full bg-[#FACC15] text-[#241a00] hover:bg-[#eab308] font-bold text-xs py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2">
@@ -160,16 +160,16 @@ export function renderProfileView() {
                                 <span class="font-serif text-3xl text-[#1E293B] font-bold block mb-6">${currentTenant?.currency || 'SGD'} ${state.walletBalance.toFixed(2)}</span>
                             </div>
                             <div class="flex gap-3">
-                                <button onclick="navigateTo('wallet')" class="bg-[#164e3f] text-white hover:bg-[#0f3d32] font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2">
+                                <button onclick="navigateTo('wallet')" class="bg-[#046bd2] text-white hover:bg-[#045cb4] font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2">
                                     <span class="material-symbols-outlined text-sm">account_balance_wallet</span> ${t('btn_manage_wallet')}
                                 </button>
-                                <button onclick="navigateTo('wallet')" class="bg-white border border-outline text-[#164e3f] hover:bg-[#164e3f]/5 font-bold text-xs px-4 py-2.5 rounded-xl transition-all flex items-center gap-1">
+                                <button onclick="navigateTo('wallet')" class="bg-white border border-outline text-[#046bd2] hover:bg-[#046bd2]/5 font-bold text-xs px-4 py-2.5 rounded-xl transition-all flex items-center gap-1">
                                     ${t('btn_history')}
                                 </button>
                             </div>
                         </div>
                         <!-- Right Side (Green Banner Perk) -->
-                        <div class="bg-[#164e3f] p-8 text-white relative overflow-hidden flex flex-col justify-center min-h-[160px]">
+                        <div class="bg-[#046bd2] p-8 text-white relative overflow-hidden flex flex-col justify-center min-h-[160px]">
                             <div class="absolute -right-4 -bottom-6 text-white/5 pointer-events-none select-none">
                                 <span class="material-symbols-outlined text-[180px]">account_balance_wallet</span>
                             </div>
@@ -188,28 +188,28 @@ export function renderProfileView() {
                         <h2 class="font-serif text-lg text-[#1E293B] font-bold mb-4 px-2">${t('settings_title')}</h2>
                         
                         <div class="flex flex-col">
-                            <a href="#" onclick="navigateTo('personal-details'); return false;" class="flex justify-between items-center py-3.5 px-2 hover:bg-[#164e3f]/5 rounded-xl transition-colors group">
+                            <a href="#" onclick="navigateTo('personal-details'); return false;" class="flex justify-between items-center py-3.5 px-2 hover:bg-[#046bd2]/5 rounded-xl transition-colors group">
                                 <div class="flex items-center gap-3">
                                     <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors text-lg">person</span>
                                     <span class="font-body-md text-xs font-semibold text-on-surface">${t('setting_personal')}</span>
                                 </div>
                                 <span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
                             </a>
-                            <a href="#" onclick="navigateTo('booking-history'); return false;" class="flex justify-between items-center py-3.5 px-2 hover:bg-[#164e3f]/5 rounded-xl transition-colors group">
+                            <a href="#" onclick="navigateTo('booking-history'); return false;" class="flex justify-between items-center py-3.5 px-2 hover:bg-[#046bd2]/5 rounded-xl transition-colors group">
                                 <div class="flex items-center gap-3">
                                     <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors text-lg">history</span>
                                     <span class="font-body-md text-xs font-semibold text-on-surface">${t('setting_history')}</span>
                                 </div>
                                 <span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
                             </a>
-                            <a href="#" onclick="navigateTo('notifications'); return false;" class="flex justify-between items-center py-3.5 px-2 hover:bg-[#164e3f]/5 rounded-xl transition-colors group">
+                            <a href="#" onclick="navigateTo('notifications'); return false;" class="flex justify-between items-center py-3.5 px-2 hover:bg-[#046bd2]/5 rounded-xl transition-colors group">
                                 <div class="flex items-center gap-3">
                                     <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors text-lg">notifications</span>
                                     <span class="font-body-md text-xs font-semibold text-on-surface">${t('setting_notifications')}</span>
                                 </div>
                                 <span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
                             </a>
-                            <a href="#" onclick="navigateTo('privacy-security'); return false;" class="flex justify-between items-center py-3.5 px-2 hover:bg-[#164e3f]/5 rounded-xl transition-colors group">
+                            <a href="#" onclick="navigateTo('privacy-security'); return false;" class="flex justify-between items-center py-3.5 px-2 hover:bg-[#046bd2]/5 rounded-xl transition-colors group">
                                 <div class="flex items-center gap-3">
                                     <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors text-lg">shield</span>
                                     <span class="font-body-md text-xs font-semibold text-on-surface">${t('setting_privacy')}</span>
@@ -252,13 +252,13 @@ export function renderWalletView() {
             iconHtml = `<div class="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-base">card_giftcard</span></div>`;
             translatedDesc = tx.description;
         } else if (tx.description.toLowerCase().includes('acupuncture')) {
-            iconHtml = `<div class="w-8 h-8 rounded-full bg-[#164e3f]/10 text-[#164e3f] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-base">healing</span></div>`;
+            iconHtml = `<div class="w-8 h-8 rounded-full bg-[#046bd2]/10 text-[#046bd2] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-base">healing</span></div>`;
             translatedDesc = state.language === 'ms' ? 'Bayaran Akupunktur Klinikal' : (state.language === 'zh' ? '针灸综合理疗付费' : 'Clinical Acupuncture Payment');
         } else if (tx.description.toLowerCase().includes('tuina') || tx.description.toLowerCase().includes('massage')) {
-            iconHtml = `<div class="w-8 h-8 rounded-full bg-[#164e3f]/10 text-[#164e3f] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-base">accessibility_new</span></div>`;
+            iconHtml = `<div class="w-8 h-8 rounded-full bg-[#046bd2]/10 text-[#046bd2] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-base">accessibility_new</span></div>`;
             translatedDesc = state.language === 'ms' ? 'Bayaran Terapi Tuina' : (state.language === 'zh' ? '推拿理疗付费' : 'Tuina Therapy Payment');
         } else if (tx.description.toLowerCase().includes('bundle') || tx.description.toLowerCase().includes('package')) {
-            iconHtml = `<div class="w-8 h-8 rounded-full bg-[#c59b27]/10 text-[#c59b27] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-base">package_2</span></div>`;
+            iconHtml = `<div class="w-8 h-8 rounded-full bg-[#ff6900]/10 text-[#ff6900] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-base">package_2</span></div>`;
             translatedDesc = state.language === 'ms' ? 'Langganan Pakej Rawatan TCM' : (state.language === 'zh' ? '购买中医调理配套' : 'TCM Package Subscription');
         } else {
             iconHtml = `<div class="w-8 h-8 rounded-full bg-amber-50 text-[#B45309] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-base">stars</span></div>`;
@@ -301,7 +301,7 @@ export function renderWalletView() {
                         <span class="font-serif text-3xl text-[#1E293B] font-bold block mt-1">${currentTenant?.currency || 'SGD'} ${state.walletBalance.toFixed(2)}</span>
                     </div>
                     <div class="flex flex-wrap gap-2.5">
-                        <button onclick="navigateToTopUp(100)" class="flex-1 bg-[#164e3f] text-white hover:bg-[#0f3d32] font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+                        <button onclick="navigateToTopUp(100)" class="flex-1 bg-[#046bd2] text-white hover:bg-[#045cb4] font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
                             <span class="material-symbols-outlined text-sm">add_circle</span> ${t('btn_topup')}
                         </button>
                         <button onclick="openSendGiftCardModal()" class="flex-1 bg-amber-600 text-white hover:bg-amber-700 font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
@@ -342,16 +342,16 @@ export function renderWalletView() {
                     
                     <!-- Presets Grid -->
                     <div class="grid grid-cols-2 gap-2.5 mt-3">
-                        <button onclick="navigateToTopUp(50)" class="bg-white hover:bg-slate-50 border border-outline-variant/60 rounded-xl p-2.5 flex flex-col items-center justify-center transition-all group hover:border-[#164e3f] hover:text-[#164e3f]">
-                            <span class="font-serif text-xs font-bold text-[#164e3f]">${currentTenant?.currency || 'SGD'} 50</span>
+                        <button onclick="navigateToTopUp(50)" class="bg-white hover:bg-slate-50 border border-outline-variant/60 rounded-xl p-2.5 flex flex-col items-center justify-center transition-all group hover:border-[#046bd2] hover:text-[#046bd2]">
+                            <span class="font-serif text-xs font-bold text-[#046bd2]">${currentTenant?.currency || 'SGD'} 50</span>
                         </button>
-                        <button onclick="navigateToTopUp(100)" class="bg-white hover:bg-slate-50 border border-outline-variant/60 rounded-xl p-2.5 flex flex-col items-center justify-center transition-all group hover:border-[#164e3f] hover:text-[#164e3f] relative overflow-visible">
-                            <span class="font-serif text-xs font-bold text-[#164e3f]">${currentTenant?.currency || 'SGD'} 100</span>
+                        <button onclick="navigateToTopUp(100)" class="bg-white hover:bg-slate-50 border border-outline-variant/60 rounded-xl p-2.5 flex flex-col items-center justify-center transition-all group hover:border-[#046bd2] hover:text-[#046bd2] relative overflow-visible">
+                            <span class="font-serif text-xs font-bold text-[#046bd2]">${currentTenant?.currency || 'SGD'} 100</span>
                         </button>
-                        <button onclick="navigateToTopUp(200)" class="bg-white hover:bg-slate-50 border border-outline-variant/60 rounded-xl p-2.5 flex flex-col items-center justify-center transition-all group hover:border-[#164e3f] hover:text-[#164e3f]">
-                            <span class="font-serif text-xs font-bold text-[#164e3f]">${currentTenant?.currency || 'SGD'} 200</span>
+                        <button onclick="navigateToTopUp(200)" class="bg-white hover:bg-slate-50 border border-outline-variant/60 rounded-xl p-2.5 flex flex-col items-center justify-center transition-all group hover:border-[#046bd2] hover:text-[#046bd2]">
+                            <span class="font-serif text-xs font-bold text-[#046bd2]">${currentTenant?.currency || 'SGD'} 200</span>
                         </button>
-                        <button onclick="navigateToTopUp('custom')" class="bg-white hover:bg-slate-50 border border-outline-variant/60 rounded-xl p-2.5 flex flex-col items-center justify-center transition-all group hover:border-[#164e3f] hover:text-[#164e3f]">
+                        <button onclick="navigateToTopUp('custom')" class="bg-white hover:bg-slate-50 border border-outline-variant/60 rounded-xl p-2.5 flex flex-col items-center justify-center transition-all group hover:border-[#046bd2] hover:text-[#046bd2]">
                             <span class="font-serif text-xs font-bold text-[#1E293B] flex items-center gap-0.5">${state.language === 'ms' ? 'Kustom' : 'Custom'}</span>
                         </button>
                     </div>
@@ -433,7 +433,7 @@ export function renderTopupView() {
                     <input type="text" id="stripe-card-name" placeholder="e.g. Jane Doe" value="${state.guestInfo.name}" class="w-full px-4 py-2.5 rounded-xl border border-outline-variant/60 focus:outline-none focus:border-primary text-xs font-semibold text-on-surface">
                 </div>
 
-                <button type="button" onclick="submitTopUpProcess('card')" class="w-full mt-6 bg-[#164e3f] text-white hover:bg-[#0f3d32] font-bold text-xs py-3 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 hover:shadow-lg">
+                <button type="button" onclick="submitTopUpProcess('card')" class="w-full mt-6 bg-[#046bd2] text-white hover:bg-[#045cb4] font-bold text-xs py-3 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 hover:shadow-lg">
                     <span class="material-symbols-outlined text-sm">lock</span> ${state.language === 'ms' ? 'Bayar Melalui Kad' : 'Pay with Card'} (${currentTenant?.currency || 'SGD'} ${displayAmount.toFixed(2)})
                 </button>
             </div>
@@ -447,7 +447,7 @@ export function renderTopupView() {
                 
                 <div class="bg-stone-50 border-x border-b border-stone-200 rounded-b-2xl p-6 flex flex-col items-center">
                     <div class="bg-white p-4 rounded-2xl shadow-md border border-stone-200 mb-3 relative group">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=PayNow-Yong-Kang-TCM-${currentTenant?.currency || 'SGD'}-${displayAmount}" alt="DuitNow QR Code" class="w-44 h-44 rounded-lg object-contain">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=PayNow-TCM-Homecare-TCM-${currentTenant?.currency || 'SGD'}-${displayAmount}" alt="DuitNow QR Code" class="w-44 h-44 rounded-lg object-contain">
                         <div class="absolute inset-0 bg-white/90 backdrop-blur-xs flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl">
                             <span class="material-symbols-outlined text-emerald-600 text-3xl mb-1">center_focus_strong</span>
                             <span class="text-[10px] font-bold text-stone-700">Imbas Menggunakan Aplikasi Bank</span>
@@ -464,7 +464,7 @@ export function renderTopupView() {
                             : 'Open any Banking App (Maybank2u, CIMB, RHB) or E-Wallet (Touch \'n Go, GrabPay, ShopeePay) and scan the QR code above.'}
                     </p>
 
-                    <button type="button" onclick="submitTopUpProcess('qr')" class="w-full bg-[#164e3f] text-white hover:bg-[#0f3d32] font-bold text-xs py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                    <button type="button" onclick="submitTopUpProcess('qr')" class="w-full bg-[#046bd2] text-white hover:bg-[#045cb4] font-bold text-xs py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
                         <span class="material-symbols-outlined text-sm">verified</span> ${state.language === 'ms' ? 'Simulasi Bayar QR' : 'Simulate QR Scan & Pay'} (${currentTenant?.currency || 'SGD'} ${displayAmount.toFixed(2)})
                     </button>
                 </div>
@@ -503,7 +503,7 @@ export function renderTopupView() {
                     </div>
                 </div>
 
-                <button type="button" onclick="submitTopUpProcess('ewallet')" class="w-full mt-6 bg-[#164e3f] text-white hover:bg-[#0f3d32] font-bold text-xs py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                <button type="button" onclick="submitTopUpProcess('ewallet')" class="w-full mt-6 bg-[#046bd2] text-white hover:bg-[#045cb4] font-bold text-xs py-3 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-sm">smartphone</span> ${state.language === 'ms' ? 'Bayar Melalui E-Wallet' : 'Pay via E-Wallet'} (${currentTenant?.currency || 'SGD'} ${displayAmount.toFixed(2)})
                 </button>
             </div>
@@ -565,15 +565,15 @@ export function renderTopupView() {
                 <div class="border-t border-outline-variant/30 pt-6 mb-6">
                     <h3 class="font-serif text-sm font-bold text-[#1E293B] mb-3">${state.language === 'ms' ? 'Pilih Kaedah Pembayaran' : 'Select Payment Method'}</h3>
                     <div class="grid grid-cols-3 gap-2">
-                        <button type="button" onclick="setTopUpPaymentMethod('card')" class="flex flex-col items-center gap-1.5 p-3 rounded-2xl border text-xs font-bold transition-all ${method === 'card' ? 'bg-[#164e3f] text-white border-[#164e3f] shadow-md' : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-400'}">
+                        <button type="button" onclick="setTopUpPaymentMethod('card')" class="flex flex-col items-center gap-1.5 p-3 rounded-2xl border text-xs font-bold transition-all ${method === 'card' ? 'bg-[#046bd2] text-white border-[#046bd2] shadow-md' : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-400'}">
                             <span class="material-symbols-outlined text-lg">credit_card</span>
                             <span class="text-[11px]">${state.language === 'ms' ? 'Kad Kredit / Debit' : 'Credit / Debit Card'}</span>
                         </button>
-                        <button type="button" onclick="setTopUpPaymentMethod('qr')" class="flex flex-col items-center gap-1.5 p-3 rounded-2xl border text-xs font-bold transition-all ${method === 'qr' ? 'bg-[#164e3f] text-white border-[#164e3f] shadow-md' : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-400'}">
+                        <button type="button" onclick="setTopUpPaymentMethod('qr')" class="flex flex-col items-center gap-1.5 p-3 rounded-2xl border text-xs font-bold transition-all ${method === 'qr' ? 'bg-[#046bd2] text-white border-[#046bd2] shadow-md' : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-400'}">
                             <span class="material-symbols-outlined text-lg">qr_code_scanner</span>
                             <span class="text-[11px]">${state.language === 'ms' ? 'Kod QR (DuitNow)' : 'QR Code (DuitNow)'}</span>
                         </button>
-                        <button type="button" onclick="setTopUpPaymentMethod('ewallet')" class="flex flex-col items-center gap-1.5 p-3 rounded-2xl border text-xs font-bold transition-all ${method === 'ewallet' ? 'bg-[#164e3f] text-white border-[#164e3f] shadow-md' : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-400'}">
+                        <button type="button" onclick="setTopUpPaymentMethod('ewallet')" class="flex flex-col items-center gap-1.5 p-3 rounded-2xl border text-xs font-bold transition-all ${method === 'ewallet' ? 'bg-[#046bd2] text-white border-[#046bd2] shadow-md' : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-400'}">
                             <span class="material-symbols-outlined text-lg">account_balance_wallet</span>
                             <span class="text-[11px]">${state.language === 'ms' ? 'E-Wallet Digital' : 'Digital E-Wallet'}</span>
                         </button>
@@ -613,14 +613,14 @@ export function selectTopUpAmount(amount) {
     state.selectedTopUpAmount = amount;
 
     document.querySelectorAll('.topup-amount-btn').forEach(btn => {
-        btn.classList.remove('bg-[#164e3f]', 'border-[#164e3f]', 'text-white', 'font-bold');
+        btn.classList.remove('bg-[#046bd2]', 'border-[#046bd2]', 'text-white', 'font-bold');
         btn.classList.add('bg-stone-50', 'border-stone-200', 'text-stone-700');
     });
 
     const activeBtn = document.getElementById(`topup-amt-${amount}`);
     if (activeBtn) {
         activeBtn.classList.remove('bg-stone-50', 'border-stone-200', 'text-stone-700');
-        activeBtn.classList.add('bg-[#164e3f]', 'border-[#164e3f]', 'text-white', 'font-bold');
+        activeBtn.classList.add('bg-[#046bd2]', 'border-[#046bd2]', 'text-white', 'font-bold');
     }
 
     const wrapper = document.getElementById('custom-amount-wrapper');
@@ -725,7 +725,7 @@ export function renderPersonalDetailsView() {
                     <!-- Avatar section -->
                     <div class="flex flex-col items-center sm:flex-row gap-6 pb-6 border-b border-outline-variant/30">
                         <div class="relative shrink-0">
-                            <img class="w-20 h-20 rounded-full object-cover border-4 border-[#164e3f]/10" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&h=300&q=80" alt="${state.guestInfo.name}">
+                            <img class="w-20 h-20 rounded-full object-cover border-4 border-[#046bd2]/10" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&h=300&q=80" alt="${state.guestInfo.name}">
                             <div class="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-[#B45309] text-white flex items-center justify-center border border-white cursor-pointer hover:bg-[#92400e] transition-colors">
                                 <span class="material-symbols-outlined text-[12px] font-bold">photo_camera</span>
                             </div>
@@ -776,11 +776,11 @@ export function renderPersonalDetailsView() {
 
                     <!-- Actions -->
                     <div class="flex gap-4 pt-4 border-t border-outline-variant/30 justify-end">
-                        <button type="button" onclick="navigateTo('profile')" class="px-5 py-2.5 rounded-xl border border-outline text-[#164e3f] hover:bg-[#164e3f]/5 text-xs font-bold transition-all">
+                        <button type="button" onclick="navigateTo('profile')" class="px-5 py-2.5 rounded-xl border border-outline text-[#046bd2] hover:bg-[#046bd2]/5 text-xs font-bold transition-all">
                             ${state.language === 'ms' ? 'Batal' : 'Cancel'}
                         </button>
-                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary hover:bg-[#0f3d32] text-white font-bold text-xs transition-all shadow-sm">
-                            ${state.language === 'ms' ? 'Simpan Perubahan' : 'Save Changes'}
+                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary hover:bg-[#045cb4] text-white font-bold text-xs transition-all shadow-sm">
+                            ${state.language === 'ms' ? 'Simpan Kemas Kini' : 'Save Changes'}
                         </button>
                     </div>
                 </form>
@@ -853,7 +853,7 @@ export function renderBookingHistoryView() {
             listHtml += `
                 <div class="bg-white rounded-2xl p-5 border border-outline-variant/30 relative flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm hover:shadow-md transition-shadow">
                     <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-[#164e3f]/10 text-primary flex items-center justify-center shrink-0">
+                        <div class="w-12 h-12 rounded-xl bg-[#046bd2]/10 text-primary flex items-center justify-center shrink-0">
                             <span class="material-symbols-outlined text-xl">${icon}</span>
                         </div>
                         <div>
@@ -863,11 +863,11 @@ export function renderBookingHistoryView() {
                             </div>
                             <div class="space-y-1">
                                 <p class="font-body-sm text-xs text-on-surface-variant flex items-center gap-1.5">
-                                    <span class="material-symbols-outlined text-sm text-[#164e3f]">schedule</span>
+                                    <span class="material-symbols-outlined text-sm text-[#046bd2]">schedule</span>
                                     <span>${booking.date} • ${booking.time}</span>
                                 </p>
                                 <p class="font-body-sm text-[11px] text-on-surface-variant flex items-center gap-1.5">
-                                    <span class="material-symbols-outlined text-sm text-[#164e3f]">person</span>
+                                    <span class="material-symbols-outlined text-sm text-[#046bd2]">person</span>
                                     <span>${state.language === 'ms' ? 'Pengamal' : 'Therapist'}: <strong class="text-on-surface">${booking.therapist}</strong></span>
                                 </p>
 
@@ -881,7 +881,7 @@ export function renderBookingHistoryView() {
                         </div>
                         ${showCancel ? `
                         <div class="flex gap-2 w-full md:w-auto justify-start md:justify-end flex-wrap sm:flex-nowrap">
-                            <button onclick="openQrTicketModal('${booking.id}')" class="flex-1 md:flex-initial justify-center px-3 py-2 rounded-lg bg-[#164e3f]/10 hover:bg-[#164e3f]/25 text-[#164e3f] text-[10px] font-bold transition-all flex items-center gap-1 shadow-sm">
+                            <button onclick="openQrTicketModal('${booking.id}')" class="flex-1 md:flex-initial justify-center px-3 py-2 rounded-lg bg-[#046bd2]/10 hover:bg-[#046bd2]/25 text-[#046bd2] text-[10px] font-bold transition-all flex items-center gap-1 shadow-sm">
                                 <span class="material-symbols-outlined text-[12px] font-bold">qr_code</span> ${t('btn_view_qr')}
                             </button>
                             <button onclick="rescheduleBooking('${booking.id}')" class="flex-1 md:flex-initial justify-center px-3 py-2 rounded-lg border border-outline text-on-surface-variant hover:bg-slate-50 text-[10px] font-bold transition-all text-center">${t('btn_reschedule')}</button>
@@ -895,7 +895,7 @@ export function renderBookingHistoryView() {
                                     ${state.language === 'ms' ? 'Ulasan Terkirim' : 'Reviewed'} (${booking.review ? booking.review.rating : 5}★)
                                 </span>
                             ` : `
-                                <button onclick="openLeaveReviewModal('${booking.id}')" class="px-4 py-2 rounded-xl bg-[#164e3f] hover:bg-[#0f3d32] text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer">
+                                <button onclick="openLeaveReviewModal('${booking.id}')" class="px-4 py-2 rounded-xl bg-[#046bd2] hover:bg-[#045cb4] text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer">
                                     <span class="material-symbols-outlined text-sm">rate_review</span>
                                     ${state.language === 'ms' ? 'Beri Ulasan' : 'Leave Review'}
                                 </button>
@@ -1022,7 +1022,7 @@ export function renderRescheduleView() {
         const isSelected = selDate.getDate() === day && selDate.getMonth() === month && selDate.getFullYear() === year;
 
         calendarDaysHtml += `
-            <button ${isDisabled ? 'disabled' : ''} onclick="selectRescheduleDate(${day})" class="h-10 w-10 mx-auto rounded-full font-body-sm text-body-sm flex items-center justify-center transition-colors disabled:opacity-30 disabled:hover:bg-transparent ${isSelected ? 'bg-[#164e3f] text-white shadow-md font-bold' : 'text-on-surface hover:bg-surface-container-high'}">
+            <button ${isDisabled ? 'disabled' : ''} onclick="selectRescheduleDate(${day})" class="h-10 w-10 mx-auto rounded-full font-body-sm text-body-sm flex items-center justify-center transition-colors disabled:opacity-30 disabled:hover:bg-transparent ${isSelected ? 'bg-[#046bd2] text-white shadow-md font-bold' : 'text-on-surface hover:bg-surface-container-high'}">
                 ${day}
             </button>
         `;
@@ -1037,7 +1037,7 @@ export function renderRescheduleView() {
         const isSelected = state.rescheduleBooking.time === t;
         const isOccupied = t === '12:00 PM';
         morningSlotsHtml += `
-            <button ${isOccupied ? 'disabled' : ''} onclick="selectRescheduleTime('${t}')" class="px-4 py-2 rounded-lg border font-body-sm text-xs transition-colors ${isSelected ? 'border-[#164e3f] bg-[#164e3f]/10 text-[#164e3f] font-bold' : isOccupied ? 'border-outline-variant text-on-surface opacity-30 cursor-not-allowed bg-surface-container' : 'border-outline-variant text-on-surface hover:border-[#164e3f] hover:bg-[#164e3f]/5'}">
+            <button ${isOccupied ? 'disabled' : ''} onclick="selectRescheduleTime('${t}')" class="px-4 py-2 rounded-lg border font-body-sm text-xs transition-colors ${isSelected ? 'border-[#046bd2] bg-[#046bd2]/10 text-[#046bd2] font-bold' : isOccupied ? 'border-outline-variant text-on-surface opacity-30 cursor-not-allowed bg-surface-container' : 'border-outline-variant text-on-surface hover:border-[#046bd2] hover:bg-[#046bd2]/5'}">
                 ${t.replace(' AM', '').replace(' PM', '')}
             </button>
         `;
@@ -1048,7 +1048,7 @@ export function renderRescheduleView() {
         const isSelected = state.rescheduleBooking.time === t;
         const isOccupied = t === '03:00 PM';
         afternoonSlotsHtml += `
-            <button ${isOccupied ? 'disabled' : ''} onclick="selectRescheduleTime('${t}')" class="px-4 py-2 rounded-lg border font-body-sm text-xs transition-colors ${isSelected ? 'border-[#164e3f] bg-[#164e3f]/10 text-[#164e3f] font-bold' : isOccupied ? 'border-outline-variant text-on-surface opacity-30 cursor-not-allowed bg-surface-container' : 'border-outline-variant text-on-surface hover:border-[#164e3f] hover:bg-[#164e3f]/5'}">
+            <button ${isOccupied ? 'disabled' : ''} onclick="selectRescheduleTime('${t}')" class="px-4 py-2 rounded-lg border font-body-sm text-xs transition-colors ${isSelected ? 'border-[#046bd2] bg-[#046bd2]/10 text-[#046bd2] font-bold' : isOccupied ? 'border-outline-variant text-on-surface opacity-30 cursor-not-allowed bg-surface-container' : 'border-outline-variant text-on-surface hover:border-[#046bd2] hover:bg-[#046bd2]/5'}">
                 ${t.replace(' AM', '').replace(' PM', '')}
             </button>
         `;
@@ -1069,7 +1069,7 @@ export function renderRescheduleView() {
             <!-- Left side: Calendar & Time Slots -->
             <div class="lg:col-span-8 space-y-6">
                 <div class="glass-panel rounded-3xl p-6 md:p-8 bg-white shadow-sm border border-outline-variant/30">
-                    <h2 class="font-title-md text-base text-[#164e3f] mb-6 flex items-center gap-2 font-semibold">
+                    <h2 class="font-title-md text-base text-[#046bd2] mb-6 flex items-center gap-2 font-semibold">
                         <span class="material-symbols-outlined">calendar_month</span> Select New Date &amp; Time
                     </h2>
 
@@ -1126,7 +1126,7 @@ export function renderRescheduleView() {
                         <div class="flex flex-col gap-5">
                             <!-- Service Info -->
                             <div class="flex gap-3 items-start">
-                                <div class="w-10 h-10 rounded-lg bg-[#164e3f]/10 flex items-center justify-center shrink-0 text-primary">
+                                <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center shrink-0 text-primary">
                                     <span class="material-symbols-outlined text-lg">medical_services</span>
                                 </div>
                                 <div>
@@ -1137,7 +1137,7 @@ export function renderRescheduleView() {
                             
                             <!-- Therapist Info -->
                             <div class="flex gap-3 items-start">
-                                <div class="w-10 h-10 rounded-lg bg-[#164e3f]/10 flex items-center justify-center text-primary shrink-0">
+                                <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center text-primary shrink-0">
                                     <span class="material-symbols-outlined text-lg">person</span>
                                 </div>
                                 <div>
@@ -1148,14 +1148,14 @@ export function renderRescheduleView() {
                             
                             <!-- Schedule Info -->
                             <div class="flex gap-3 items-start">
-                                <div class="w-10 h-10 rounded-lg bg-[#164e3f]/10 flex items-center justify-center shrink-0 text-primary">
+                                <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center shrink-0 text-primary">
                                     <span class="material-symbols-outlined text-lg">calendar_month</span>
                                 </div>
                                 <div>
                                     <span class="font-label-caps text-[9px] text-outline mb-0.5 block uppercase font-bold tracking-wider">NEW DATE & TIME</span>
                                     ${state.rescheduleBooking.date ? `
                                         <h3 class="font-title-md text-xs font-semibold text-[#1E293B]">${state.rescheduleBooking.date}</h3>
-                                        <p class="font-body-sm text-[11px] text-[#164e3f] font-bold">${state.rescheduleBooking.time || 'To be selected'}</p>
+                                        <p class="font-body-sm text-[11px] text-[#046bd2] font-bold">${state.rescheduleBooking.time || 'To be selected'}</p>
                                     ` : `
                                         <h3 class="font-title-md text-xs font-semibold text-on-surface-variant"><span class="italic text-on-surface-variant opacity-60 text-xs">To be selected</span></h3>
                                     `}
@@ -1184,7 +1184,7 @@ export function renderRescheduleView() {
 
                         <!-- Confirm Actions -->
                         <div class="pt-2">
-                            <button onclick="confirmReschedule()" class="w-full bg-[#164e3f] hover:bg-[#0f3d32] text-white font-bold text-xs py-3 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2">
+                            <button onclick="confirmReschedule()" class="w-full bg-[#046bd2] hover:bg-[#045cb4] text-white font-bold text-xs py-3 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2">
                                 Confirm Reschedule <span class="material-symbols-outlined text-sm">check_circle</span>
                             </button>
                         </div>
@@ -1349,7 +1349,7 @@ export function renderNotificationsView() {
         state.notifications.forEach(notif => {
             logHtml += `
                 <div class="flex gap-3 py-4 border-b border-outline-variant/20 last:border-b-0">
-                    <div class="w-8 h-8 rounded-full bg-[#164e3f]/10 text-primary flex items-center justify-center shrink-0">
+                    <div class="w-8 h-8 rounded-full bg-[#046bd2]/10 text-primary flex items-center justify-center shrink-0">
                         <span class="material-symbols-outlined text-base">notifications</span>
                     </div>
                     <div class="flex-grow">
@@ -1418,10 +1418,10 @@ export function renderNotificationsView() {
 
                         <!-- Action Buttons -->
                         <div class="flex gap-3 justify-end pt-4 border-t border-outline-variant/30">
-                            <button type="button" onclick="navigateTo('profile')" class="px-5 py-2.5 rounded-xl border border-outline text-[#164e3f] hover:bg-[#164e3f]/5 text-xs font-bold transition-all">
+                            <button type="button" onclick="navigateTo('profile')" class="px-5 py-2.5 rounded-xl border border-outline text-[#046bd2] hover:bg-[#046bd2]/5 text-xs font-bold transition-all">
                                 ${state.language === 'ms' ? 'Batal' : 'Cancel'}
                             </button>
-                            <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary hover:bg-[#0f3d32] text-white font-bold text-xs transition-all shadow-sm">
+                            <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary hover:bg-[#045cb4] text-white font-bold text-xs transition-all shadow-sm">
                                 ${state.language === 'ms' ? 'Simpan Tetapan' : 'Save Settings'}
                             </button>
                         </div>
@@ -1497,7 +1497,7 @@ export function renderPrivacySecurityView() {
                             </div>
                         </div>
                         <div class="flex justify-end mt-2">
-                            <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary hover:bg-[#0f3d32] text-white font-bold text-xs transition-all shadow-sm">${state.language === 'ms' ? 'Kemas Kini Kata Laluan' : 'Update Password'}</button>
+                            <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary hover:bg-[#045cb4] text-white font-bold text-xs transition-all shadow-sm">${state.language === 'ms' ? 'Kemas Kini Kata Laluan' : 'Update Password'}</button>
                         </div>
                     </form>
                 </div>
@@ -1526,10 +1526,10 @@ export function renderPrivacySecurityView() {
 
                         <!-- Actions -->
                         <div class="flex gap-3 justify-end pt-4 border-t border-outline-variant/30">
-                            <button type="button" onclick="navigateTo('profile')" class="px-5 py-2.5 rounded-xl border border-outline text-[#164e3f] hover:bg-[#164e3f]/5 text-xs font-bold transition-all">
+                            <button type="button" onclick="navigateTo('profile')" class="px-5 py-2.5 rounded-xl border border-outline text-[#046bd2] hover:bg-[#046bd2]/5 text-xs font-bold transition-all">
                                 ${state.language === 'ms' ? 'Batal' : 'Cancel'}
                             </button>
-                            <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary hover:bg-[#0f3d32] text-white font-bold text-xs transition-all shadow-sm">
+                            <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary hover:bg-[#045cb4] text-white font-bold text-xs transition-all shadow-sm">
                                 ${state.language === 'ms' ? 'Simpan Tetapan' : 'Save Settings'}
                             </button>
                         </div>
@@ -1625,9 +1625,9 @@ export function confirmSignOut() {
                     <span class="material-symbols-outlined text-2xl font-bold">logout</span>
                 </div>
                 <h3 class="font-serif text-lg text-[#1E293B] font-bold mb-2">${state.language === 'ms' ? 'Log Keluar' : (state.language === 'zh' ? '退出登录' : 'Sign Out')}</h3>
-                <p class="text-xs text-on-surface-variant leading-relaxed mb-6">${state.language === 'ms' ? 'Adakah anda pasti mahu log keluar dari Yong Kang TCM? Sesi semasa anda akan disimpan.' : (state.language === 'zh' ? '您确定要退出永康中医患者账户吗？' : 'Are you sure you want to sign out of Yong Kang TCM Clinic?')}</p>
+                <p class="text-xs text-on-surface-variant leading-relaxed mb-6">${state.language === 'ms' ? 'Adakah anda pasti mahu log keluar dari TCM Homecare? Sesi semasa anda akan disimpan.' : (state.language === 'zh' ? '您确定要退出TCM Homecare患者账户吗？' : 'Are you sure you want to sign out of TCM Homecare Clinic?')}</p>
                 <div class="flex gap-3 justify-center">
-                    <button onclick="cancelSignOut()" class="px-5 py-2.5 rounded-xl border border-outline text-[#164e3f] hover:bg-[#164e3f]/5 text-xs font-bold transition-all w-full">
+                    <button onclick="cancelSignOut()" class="px-5 py-2.5 rounded-xl border border-outline text-[#046bd2] hover:bg-[#046bd2]/5 text-xs font-bold transition-all w-full">
                         ${state.language === 'ms' ? 'Batal' : (state.language === 'zh' ? '取消' : 'Cancel')}
                     </button>
                     <button onclick="performSignOut()" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-all w-full shadow-sm">

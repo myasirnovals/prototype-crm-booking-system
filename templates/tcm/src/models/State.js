@@ -78,7 +78,7 @@ export const DEFAULT_STATE = {
     notifications: [
         { id: 'notif-1', date: 'Oct 24, 2026', text: 'Appointment Confirmed: Your Acupuncture Meridian Therapy with Physician Chen Wei Lin has been scheduled.' },
         { id: 'notif-2', date: 'Oct 24, 2026', text: 'Clinic Wallet Top-up: Successful top-up of credits to your digital health wallet.' },
-        { id: 'notif-3', date: 'Sep 28, 2026', text: 'Welcome to Yong Kang TCM: Embark on your holistic balance and healing journey.' }
+        { id: 'notif-3', date: 'Sep 28, 2026', text: 'Welcome to TCM Homecare: Embark on your holistic balance and healing journey.' }
     ],
     notificationPreferences: {
         email: true,

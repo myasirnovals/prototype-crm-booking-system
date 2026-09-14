@@ -1,30 +1,49 @@
 import { tenantId, currentTenant, DEFAULT_TENANTS } from '../models/Tenant.js';
 
-// 1. TCM MOCK DATABASE & CATALOG
+// 1. TCM HOMECARE MOCK DATABASE & CATALOG
 export let SERVICES = {
+    'tcm-teleconsult-intro': {
+        id: 'tcm-teleconsult-intro',
+        name: 'Online TCM Teleconsultation (Intro Special)',
+        type: 'consultation',
+        price: 20,
+        regularPrice: 50,
+        duration: '15 Mins',
+        badge: 'SPECIAL OFFER',
+        description: 'Kick off your health journey with a certified physician via secure video call. Comprehensive lifestyle and symptom evaluation.',
+        image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80'
+    },
+    'tcm-laser-acupuncture': {
+        id: 'tcm-laser-acupuncture',
+        name: 'Painless Laser Acupuncture Therapy',
+        type: 'acupuncture',
+        price: 95,
+        duration: '45 Mins',
+        badge: 'NEEDLE-FREE',
+        description: 'Modern low-level laser acupuncture providing completely painless comfort. Ideal for needle phobia, children, and elderly patients.',
+        image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=800&q=80'
+    },
+    'tcm-homecare-house-call': {
+        id: 'tcm-homecare-house-call',
+        name: 'Personalized TCM Homecare House Call Visit',
+        type: 'therapeutic',
+        price: 180,
+        duration: '60 Mins',
+        badge: 'HOME VISIT',
+        description: 'Professional physician house visit across Singapore delivering personalized acupuncture, tuina, or herbal diagnosis in your home.',
+        image: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80'
+    },
     'tcm-pain-relief-bundle': {
         id: 'tcm-pain-relief-bundle',
-        name: 'Orthopedic Tuina & Pain Relief Bundle (10 Sessions)',
+        name: 'Orthopedic Pain & Meridian Relief Bundle (5 Sessions)',
         type: 'packages',
-        price: 880,
-        regularPrice: 980,
-        sessions: 10,
-        duration: '60 Mins per session',
-        badge: 'PACKAGE DEAL',
-        description: 'Structured pain recovery regimen for chronic neck, shoulder, lower back pain, and sciatica with licensed TCM specialists.',
-        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80'
-    },
-    'tcm-vitality-package': {
-        id: 'tcm-vitality-package',
-        name: 'Complete TCM Meridian Vitality Package (5 Sessions)',
-        type: 'packages',
-        price: 420,
-        regularPrice: 490,
+        price: 450,
+        regularPrice: 550,
         sessions: 5,
         duration: '60 Mins per session',
         badge: 'POPULAR COURSE',
-        description: 'Comprehensive holistic course combining physician consultation, targeted acupuncture, and meridian tuina bodywork for enduring vitality.',
-        image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=800&q=80'
+        description: 'Targeted recovery regimen for chronic neck, shoulder, lower back pain, and sciatica with licensed TCM specialists.',
+        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80'
     },
     'acupuncture-session': {
         id: 'acupuncture-session',
@@ -35,24 +54,6 @@ export let SERVICES = {
         description: 'Targeted sterile acupuncture meridian therapy to unblock Qi stagnation, relieve chronic body pain, and harmonize organ systems.',
         image: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=800&q=80'
     },
-    'tcm-herbal-consultation': {
-        id: 'tcm-herbal-consultation',
-        name: 'TCM Pulse & Herbal Consultation',
-        type: 'consultation',
-        price: 60,
-        duration: '30 Mins',
-        description: 'Comprehensive pulse examination, tongue analysis, and personalized herbal medication prescription by a certified TCM physician.',
-        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80'
-    },
-    'tcm-tuina-therapy': {
-        id: 'tcm-tuina-therapy',
-        name: 'Therapeutic TCM Tuina Bodywork',
-        type: 'tuina',
-        price: 98,
-        duration: '60 Mins',
-        description: 'Traditional Chinese medical bodywork addressing musculoskeletal ailments, joint stiffness, and deep structural alignment.',
-        image: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80'
-    },
     'cupping-gua-sha': {
         id: 'cupping-gua-sha',
         name: 'Fire Cupping & Gua Sha Detox',
@@ -60,17 +61,8 @@ export let SERVICES = {
         price: 68,
         duration: '45 Mins',
         badge: 'DETOX RITUAL',
-        description: 'Authentic glass cup fire suction combined with jade scraping to release pathogenic dampness and stimulate healthy blood microcirculation.',
+        description: 'Authentic suction cups and jade scraping to release pathogenic dampness, stimulate blood flow, and relieve tension.',
         image: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=800&q=80'
-    },
-    'moxibustion-therapy': {
-        id: 'moxibustion-therapy',
-        name: 'Warm Herbal Moxibustion Ritual',
-        type: 'therapeutic',
-        price: 78,
-        duration: '45 Mins',
-        description: 'Application of burning aged mugwort herb above acupuncture meridians to warm the channels, dispel cold, and revitalize energy.',
-        image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80'
     }
 };
 
@@ -84,13 +76,12 @@ export function syncServices() {
     let adminSrvRaw = localStorage.getItem(servicesKey);
     if (!adminSrvRaw) {
         const defaultServices = [
-          { id: 'tcm-pain-relief-bundle', name: 'Orthopedic Tuina & Pain Relief Bundle (10 Sessions)', price: 880, regularPrice: 980, duration: 60, category: 'Packages', desc: 'Structured pain recovery regimen for chronic neck, shoulder, lower back pain, and sciatica with licensed TCM specialists.', img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80', showOnHome: true, bestValue: true },
-          { id: 'tcm-vitality-package', name: 'Complete TCM Meridian Vitality Package (5 Sessions)', price: 420, regularPrice: 490, duration: 60, category: 'Packages', desc: 'Comprehensive holistic course combining physician consultation, targeted acupuncture, and meridian tuina bodywork for enduring vitality.', img: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=800&q=80', showOnHome: true },
+          { id: 'tcm-teleconsult-intro', name: 'Online TCM Teleconsultation (Intro Special)', price: 20, regularPrice: 50, duration: 15, category: 'Consultation', desc: 'Kick off your health journey with a certified physician via secure video call. Comprehensive lifestyle and symptom evaluation.', img: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80', showOnHome: true, bestValue: true },
+          { id: 'tcm-laser-acupuncture', name: 'Painless Laser Acupuncture Therapy', price: 95, duration: 45, category: 'Acupuncture', desc: 'Modern low-level laser acupuncture providing completely painless comfort. Ideal for needle phobia, children, and elderly patients.', img: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=800&q=80', showOnHome: true },
+          { id: 'tcm-homecare-house-call', name: 'Personalized TCM Homecare House Call Visit', price: 180, duration: 60, category: 'Therapeutic', desc: 'Professional physician house visit across Singapore delivering personalized acupuncture, tuina, or herbal diagnosis in your home.', img: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80', showOnHome: true },
+          { id: 'tcm-pain-relief-bundle', name: 'Orthopedic Pain & Meridian Relief Bundle (5 Sessions)', price: 450, regularPrice: 550, duration: 60, category: 'Packages', desc: 'Targeted recovery regimen for chronic neck, shoulder, lower back pain, and sciatica with licensed TCM specialists.', img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80', showOnHome: true },
           { id: 'acupuncture-session', name: 'Acupuncture Meridian Therapy', price: 85, duration: 45, category: 'Acupuncture', desc: 'Targeted sterile acupuncture meridian therapy to unblock Qi stagnation, relieve chronic body pain, and harmonize organ systems.', img: 'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=800&q=80', showOnHome: true },
-          { id: 'tcm-herbal-consultation', name: 'TCM Pulse & Herbal Consultation', price: 60, duration: 30, category: 'Consultation', desc: 'Comprehensive pulse examination, tongue analysis, and personalized herbal medication prescription by a certified TCM physician.', img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80', showOnHome: true },
-          { id: 'tcm-tuina-therapy', name: 'Therapeutic TCM Tuina Bodywork', price: 98, duration: 60, category: 'Tuina', desc: 'Traditional Chinese medical bodywork addressing musculoskeletal ailments, joint stiffness, and deep structural alignment.', img: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80', showOnHome: true },
-          { id: 'cupping-gua-sha', name: 'Fire Cupping & Gua Sha Detox', price: 68, duration: 45, category: 'Therapeutic', desc: 'Authentic glass cup fire suction combined with jade scraping to release pathogenic dampness and stimulate healthy blood microcirculation.', img: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=800&q=80', showOnHome: false },
-          { id: 'moxibustion-therapy', name: 'Warm Herbal Moxibustion Ritual', price: 78, duration: 45, category: 'Therapeutic', desc: 'Application of burning aged mugwort herb above acupuncture meridians to warm the channels, dispel cold, and revitalize energy.', img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80', showOnHome: false }
+          { id: 'cupping-gua-sha', name: 'Fire Cupping & Gua Sha Detox', price: 68, duration: 45, category: 'Therapeutic', desc: 'Authentic suction cups and jade scraping to release pathogenic dampness, stimulate blood flow, and relieve tension.', img: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=800&q=80', showOnHome: false }
         ];
         localStorage.setItem(servicesKey, JSON.stringify(defaultServices));
         adminSrvRaw = JSON.stringify(defaultServices);
@@ -160,42 +151,42 @@ export function syncTherapists() {
         const defaultStaff = [
           { 
             id: 'stf-1', 
-            name: 'Physician Chen Wei Lin', 
-            specialization: 'TCM Physician & Acupuncturist', 
-            tags: ['Acupuncture', 'Internal Medicine', 'Meridian Therapy'], 
-            rating: 4.9, 
-            reviews: 142, 
+            name: 'Physician Thum', 
+            specialization: 'Founder & Senior TCM Telehealth Physician', 
+            tags: ['Laser Acupuncture', 'Telemedicine', 'Homecare Visit'], 
+            rating: 5.0, 
+            reviews: 210, 
             status: 'Active', 
-            avatar: 'CW', 
-            color: 'rgba(22,78,63,0.2)', 
-            textColor: '#164e3f', 
+            avatar: 'PT', 
+            color: 'rgba(4,107,210,0.15)', 
+            textColor: '#046bd2', 
             img: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=800&q=80' 
           },
           { 
             id: 'stf-2', 
-            name: 'Physician Tan Mei Ling', 
-            specialization: "TCM Herbalist & Women's Health", 
-            tags: ['Herbal Medicine', 'Gua Sha & Cupping', 'Moxibustion'], 
+            name: 'Physician Chen Wei Lin', 
+            specialization: 'TCM Physician & Laser Acupuncturist', 
+            tags: ['Laser Acupuncture', 'Pain Relief', 'Meridian Therapy'], 
             rating: 4.9, 
-            reviews: 118, 
+            reviews: 142, 
             status: 'Active', 
-            avatar: 'TM', 
-            color: 'rgba(200,157,83,0.2)', 
-            textColor: '#8c6521', 
+            avatar: 'CW', 
+            color: 'rgba(0,168,107,0.15)', 
+            textColor: '#00a86b', 
             img: 'https://images.unsplash.com/photo-1594824813689-534570ff22cb?auto=format&fit=crop&w=800&q=80' 
           },
           { 
             id: 'stf-3', 
-            name: 'Master Lim Keng Hock', 
-            specialization: 'Senior TCM Tuina & Orthopedics', 
-            tags: ['Orthopedic Tuina', 'Pain Relief', 'Spinal Alignment'], 
-            rating: 4.8, 
-            reviews: 96, 
+            name: 'Physician Tan Mei Ling', 
+            specialization: "TCM Herbalist & Women's Health", 
+            tags: ['Herbal Remedies', 'Insomnia Therapy', 'Gua Sha & Cupping'], 
+            rating: 4.9, 
+            reviews: 118, 
             status: 'Active', 
-            avatar: 'LK', 
-            color: '#e5e0d8', 
-            textColor: '#40382e', 
-            img: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=800&q=80' 
+            avatar: 'TM', 
+            color: 'rgba(255,105,0,0.15)', 
+            textColor: '#ff6900', 
+            img: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=800&q=80' 
           }
         ];
         localStorage.setItem(staffKey, JSON.stringify(defaultStaff));

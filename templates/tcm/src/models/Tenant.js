@@ -1,4 +1,4 @@
-// Yong Kang TCM & Acupuncture - Traditional Chinese Medicine Template
+// TCM Homecare - Traditional Chinese Medicine with Modern Technology Template
 // Branch initialization managed by Cliniva SaaS Platform (Single-tenant template runtime)
 
 export const urlParams = new URLSearchParams(window.location.search);
@@ -8,21 +8,22 @@ export const branchId = targetBranchId;
 window.currentTenantId = tenantId;
 window.currentBranchId = branchId;
 
-// Single default theme configuration for TCM template
+// Single default theme configuration for TCM template (TCM Homecare style)
 export const DEFAULT_TCM_THEME = {
   id: 'default-tcm',
-  name: 'Yong Kang TCM & Acupuncture',
-  tagline: 'Authentic Traditional Chinese Medicine, Acupuncture & Herbal Healing',
-  logo: '',
-  address: '88 Pagoda Street, Chinatown, Singapore',
-  phone: '+65 6223 8899',
-  hours: 'Mon - Sun (09:30 - 19:30 SGT)',
+  name: 'TCM Homecare',
+  tagline: 'Personalized Treatments for Your Wellness & Modern Homecare',
+  logo: 'https://tcmhomecare.com/wp-content/uploads/2024/03/TCMHomecare_logo.svg',
+  address: '1 Irving Place #07-04, The Commerze @ Irving, Singapore 369546',
+  phone: '+65 8752 5958',
+  hours: 'Mon - Fri (09:00 - 17:00 SGT), Sat by Appointment',
   currency: 'SGD',
   colors: {
-    primary: '#164e3f',
-    secondary: '#c89d53',
-    background: '#faf8f5',
-    surfaceContainer: '#f0eae1'
+    primary: '#046bd2',
+    secondary: '#00a86b',
+    accent: '#ff6900',
+    background: '#f0f5fa',
+    surfaceContainer: '#e8f2fc'
   }
 };
 

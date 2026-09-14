@@ -77,7 +77,7 @@ export function renderBookPackageView() {
         const isSelected = selDate.getDate() === day && selDate.getMonth() === month && selDate.getFullYear() === year;
 
         calendarDaysHtml += `
-            <button ${isDisabled ? 'disabled' : ''} onclick="selectPackageDate(${day})" class="h-10 w-10 mx-auto rounded-full font-body-sm text-body-sm flex items-center justify-center transition-colors disabled:opacity-30 disabled:hover:bg-transparent ${isSelected ? 'bg-[#164e3f] text-white shadow-md font-bold' : 'text-on-surface hover:bg-surface-container-high'}">
+            <button ${isDisabled ? 'disabled' : ''} onclick="selectPackageDate(${day})" class="h-10 w-10 mx-auto rounded-full font-body-sm text-body-sm flex items-center justify-center transition-colors disabled:opacity-30 disabled:hover:bg-transparent ${isSelected ? 'bg-[#046bd2] text-white shadow-md font-bold' : 'text-on-surface hover:bg-surface-container-high'}">
                 ${day}
             </button>
         `;
@@ -92,7 +92,7 @@ export function renderBookPackageView() {
         const isSelected = state.pkgBooking.time === t;
         const isOccupied = t === '12:00 PM';
         morningSlotsHtml += `
-            <button ${isOccupied ? 'disabled' : ''} onclick="selectPackageTime('${t}')" class="px-4 py-2 rounded-lg border font-body-sm text-xs transition-colors ${isSelected ? 'border-[#164e3f] bg-[#164e3f]/10 text-[#164e3f] font-bold' : isOccupied ? 'border-outline-variant text-on-surface opacity-30 cursor-not-allowed bg-surface-container' : 'border-outline-variant text-on-surface hover:border-[#164e3f] hover:bg-[#164e3f]/5'}">
+            <button ${isOccupied ? 'disabled' : ''} onclick="selectPackageTime('${t}')" class="px-4 py-2 rounded-lg border font-body-sm text-xs transition-colors ${isSelected ? 'border-[#046bd2] bg-[#046bd2]/10 text-[#046bd2] font-bold' : isOccupied ? 'border-outline-variant text-on-surface opacity-30 cursor-not-allowed bg-surface-container' : 'border-outline-variant text-on-surface hover:border-[#046bd2] hover:bg-[#046bd2]/5'}">
                 ${t.replace(' AM', '').replace(' PM', '')}
             </button>
         `;
@@ -103,7 +103,7 @@ export function renderBookPackageView() {
         const isSelected = state.pkgBooking.time === t;
         const isOccupied = t === '03:00 PM';
         afternoonSlotsHtml += `
-            <button ${isOccupied ? 'disabled' : ''} onclick="selectPackageTime('${t}')" class="px-4 py-2 rounded-lg border font-body-sm text-xs transition-colors ${isSelected ? 'border-[#164e3f] bg-[#164e3f]/10 text-[#164e3f] font-bold' : isOccupied ? 'border-outline-variant text-on-surface opacity-30 cursor-not-allowed bg-surface-container' : 'border-outline-variant text-on-surface hover:border-[#164e3f] hover:bg-[#164e3f]/5'}">
+            <button ${isOccupied ? 'disabled' : ''} onclick="selectPackageTime('${t}')" class="px-4 py-2 rounded-lg border font-body-sm text-xs transition-colors ${isSelected ? 'border-[#046bd2] bg-[#046bd2]/10 text-[#046bd2] font-bold' : isOccupied ? 'border-outline-variant text-on-surface opacity-30 cursor-not-allowed bg-surface-container' : 'border-outline-variant text-on-surface hover:border-[#046bd2] hover:bg-[#046bd2]/5'}">
                 ${t.replace(' AM', '').replace(' PM', '')}
             </button>
         `;
@@ -114,25 +114,25 @@ export function renderBookPackageView() {
 
     container.innerHTML = `
         <div class="mb-8 text-center md:text-left">
-            <h1 class="font-serif text-3xl text-[#164e3f] font-bold mb-1">${state.language === 'ms' ? 'Gunakan Sesi Pakej' : (state.language === 'zh' ? '预约疗程配套' : 'Use Package Session')}</h1>
+            <h1 class="font-serif text-3xl text-[#046bd2] font-bold mb-1">${state.language === 'ms' ? 'Gunakan Sesi Pakej' : (state.language === 'zh' ? '预约疗程配套' : 'Use Package Session')}</h1>
             <p class="font-body-sm text-xs text-on-surface-variant">${state.language === 'ms' ? 'Jadualkan sesi rawatan untuk pakej aktif anda.' : (state.language === 'zh' ? '为您的有效配套预约单次理疗时段。' : 'Schedule a clinical session for your active TCM package.')}</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <!-- Left side: Calendar & Time Slots -->
             <div class="lg:col-span-8 space-y-6">
-                <div class="tcm-card rounded-3xl p-6 md:p-8 bg-white shadow-sm border border-[#164e3f]/15">
-                    <h2 class="font-title-md text-base text-[#164e3f] mb-6 flex items-center gap-2 font-semibold font-serif">
+                <div class="tcm-card rounded-3xl p-6 md:p-8 bg-white shadow-sm border border-[#046bd2]/15">
+                    <h2 class="font-title-md text-base text-[#046bd2] mb-6 flex items-center gap-2 font-semibold font-serif">
                         <span class="material-symbols-outlined">calendar_month</span> ${state.language === 'ms' ? 'Pilih Tarikh & Masa' : (state.language === 'zh' ? '选择日期与时间' : 'Select Date & Time')}
                     </h2>
 
                     <!-- Calendar Card -->
-                    <div class="mb-8 border border-[#164e3f]/15 rounded-2xl p-4 bg-[#faf7f2]/60">
+                    <div class="mb-8 border border-[#046bd2]/15 rounded-2xl p-4 bg-[#f0f5fa]/60">
                         <div class="flex justify-between items-center mb-6">
                             <button onclick="changePackageMonth(-1)" class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
                                 <span class="material-symbols-outlined">chevron_left</span>
                             </button>
-                            <span class="font-title-md text-base font-semibold text-[#164e3f]">${monthText}</span>
+                            <span class="font-title-md text-base font-semibold text-[#046bd2]">${monthText}</span>
                             <button onclick="changePackageMonth(1)" class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
                                 <span class="material-symbols-outlined">chevron_right</span>
                             </button>
@@ -152,7 +152,7 @@ export function renderBookPackageView() {
                     </div>
 
                     <!-- Time Slots Card -->
-                    <div class="border-t border-[#164e3f]/15 pt-6">
+                    <div class="border-t border-[#046bd2]/15 pt-6">
                         <div class="space-y-6">
                             <div>
                                 <h3 class="font-title-md text-xs font-bold text-on-surface-variant mb-3 uppercase tracking-wider">${state.language === 'ms' ? 'Pagi' : (state.language === 'zh' ? '上午' : 'Morning')} (09:00 - 12:00)</h3>
@@ -173,50 +173,50 @@ export function renderBookPackageView() {
 
             <!-- Right side: Sidebar Summary -->
             <div class="lg:col-span-4">
-                <div class="tcm-card rounded-3xl p-6 md:p-8 bg-white border border-[#164e3f]/15 shadow-sm space-y-6 sticky top-8 flex flex-col justify-between">
+                <div class="tcm-card rounded-3xl p-6 md:p-8 bg-white border border-[#046bd2]/15 shadow-sm space-y-6 sticky top-8 flex flex-col justify-between">
                     <div>
-                        <h2 class="font-serif text-lg text-[#164e3f] font-bold border-b border-[#164e3f]/15 pb-4 mb-6">${state.language === 'ms' ? 'Ringkasan Tempahan' : (state.language === 'zh' ? '预约摘要' : 'Booking Summary')}</h2>
+                        <h2 class="font-serif text-lg text-[#046bd2] font-bold border-b border-[#046bd2]/15 pb-4 mb-6">${state.language === 'ms' ? 'Ringkasan Tempahan' : (state.language === 'zh' ? '预约摘要' : 'Booking Summary')}</h2>
                         <div class="flex flex-col gap-5">
                             <!-- Service Info -->
                             <div class="flex gap-3 items-start">
-                                <div class="w-10 h-10 rounded-lg bg-[#164e3f]/10 flex items-center justify-center shrink-0 text-[#164e3f]">
+                                <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center shrink-0 text-[#046bd2]">
                                     <span class="material-symbols-outlined text-lg">medical_services</span>
                                 </div>
                                 <div>
                                     <span class="font-label-caps text-[9px] text-outline mb-0.5 block uppercase font-bold tracking-wider">${state.language === 'ms' ? 'RAWATAN' : (state.language === 'zh' ? '理疗项目' : 'SERVICE')}</span>
-                                    <h3 class="font-title-md text-xs font-semibold text-[#164e3f]">${bundle.name}</h3>
+                                    <h3 class="font-title-md text-xs font-semibold text-[#046bd2]">${bundle.name}</h3>
                                     <p class="font-body-sm text-[11px] text-on-surface-variant">${state.language === 'ms' ? 'Baki Sesi' : (state.language === 'zh' ? '剩余次数' : 'Remaining')}: ${sessionsLeft} ${state.language === 'ms' ? 'Sesi' : (state.language === 'zh' ? '次' : 'Session(s)')}</p>
                                 </div>
                             </div>
                             
                             <!-- Practitioner Info -->
                             <div class="flex gap-3 items-start">
-                                <div class="w-10 h-10 rounded-full bg-[#164e3f]/10 flex items-center justify-center shrink-0 overflow-hidden">
+                                <div class="w-10 h-10 rounded-full bg-[#046bd2]/10 flex items-center justify-center shrink-0 overflow-hidden">
                                     ${therapist && therapist.image ? `
                                         <img class="w-full h-full object-cover" src="${therapist.image}">
                                     ` : `
-                                        <div class="w-10 h-10 rounded-lg bg-[#164e3f]/10 flex items-center justify-center text-[#164e3f] shrink-0">
+                                        <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center text-[#046bd2] shrink-0">
                                             <span class="material-symbols-outlined text-lg">person</span>
                                         </div>
                                     `}
                                 </div>
                                 <div>
                                     <span class="font-label-caps text-[9px] text-outline mb-0.5 block uppercase font-bold tracking-wider">${practitionerLabel}</span>
-                                    <h3 class="font-title-md text-xs font-semibold text-[#164e3f]">${therapist?.name || practitionerNotSelected}</h3>
+                                    <h3 class="font-title-md text-xs font-semibold text-[#046bd2]">${therapist?.name || practitionerNotSelected}</h3>
                                     <p class="font-body-sm text-[11px] text-on-surface-variant">${therapist?.role || 'TCM Physician'}</p>
                                 </div>
                             </div>
                             
                             <!-- Schedule Info -->
                             <div class="flex gap-3 items-start">
-                                <div class="w-10 h-10 rounded-lg bg-[#164e3f]/10 flex items-center justify-center shrink-0 text-[#164e3f]">
+                                <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center shrink-0 text-[#046bd2]">
                                     <span class="material-symbols-outlined text-lg">calendar_month</span>
                                 </div>
                                 <div>
                                     <span class="font-label-caps text-[9px] text-outline mb-0.5 block uppercase font-bold tracking-wider">${state.language === 'ms' ? 'TARIKH & MASA' : (state.language === 'zh' ? '日期与时间' : 'DATE & TIME')}</span>
                                     ${state.pkgBooking.date ? `
-                                        <h3 class="font-title-md text-xs font-semibold text-[#164e3f]">${state.pkgBooking.date}</h3>
-                                        <p class="font-body-sm text-[11px] text-[#164e3f] font-bold">${state.pkgBooking.time || 'To be selected'}</p>
+                                        <h3 class="font-title-md text-xs font-semibold text-[#046bd2]">${state.pkgBooking.date}</h3>
+                                        <p class="font-body-sm text-[11px] text-[#046bd2] font-bold">${state.pkgBooking.time || 'To be selected'}</p>
                                     ` : `
                                         <h3 class="font-title-md text-xs font-semibold text-on-surface-variant"><span class="italic text-on-surface-variant opacity-60 text-xs">To be selected</span></h3>
                                     `}
@@ -227,7 +227,7 @@ export function renderBookPackageView() {
                     </div>
 
                     <!-- Payment Details (Prepaid Package) -->
-                    <div class="border-t border-[#164e3f]/15 pt-4 space-y-4">
+                    <div class="border-t border-[#046bd2]/15 pt-4 space-y-4">
                         <div class="space-y-2 text-xs">
                             <div class="flex justify-between text-on-surface-variant">
                                 <span>${state.language === 'ms' ? 'Jumlah Kecil' : (state.language === 'zh' ? '小计' : 'Subtotal')}</span>
@@ -237,9 +237,9 @@ export function renderBookPackageView() {
                                 <span>${state.language === 'ms' ? 'Cukai (0%)' : (state.language === 'zh' ? '税费 (0%)' : 'Tax (0%)')}</span>
                                 <span>${currency} 0.00</span>
                             </div>
-                            <div class="border-t border-[#164e3f]/15 pt-3 flex justify-between items-center">
-                                <span class="font-bold text-[#164e3f]">${state.language === 'ms' ? 'Jumlah Anggaran' : (state.language === 'zh' ? '应付总额' : 'Estimated Total')}</span>
-                                <span class="font-serif text-lg font-bold text-[#164e3f]">${currency} 0.00</span>
+                            <div class="border-t border-[#046bd2]/15 pt-3 flex justify-between items-center">
+                                <span class="font-bold text-[#046bd2]">${state.language === 'ms' ? 'Jumlah Anggaran' : (state.language === 'zh' ? '应付总额' : 'Estimated Total')}</span>
+                                <span class="font-serif text-lg font-bold text-[#046bd2]">${currency} 0.00</span>
                             </div>
                         </div>
 
@@ -322,7 +322,7 @@ export function confirmPackageBooking() {
         date: state.pkgBooking.date,
         time: state.pkgBooking.time,
         therapist: therapist?.name || (state.language === 'ms' ? 'Pengamal Belum Dipilih' : (state.language === 'zh' ? '未选择执业医师' : 'Physician Not Selected')),
-        location: currentTenant?.address || 'Yong Kang TCM Clinic, 54 Pagoda Street, Chinatown, Singapore 059213',
+        location: currentTenant?.address || 'TCM Homecare Clinic, 54 Pagoda Street, Chinatown, Singapore 059213',
         price: 0,
         status: 'Upcoming'
     });
@@ -369,8 +369,8 @@ export function renderActivePackagesView() {
     const pkgKeys = Object.keys(state.activePackages);
     if (pkgKeys.length === 0) {
         container.innerHTML = `
-            <div class="col-span-full text-center py-16 bg-white rounded-3xl border border-[#164e3f]/15 p-8 shadow-sm">
-                <span class="material-symbols-outlined text-4xl text-[#164e3f]/40 mb-3">package_2</span>
+            <div class="col-span-full text-center py-16 bg-white rounded-3xl border border-[#046bd2]/15 p-8 shadow-sm">
+                <span class="material-symbols-outlined text-4xl text-[#046bd2]/40 mb-3">package_2</span>
                 <p class="text-sm font-semibold text-on-surface-variant">${state.language === 'ms' ? 'Anda tidak mempunyai pakej aktif.' : (state.language === 'zh' ? '您当前没有有效的疗程配套。' : 'You have no active packages.')}</p>
                 <p class="text-xs text-on-surface-variant/70 mt-1">${state.language === 'ms' ? 'Langgan pakej dari tab rawatan untuk mula menempah sesi.' : (state.language === 'zh' ? '从服务疗程中购买配套，即可开始预约诊疗。' : 'Purchase a package from the services tab to start booking sessions.')}</p>
             </div>
@@ -389,20 +389,20 @@ export function renderActivePackagesView() {
         const pct = Math.round((sessionsLeft / totalSessions) * 100);
         const isActive = sessionsLeft > 0;
         const statusBadge = isActive
-            ? `<span class="bg-[#164e3f]/10 text-[#164e3f] text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">${state.language === 'ms' ? 'Aktif' : (state.language === 'zh' ? '有效' : 'Active')}</span>`
+            ? `<span class="bg-[#046bd2]/10 text-[#046bd2] text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">${state.language === 'ms' ? 'Aktif' : (state.language === 'zh' ? '有效' : 'Active')}</span>`
             : `<span class="bg-[#b93826]/10 text-[#b93826] text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">${state.language === 'ms' ? 'Habis' : (state.language === 'zh' ? '已用罄' : 'Exhausted')}</span>`;
         const icon = iconMap[bundle.type] || 'healing';
 
         html += `
-            <div class="tcm-card bg-white rounded-3xl p-6 border border-[#164e3f]/15 relative flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 min-h-[260px]">
+            <div class="tcm-card bg-white rounded-3xl p-6 border border-[#046bd2]/15 relative flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 min-h-[260px]">
                 <div>
                     <div class="flex justify-between items-center mb-4">
-                        <div class="w-10 h-10 rounded-lg bg-[#164e3f]/10 flex items-center justify-center text-[#164e3f]">
+                        <div class="w-10 h-10 rounded-lg bg-[#046bd2]/10 flex items-center justify-center text-[#046bd2]">
                             <span class="material-symbols-outlined text-lg">${icon}</span>
                         </div>
                         ${statusBadge}
                     </div>
-                    <h3 class="font-serif text-base font-bold text-[#164e3f] mb-1 line-clamp-1">${bundle.name}</h3>
+                    <h3 class="font-serif text-base font-bold text-[#046bd2] mb-1 line-clamp-1">${bundle.name}</h3>
                     <p class="text-[11px] text-slate-500 line-clamp-2 leading-relaxed mb-4">${bundle.description}</p>
                     
                     <div class="mb-4">
@@ -411,13 +411,13 @@ export function renderActivePackagesView() {
                             <span>${sessionsLeft} / ${totalSessions}</span>
                         </div>
                         <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-[#164e3f] transition-all duration-500" style="width: ${pct}%"></div>
+                            <div class="h-full bg-[#046bd2] transition-all duration-500" style="width: ${pct}%"></div>
                         </div>
                     </div>
                 </div>
                 <div>
                     ${isActive ? `
-                        <button onclick="bookPackageSession('${bundleId}')" class="w-full btn-tcm-gold text-[#0f3d32] font-bold text-xs py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2">
+                        <button onclick="bookPackageSession('${bundleId}')" class="w-full btn-tcm-gold text-[#045cb4] font-bold text-xs py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2">
                             <span class="material-symbols-outlined text-sm">calendar_month</span> ${state.language === 'ms' ? 'Tempah Sesi' : (state.language === 'zh' ? '预约单次疗程' : 'Book a Session')}
                         </button>
                     ` : `
@@ -451,19 +451,19 @@ export function openQrTicketModal(bookingId) {
         <div class="grid grid-cols-1 md:grid-cols-12 gap-8 text-left p-2">
             <!-- Left Side Details -->
             <div class="md:col-span-7 space-y-5">
-                <div class="flex items-center gap-3 pb-4 border-b border-[#164e3f]/15">
+                <div class="flex items-center gap-3 pb-4 border-b border-[#046bd2]/15">
                     <div>
                         <span class="font-label-caps text-[9px] text-outline uppercase font-bold tracking-wider mb-0.5 block">${state.language === 'ms' ? 'ID TEMPAHAN' : (state.language === 'zh' ? '预约编号' : 'RESERVATION ID')}</span>
-                        <span class="font-title-md text-base font-bold text-[#164e3f]">#${resId}</span>
+                        <span class="font-title-md text-base font-bold text-[#046bd2]">#${resId}</span>
                     </div>
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#164e3f]/10 text-[#164e3f] text-[10px] font-semibold border border-[#164e3f]/25">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#164e3f]"></span> ${state.language === 'ms' ? 'Disahkan' : (state.language === 'zh' ? '已确认' : 'Confirmed')}
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#046bd2]/10 text-[#046bd2] text-[10px] font-semibold border border-[#046bd2]/25">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#046bd2]"></span> ${state.language === 'ms' ? 'Disahkan' : (state.language === 'zh' ? '已确认' : 'Confirmed')}
                     </span>
                 </div>
                 
                 <div>
                     <span class="font-label-caps text-[9px] text-outline uppercase font-bold tracking-wider mb-0.5 block">${state.language === 'ms' ? 'RAWATAN' : (state.language === 'zh' ? '理疗项目' : 'SERVICE')}</span>
-                    <h3 class="font-title-md text-sm font-bold text-[#164e3f]">${booking.serviceName}</h3>
+                    <h3 class="font-title-md text-sm font-bold text-[#046bd2]">${booking.serviceName}</h3>
                     <p class="font-body-sm text-xs text-on-surface-variant">${duration}</p>
                 </div>
                 
@@ -471,38 +471,38 @@ export function openQrTicketModal(bookingId) {
                     <div>
                         <span class="font-label-caps text-[9px] text-outline uppercase font-bold tracking-wider mb-0.5 block">${state.language === 'ms' ? 'PENGAMAL TCM' : (state.language === 'zh' ? '执业医师' : 'PRACTITIONER')}</span>
                         <div class="flex items-center gap-2 mt-1">
-                            <div class="w-6 h-6 rounded-full bg-[#164e3f]/10 flex items-center justify-center">
-                                <span class="material-symbols-outlined text-sm text-[#164e3f]">person</span>
+                            <div class="w-6 h-6 rounded-full bg-[#046bd2]/10 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-sm text-[#046bd2]">person</span>
                             </div>
-                            <span class="font-title-md text-xs font-semibold text-[#164e3f]">${booking.therapist}</span>
+                            <span class="font-title-md text-xs font-semibold text-[#046bd2]">${booking.therapist}</span>
                         </div>
                     </div>
                     <div>
                         <span class="font-label-caps text-[9px] text-outline uppercase font-bold tracking-wider mb-0.5 block">${state.language === 'ms' ? 'TARIKH & MASA' : (state.language === 'zh' ? '日期与时间' : 'DATE & TIME')}</span>
-                        <span class="font-title-md text-xs font-semibold text-[#164e3f] block mt-1">${booking.date}</span>
-                        <p class="font-body-sm text-xs text-[#164e3f] font-bold">${booking.time}</p>
+                        <span class="font-title-md text-xs font-semibold text-[#046bd2] block mt-1">${booking.date}</span>
+                        <p class="font-body-sm text-xs text-[#046bd2] font-bold">${booking.time}</p>
                     </div>
                 </div>
                 
                 <div>
                     <span class="font-label-caps text-[9px] text-outline uppercase font-bold tracking-wider mb-0.5 block">${state.language === 'ms' ? 'LOKASI KLINIK' : (state.language === 'zh' ? '诊所地点' : 'CLINIC LOCATION')}</span>
-                    <p class="font-body-sm text-xs text-on-surface-variant mt-0.5">${booking.location || (currentTenant?.address || 'Yong Kang TCM Clinic, 54 Pagoda Street, Chinatown, Singapore 059213')}</p>
+                    <p class="font-body-sm text-xs text-on-surface-variant mt-0.5">${booking.location || (currentTenant?.address || 'TCM Homecare Clinic, 54 Pagoda Street, Chinatown, Singapore 059213')}</p>
                 </div>
             </div>
             
             <!-- Right Side Actions & QR -->
             <div class="md:col-span-5 flex flex-col justify-center">
-                <div class="flex flex-col items-center gap-4 bg-[#faf7f2] p-6 rounded-xl border border-[#164e3f]/20 w-full max-w-[240px] mx-auto md:ml-auto shadow-inner">
-                    <div class="w-32 h-32 bg-[#0f3d32] rounded-lg p-2 flex items-center justify-center shrink-0 shadow">
+                <div class="flex flex-col items-center gap-4 bg-[#f0f5fa] p-6 rounded-xl border border-[#046bd2]/20 w-full max-w-[240px] mx-auto md:ml-auto shadow-inner">
+                    <div class="w-32 h-32 bg-[#045cb4] rounded-lg p-2 flex items-center justify-center shrink-0 shadow">
                         <svg class="w-full h-full text-white" viewBox="0 0 100 100" fill="currentColor">
                             <rect x="0" y="0" width="25" height="25"/>
-                            <rect x="5" y="5" width="15" height="15" fill="#0f3d32"/>
+                            <rect x="5" y="5" width="15" height="15" fill="#045cb4"/>
                             <rect x="8" y="8" width="9" height="9" fill="white"/>
                             <rect x="75" y="0" width="25" height="25"/>
-                            <rect x="80" y="5" width="15" height="15" fill="#0f3d32"/>
+                            <rect x="80" y="5" width="15" height="15" fill="#045cb4"/>
                             <rect x="83" y="8" width="9" height="9" fill="white"/>
                             <rect x="0" y="75" width="25" height="25"/>
-                            <rect x="5" y="80" width="15" height="15" fill="#0f3d32"/>
+                            <rect x="5" y="80" width="15" height="15" fill="#045cb4"/>
                             <rect x="8" y="83" width="9" height="9" fill="white"/>
                             <rect x="35" y="5" width="10" height="25"/>
                             <rect x="55" y="10" width="15" height="10"/>
@@ -514,13 +514,13 @@ export function openQrTicketModal(bookingId) {
                             <rect x="70" y="35" width="15" height="20"/>
                         </svg>
                     </div>
-                    <span class="font-body-sm text-[10px] text-[#164e3f] font-medium text-center">${state.language === 'ms' ? 'Imbas di kaunter klinik semasa tiba' : (state.language === 'zh' ? '到店后请在诊所前台扫码核销' : 'Scan at clinic reception upon arrival')}</span>
+                    <span class="font-body-sm text-[10px] text-[#046bd2] font-medium text-center">${state.language === 'ms' ? 'Imbas di kaunter klinik semasa tiba' : (state.language === 'zh' ? '到店后请在诊所前台扫码核销' : 'Scan at clinic reception upon arrival')}</span>
                     
-                    <button class="w-full py-2 btn-tcm-gold text-[#0f3d32] font-semibold text-[11px] rounded-lg flex items-center justify-center gap-1.5 transition-all">
+                    <button class="w-full py-2 btn-tcm-gold text-[#045cb4] font-semibold text-[11px] rounded-lg flex items-center justify-center gap-1.5 transition-all">
                         <span class="material-symbols-outlined text-xs">calendar_today</span> ${state.language === 'ms' ? 'Tambah ke Kalendar' : (state.language === 'zh' ? '添加到日历' : 'Add to Calendar')}
                     </button>
                     
-                    <button class="w-full py-2 bg-transparent border border-[#164e3f]/40 text-[#164e3f] hover:bg-[#164e3f]/5 font-semibold text-[11px] rounded-lg flex items-center justify-center gap-1.5 transition-all">
+                    <button class="w-full py-2 bg-transparent border border-[#046bd2]/40 text-[#046bd2] hover:bg-[#046bd2]/5 font-semibold text-[11px] rounded-lg flex items-center justify-center gap-1.5 transition-all">
                         <span class="material-symbols-outlined text-xs">download</span> ${state.language === 'ms' ? 'Muat Turun Tiket' : (state.language === 'zh' ? '下载凭证' : 'Download Ticket')}
                     </button>
                 </div>

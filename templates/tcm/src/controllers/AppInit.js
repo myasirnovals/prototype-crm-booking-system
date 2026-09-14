@@ -105,21 +105,21 @@ export function updateMobileMenuUI() {
         
         // Show avatar circle EV
         const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-        avatarContainer.innerHTML = `<span class="font-bold text-sm text-[#164e3f]">${initials}</span>`;
-        avatarContainer.className = "w-12 h-12 rounded-full bg-[#164e3f]/15 flex items-center justify-center overflow-hidden";
+        avatarContainer.innerHTML = `<span class="font-bold text-sm text-[#046bd2]">${initials}</span>`;
+        avatarContainer.className = "w-12 h-12 rounded-full bg-[#046bd2]/15 flex items-center justify-center overflow-hidden";
         
         // Auth button as sign out
         authBtn.innerHTML = `<span class="material-symbols-outlined text-[20px]">logout</span>${state.language === 'ms' ? 'Log Keluar' : (state.language === 'zh' ? '登出' : 'Sign Out')}`;
         authBtn.className = "flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-50 text-red-600 hover:text-red-700 transition-colors cursor-pointer text-sm font-semibold text-left";
     } else {
-        usernameEl.textContent = state.language === 'ms' ? 'Pengguna Tetamu' : (state.language === 'zh' ? '访客' : 'Guest User');
+        usernameEl.textContent = state.language === 'ms' ? 'Pelanggan Tetamu' : (state.language === 'zh' ? '访客' : 'Guest User');
         userroleEl.textContent = state.language === 'ms' ? 'Belum Log Masuk' : (state.language === 'zh' ? '未登录' : 'Not Logged In');
         avatarContainer.innerHTML = `<span class="material-symbols-outlined text-[24px]">person</span>`;
         avatarContainer.className = "w-12 h-12 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center overflow-hidden";
         
         // Auth button as sign in
         authBtn.innerHTML = `<span class="material-symbols-outlined text-[20px]">login</span>${state.language === 'ms' ? 'Log Masuk' : (state.language === 'zh' ? '登录' : 'Sign In')}`;
-        authBtn.className = "flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#164e3f]/10 text-[#164e3f] transition-colors cursor-pointer text-sm font-semibold text-left";
+        authBtn.className = "flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#046bd2]/10 text-[#046bd2] transition-colors cursor-pointer text-sm font-semibold text-left";
     }
 };
 
@@ -330,7 +330,7 @@ export function openTherapistBio(therapistId) {
         // Populate specialties badges
         if (specialtiesContainer) {
             specialtiesContainer.innerHTML = (therapist.specialties || []).map(s => `
-                <span class="px-2.5 py-1 bg-[#164e3f]/10 text-[#164e3f] font-bold text-[10px] rounded-full uppercase tracking-wider">${s}</span>
+                <span class="px-2.5 py-1 bg-[#046bd2]/10 text-[#046bd2] font-bold text-[10px] rounded-full uppercase tracking-wider">${s}</span>
             `).join('');
         }
 
@@ -342,7 +342,7 @@ export function openTherapistBio(therapistId) {
                 'Certified Clinical Acupuncturist & Tuina Specialist'
             ]).map(c => `
                 <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
-                    <span class="material-symbols-outlined text-[#164e3f] text-base">verified</span>
+                    <span class="material-symbols-outlined text-[#046bd2] text-base">verified</span>
                     <span class="font-medium text-slate-700 text-xs">${c}</span>
                 </div>
             `).join('');
@@ -523,9 +523,9 @@ export function setGiftAmount(amount) {
     selectedGiftCardAmount = amount;
     document.querySelectorAll('.gift-amount-btn').forEach(btn => {
         if (btn.textContent.includes(String(amount))) {
-            btn.className = 'gift-amount-btn py-2 rounded-xl bg-[#164e3f] text-white text-xs font-bold transition-all shadow-sm';
+            btn.className = 'gift-amount-btn py-2 rounded-xl bg-[#046bd2] text-white text-xs font-bold transition-all shadow-sm';
         } else {
-            btn.className = 'gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#164e3f] hover:bg-[#164e3f]/5 transition-all';
+            btn.className = 'gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#046bd2] hover:bg-[#046bd2]/5 transition-all';
         }
     });
 }
@@ -709,7 +709,7 @@ export function openTherapistModal(therapistId) {
                 'Certified Clinical Acupuncturist & Tuina Specialist'
             ]).map(c => `
                 <li class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[#164e3f] text-sm font-bold">check_circle</span>
+                    <span class="material-symbols-outlined text-[#046bd2] text-sm font-bold">check_circle</span>
                     ${c}
                 </li>
             `).join('');

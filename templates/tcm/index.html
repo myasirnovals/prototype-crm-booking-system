@@ -8,7 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>Yong Kang TCM & Acupuncture - Traditional Chinese Medicine</title>
+    <title>TCM Homecare - Traditional Chinese Medicine</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,7 @@
 
         const DEFAULT_TCM_THEME = {
             id: 'default-tcm',
-            name: 'Yong Kang TCM & Acupuncture',
+            name: 'TCM Homecare',
             tagline: 'Authentic Traditional Chinese Medicine, Acupuncture & Herbal Healing',
             logo: '',
             address: '88 Pagoda Street, Chinatown, Singapore',
@@ -34,9 +34,9 @@
             hours: 'Mon - Sun (09:30 - 19:30 SGT)',
             currency: 'SGD',
             colors: {
-                primary: '#164e3f',
-                secondary: '#c89d53',
-                background: '#faf8f5',
+                primary: '#046bd2',
+                secondary: '#00a86b',
+                background: '#f0f5fa',
                 surfaceContainer: '#f0eae1'
             }
         };
@@ -50,7 +50,7 @@
                     (b.id && b.id.toLowerCase() === targetBranchId.toLowerCase()) ||
                     (b.name && b.name.toLowerCase() === targetBranchId.toLowerCase())
                 );
-                if (!clinivaBranch && (targetBranchId === 'default-tcm' || targetBranchId === 'yong-kang' || targetBranchId === 'tcm')) {
+                if (!clinivaBranch && (targetBranchId === 'default-tcm' || targetBranchId === 'tcm-homecare' || targetBranchId === 'tcm')) {
                     clinivaBranch = clinivaBranches.find(b => b.template === 'tcm');
                 }
             }
@@ -70,9 +70,9 @@
 
         window.currentTenant = currentTenant;
         window.currentBranch = currentTenant;
-        const primaryColor = currentTenant.colors?.primary || '#164e3f';
-        const secondaryColor = currentTenant.colors?.secondary || '#c89d53';
-        const backgroundColor = currentTenant.colors?.background || '#faf8f5';
+        const primaryColor = currentTenant.colors?.primary || '#046bd2';
+        const secondaryColor = currentTenant.colors?.secondary || '#00a86b';
+        const backgroundColor = currentTenant.colors?.background || '#f0f5fa';
         const containerColor = currentTenant.colors?.surfaceContainer || '#f0eae1';
 
         tailwind.config = {
@@ -81,7 +81,7 @@
                 extend: {
                     "colors": {
                         "outline": "#75786e",
-                        "on-primary-fixed-variant": "#0f3d32",
+                        "on-primary-fixed-variant": "#045cb4",
                         "on-error": "#ffffff",
                         "secondary-fixed": "#ffe088",
                         "on-primary-fixed": "#111f05",
@@ -142,13 +142,13 @@
                         "container-max": "1280px"
                     },
                     "fontFamily": {
-                        "title-md": ["Manrope"],
-                        "headline-lg-mobile": ["Playfair Display"],
-                        "body-sm": ["Manrope"],
-                        "body-lg": ["Manrope"],
-                        "label-caps": ["Manrope"],
-                        "display-lg": ["Playfair Display"],
-                        "headline-lg": ["Playfair Display"]
+                        "title-md": ["Inter", "sans-serif"],
+                        "headline-lg-mobile": ["Inter", "sans-serif"],
+                        "body-sm": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"],
+                        "display-lg": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"]
                     },
                     "fontSize": {
                         "title-md": ["20px", { "lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "600" }],
@@ -178,12 +178,12 @@
         <div class="flex-1 flex justify-start">
             <div onclick="resetBookingFlow()" id="topNavBrandWrap"
                 class="cursor-pointer hover:opacity-85 transition-opacity animate-fade-in flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#164e3f] to-[#0f3d32] border border-[#c59b27]/40 flex items-center justify-center text-white shadow-sm shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#046bd2] to-[#045cb4] border border-[#ff6900]/40 flex items-center justify-center text-white shadow-sm shrink-0">
                     <span id="spaNavBrandLogo" class="text-xl">🌿</span>
                 </div>
                 <div class="flex flex-col text-left">
-                    <span id="spaNavBrandName" class="font-serif font-bold text-base md:text-lg text-[#164e3f] leading-tight">Yong Kang TCM</span>
-                    <span class="text-[9px] font-sans font-bold tracking-[0.18em] text-[#c59b27] uppercase">中医学 • 针灸 • 正骨</span>
+                    <span id="spaNavBrandName" class="font-serif font-bold text-base md:text-lg text-[#046bd2] leading-tight">TCM Homecare</span>
+                    <span class="text-[9px] font-sans font-bold tracking-[0.18em] text-[#ff6900] uppercase">中医学 • 针灸 • 正骨</span>
                 </div>
             </div>
         </div>
@@ -191,28 +191,28 @@
         <!-- Navigation Links -->
         <div class="hidden md:flex justify-center items-center gap-4 lg:gap-8 mx-2 lg:mx-4 whitespace-nowrap">
             <a onclick="resetBookingFlow()"
-                class="text-sm font-semibold text-[#164e3f] transition-colors duration-300 cursor-pointer"
+                class="text-sm font-semibold text-[#046bd2] transition-colors duration-300 cursor-pointer"
                 data-translate="nav_home">Home</a>
             <a onclick="navigateTo('services-catalog')"
-                class="text-sm font-semibold text-slate-600 hover:text-[#164e3f] transition-colors duration-300 cursor-pointer"
+                class="text-sm font-semibold text-slate-600 hover:text-[#046bd2] transition-colors duration-300 cursor-pointer"
                 data-translate="nav_service">Services</a>
             <a onclick="navigateTo('blog')"
-                class="text-sm font-semibold text-slate-600 hover:text-[#164e3f] transition-colors duration-300 cursor-pointer"
+                class="text-sm font-semibold text-slate-600 hover:text-[#046bd2] transition-colors duration-300 cursor-pointer"
                 data-translate="nav_blog">TCM Insights</a>
             <a onclick="navigateTo('about')"
-                class="text-sm font-semibold text-slate-600 hover:text-[#164e3f] transition-colors duration-300 cursor-pointer"
+                class="text-sm font-semibold text-slate-600 hover:text-[#046bd2] transition-colors duration-300 cursor-pointer"
                 data-translate="nav_about">About Clinic</a>
             <a onclick="navigateTo('contact')"
-                class="text-sm font-semibold text-slate-600 hover:text-[#164e3f] transition-colors duration-300 cursor-pointer"
+                class="text-sm font-semibold text-slate-600 hover:text-[#046bd2] transition-colors duration-300 cursor-pointer"
                 data-translate="nav_contact">Contact</a>
         </div>
 
         <!-- Desktop Header Buttons (Hidden on Mobile) -->
         <div class="hidden md:flex flex-1 justify-end items-center gap-3 md:gap-4">
             <div onclick="requireLogin(() => navigateTo('wallet'))"
-                class="wallet-nav-pill flex items-center gap-2 text-[#164e3f] bg-[#164e3f]/5 px-3 py-1.5 md:px-4 md:py-2 rounded-full hover:bg-[#164e3f]/10 transition-colors cursor-pointer border border-[#164e3f]/15">
-                <span class="material-symbols-outlined text-[18px] md:text-[20px] text-[#164e3f]">account_balance_wallet</span>
-                <span class="wallet-balance-text font-title-md text-xs md:text-sm font-bold text-[#164e3f]">SGD 0.00</span>
+                class="wallet-nav-pill flex items-center gap-2 text-[#046bd2] bg-[#046bd2]/5 px-3 py-1.5 md:px-4 md:py-2 rounded-full hover:bg-[#046bd2]/10 transition-colors cursor-pointer border border-[#046bd2]/15">
+                <span class="material-symbols-outlined text-[18px] md:text-[20px] text-[#046bd2]">account_balance_wallet</span>
+                <span class="wallet-balance-text font-title-md text-xs md:text-sm font-bold text-[#046bd2]">SGD 0.00</span>
             </div>
             <button onclick="startBookingWithService(null)"
                 class="btn-tcm-primary px-5 py-2 rounded-full font-bold text-xs hover:shadow-lg transition-all duration-300 flex items-center gap-1.5"
@@ -220,14 +220,14 @@
 
             <!-- Language Switcher Desktop -->
             <button onclick="toggleLanguage(event)"
-                class="text-[#164e3f] hover:bg-[#164e3f]/10 border border-[#164e3f]/30 rounded-full px-3 py-1.5 text-xs font-bold uppercase flex items-center gap-1.5 shadow-sm cursor-pointer"
+                class="text-[#046bd2] hover:bg-[#046bd2]/10 border border-[#046bd2]/30 rounded-full px-3 py-1.5 text-xs font-bold uppercase flex items-center gap-1.5 shadow-sm cursor-pointer"
                 title="Toggle Language (EN / BM / 中文)">
                 <span class="material-symbols-outlined text-[16px] md:text-[18px]">language</span>
                 <span id="lang-toggle-text">EN</span>
             </button>
 
             <button id="nav-user-btn" onclick="requireLogin(()=>navigateTo('profile'))"
-                class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#164e3f]/10 text-[#164e3f] flex items-center justify-center hover:bg-[#164e3f]/20 transition-colors"
+                class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-[#046bd2]/10 text-[#046bd2] flex items-center justify-center hover:bg-[#046bd2]/20 transition-colors"
                 title="Login / Register">
                 <span class="material-symbols-outlined text-[20px] md:text-[24px]">person</span>
             </button>
@@ -245,7 +245,7 @@
             style="font-family: 'Manrope', sans-serif;">
             <!-- Profile Section (Header) -->
             <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
-                <div class="w-12 h-12 rounded-full bg-[#164e3f]/15 text-[#164e3f] flex items-center justify-center text-sm font-bold overflow-hidden"
+                <div class="w-12 h-12 rounded-full bg-[#046bd2]/15 text-[#046bd2] flex items-center justify-center text-sm font-bold overflow-hidden"
                     id="mobile-menu-avatar-container">
                     <span class="material-symbols-outlined text-[24px]" id="mobile-menu-avatar-icon">person</span>
                 </div>
@@ -258,39 +258,39 @@
             <!-- Navigation Links -->
             <div class="flex flex-col gap-1">
                 <a onclick="closeMobileMenu(); resetBookingFlow();"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#164e3f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#046bd2] transition-colors cursor-pointer text-sm font-medium text-left">
                     <span class="material-symbols-outlined text-[20px]">home</span>
                     <span data-translate="nav_home">Home</span>
                 </a>
                 <a onclick="closeMobileMenu(); navigateTo('services-catalog');"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#164e3f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#046bd2] transition-colors cursor-pointer text-sm font-medium text-left">
                     <span class="material-symbols-outlined text-[20px]">spa</span>
                     <span data-translate="nav_service">Services</span>
                 </a>
                 <a onclick="closeMobileMenu(); navigateTo('blog');"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#164e3f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#046bd2] transition-colors cursor-pointer text-sm font-medium text-left">
                     <span class="material-symbols-outlined text-[20px]">rss_feed</span>
                     <span data-translate="nav_blog">Blog</span>
                 </a>
                 <a onclick="closeMobileMenu(); navigateTo('contact');"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#164e3f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#046bd2] transition-colors cursor-pointer text-sm font-medium text-left">
                     <span class="material-symbols-outlined text-[20px]">mail</span>
                     <span data-translate="nav_contact">Contact</span>
                 </a>
                 <a onclick="closeMobileMenu(); startBookingWithService(null);"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#164e3f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#046bd2] transition-colors cursor-pointer text-sm font-medium text-left">
                     <span class="material-symbols-outlined text-[20px]">calendar_month</span>
                     <span data-translate="btn_book_now">Book Now</span>
                 </a>
                 <a onclick="closeMobileMenu(); requireLogin(() => navigateTo('profile'));"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#164e3f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#046bd2] transition-colors cursor-pointer text-sm font-medium text-left">
                     <span class="material-symbols-outlined text-[20px]">person</span>
                     <span data-translate="nav_profile">Profile</span>
                 </a>
 
                 <!-- Language Toggle Mobile -->
                 <a onclick="toggleLanguage(event);"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#164e3f] transition-colors cursor-pointer text-sm font-medium text-left">
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 text-slate-700 hover:text-[#046bd2] transition-colors cursor-pointer text-sm font-medium text-left">
                     <span class="material-symbols-outlined text-[20px]">language</span>
                     <span id="mobile-lang-toggle-text">Language: EN</span>
                 </a>
@@ -321,46 +321,52 @@
                     <div class="absolute inset-0 hero-gradient"></div>
                 </div>
                 <div class="relative z-10 text-center px-4 md:px-margin-desktop max-w-4xl mx-auto py-16">
-                    <!-- Traditional Seal Stamp -->
-                    <div class="inline-flex items-center gap-2 mb-6">
-                        <span class="tcm-seal bg-white/90 shadow-sm border-[#b93826] text-[#b93826]">
-                            <span class="mr-1">☯️</span> 新加坡中医药管理委员会注册中医师驻诊 • TCMPB Licensed Practice
+                    <!-- Promo Box from tcmhomecare.com -->
+                    <div class="inline-flex items-center gap-2 mb-4 bg-orange-50/95 backdrop-blur-md border border-orange-300 px-4 py-1.5 rounded-full text-xs font-bold text-[#ff6900] shadow-sm">
+                        <span class="material-symbols-outlined text-[16px] text-[#ff6900]">campaign</span>
+                        <span>Intro Promo: <strong>S$20 for 15 mins</strong> on your first consultation!</span>
+                    </div>
+
+                    <!-- Modern Healthcare Badge -->
+                    <div class="flex items-center justify-center gap-2 mb-6">
+                        <span class="tcm-seal bg-white/95 shadow-sm border-sky-200 text-[#046bd2] px-3.5 py-1 text-xs">
+                            <span class="mr-1">🩺</span> TCMPB Licensed Practice • Telemedicine &amp; Homecare Visits
                         </span>
                     </div>
 
-                    <h1 class="text-3xl sm:text-4xl md:text-6xl text-[#0f3d32] font-bold font-serif mb-6 leading-tight tracking-tight drop-shadow-sm"
-                        data-translate="hero_title">Restore Your Innate Balance & Vital Qi</h1>
-                    <p class="text-sm sm:text-base md:text-lg text-slate-700 max-w-2xl mx-auto mb-8 leading-relaxed font-medium"
-                        data-translate="hero_subtitle">Personalized pulse diagnosis, targeted sterile meridian acupuncture, and therapeutic orthopedic tuina rooted in centuries of clinical TCM wisdom.</p>
+                    <h1 class="text-3xl sm:text-4xl md:text-6xl text-[#1e293b] font-extrabold mb-6 leading-tight tracking-tight drop-shadow-xs"
+                        data-translate="hero_title">Embrace Traditional Healing in Modern Comfort</h1>
+                    <p class="text-sm sm:text-base md:text-lg text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed font-medium"
+                        data-translate="hero_subtitle">Personalized TCM treatments tailored to your needs — online telemedicine, house calls, and painless laser acupuncture.</p>
 
                     <!-- Trust Highlights Strip -->
-                    <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 max-w-2xl mx-auto mb-10 text-xs text-[#164e3f] font-semibold">
-                        <span class="bg-white/85 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#164e3f]/20 flex items-center gap-1.5 shadow-sm">
-                            <span class="text-base">🪡</span> Sterile Single-Use Needles
+                    <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 max-w-2xl mx-auto mb-10 text-xs text-[#046bd2] font-semibold">
+                        <span class="bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-sky-200/60 flex items-center gap-1.5 shadow-sm">
+                            <span class="text-base">✨</span> Painless Laser Acupuncture
                         </span>
-                        <span class="bg-white/85 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#164e3f]/20 flex items-center gap-1.5 shadow-sm">
-                            <span class="text-base">🍵</span> 100% Traceable Granules
+                        <span class="bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-sky-200/60 flex items-center gap-1.5 shadow-sm">
+                            <span class="text-base">💻</span> Video Telemedicine
                         </span>
-                        <span class="bg-white/85 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#164e3f]/20 flex items-center gap-1.5 shadow-sm">
-                            <span class="text-base">🩺</span> Four-Diagnosis Pulse
+                        <span class="bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-sky-200/60 flex items-center gap-1.5 shadow-sm">
+                            <span class="text-base">🏠</span> House Calls &amp; Homecare
                         </span>
-                        <span class="bg-white/85 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#164e3f]/20 flex items-center gap-1.5 shadow-sm">
-                            <span class="text-base">💆</span> Orthopedic Alignment
+                        <span class="bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-sky-200/60 flex items-center gap-1.5 shadow-sm">
+                            <span class="text-base">🍵</span> Traceable Herbal Formulas
                         </span>
                     </div>
 
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <button onclick="startBookingWithService(null)"
-                            class="btn-tcm-primary px-8 py-3.5 rounded-full text-sm font-bold shadow-md hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                            class="btn-tcm-accent px-8 py-3.5 rounded-full text-sm font-bold shadow-md hover:shadow-xl transition-all duration-300 flex items-center gap-2 cursor-pointer"
                             data-translate="btn_book_now">
                             <span class="material-symbols-outlined text-base">calendar_month</span>
-                            Book Consultation
+                            Book Consultation Now
                         </button>
                         <button onclick="navigateTo('all-services')"
-                            class="btn-tcm-gold px-7 py-3.5 rounded-full text-sm font-bold shadow-md hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                            class="btn-tcm-primary px-7 py-3.5 rounded-full text-sm font-bold shadow-md hover:shadow-xl transition-all duration-300 flex items-center gap-2 cursor-pointer"
                             data-translate="btn_explore_services">
-                            <span class="material-symbols-outlined text-base">local_pharmacy</span>
-                            Explore TCM Therapies
+                            <span class="material-symbols-outlined text-base">medical_services</span>
+                            Explore TCM Treatments
                         </button>
                     </div>
                 </div>
@@ -375,93 +381,87 @@
             <!-- The Four Pillars of TCM Clinical Care -->
             <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop py-16 text-center">
                 <div class="max-w-2xl mx-auto mb-12">
-                    <span class="font-bold text-xs uppercase tracking-[0.2em] text-[#c59b27] block mb-2">四诊合参 • 辨证求因</span>
-                    <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#0f3d32]"
+                    <span class="font-bold text-xs uppercase tracking-[0.2em] text-[#ff6900] block mb-2">四诊合参 • 辨证求因</span>
+                    <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#045cb4]"
                         data-translate="why_choose_us_title">The Four Pillars of TCM Clinical Care</h2>
                     <p class="text-xs md:text-sm text-slate-600 mt-2 leading-relaxed">Our clinical framework addresses the underlying root cause of bodily disharmony, unblocking meridian stagnation and reinforcing constitutional immunity.</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-                    <!-- Pillar 1: Pulse & Tongue -->
+                    <!-- Pillar 1: Laser Acupuncture -->
                     <div class="tcm-card p-6 flex flex-col justify-between group">
                         <div>
-                            <div class="w-12 h-12 rounded-2xl bg-[#164e3f]/10 text-[#164e3f] flex items-center justify-center mb-4 group-hover:bg-[#164e3f] group-hover:text-white transition-colors">
-                                <span class="material-symbols-outlined text-2xl">vital_signs</span>
+                            <div class="w-12 h-12 rounded-2xl bg-sky-50 text-[#046bd2] border border-sky-100 flex items-center justify-center mb-4 group-hover:bg-[#046bd2] group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-2xl">flare</span>
                             </div>
-                            <span class="tcm-seal text-[10px] mb-2 inline-block">望闻问切 • 诊断</span>
-                            <h3 class="font-serif text-base font-bold text-[#0f3d32] mb-2"
-                                data-translate="why_choose_us_feat3_title">Comprehensive Pulse Diagnosis</h3>
-                            <p class="text-xs text-slate-600 leading-relaxed"
-                                data-translate="why_choose_us_feat3_desc">In-depth radial pulse palpation and tongue evaluation to identify underlying organ imbalances before symptoms manifest.</p>
+                            <span class="tcm-seal text-[10px] mb-2 inline-block">无痛舒适 • 激光针灸</span>
+                            <h3 class="font-bold text-base text-[#1e293b] mb-2">Painless Laser Acupuncture</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">Advanced low-level laser therapy addressing needle phobia. Needle-free comfort suitable for young, elderly, and sensitive patients.</p>
                         </div>
                     </div>
 
-                    <!-- Pillar 2: Acupuncture -->
+                    <!-- Pillar 2: Online Teleconsultation -->
                     <div class="tcm-card p-6 flex flex-col justify-between group">
                         <div>
-                            <div class="w-12 h-12 rounded-2xl bg-[#164e3f]/10 text-[#164e3f] flex items-center justify-center mb-4 group-hover:bg-[#164e3f] group-hover:text-white transition-colors">
-                                <span class="material-symbols-outlined text-2xl">healing</span>
+                            <div class="w-12 h-12 rounded-2xl bg-sky-50 text-[#046bd2] border border-sky-100 flex items-center justify-center mb-4 group-hover:bg-[#046bd2] group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-2xl">videocam</span>
                             </div>
-                            <span class="tcm-seal text-[10px] mb-2 inline-block">经络通泰 • 针灸</span>
-                            <h3 class="font-serif text-base font-bold text-[#0f3d32] mb-2">Sterile Meridian Acupuncture</h3>
-                            <p class="text-xs text-slate-600 leading-relaxed">Disposable, ultra-fine surgical needles placed along target acupoints to unblock Qi stagnation, relieve nerve pain, and stimulate self-healing.</p>
+                            <span class="tcm-seal text-[10px] mb-2 inline-block">线上问诊 • 居家便捷</span>
+                            <h3 class="font-bold text-base text-[#1e293b] mb-2">TCM Telemedicine Consult</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">Confidential video consults with certified TCM physicians. Thorough lifestyle evaluation and doorstep delivery of herbal remedies.</p>
                         </div>
                     </div>
 
-                    <!-- Pillar 3: Herbal Formulary -->
+                    <!-- Pillar 3: House Calls & Homecare -->
                     <div class="tcm-card p-6 flex flex-col justify-between group">
                         <div>
-                            <div class="w-12 h-12 rounded-2xl bg-[#164e3f]/10 text-[#164e3f] flex items-center justify-center mb-4 group-hover:bg-[#164e3f] group-hover:text-white transition-colors">
+                            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-[#00a86b] border border-emerald-100 flex items-center justify-center mb-4 group-hover:bg-[#00a86b] group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-2xl">home_health</span>
+                            </div>
+                            <span class="tcm-seal text-[10px] mb-2 inline-block text-[#00a86b] bg-emerald-50 border-emerald-200">上门出诊 • 贴心关怀</span>
+                            <h3 class="font-bold text-base text-[#1e293b] mb-2">House Calls &amp; Home Visits</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">Personalized bedside TCM care, acupuncture, and restorative bodywork delivered in the privacy of your home across Singapore.</p>
+                        </div>
+                    </div>
+
+                    <!-- Pillar 4: Herbal Prescriptions -->
+                    <div class="tcm-card p-6 flex flex-col justify-between group">
+                        <div>
+                            <div class="w-12 h-12 rounded-2xl bg-orange-50 text-[#ff6900] border border-orange-100 flex items-center justify-center mb-4 group-hover:bg-[#ff6900] group-hover:text-white transition-colors">
                                 <span class="material-symbols-outlined text-2xl">medication</span>
                             </div>
-                            <span class="tcm-seal text-[10px] mb-2 inline-block">道地本草 • 调理</span>
-                            <h3 class="font-serif text-base font-bold text-[#0f3d32] mb-2"
-                                data-translate="why_choose_us_feat2_title">Traceable Herbal Granules</h3>
-                            <p class="text-xs text-slate-600 leading-relaxed"
-                                data-translate="why_choose_us_feat2_desc">Concentrated, lab-tested Chinese herbal extracts certified free of heavy metals and microbial contaminants for maximum safety and efficacy.</p>
-                        </div>
-                    </div>
-
-                    <!-- Pillar 4: Orthopedic Tuina -->
-                    <div class="tcm-card p-6 flex flex-col justify-between group">
-                        <div>
-                            <div class="w-12 h-12 rounded-2xl bg-[#164e3f]/10 text-[#164e3f] flex items-center justify-center mb-4 group-hover:bg-[#164e3f] group-hover:text-white transition-colors">
-                                <span class="material-symbols-outlined text-2xl">accessibility_new</span>
-                            </div>
-                            <span class="tcm-seal text-[10px] mb-2 inline-block">理筋正骨 • 推拿</span>
-                            <h3 class="font-serif text-base font-bold text-[#0f3d32] mb-2"
-                                data-translate="why_choose_us_feat1_title">Orthopedic Tuina Bodywork</h3>
-                            <p class="text-xs text-slate-600 leading-relaxed"
-                                data-translate="why_choose_us_feat1_desc">Structured manual therapy targeting spinal misalignment, joint rigidity, cervical spondylosis, and sports-related tendon injuries.</p>
+                            <span class="tcm-seal text-[10px] mb-2 inline-block text-[#ff6900] bg-orange-50 border-orange-200">道地本草 • 精准调理</span>
+                            <h3 class="font-bold text-base text-[#1e293b] mb-2">Targeted Herbal Formulations</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">Prescriptions crafted with laboratory-tested, traceable herbal granules and functional wellness drink mixes for natural recovery.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Clinic Heritage & Integrity Section -->
-            <div class="bg-[#f5efe4] py-16 border-y border-[#e7dfd1] my-8">
+            <div class="bg-[#f0f5fa] py-16 border-y border-[#e2e8f0] my-8">
                 <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop">
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                         <!-- Left Column: Visual Showcase -->
                         <div class="lg:col-span-5 relative">
-                            <div class="relative rounded-3xl overflow-hidden shadow-lg border border-[#e7dfd1] aspect-[4/5] bg-white">
+                            <div class="relative rounded-3xl overflow-hidden shadow-lg border border-[#e2e8f0] aspect-[4/5] bg-white">
                                 <img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=800&auto=format&fit=crop"
                                     class="w-full h-full object-cover" alt="TCM Physician Pulse Consultation">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent"></div>
                                 <div class="absolute bottom-6 left-6 right-6 text-white text-left">
-                                    <span class="tcm-seal bg-white/20 text-white border-white mb-2 inline-block">仁心仁术 • 纯正中医</span>
-                                    <span class="font-serif text-xl font-bold block mb-1">Yong Kang TCM &amp; Acupuncture</span>
-                                    <p class="text-xs text-white/80">Est. 2011 • Chinatown, Singapore / Kuala Lumpur</p>
+                                    <span class="tcm-seal bg-white/20 text-white border-white mb-2 inline-block">现代中医 • 科技护航</span>
+                                    <span class="text-xl font-bold block mb-1">TCM Homecare</span>
+                                    <p class="text-xs text-white/90">Est. 2008 • The Commerze @ Irving, Singapore</p>
                                 </div>
                             </div>
                             <!-- Floating Stat Badge -->
-                            <div class="absolute -bottom-6 -right-4 md:right-4 bg-white rounded-2xl p-4 shadow-xl border border-[#e7dfd1] flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-[#164e3f]/10 text-[#164e3f] flex items-center justify-center font-bold">
+                            <div class="absolute -bottom-6 -right-4 md:right-4 bg-white rounded-2xl p-4 shadow-xl border border-[#e2e8f0] flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-[#046bd2]/10 text-[#046bd2] flex items-center justify-center font-bold">
                                     <span class="material-symbols-outlined text-xl">verified</span>
                                 </div>
                                 <div class="text-left">
-                                    <span class="text-sm font-bold text-slate-800 block leading-tight">15+ Years</span>
-                                    <span class="text-[10px] text-slate-500">Clinical Excellence</span>
+                                    <span class="text-sm font-bold text-slate-800 block leading-tight">16+ Years</span>
+                                    <span class="text-[10px] text-slate-500">Telehealth &amp; Clinical Excellence</span>
                                 </div>
                             </div>
                         </div>
@@ -469,20 +469,20 @@
                         <!-- Right Column: Story, Vision & Mission -->
                         <div class="lg:col-span-7 space-y-6 text-left">
                             <div>
-                                <span class="text-[10px] text-[#c59b27] font-bold uppercase tracking-[0.2em] block mb-2"
-                                    data-translate="about_tag">Our Clinic Heritage</span>
-                                <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#0f3d32] leading-tight"
-                                    data-translate="about_title">Harmonizing Qi, Body &amp; Mind Through Authentic TCM</h2>
+                                <span class="text-[10px] text-[#ff6900] font-bold uppercase tracking-[0.2em] block mb-2"
+                                    data-translate="about_tag">About TCM Homecare</span>
+                                <h2 class="text-2xl md:text-3xl font-extrabold text-[#1e293b] leading-tight"
+                                    data-translate="about_title">Personalized TCM Treatments, Tailored Wherever You Are</h2>
                                 <p class="text-xs md:text-sm text-slate-600 leading-relaxed mt-3"
                                     data-translate="about_desc">
-                                    Founded with a mission to deliver safe, licensed, and compassionate Traditional Chinese Medicine, our clinic blends centuries-old diagnostic wisdom with modern hygienic clinical standards to help you restore vitality.
+                                    Established in 2008 by Physician Thum, TCM Homecare pioneered the union of modern mobile technology and Traditional Chinese Medicine. We provide painless laser acupuncture, comprehensive telemedicine, house calls, and herbal wellness designed for the fast-paced modern individual.
                                 </p>
                             </div>
 
                             <!-- Vision & Mission Cards Grid -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                                <div class="bg-white rounded-2xl p-5 border border-[#e7dfd1] shadow-sm flex flex-col gap-2">
-                                    <div class="w-8 h-8 rounded-lg bg-[#164e3f]/10 text-[#164e3f] flex items-center justify-center">
+                                <div class="bg-white rounded-2xl p-5 border border-[#e2e8f0] shadow-sm flex flex-col gap-2">
+                                    <div class="w-8 h-8 rounded-lg bg-[#046bd2]/10 text-[#046bd2] flex items-center justify-center">
                                         <span class="material-symbols-outlined text-lg">visibility</span>
                                     </div>
                                     <h3 class="font-serif text-sm font-bold text-slate-800"
@@ -490,8 +490,8 @@
                                     <p class="text-xs text-slate-600 leading-relaxed"
                                         data-translate="about_vision_desc">To be the region's leading integrative TCM healthcare practice, empowering individuals to cultivate lifelong physical vitality and internal balance.</p>
                                 </div>
-                                <div class="bg-white rounded-2xl p-5 border border-[#e7dfd1] shadow-sm flex flex-col gap-2">
-                                    <div class="w-8 h-8 rounded-lg bg-[#c59b27]/15 text-[#c59b27] flex items-center justify-center">
+                                <div class="bg-white rounded-2xl p-5 border border-[#e2e8f0] shadow-sm flex flex-col gap-2">
+                                    <div class="w-8 h-8 rounded-lg bg-[#ff6900]/15 text-[#ff6900] flex items-center justify-center">
                                         <span class="material-symbols-outlined text-lg">flag</span>
                                     </div>
                                     <h3 class="font-serif text-sm font-bold text-slate-800"
@@ -509,9 +509,9 @@
             <div class="py-16 my-8 text-center">
                 <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop">
                     <div class="max-w-2xl mx-auto mb-12">
-                        <span class="text-[10px] text-[#c59b27] font-bold uppercase tracking-[0.2em] block mb-2"
+                        <span class="text-[10px] text-[#ff6900] font-bold uppercase tracking-[0.2em] block mb-2"
                             data-translate="testimonials_tag">Patient Experiences</span>
-                        <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#0f3d32]"
+                        <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#045cb4]"
                             data-translate="testimonials_title">Trusted by Over 2,500+ Patients</h2>
                         <p class="text-xs md:text-sm text-slate-600 leading-relaxed mt-2"
                             data-translate="testimonials_desc">Discover real patient recoveries from chronic back pain, migraine, fatigue, and muscular strain through our dedicated TCM therapies.</p>
@@ -536,7 +536,7 @@
                                 </p>
                             </div>
                             <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
-                                <div class="w-10 h-10 rounded-full bg-[#164e3f]/15 text-[#164e3f] flex items-center justify-center font-bold text-xs shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-[#046bd2]/15 text-[#046bd2] flex items-center justify-center font-bold text-xs shrink-0">
                                     EV
                                 </div>
                                 <div>
@@ -564,7 +564,7 @@
                                 </p>
                             </div>
                             <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
-                                <div class="w-10 h-10 rounded-full bg-[#c59b27]/20 text-[#8c6521] flex items-center justify-center font-bold text-xs shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-[#ff6900]/20 text-[#8c6521] flex items-center justify-center font-bold text-xs shrink-0">
                                     MT
                                 </div>
                                 <div>
@@ -592,7 +592,7 @@
                                 </p>
                             </div>
                             <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
-                                <div class="w-10 h-10 rounded-full bg-[#164e3f]/15 text-[#164e3f] flex items-center justify-center font-bold text-xs shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-[#046bd2]/15 text-[#046bd2] flex items-center justify-center font-bold text-xs shrink-0">
                                     SL
                                 </div>
                                 <div>
@@ -606,34 +606,34 @@
             </div>
 
             <!-- Awards & Clinical Accreditations -->
-            <div class="py-16 my-8 bg-[#f5efe4] border-y border-[#e7dfd1] text-center">
+            <div class="py-16 my-8 bg-[#f0f5fa] border-y border-[#e2e8f0] text-center">
                 <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop">
                     <div class="max-w-2xl mx-auto mb-10">
-                        <span class="text-[10px] text-[#c59b27] font-bold uppercase tracking-[0.2em] block mb-2"
+                        <span class="text-[10px] text-[#ff6900] font-bold uppercase tracking-[0.2em] block mb-2"
                             data-translate="awards_tag">Clinical Governance</span>
-                        <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#0f3d32]"
+                        <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#045cb4]"
                             data-translate="awards_title">Accredited Clinical TCM Practice</h2>
                         <p class="text-xs md:text-sm text-slate-600 leading-relaxed mt-2"
                             data-translate="awards_desc">Upholding strict medical ethics, verified practitioner credentials, and Singapore TCMPB healthcare standards.</p>
                     </div>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-center">
-                        <div class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/70 border border-[#e7dfd1]">
-                            <span class="material-symbols-outlined text-3xl text-[#164e3f]">verified</span>
+                        <div class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/70 border border-[#e2e8f0]">
+                            <span class="material-symbols-outlined text-3xl text-[#046bd2]">verified</span>
                             <span class="text-xs font-bold text-slate-800">TCMPB Registered</span>
                             <span class="text-[10px] text-slate-500">Licensed TCM Physicians</span>
                         </div>
-                        <div class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/70 border border-[#e7dfd1]">
-                            <span class="material-symbols-outlined text-3xl text-[#c59b27]">biotech</span>
+                        <div class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/70 border border-[#e2e8f0]">
+                            <span class="material-symbols-outlined text-3xl text-[#ff6900]">biotech</span>
                             <span class="text-xs font-bold text-slate-800">HSA Tested Formulations</span>
                             <span class="text-[10px] text-slate-500">Heavy Metal Free Granules</span>
                         </div>
-                        <div class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/70 border border-[#e7dfd1]">
-                            <span class="material-symbols-outlined text-3xl text-[#164e3f]">sanitizer</span>
+                        <div class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/70 border border-[#e2e8f0]">
+                            <span class="material-symbols-outlined text-3xl text-[#046bd2]">sanitizer</span>
                             <span class="text-xs font-bold text-slate-800">Hospital-Grade Needles</span>
                             <span class="text-[10px] text-slate-500">100% Sterile Single-Use</span>
                         </div>
-                        <div class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/70 border border-[#e7dfd1]">
-                            <span class="material-symbols-outlined text-3xl text-[#c59b27]">stars</span>
+                        <div class="flex flex-col items-center gap-2 p-4 rounded-2xl bg-white/70 border border-[#e2e8f0]">
+                            <span class="material-symbols-outlined text-3xl text-[#ff6900]">stars</span>
                             <span class="text-xs font-bold text-slate-800">2,500+ Recoveries</span>
                             <span class="text-[10px] text-slate-500">High Patient Satisfaction</span>
                         </div>
@@ -862,7 +862,7 @@
             <!-- Check Icon & Headline -->
             <div class="text-center mb-8">
                 <div
-                    class="w-12 h-12 rounded-full bg-[#164e3f]/10 flex items-center justify-center text-[#164e3f] mx-auto mb-6">
+                    class="w-12 h-12 rounded-full bg-[#046bd2]/10 flex items-center justify-center text-[#046bd2] mx-auto mb-6">
                     <span class="material-symbols-outlined text-2xl font-bold">check_circle</span>
                 </div>
                 <h1 class="font-display-lg text-3xl md:text-4xl text-[#1E293B] mb-3 font-bold font-serif"
@@ -885,7 +885,7 @@
                     <!-- Tip 1 -->
                     <div class="glass-panel rounded-xl p-6 flex flex-col items-center text-center">
                         <div
-                            class="w-10 h-10 rounded-full bg-[#164e3f]/5 flex items-center justify-center text-[#164e3f] mb-4">
+                            class="w-10 h-10 rounded-full bg-[#046bd2]/5 flex items-center justify-center text-[#046bd2] mb-4">
                             <span class="material-symbols-outlined">schedule</span>
                         </div>
                         <h3 class="font-title-md text-sm font-semibold text-[#1E293B] mb-2" data-translate="tip1_title">
@@ -897,7 +897,7 @@
                     <!-- Tip 2 -->
                     <div class="glass-panel rounded-xl p-6 flex flex-col items-center text-center">
                         <div
-                            class="w-10 h-10 rounded-full bg-[#164e3f]/5 flex items-center justify-center text-[#164e3f] mb-4">
+                            class="w-10 h-10 rounded-full bg-[#046bd2]/5 flex items-center justify-center text-[#046bd2] mb-4">
                             <span class="material-symbols-outlined">water_drop</span>
                         </div>
                         <h3 class="font-title-md text-sm font-semibold text-[#1E293B] mb-2" data-translate="tip2_title">
@@ -910,7 +910,7 @@
                     <div
                         class="glass-panel rounded-xl p-6 flex flex-col items-center text-center col-span-2 mx-auto max-w-md w-full">
                         <div
-                            class="w-10 h-10 rounded-full bg-[#164e3f]/5 flex items-center justify-center text-[#164e3f] mb-4">
+                            class="w-10 h-10 rounded-full bg-[#046bd2]/5 flex items-center justify-center text-[#046bd2] mb-4">
                             <span class="material-symbols-outlined">notifications_off</span>
                         </div>
                         <h3 class="font-title-md text-sm font-semibold text-[#1E293B] mb-2" data-translate="tip3_title">
@@ -924,7 +924,7 @@
 
             <!-- Return Home Link -->
             <button onclick="resetBookingFlow()"
-                class="flex items-center gap-2 text-xs font-semibold text-[#164e3f] hover:underline transition-all">
+                class="flex items-center gap-2 text-xs font-semibold text-[#046bd2] hover:underline transition-all">
                 <span class="material-symbols-outlined text-sm">arrow_back</span> <span
                     data-translate="btn_return_home">Return to Home</span>
             </button>
@@ -984,7 +984,7 @@
                 <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block mb-2"
                     data-translate="blog_subtitle">Wellness Insights</span>
                 <h1 class="font-serif text-3xl md:text-4xl text-[#1E293B] font-black tracking-tight"
-                    data-translate="blog_title">Yong Kang TCM &amp; Acupuncture Journal</h1>
+                    data-translate="blog_title">TCM Homecare Journal</h1>
                 <p class="text-xs text-on-surface-variant leading-relaxed mt-2" data-translate="blog_desc">Explore our
                     curated collection of articles, tips, and insights on holistic wellness, skincare, and spa
                     treatments.</p>
@@ -1000,18 +1000,18 @@
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             alt="Meditation and Relaxation">
                         <span
-                            class="absolute top-4 left-4 bg-[#164e3f] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Mindfulness</span>
+                            class="absolute top-4 left-4 bg-[#046bd2] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Mindfulness</span>
                     </div>
                     <div class="p-6 flex flex-col flex-grow text-left">
                         <span class="text-[10px] text-slate-400 font-bold mb-2">October 24, 2025 • 5 min read</span>
                         <h3
-                            class="font-serif text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#164e3f] transition-colors">
+                            class="font-serif text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#046bd2] transition-colors">
                             The Science of Relaxation: How Spa Treatments Lower Cortisol</h3>
                         <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-6">Discover how professional
                             massage and spa therapies trigger your parasympathetic nervous system, actively lowering
                             cortisol levels and reducing chronic stress.</p>
                         <button onclick="openBlogArticle(1)"
-                            class="mt-auto flex items-center gap-1.5 text-xs font-bold text-[#164e3f] hover:underline self-start cursor-pointer">
+                            class="mt-auto flex items-center gap-1.5 text-xs font-bold text-[#046bd2] hover:underline self-start cursor-pointer">
                             Read Full Article <span class="material-symbols-outlined text-sm">arrow_forward</span>
                         </button>
                     </div>
@@ -1031,13 +1031,13 @@
                     <div class="p-6 flex flex-col flex-grow text-left">
                         <span class="text-[10px] text-slate-400 font-bold mb-2">October 18, 2025 • 4 min read</span>
                         <h3
-                            class="font-serif text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#164e3f] transition-colors">
+                            class="font-serif text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#046bd2] transition-colors">
                             Deep Tissue vs. Aromatherapy: Which Massage is Right for You?</h3>
                         <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-6">Struggling to choose between
                             muscle-release pressure and sensory relaxation? We break down the structural and holistic
                             differences to help you select the ideal treatment.</p>
                         <button onclick="openBlogArticle(2)"
-                            class="mt-auto flex items-center gap-1.5 text-xs font-bold text-[#164e3f] hover:underline self-start cursor-pointer">
+                            class="mt-auto flex items-center gap-1.5 text-xs font-bold text-[#046bd2] hover:underline self-start cursor-pointer">
                             Read Full Article <span class="material-symbols-outlined text-sm">arrow_forward</span>
                         </button>
                     </div>
@@ -1051,19 +1051,19 @@
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             alt="Post-Spa Aftercare">
                         <span
-                            class="absolute top-4 left-4 bg-[#164e3f] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Wellness
+                            class="absolute top-4 left-4 bg-[#046bd2] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Wellness
                             Tips</span>
                     </div>
                     <div class="p-6 flex flex-col flex-grow text-left">
                         <span class="text-[10px] text-slate-400 font-bold mb-2">October 12, 2025 • 6 min read</span>
                         <h3
-                            class="font-serif text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#164e3f] transition-colors">
+                            class="font-serif text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#046bd2] transition-colors">
                             Post-Spa Aftercare: 5 Habits to Maximize Treatment Benefits</h3>
                         <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-6">Your relaxation shouldn't
                             end when you walk out the door. Learn the critical steps to hydrate, rest, and care for your
                             skin to prolong the positive effects of your spa session.</p>
                         <button onclick="openBlogArticle(3)"
-                            class="mt-auto flex items-center gap-1.5 text-xs font-bold text-[#164e3f] hover:underline self-start cursor-pointer">
+                            class="mt-auto flex items-center gap-1.5 text-xs font-bold text-[#046bd2] hover:underline self-start cursor-pointer">
                             Read Full Article <span class="material-symbols-outlined text-sm">arrow_forward</span>
                         </button>
                     </div>
@@ -1079,9 +1079,9 @@
                 <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block mb-2"
                     data-translate="about_tag">Our Story</span>
                 <h1 class="font-serif text-3xl md:text-4xl text-[#1E293B] font-black tracking-tight"
-                    data-translate="about_title">Yong Kang TCM & Acupuncture</h1>
+                    data-translate="about_title">TCM Homecare</h1>
                 <p class="text-xs md:text-sm text-on-surface-variant leading-relaxed mt-4 max-w-2xl mx-auto"
-                    data-translate="about_desc">Established in 2024, Yong Kang TCM & Acupuncture was born from a simple
+                    data-translate="about_desc">Established in 2024, TCM Homecare was born from a simple
                     belief: that everyone deserves a moment of absolute peace. Our sanctuary is a haven in the bustling
                     city, designed to harmonize your body, mind, and spirit through holistic treatments and expert care.
                 </p>
@@ -1181,7 +1181,7 @@
                                 class="px-4 py-3 rounded-xl border border-outline-variant/60 focus:outline-none focus:border-primary text-xs text-on-surface resize-none"></textarea>
                         </div>
                         <button type="submit"
-                            class="w-full bg-primary hover:bg-[#0f3d32] text-white py-3 rounded-xl font-bold text-xs shadow-sm transition-colors">Send
+                            class="w-full bg-primary hover:bg-[#045cb4] text-white py-3 rounded-xl font-bold text-xs shadow-sm transition-colors">Send
                             Message</button>
                     </form>
                 </div>
@@ -1347,7 +1347,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="glass-panel rounded-3xl p-8 flex gap-6 items-start">
                         <div
-                            class="w-12 h-12 rounded-2xl bg-[#164e3f] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
+                            class="w-12 h-12 rounded-2xl bg-[#046bd2] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
                             1</div>
                         <div>
                             <h3 class="font-serif text-lg font-bold text-[#1E293B] mb-2">Browse and Pick Service</h3>
@@ -1360,7 +1360,7 @@
 
                     <div class="glass-panel rounded-3xl p-8 flex gap-6 items-start">
                         <div
-                            class="w-12 h-12 rounded-2xl bg-[#164e3f] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
+                            class="w-12 h-12 rounded-2xl bg-[#046bd2] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
                             2</div>
                         <div>
                             <h3 class="font-serif text-lg font-bold text-[#1E293B] mb-2">Select Your Therapist</h3>
@@ -1373,7 +1373,7 @@
 
                     <div class="glass-panel rounded-3xl p-8 flex gap-6 items-start">
                         <div
-                            class="w-12 h-12 rounded-2xl bg-[#164e3f] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
+                            class="w-12 h-12 rounded-2xl bg-[#046bd2] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
                             3</div>
                         <div>
                             <h3 class="font-serif text-lg font-bold text-[#1E293B] mb-2">Pick Date and Time</h3>
@@ -1386,7 +1386,7 @@
 
                     <div class="glass-panel rounded-3xl p-8 flex gap-6 items-start">
                         <div
-                            class="w-12 h-12 rounded-2xl bg-[#164e3f] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
+                            class="w-12 h-12 rounded-2xl bg-[#046bd2] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
                             4</div>
                         <div>
                             <h3 class="font-serif text-lg font-bold text-[#1E293B] mb-2">Confirm and Secure</h3>
@@ -1436,7 +1436,7 @@
                 <div class="space-y-3">
                     <h2 class="font-serif text-lg font-bold text-[#1E293B]">1. Terms of Service</h2>
                     <p class="text-xs leading-relaxed">
-                        Welcome to Yong Kang TCM & Acupuncture. By accessing our application and booking our services, you agree to
+                        Welcome to TCM Homecare. By accessing our application and booking our services, you agree to
                         comply with and be bound by the following terms. All bookings are subject to availability and
                         therapist schedules.
                     </p>
@@ -1478,8 +1478,8 @@
         class="w-full py-12 px-6 md:px-margin-desktop bg-surface-container-highest border-t border-outline-variant/30 text-primary font-body-sm text-xs mt-auto">
         <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start gap-8">
             <div class="mb-6 md:mb-0">
-                <div class="font-headline-lg text-lg text-primary mb-3 font-semibold">Yong Kang TCM &amp; Acupuncture</div>
-                <p class="text-on-surface-variant" data-translate="footer_rights">© 2024 Yong Kang TCM &amp; Acupuncture. All Rights
+                <div class="font-headline-lg text-lg text-primary mb-3 font-semibold">TCM Homecare</div>
+                <p class="text-on-surface-variant" data-translate="footer_rights">© 2024 TCM Homecare. All Rights
                     Reserved.</p>
             </div>
             <div class="flex flex-wrap gap-8 md:gap-16">
@@ -1560,7 +1560,7 @@
                     <button type="button" onclick="hideAddNewCardForm()"
                         class="px-4 py-2 rounded-xl border border-outline hover:bg-slate-50 font-bold text-xs text-secondary transition-colors">Cancel</button>
                     <button type="submit"
-                        class="px-4 py-2 rounded-xl bg-primary hover:bg-[#0f3d32] font-bold text-xs text-white transition-all shadow-sm">Save
+                        class="px-4 py-2 rounded-xl bg-primary hover:bg-[#045cb4] font-bold text-xs text-white transition-all shadow-sm">Save
                         Card</button>
                 </div>
             </form>
@@ -1626,10 +1626,10 @@
             <!-- Brand -->
             <div style="text-align:center;margin-bottom:24px;">
                 <div id="login-modal-brand"
-                    style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#164e3f;">
-                    Yong Kang TCM &amp; Acupuncture</div>
+                    style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#046bd2;">
+                    TCM Homecare</div>
                 <div
-                    style="width:28px;height:2px;background:linear-gradient(90deg,#164e3f,#fed65b);border-radius:2px;margin:8px auto 0;">
+                    style="width:28px;height:2px;background:linear-gradient(90deg,#046bd2,#fed65b);border-radius:2px;margin:8px auto 0;">
                 </div>
             </div>
             <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#161d1d;margin:0 0 4px;"
@@ -1664,7 +1664,7 @@
                 </div>
             </div>
             <button onclick="handleUserLogin()"
-                style="width:100%;padding:12px;background:#164e3f;color:#fff;border:none;border-radius:11px;font-family:'Manrope',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:filter 0.2s;"
+                style="width:100%;padding:12px;background:#046bd2;color:#fff;border:none;border-radius:11px;font-family:'Manrope',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:filter 0.2s;"
                 data-translate="btn_sign_in_now">Sign In</button>
             <!-- Demo credentials -->
             <div
@@ -1683,7 +1683,7 @@
             </div>
             <p style="text-align:center;font-size:0.82rem;color:#45483f;margin:0;"><span
                     data-translate="no_account_lbl">Don't have an account?</span> <a href="/register.html"
-                    style="color:#164e3f;font-weight:700;text-decoration:none;"
+                    style="color:#046bd2;font-weight:700;text-decoration:none;"
                     data-translate="btn_register">Register</a></p>
         </div>
     </div>
@@ -1753,10 +1753,10 @@
             // Dynamic branding update for User interface
             document.title = `${currentTenant.name} - Traditional Chinese Medicine`;
 
-            // Update all text occurrences of Yong Kang TCM & Acupuncture in logos safely
+            // Update all text occurrences of TCM Homecare in logos safely
             const logoElements = document.querySelectorAll('nav div.font-headline-lg, footer div.font-headline-lg, #login-modal-brand');
             logoElements.forEach(el => {
-                if (el.textContent.includes('Yong Kang TCM & Acupuncture') || el.textContent.includes('Yong Kang TCM &amp; Acupuncture')) {
+                if (el.textContent.includes('TCM Homecare') || el.textContent.includes('TCM Homecare')) {
                     el.textContent = currentTenant.name;
                 }
             });
@@ -1774,12 +1774,12 @@
         class="fixed bottom-0 left-0 right-0 z-[9990] bg-white border-t border-slate-100 px-4 py-3 items-center gap-3 shadow-[0_-4px_24px_rgba(0,0,0,0.08)]"
         style="font-family:'Manrope',sans-serif;">
         <button id="mobile-back-btn"
-            class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-200 text-[#164e3f] font-bold text-sm active:scale-95 transition-all">
+            class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-200 text-[#046bd2] font-bold text-sm active:scale-95 transition-all">
             <span class="material-symbols-outlined text-[18px]">arrow_back</span>
             Back
         </button>
         <button id="mobile-continue-btn"
-            class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#164e3f] text-white font-bold text-sm hover:bg-[#0f3d32] active:scale-95 transition-all shadow-md">
+            class="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#046bd2] text-white font-bold text-sm hover:bg-[#045cb4] active:scale-95 transition-all shadow-md">
             Continue
             <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
         </button>
@@ -1841,13 +1841,13 @@
                 <!-- Top Profile Header -->
                 <div class="flex items-center gap-4 pb-3 border-b border-slate-100">
                     <div id="therapist-modal-img-container"
-                        class="w-16 h-16 rounded-2xl overflow-hidden shrink-0 border-2 border-[#164e3f]/20 bg-slate-100 shadow-sm">
+                        class="w-16 h-16 rounded-2xl overflow-hidden shrink-0 border-2 border-[#046bd2]/20 bg-slate-100 shadow-sm">
                         <img id="therapist-modal-img" src="" class="w-full h-full object-cover" alt="Therapist Profile">
                     </div>
                     <div class="flex-grow">
                         <div class="flex items-center gap-1.5 mb-1">
                             <span
-                                class="bg-[#164e3f]/10 text-[#164e3f] text-[9px] font-bold px-2 py-0.5 rounded-full uppercase"
+                                class="bg-[#046bd2]/10 text-[#046bd2] text-[9px] font-bold px-2 py-0.5 rounded-full uppercase"
                                 id="therapist-modal-role">Therapist</span>
                             <span class="flex items-center gap-0.5 text-amber-500 font-bold text-xs"
                                 id="therapist-modal-rating">
@@ -1895,7 +1895,7 @@
                         Close
                     </button>
                     <button id="therapist-modal-select-btn"
-                        class="flex-1 py-2.5 rounded-xl bg-[#164e3f] hover:bg-[#0f3d32] text-white font-bold text-xs transition-all shadow-md">
+                        class="flex-1 py-2.5 rounded-xl bg-[#046bd2] hover:bg-[#045cb4] text-white font-bold text-xs transition-all shadow-md">
                         Select Practitioner
                     </button>
                 </div>
@@ -1941,7 +1941,7 @@
                         class="star-btn hover:scale-110 transition-transform"><span
                             class="material-symbols-outlined text-3xl">star</span></button>
                 </div>
-                <span id="review-rating-label" class="text-[11px] font-bold text-[#164e3f]">5.0 - Outstanding</span>
+                <span id="review-rating-label" class="text-[11px] font-bold text-[#046bd2]">5.0 - Outstanding</span>
             </div>
 
             <!-- Review Textarea -->
@@ -1949,7 +1949,7 @@
                 <label for="review-comments-input" class="block text-xs font-bold text-slate-700 mb-1">Your Review &amp;
                     Comments</label>
                 <textarea id="review-comments-input" rows="3"
-                    class="w-full rounded-xl border border-slate-200 p-3 text-xs text-slate-800 focus:outline-none focus:border-[#164e3f] resize-none"
+                    class="w-full rounded-xl border border-slate-200 p-3 text-xs text-slate-800 focus:outline-none focus:border-[#046bd2] resize-none"
                     placeholder="Tell us about the therapist touch, room atmosphere, or any special moments..."></textarea>
             </div>
 
@@ -1960,7 +1960,7 @@
                     Cancel
                 </button>
                 <button id="submit-review-btn" onclick="submitTreatmentReview()" type="button"
-                    class="flex-1 py-3 rounded-xl bg-[#164e3f] hover:bg-[#0f3d32] text-white font-bold text-xs transition-all shadow-md">
+                    class="flex-1 py-3 rounded-xl bg-[#046bd2] hover:bg-[#045cb4] text-white font-bold text-xs transition-all shadow-md">
                     Submit Review
                 </button>
             </div>
@@ -2028,7 +2028,7 @@
                     <span class="material-symbols-outlined text-2xl">card_giftcard</span>
                 </div>
                 <div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 block">Yong Kang TCM E-Gift
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 block">TCM Homecare E-Gift
                         Card</span>
                     <h2 class="font-serif text-lg font-bold text-slate-800">Send Gift Credit</h2>
                 </div>
@@ -2038,34 +2038,34 @@
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Recipient Name</label>
                     <input id="giftcard-recipient-name" type="text" placeholder="e.g. Sarah Jenkins"
-                        class="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#164e3f]">
+                        class="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#046bd2]">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Recipient Email</label>
                     <input id="giftcard-recipient-email" type="email" placeholder="sarah@example.com"
-                        class="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#164e3f]">
+                        class="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#046bd2]">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Select Amount (SGD)</label>
                     <div class="grid grid-cols-4 gap-2">
                         <button onclick="setGiftAmount(25)" type="button"
-                            class="gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#164e3f] hover:bg-[#164e3f]/5 transition-all">MYR
+                            class="gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#046bd2] hover:bg-[#046bd2]/5 transition-all">MYR
                             25</button>
                         <button onclick="setGiftAmount(50)" type="button"
-                            class="gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#164e3f] hover:bg-[#164e3f]/5 transition-all">MYR
+                            class="gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#046bd2] hover:bg-[#046bd2]/5 transition-all">MYR
                             50</button>
                         <button onclick="setGiftAmount(100)" type="button"
-                            class="gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#164e3f] hover:bg-[#164e3f]/5 transition-all">MYR
+                            class="gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#046bd2] hover:bg-[#046bd2]/5 transition-all">MYR
                             100</button>
                         <button onclick="setGiftAmount(150)" type="button"
-                            class="gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#164e3f] hover:bg-[#164e3f]/5 transition-all">MYR
+                            class="gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#046bd2] hover:bg-[#046bd2]/5 transition-all">MYR
                             150</button>
                     </div>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">Personal Message</label>
                     <textarea id="giftcard-message-input" rows="2" placeholder="Wishing you great vitality and wellness..."
-                        class="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#164e3f] resize-none"></textarea>
+                        class="w-full rounded-xl border border-slate-200 p-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#046bd2] resize-none"></textarea>
                 </div>
             </div>
 
@@ -2075,7 +2075,7 @@
                     Cancel
                 </button>
                 <button onclick="submitSendGiftCard()" type="button"
-                    class="flex-1 py-3 rounded-xl bg-[#164e3f] hover:bg-[#0f3d32] text-white font-bold text-xs transition-all shadow-md flex items-center justify-center gap-1.5">
+                    class="flex-1 py-3 rounded-xl bg-[#046bd2] hover:bg-[#045cb4] text-white font-bold text-xs transition-all shadow-md flex items-center justify-center gap-1.5">
                     <span class="material-symbols-outlined text-sm">send</span> Send Gift Card
                 </button>
             </div>
@@ -2201,7 +2201,7 @@
 
                 <div class="mt-auto pt-6 border-t border-slate-100">
                     <button id="tp-select-btn"
-                        class="w-full bg-[#164e3f] hover:bg-[#0f3d32] text-white py-3 rounded-xl font-bold text-xs shadow-sm transition-colors flex items-center justify-center gap-2">
+                        class="w-full bg-[#046bd2] hover:bg-[#045cb4] text-white py-3 rounded-xl font-bold text-xs shadow-sm transition-colors flex items-center justify-center gap-2">
                         Select Physician <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                     </button>
                 </div>

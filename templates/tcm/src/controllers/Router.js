@@ -201,7 +201,7 @@ export function updateNavbarActiveState(viewId) {
     };
     
     document.querySelectorAll('.mobile-tab-btn').forEach(btn => {
-        btn.classList.remove('text-[#164e3f]', 'font-bold');
+        btn.classList.remove('text-[#046bd2]', 'font-bold');
         btn.classList.add('text-slate-400');
         const icon = btn.querySelector('.material-symbols-outlined');
         if (icon) icon.classList.remove('filled');
@@ -212,7 +212,7 @@ export function updateNavbarActiveState(viewId) {
         const activeBtn = document.getElementById(activeTabId);
         if (activeBtn) {
             activeBtn.classList.remove('text-slate-400');
-            activeBtn.classList.add('text-[#164e3f]', 'font-bold');
+            activeBtn.classList.add('text-[#046bd2]', 'font-bold');
             const icon = activeBtn.querySelector('.material-symbols-outlined');
             if (icon) icon.classList.add('filled');
         }
@@ -248,38 +248,38 @@ export function updateStepperUI(viewId) {
             <!-- Connecting Line Background -->
             <div class="absolute left-0 right-0 top-4 h-[2px] bg-slate-200/80 z-0"></div>
             <!-- Connecting Line Active Progress -->
-            <div class="absolute left-0 top-4 h-[2px] bg-[#164e3f] z-0 transition-all duration-500" style="width: ${progressWidth}%"></div>
+            <div class="absolute left-0 top-4 h-[2px] bg-[#046bd2] z-0 transition-all duration-500" style="width: ${progressWidth}%"></div>
             
             <!-- Step 1 -->
             <div class="relative z-10 flex flex-col items-center">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${activeStep >= 1 ? 'bg-[#164e3f] text-white border-2 border-[#164e3f]' : 'bg-slate-200 text-slate-500 border-2 border-transparent'}">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${activeStep >= 1 ? 'bg-[#046bd2] text-white border-2 border-[#046bd2]' : 'bg-slate-200 text-slate-500 border-2 border-transparent'}">
                     ${activeStep > 1 ? '<span class="material-symbols-outlined text-[16px] font-bold">check</span>' : '1'}
                 </div>
-                <span class="text-[10px] font-bold mt-2 ${activeStep >= 1 ? 'text-[#164e3f]' : 'text-slate-400'} uppercase tracking-wider">${t('lbl_service')}</span>
+                <span class="text-[10px] font-bold mt-2 ${activeStep >= 1 ? 'text-[#046bd2]' : 'text-slate-400'} uppercase tracking-wider">${t('lbl_service')}</span>
             </div>
             
             <!-- Step 2 -->
             <div class="relative z-10 flex flex-col items-center">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${activeStep >= 2 ? 'bg-[#164e3f] text-white border-2 border-[#164e3f]' : 'bg-slate-200 text-slate-500 border-2 border-transparent'}">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${activeStep >= 2 ? 'bg-[#046bd2] text-white border-2 border-[#046bd2]' : 'bg-slate-200 text-slate-500 border-2 border-transparent'}">
                     ${activeStep > 2 ? '<span class="material-symbols-outlined text-[16px] font-bold">check</span>' : '2'}
                 </div>
-                <span class="text-[10px] font-bold mt-2 ${activeStep >= 2 ? 'text-[#164e3f]' : 'text-slate-400'} uppercase tracking-wider">${t('lbl_therapist')}</span>
+                <span class="text-[10px] font-bold mt-2 ${activeStep >= 2 ? 'text-[#046bd2]' : 'text-slate-400'} uppercase tracking-wider">${t('lbl_therapist')}</span>
             </div>
             
             <!-- Step 3 -->
             <div class="relative z-10 flex flex-col items-center">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${activeStep >= 3 ? 'bg-[#164e3f] text-white border-2 border-[#164e3f]' : 'bg-slate-200 text-slate-500 border-2 border-transparent'}">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${activeStep >= 3 ? 'bg-[#046bd2] text-white border-2 border-[#046bd2]' : 'bg-slate-200 text-slate-500 border-2 border-transparent'}">
                     ${activeStep > 3 ? '<span class="material-symbols-outlined text-[16px] font-bold">check</span>' : '3'}
                 </div>
-                <span class="text-[10px] font-bold mt-2 ${activeStep >= 3 ? 'text-[#164e3f]' : 'text-slate-400'} uppercase tracking-wider">${state.language === 'ms' ? 'Waktu' : 'Time'}</span>
+                <span class="text-[10px] font-bold mt-2 ${activeStep >= 3 ? 'text-[#046bd2]' : 'text-slate-400'} uppercase tracking-wider">${state.language === 'ms' ? 'Waktu' : 'Time'}</span>
             </div>
             
             <!-- Step 4 -->
             <div class="relative z-10 flex flex-col items-center">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${activeStep >= 4 ? 'bg-[#164e3f] text-white border-2 border-[#164e3f]' : 'bg-slate-200 text-slate-500 border-2 border-transparent'}">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${activeStep >= 4 ? 'bg-[#046bd2] text-white border-2 border-[#046bd2]' : 'bg-slate-200 text-slate-500 border-2 border-transparent'}">
                     4
                 </div>
-                <span class="text-[10px] font-bold mt-2 ${activeStep >= 4 ? 'text-[#164e3f]' : 'text-slate-400'} uppercase tracking-wider">${state.language === 'ms' ? 'Sahkan' : 'Confirm'}</span>
+                <span class="text-[10px] font-bold mt-2 ${activeStep >= 4 ? 'text-[#046bd2]' : 'text-slate-400'} uppercase tracking-wider">${state.language === 'ms' ? 'Sahkan' : 'Confirm'}</span>
             </div>
         </div>
     `;

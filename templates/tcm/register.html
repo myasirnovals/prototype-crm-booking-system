@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register — Yong Kang TCM &amp; Acupuncture</title>
-<meta name="description" content="Create your Yong Kang TCM &amp; Acupuncture account to book consultations, track your treatments, and manage your health wallet.">
+<title>Register — TCM Homecare</title>
+<meta name="description" content="Create your TCM Homecare account to book consultations, track your treatments, and manage your health wallet.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Manrope:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
 <style>
@@ -181,14 +181,14 @@
 
 <!-- Top Nav -->
 <nav class="top-nav">
-  <a href="/" class="brand-logo">Serenity &amp; Soul</a>
+  <a href="./index.html" class="brand-logo" style="font-family: 'Inter', sans-serif; color: #046bd2;">TCM Homecare</a>
   <div style="display: flex; align-items: center; gap: 14px;">
     <!-- Language Toggle Button -->
-    <button onclick="toggleRegLanguage(event)" style="background: none; border: 1.5px solid rgba(197,200,188,0.6); border-radius: 20px; padding: 6px 12px; font-family: inherit; font-size: 0.72rem; font-weight: 700; color: #50613f; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s;" title="Toggle Language">
+    <button onclick="toggleRegLanguage(event)" style="background: none; border: 1.5px solid rgba(4,107,210,0.3); border-radius: 20px; padding: 6px 12px; font-family: inherit; font-size: 0.72rem; font-weight: 700; color: #046bd2; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s;" title="Toggle Language">
       <span class="material-symbols-outlined" style="font-size:14px;">language</span>
       <span id="lang-toggle-text">EN</span>
     </button>
-    <a href="/" class="back-link" id="back-home-link">
+    <a href="./index.html" class="back-link" id="back-home-link" style="color: #046bd2;">
       <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span>
       <span data-translate="back_home">Back to Home</span>
     </a>
@@ -198,8 +198,8 @@
 <!-- Main -->
 <div class="page-wrap">
   <div class="page-header">
-    <h1 data-translate="title">Create your account</h1>
-    <p data-translate="subtitle">Join Serenity &amp; Soul and start your wellness journey today.</p>
+    <h1 data-translate="title" style="font-family: 'Inter', sans-serif;">Create your account</h1>
+    <p data-translate="subtitle">Join TCM Homecare and start your personalized wellness journey today.</p>
   </div>
 
   <div class="card">
@@ -336,7 +336,7 @@
     ms: {
       back_home: "Kembali ke Laman Utama",
       title: "Cipta akaun anda",
-      subtitle: "Sertai Yong Kang TCM & Acupuncture dan mulakan perjalanan kesejahteraan anda hari ini.",
+      subtitle: "Sertai TCM Homecare dan mulakan perjalanan kesejahteraan anda hari ini.",
       section_personal: "Maklumat Peribadi",
       lbl_name: "Nama Penuh",
       placeholder_name: "cth. Tan Wei Ming",
@@ -368,7 +368,7 @@
     zh: {
       back_home: "返回诊所首页",
       title: "注册就诊账户",
-      subtitle: "加入永康中医，即刻开启您的体质辨证与健康调理之旅。",
+      subtitle: "加入TCM Homecare，即刻开启您的体质辨证与健康调理之旅。",
       section_personal: "个人基本信息",
       lbl_name: "真实姓名",
       placeholder_name: "例：陈伟明",
@@ -404,12 +404,12 @@
 
   const DEFAULT_TCM_THEME = {
     id: 'default-tcm',
-    name: 'Yong Kang TCM & Acupuncture',
+    name: 'TCM Homecare',
     logo: '',
     colors: {
-      primary: '#164e3f',
-      secondary: '#c89d53',
-      background: '#faf8f5',
+      primary: '#046bd2',
+      secondary: '#00a86b',
+      background: '#f0f5fa',
       surfaceContainer: '#f0eae1'
     }
   };
@@ -422,7 +422,7 @@
         (b.id && b.id.toLowerCase() === targetBranchId.toLowerCase()) ||
         (b.name && b.name.toLowerCase() === targetBranchId.toLowerCase())
       );
-      if (!clinivaBranch && (targetBranchId === 'default-tcm' || targetBranchId === 'yong-kang' || targetBranchId === 'tcm')) {
+      if (!clinivaBranch && (targetBranchId === 'default-tcm' || targetBranchId === 'tcm-homecare' || targetBranchId === 'tcm')) {
         clinivaBranch = clinivaBranches.find(b => b.template === 'tcm');
       }
     }

@@ -120,8 +120,8 @@ export function renderHomeView() {
     let gridHtml = '';
     if (slicedFeatured.length === 0) {
         gridHtml = `
-            <div class="col-span-12 text-center py-12 bg-white rounded-3xl border border-[#e7dfd1]">
-                <span class="material-symbols-outlined text-5xl text-[#164e3f]/40 mb-3">medical_services</span>
+            <div class="col-span-12 text-center py-12 bg-white rounded-3xl border border-[#e2e8f0]">
+                <span class="material-symbols-outlined text-5xl text-[#046bd2]/40 mb-3">medical_services</span>
                 <p class="text-sm text-slate-600">${state.language === 'ms' ? 'Tiada perkhidmatan pilihan dipilih.' : (state.language === 'zh' ? '暂无推荐的中医诊疗项目。' : 'No featured TCM treatments selected.')}</p>
             </div>
         `;
@@ -153,7 +153,7 @@ export function renderHomeView() {
                 // md:col-span-12
                 return `
                     <div class="md:col-span-12 min-h-[320px] tcm-card shadow-sm group overflow-hidden flex flex-col md:flex-row relative flex-shrink-0 w-[85vw] sm:w-[360px] md:w-auto bg-white">
-                        ${s.bestValue ? `<div class="absolute top-4 right-4 bg-[#c59b27] text-white px-3.5 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider shadow-sm z-10">${state.language === 'ms' ? 'Nilai Terbaik' : (state.language === 'zh' ? '超值推荐' : 'Best Value')}</div>` : ''}
+                        ${s.bestValue ? `<div class="absolute top-4 right-4 bg-[#ff6900] text-white px-3.5 py-1 rounded-full font-bold text-[10px] uppercase tracking-wider shadow-sm z-10">${state.language === 'ms' ? 'Nilai Terbaik' : (state.language === 'zh' ? '超值推荐' : 'Best Value')}</div>` : ''}
                         ${discountBadgeHtml}
                         <div class="w-full md:w-[320px] h-56 md:h-auto shrink-0 p-6 flex">
                             <img class="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500" src="${s.image}" alt="${s.name}">
@@ -161,16 +161,16 @@ export function renderHomeView() {
                         <div class="flex-grow p-6 md:p-8 flex flex-col justify-between">
                             <div>
                                 <div class="flex gap-2 mb-3">
-                                    <span class="px-3 py-1 bg-[#164e3f]/10 text-[#164e3f] text-[11px] font-bold rounded-full">${badgeLabel}</span>
-                                    ${isPackage ? `<span class="px-3 py-1 bg-[#c59b27]/15 text-[#8c6521] text-[11px] font-bold rounded-full">${state.language === 'ms' ? 'Pakej Rawatan' : (state.language === 'zh' ? '疗程配套' : 'Treatment Course')}</span>` : ''}
+                                    <span class="px-3 py-1 bg-[#046bd2]/10 text-[#046bd2] text-[11px] font-bold rounded-full">${badgeLabel}</span>
+                                    ${isPackage ? `<span class="px-3 py-1 bg-[#ff6900]/15 text-[#8c6521] text-[11px] font-bold rounded-full">${state.language === 'ms' ? 'Pakej Rawatan' : (state.language === 'zh' ? '疗程配套' : 'Treatment Course')}</span>` : ''}
                                 </div>
-                                <h3 class="font-title-md text-xl mb-2 font-bold font-serif text-[#0f3d32]">${getServiceTranslation(s.id, 'name', s.name)}</h3>
+                                <h3 class="font-title-md text-xl mb-2 font-bold font-serif text-[#045cb4]">${getServiceTranslation(s.id, 'name', s.name)}</h3>
                                 <p class="text-body-sm text-xs text-slate-600 line-clamp-3 leading-relaxed">${getServiceTranslation(s.id, 'desc', s.description)}</p>
                             </div>
-                            <div class="flex items-center justify-between mt-auto pt-4 border-t border-[#e7dfd1]">
+                            <div class="flex items-center justify-between mt-auto pt-4 border-t border-[#e2e8f0]">
                                 <div>
                                     ${s.regularPrice && s.regularPrice > s.price ? `<span class="text-slate-400 text-[11px] block line-through decoration-red-500">${currency} ${s.regularPrice.toFixed(2)} (${state.language === 'ms' ? 'Biasa' : (state.language === 'zh' ? '原价' : 'Regular')})</span>` : ''}
-                                    <span class="font-serif text-2xl text-[#0f3d32] font-bold">${currency} ${s.price}</span>
+                                    <span class="font-serif text-2xl text-[#045cb4] font-bold">${currency} ${s.price}</span>
                                 </div>
                                 <button onclick="startBookingWithService('${s.id}')" class="${s.bestValue ? 'btn-tcm-gold' : 'btn-tcm-primary'} px-6 py-2.5 rounded-full font-bold transition-all text-xs flex items-center gap-1.5 shadow-sm text-white">
                                     ${isPackage ? (state.language === 'ms' ? 'Tempah Pakej' : (state.language === 'zh' ? '预约配套' : 'Book Package')) : (state.language === 'ms' ? 'Tempah Rawatan' : (state.language === 'zh' ? '预约诊疗' : 'Book Service'))} <span class="material-symbols-outlined text-sm ml-1">calendar_month</span>
@@ -183,7 +183,7 @@ export function renderHomeView() {
                 // md:col-span-4
                 return `
                     <div class="md:col-span-4 tcm-card shadow-sm group overflow-hidden flex flex-col p-4 animate-fade-in relative flex-shrink-0 w-[85vw] sm:w-[360px] md:w-auto bg-white">
-                        ${s.bestValue ? `<div class="absolute top-4 right-4 bg-[#c59b27] text-white px-3.5 py-1 rounded-full font-bold text-[9px] uppercase tracking-wider shadow-sm z-10">${state.language === 'ms' ? 'Nilai Terbaik' : (state.language === 'zh' ? '超值推荐' : 'Best Value')}</div>` : ''}
+                        ${s.bestValue ? `<div class="absolute top-4 right-4 bg-[#ff6900] text-white px-3.5 py-1 rounded-full font-bold text-[9px] uppercase tracking-wider shadow-sm z-10">${state.language === 'ms' ? 'Nilai Terbaik' : (state.language === 'zh' ? '超值推荐' : 'Best Value')}</div>` : ''}
                         ${discountBadgeHtml}
                         <div class="w-full h-56 md:h-[180px] rounded-2xl overflow-hidden mb-4 shrink-0">
                             <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${s.image}" alt="${s.name}">
@@ -191,15 +191,15 @@ export function renderHomeView() {
                         <div class="flex-grow flex flex-col justify-between">
                             <div>
                                 <div class="mb-1">
-                                    <span class="px-2.5 py-0.5 bg-[#164e3f]/10 text-[#164e3f] text-[10px] font-bold rounded-full">${badgeLabel}</span>
+                                    <span class="px-2.5 py-0.5 bg-[#046bd2]/10 text-[#046bd2] text-[10px] font-bold rounded-full">${badgeLabel}</span>
                                 </div>
-                                <h3 class="font-title-md text-sm font-bold font-serif text-[#0f3d32] mb-1 line-clamp-1 leading-snug">${getServiceTranslation(s.id, 'name', s.name)}</h3>
+                                <h3 class="font-title-md text-sm font-bold font-serif text-[#045cb4] mb-1 line-clamp-1 leading-snug">${getServiceTranslation(s.id, 'name', s.name)}</h3>
                                 <p class="text-body-sm text-[11px] text-slate-600 line-clamp-3 leading-relaxed">${getServiceTranslation(s.id, 'desc', s.description)}</p>
                             </div>
-                            <div class="flex justify-between items-center mt-auto pt-3 border-t border-[#e7dfd1]">
+                            <div class="flex justify-between items-center mt-auto pt-3 border-t border-[#e2e8f0]">
                                 <div class="flex flex-col">
                                     ${s.regularPrice && s.regularPrice > s.price ? `<span class="text-slate-400 text-[10px] line-through decoration-red-500">${currency} ${s.regularPrice.toFixed(2)}</span>` : ''}
-                                    <span class="font-serif text-sm text-[#0f3d32] font-bold">${currency} ${s.price}</span>
+                                    <span class="font-serif text-sm text-[#045cb4] font-bold">${currency} ${s.price}</span>
                                 </div>
                                 <button onclick="startBookingWithService('${s.id}')" class="${s.bestValue ? 'btn-tcm-gold' : 'btn-tcm-primary'} px-3.5 py-1.5 rounded-full font-bold text-[10px] shadow-sm transition-all whitespace-nowrap text-white">
                                     ${isPackage ? (state.language === 'ms' ? 'Tempah Pakej' : (state.language === 'zh' ? '预约配套' : 'Book Package')) : (state.language === 'ms' ? 'Tempah Rawatan' : (state.language === 'zh' ? '预约诊疗' : 'Book Service'))}
@@ -222,15 +222,15 @@ export function renderHomeView() {
                     <div class="flex-grow p-6 flex flex-col justify-between ${contentOrderClass}">
                         <div>
                             <div class="mb-2">
-                                <span class="px-2.5 py-0.5 bg-[#164e3f]/10 text-[#164e3f] text-[10px] font-bold rounded-full">${badgeLabel}</span>
+                                <span class="px-2.5 py-0.5 bg-[#046bd2]/10 text-[#046bd2] text-[10px] font-bold rounded-full">${badgeLabel}</span>
                             </div>
-                            <h3 class="font-title-md text-base font-bold font-serif text-[#0f3d32] mb-2">${getServiceTranslation(s.id, 'name', s.name)}</h3>
+                            <h3 class="font-title-md text-base font-bold font-serif text-[#045cb4] mb-2">${getServiceTranslation(s.id, 'name', s.name)}</h3>
                             <p class="text-body-sm text-xs text-slate-600 line-clamp-3 leading-relaxed">${getServiceTranslation(s.id, 'desc', s.description)}</p>
                         </div>
-                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-[#e7dfd1]">
+                        <div class="flex items-center justify-between mt-auto pt-4 border-t border-[#e2e8f0]">
                             <div class="flex flex-col">
                                 ${s.regularPrice && s.regularPrice > s.price ? `<span class="text-slate-400 text-[10px] line-through decoration-red-500">${currency} ${s.regularPrice.toFixed(2)}</span>` : ''}
-                                <span class="font-serif text-base text-[#0f3d32] font-bold">${currency} ${s.price}</span>
+                                <span class="font-serif text-base text-[#045cb4] font-bold">${currency} ${s.price}</span>
                             </div>
                             <button onclick="startBookingWithService('${s.id}')" class="${s.bestValue ? 'btn-tcm-gold' : 'btn-tcm-primary'} px-4 py-2 rounded-full font-bold text-xs shadow-sm transition-all text-white">
                                 ${isPackage ? (state.language === 'ms' ? 'Tempah Pakej' : (state.language === 'zh' ? '预约配套' : 'Book Package')) : (state.language === 'ms' ? 'Tempah Rawatan' : (state.language === 'zh' ? '预约诊疗' : 'Book Service'))}
@@ -241,7 +241,7 @@ export function renderHomeView() {
 
                 return `
                     <div class="md:col-span-8 tcm-card shadow-sm group overflow-hidden flex flex-col md:flex-row relative flex-shrink-0 w-[85vw] sm:w-[360px] md:w-auto bg-white">
-                        ${s.bestValue ? `<div class="absolute top-4 right-4 bg-[#c59b27] text-white px-3.5 py-1 rounded-full font-bold text-[9px] uppercase tracking-wider shadow-sm z-10">${state.language === 'ms' ? 'Nilai Terbaik' : (state.language === 'zh' ? '超值推荐' : 'Best Value')}</div>` : ''}
+                        ${s.bestValue ? `<div class="absolute top-4 right-4 bg-[#ff6900] text-white px-3.5 py-1 rounded-full font-bold text-[9px] uppercase tracking-wider shadow-sm z-10">${state.language === 'ms' ? 'Nilai Terbaik' : (state.language === 'zh' ? '超值推荐' : 'Best Value')}</div>` : ''}
                         ${discountBadgeHtml}
                         ${imgHtml}
                         ${contentHtml}
@@ -258,7 +258,7 @@ export function renderHomeView() {
                 <span class="tcm-seal text-[10px] mb-2 inline-block">
                     ${state.language === 'ms' ? 'Rawatan Pilihan Klinikal' : (state.language === 'zh' ? '名医亲诊 • 辨证施治' : 'Featured Clinical Treatments')}
                 </span>
-                <h2 class="font-headline-lg text-3xl md:text-4xl text-[#0f3d32] mb-3 font-bold font-serif">
+                <h2 class="font-headline-lg text-3xl md:text-4xl text-[#045cb4] mb-3 font-bold font-serif">
                     ${state.language === 'ms' ? 'Katalog Perkhidmatan Utama' : (state.language === 'zh' ? '特色诊疗项目' : 'Clinical Treatment Catalog')}
                 </h2>
                 <p class="font-body-sm text-xs md:text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">
@@ -286,18 +286,18 @@ export function renderServicesCatalogView() {
 
     container.innerHTML = `
         <!-- Hero Section with Main Headline -->
-        <div class="relative w-full min-h-[420px] flex items-center justify-center bg-[#faf7f2] border-b border-[#e7dfd1] overflow-hidden">
+        <div class="relative w-full min-h-[420px] flex items-center justify-center bg-[#f0f5fa] border-b border-[#e2e8f0] overflow-hidden">
             <!-- Background Image with Fade/Overlay -->
             <div class="absolute inset-0 w-full h-full opacity-20">
                 <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=1600&h=700&q=80" alt="TCM Clinic & Acupuncture">
             </div>
-            <div class="absolute inset-0 bg-gradient-to-b from-[#faf7f2]/40 via-[#faf7f2]/80 to-[#faf7f2]"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-[#f0f5fa]/40 via-[#f0f5fa]/80 to-[#f0f5fa]"></div>
             
             <div class="relative max-w-3xl text-center z-10 px-6 py-14 flex flex-col items-center">
                 <span class="tcm-seal text-xs mb-3 animate-fade-in">
                     ${state.language === 'ms' ? 'KEMAHIRAN & KEARIFAN TRADISIONAL CINA' : (state.language === 'zh' ? '辨证施治 • 固本培元' : 'TIME-HONORED CLINICAL WISDOM')}
                 </span>
-                <h1 class="font-serif text-3xl md:text-5xl text-[#0f3d32] font-bold leading-tight mb-4 animate-fade-in">
+                <h1 class="font-serif text-3xl md:text-5xl text-[#045cb4] font-bold leading-tight mb-4 animate-fade-in">
                     ${state.language === 'ms' ? 'Rawatan Klinikal & Pakej Kesihatan Holistik' : (state.language === 'zh' ? '纯正中医特色专科与综合疗程' : 'Certified Clinical TCM Therapies & Wellness Courses')}
                 </h1>
                 <p class="text-xs md:text-sm text-slate-700 leading-relaxed max-w-xl mx-auto mb-6 animate-fade-in">
@@ -313,15 +313,15 @@ export function renderServicesCatalogView() {
             
             <!-- Section 1: Featured TCM Packages -->
             <div>
-                <div class="flex justify-between items-end mb-8 border-b border-[#e7dfd1] pb-4">
+                <div class="flex justify-between items-end mb-8 border-b border-[#e2e8f0] pb-4">
                     <div>
                         <span class="tcm-seal text-[10px] mb-1 inline-block">
                             ${state.language === 'ms' ? 'Pakej Berbilang Sesi' : (state.language === 'zh' ? '多疗程系统调理' : 'Structured Treatment Plans')}
                         </span>
-                        <h2 class="font-serif text-2xl font-bold text-[#0f3d32] mb-1">${state.language === 'ms' ? 'Pakej Rawatan Pilihan' : (state.language === 'zh' ? '核心疗程配套' : 'Featured Clinical Bundles')}</h2>
+                        <h2 class="font-serif text-2xl font-bold text-[#045cb4] mb-1">${state.language === 'ms' ? 'Pakej Rawatan Pilihan' : (state.language === 'zh' ? '核心疗程配套' : 'Featured Clinical Bundles')}</h2>
                         <p class="text-xs text-slate-600">${state.language === 'ms' ? 'Pakej berbilang sesi untuk pemulihan berstruktur dan hasil optimum' : (state.language === 'zh' ? '系统性针对颈椎劳损、慢性腰腿痛及体质虚寒提供持续调理' : 'Multi-session clinical regimens tailored for enduring pain recovery and vitality')}</p>
                     </div>
-                    <a onclick="navigateToAllServicesWithFilter('packages')" class="text-xs font-bold text-[#c59b27] hover:text-[#9a7718] cursor-pointer flex items-center gap-1 transition-colors">
+                    <a onclick="navigateToAllServicesWithFilter('packages')" class="text-xs font-bold text-[#ff6900] hover:text-[#9a7718] cursor-pointer flex items-center gap-1 transition-colors">
                         ${state.language === 'ms' ? 'Lihat Semua Pakej' : (state.language === 'zh' ? '查看全部配套' : 'See All Bundles')} <span class="material-symbols-outlined text-[14px]">arrow_right_alt</span>
                     </a>
                 </div>
@@ -341,12 +341,12 @@ export function renderServicesCatalogView() {
                                 </div>
                                 <div class="p-6 flex flex-col justify-between flex-grow">
                                     <div>
-                                        <span class="px-2.5 py-0.5 bg-[#c59b27]/15 text-[#8c6521] text-[10px] font-bold rounded-full uppercase tracking-wider mb-2 inline-block">${p1.badge || 'PACKAGE DEAL'}</span>
-                                        <h3 class="font-serif text-lg font-bold text-[#0f3d32] mb-2">${getServiceTranslation(p1.id, 'name', p1.name)}</h3>
+                                        <span class="px-2.5 py-0.5 bg-[#ff6900]/15 text-[#8c6521] text-[10px] font-bold rounded-full uppercase tracking-wider mb-2 inline-block">${p1.badge || 'PACKAGE DEAL'}</span>
+                                        <h3 class="font-serif text-lg font-bold text-[#045cb4] mb-2">${getServiceTranslation(p1.id, 'name', p1.name)}</h3>
                                         <p class="text-xs text-slate-600 leading-relaxed mb-3 line-clamp-3">${getServiceTranslation(p1.id, 'desc', p1.description)}</p>
-                                        <div class="mt-2 mb-4 p-2.5 bg-[#faf8f5] rounded-xl border border-[#e7dfd1]">
-                                            <div class="text-[9px] font-bold uppercase tracking-wider text-[#164e3f] mb-1 flex items-center gap-1 font-semibold">
-                                                <span class="material-symbols-outlined text-[12px] text-[#164e3f]">healing</span>
+                                        <div class="mt-2 mb-4 p-2.5 bg-[#f0f5fa] rounded-xl border border-[#e2e8f0]">
+                                            <div class="text-[9px] font-bold uppercase tracking-wider text-[#046bd2] mb-1 flex items-center gap-1 font-semibold">
+                                                <span class="material-symbols-outlined text-[12px] text-[#046bd2]">healing</span>
                                                 ${state.language === 'ms' ? 'Butiran Sesi:' : (state.language === 'zh' ? '疗程安排:' : 'Regimen Details:')}
                                             </div>
                                             <p class="text-[10px] text-slate-700 font-medium">10x ${state.language === 'ms' ? 'Sesi Tuina & Akupunktur (60 Minit/Sesi)' : (state.language === 'zh' ? '正骨推拿与针灸理疗 (每次60分钟)' : 'Tuina & Acupuncture Sessions (60 Mins/ea)')}</p>
@@ -356,7 +356,7 @@ export function renderServicesCatalogView() {
                                     <div class="flex justify-between items-center mt-auto border-t border-slate-100 pt-4">
                                         <div class="flex flex-col">
                                             ${p1.regularPrice && p1.regularPrice > p1.price ? `<span class="text-[10px] text-slate-400 line-through decoration-red-500">${currency} ${p1.regularPrice.toFixed(2)}</span>` : `<span class="text-[10px] text-slate-400 uppercase tracking-wider">${state.language === 'ms' ? 'Nilai Pakej' : (state.language === 'zh' ? '配套总价' : 'Package Value')}</span>`}
-                                            <span class="font-serif font-bold text-[#0f3d32] text-lg">${currency} ${p1.price}</span>
+                                            <span class="font-serif font-bold text-[#045cb4] text-lg">${currency} ${p1.price}</span>
                                         </div>
                                         <button onclick="startBookingWithService('tcm-pain-relief-bundle')" class="btn-tcm-gold text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all">${state.language === 'ms' ? 'Tempah Pakej' : (state.language === 'zh' ? '预约配套' : 'Book Package')}</button>
                                     </div>
@@ -378,12 +378,12 @@ export function renderServicesCatalogView() {
                                 </div>
                                 <div class="p-6 flex flex-col justify-between flex-grow">
                                     <div>
-                                        <span class="px-2.5 py-0.5 bg-[#164e3f]/10 text-[#164e3f] text-[10px] font-bold rounded-full uppercase tracking-wider mb-2 inline-block">${p2.badge || 'POPULAR COURSE'}</span>
-                                        <h3 class="font-serif text-lg font-bold text-[#0f3d32] mb-2">${getServiceTranslation(p2.id, 'name', p2.name)}</h3>
+                                        <span class="px-2.5 py-0.5 bg-[#046bd2]/10 text-[#046bd2] text-[10px] font-bold rounded-full uppercase tracking-wider mb-2 inline-block">${p2.badge || 'POPULAR COURSE'}</span>
+                                        <h3 class="font-serif text-lg font-bold text-[#045cb4] mb-2">${getServiceTranslation(p2.id, 'name', p2.name)}</h3>
                                         <p class="text-xs text-slate-600 leading-relaxed mb-3 line-clamp-3">${getServiceTranslation(p2.id, 'desc', p2.description)}</p>
-                                        <div class="mt-2 mb-4 p-2.5 bg-[#faf8f5] rounded-xl border border-[#e7dfd1]">
-                                            <div class="text-[9px] font-bold uppercase tracking-wider text-[#164e3f] mb-1 flex items-center gap-1 font-semibold">
-                                                <span class="material-symbols-outlined text-[12px] text-[#164e3f]">medication</span>
+                                        <div class="mt-2 mb-4 p-2.5 bg-[#f0f5fa] rounded-xl border border-[#e2e8f0]">
+                                            <div class="text-[9px] font-bold uppercase tracking-wider text-[#046bd2] mb-1 flex items-center gap-1 font-semibold">
+                                                <span class="material-symbols-outlined text-[12px] text-[#046bd2]">medication</span>
                                                 ${state.language === 'ms' ? 'Butiran Sesi:' : (state.language === 'zh' ? '疗程安排:' : 'Regimen Details:')}
                                             </div>
                                             <p class="text-[10px] text-slate-700 font-medium">5x ${state.language === 'ms' ? 'Konsultasi Nadi, Akupunktur & Tuina' : (state.language === 'zh' ? '四诊问诊、辩证针灸与理筋推拿' : 'Pulse Diagnosis, Acupuncture & Tuina')}</p>
@@ -393,7 +393,7 @@ export function renderServicesCatalogView() {
                                     <div class="flex justify-between items-center mt-auto border-t border-slate-100 pt-4">
                                         <div class="flex flex-col">
                                             ${p2.regularPrice && p2.regularPrice > p2.price ? `<span class="text-[10px] text-slate-400 line-through decoration-red-500">${currency} ${p2.regularPrice.toFixed(2)}</span>` : `<span class="text-[10px] text-slate-400 uppercase tracking-wider">${state.language === 'ms' ? 'Nilai Pakej' : (state.language === 'zh' ? '配套总价' : 'Package Value')}</span>`}
-                                            <span class="font-serif font-bold text-[#0f3d32] text-lg">${currency} ${p2.price}</span>
+                                            <span class="font-serif font-bold text-[#045cb4] text-lg">${currency} ${p2.price}</span>
                                         </div>
                                         <button onclick="startBookingWithService('tcm-vitality-package')" class="btn-tcm-primary text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all">${state.language === 'ms' ? 'Tempah Pakej' : (state.language === 'zh' ? '预约配套' : 'Book Package')}</button>
                                     </div>
@@ -406,15 +406,15 @@ export function renderServicesCatalogView() {
 
             <!-- Section 2: Signature Clinical TCM Therapies -->
             <div>
-                <div class="flex justify-between items-end mb-8 border-b border-[#e7dfd1] pb-4">
+                <div class="flex justify-between items-end mb-8 border-b border-[#e2e8f0] pb-4">
                     <div>
                         <span class="tcm-seal text-[10px] mb-1 inline-block">
                             ${state.language === 'ms' ? 'Terapi Sasaran' : (state.language === 'zh' ? '单项专科诊疗' : 'Targeted Therapies')}
                         </span>
-                        <h2 class="font-serif text-2xl font-bold text-[#0f3d32] mb-1">${state.language === 'ms' ? 'Rawatan Klinikal Pilihan' : (state.language === 'zh' ? '特色专科诊疗' : 'Signature TCM Therapies')}</h2>
+                        <h2 class="font-serif text-2xl font-bold text-[#045cb4] mb-1">${state.language === 'ms' ? 'Rawatan Klinikal Pilihan' : (state.language === 'zh' ? '特色专科诊疗' : 'Signature TCM Therapies')}</h2>
                         <p class="text-xs text-slate-600">${state.language === 'ms' ? 'Terapi individu yang dikendalikan dengan ketepatan perubatan berasaskan diagnosis nadi.' : (state.language === 'zh' ? '遵循辨证施治准则，根据舌脉精细诊断施以个性化针灸及手法调理。' : 'Individual treatment sessions administered according to four-diagnosis clinical assessment.')}</p>
                     </div>
-                    <a onclick="navigateToAllServicesWithFilter('acupuncture')" class="text-xs font-bold text-[#c59b27] hover:text-[#9a7718] cursor-pointer flex items-center gap-1 transition-colors">
+                    <a onclick="navigateToAllServicesWithFilter('acupuncture')" class="text-xs font-bold text-[#ff6900] hover:text-[#9a7718] cursor-pointer flex items-center gap-1 transition-colors">
                         ${state.language === 'ms' ? 'Lihat Semua' : (state.language === 'zh' ? '查看全部' : 'See All')} <span class="material-symbols-outlined text-[14px]">arrow_right_alt</span>
                     </a>
                 </div>
@@ -429,7 +429,7 @@ export function renderServicesCatalogView() {
                         <div class="p-6 flex flex-col justify-between flex-grow">
                             <div>
                                 <span class="tcm-seal text-[9px] mb-2 inline-block">${state.language === 'ms' ? 'AKUPUNKTUR STERIL' : (state.language === 'zh' ? '无菌经络针灸' : 'STERILE ACUPUNCTURE')}</span>
-                                <h3 class="font-serif text-base font-bold text-[#0f3d32] mb-2">${getServiceTranslation('acupuncture-session', 'name', 'Acupuncture Meridian Therapy')}</h3>
+                                <h3 class="font-serif text-base font-bold text-[#045cb4] mb-2">${getServiceTranslation('acupuncture-session', 'name', 'Acupuncture Meridian Therapy')}</h3>
                                 <p class="text-xs text-slate-600 leading-relaxed mb-6">${getServiceTranslation('acupuncture-session', 'desc', 'Targeted sterile acupuncture meridian therapy to unblock Qi stagnation, relieve chronic body pain, and harmonize organ systems.')}</p>
                             </div>
                             
@@ -439,7 +439,7 @@ export function renderServicesCatalogView() {
                                         <span class="material-symbols-outlined text-[16px] text-slate-400">schedule</span>
                                         <span class="text-[11px] font-semibold">${state.language === 'ms' ? '45 Minit' : (state.language === 'zh' ? '45分钟' : '45 Mins')}</span>
                                     </div>
-                                    <span class="text-xs font-bold text-[#0f3d32]">${currency} 85</span>
+                                    <span class="text-xs font-bold text-[#045cb4]">${currency} 85</span>
                                 </div>
                                 <button onclick="startBookingWithService('acupuncture-session')" class="btn-tcm-primary text-white font-bold text-xs px-4 py-2 rounded-full transition-all whitespace-nowrap">
                                     ${state.language === 'ms' ? 'Tempah Rawatan' : (state.language === 'zh' ? '预约诊疗' : 'Book Therapy')}
@@ -456,7 +456,7 @@ export function renderServicesCatalogView() {
                         <div class="p-6 flex flex-col justify-between flex-grow">
                             <div>
                                 <span class="tcm-seal text-[9px] mb-2 inline-block">${state.language === 'ms' ? 'TUINA ORTOPEDIK' : (state.language === 'zh' ? '中医正骨推拿' : 'ORTHOPEDIC TUINA')}</span>
-                                <h3 class="font-serif text-base font-bold text-[#0f3d32] mb-2">${getServiceTranslation('tcm-tuina-therapy', 'name', 'Therapeutic TCM Tuina Bodywork')}</h3>
+                                <h3 class="font-serif text-base font-bold text-[#045cb4] mb-2">${getServiceTranslation('tcm-tuina-therapy', 'name', 'Therapeutic TCM Tuina Bodywork')}</h3>
                                 <p class="text-xs text-slate-600 leading-relaxed mb-6">${getServiceTranslation('tcm-tuina-therapy', 'desc', 'Traditional Chinese medical bodywork addressing musculoskeletal ailments, joint stiffness, and deep structural alignment.')}</p>
                             </div>
                             
@@ -466,7 +466,7 @@ export function renderServicesCatalogView() {
                                         <span class="material-symbols-outlined text-[16px] text-slate-400">schedule</span>
                                         <span class="text-[11px] font-semibold">${state.language === 'ms' ? '60 Minit' : (state.language === 'zh' ? '60分钟' : '60 Mins')}</span>
                                     </div>
-                                    <span class="text-xs font-bold text-[#0f3d32]">${currency} 98</span>
+                                    <span class="text-xs font-bold text-[#045cb4]">${currency} 98</span>
                                 </div>
                                 <button onclick="startBookingWithService('tcm-tuina-therapy')" class="btn-tcm-primary text-white font-bold text-xs px-4 py-2 rounded-full transition-all whitespace-nowrap">
                                     ${state.language === 'ms' ? 'Tempah Rawatan' : (state.language === 'zh' ? '预约诊疗' : 'Book Therapy')}
@@ -483,7 +483,7 @@ export function renderServicesCatalogView() {
                         <div class="p-6 flex flex-col justify-between flex-grow">
                             <div>
                                 <span class="tcm-seal text-[9px] mb-2 inline-block">${state.language === 'ms' ? 'KONSULTASI NADI' : (state.language === 'zh' ? '四诊把脉问诊' : 'PULSE DIAGNOSIS')}</span>
-                                <h3 class="font-serif text-base font-bold text-[#0f3d32] mb-2">${getServiceTranslation('tcm-herbal-consultation', 'name', 'TCM Pulse & Herbal Consultation')}</h3>
+                                <h3 class="font-serif text-base font-bold text-[#045cb4] mb-2">${getServiceTranslation('tcm-herbal-consultation', 'name', 'TCM Pulse & Herbal Consultation')}</h3>
                                 <p class="text-xs text-slate-600 leading-relaxed mb-6">${getServiceTranslation('tcm-herbal-consultation', 'desc', 'Comprehensive pulse examination, tongue analysis, and personalized herbal medication prescription by a certified TCM physician.')}</p>
                             </div>
                             
@@ -493,7 +493,7 @@ export function renderServicesCatalogView() {
                                         <span class="material-symbols-outlined text-[16px] text-slate-400">schedule</span>
                                         <span class="text-[11px] font-semibold">${state.language === 'ms' ? '30 Minit' : (state.language === 'zh' ? '30分钟' : '30 Mins')}</span>
                                     </div>
-                                    <span class="text-xs font-bold text-[#0f3d32]">${currency} 60</span>
+                                    <span class="text-xs font-bold text-[#045cb4]">${currency} 60</span>
                                 </div>
                                 <button onclick="startBookingWithService('tcm-herbal-consultation')" class="btn-tcm-primary text-white font-bold text-xs px-4 py-2 rounded-full transition-all whitespace-nowrap">
                                     ${state.language === 'ms' ? 'Tempah Konsultasi' : (state.language === 'zh' ? '预约问诊' : 'Book Consultation')}
@@ -506,15 +506,15 @@ export function renderServicesCatalogView() {
 
             <!-- Section 3: Cupping & Moxibustion Restorative Care -->
             <div>
-                <div class="flex justify-between items-end mb-8 border-b border-[#e7dfd1] pb-4">
+                <div class="flex justify-between items-end mb-8 border-b border-[#e2e8f0] pb-4">
                     <div>
                         <span class="tcm-seal text-[10px] mb-1 inline-block">
                             ${state.language === 'ms' ? 'Terapi Pemulihan Tambahan' : (state.language === 'zh' ? '拔罐与温阳艾灸' : 'Restorative Care')}
                         </span>
-                        <h2 class="font-serif text-2xl font-bold text-[#0f3d32] mb-1">${state.language === 'ms' ? 'Bekam Api & Terapi Moksa' : (state.language === 'zh' ? '传统火罐与艾灸理疗' : 'Fire Cupping & Moxibustion Therapies')}</h2>
+                        <h2 class="font-serif text-2xl font-bold text-[#045cb4] mb-1">${state.language === 'ms' ? 'Bekam Api & Terapi Moksa' : (state.language === 'zh' ? '传统火罐与艾灸理疗' : 'Fire Cupping & Moxibustion Therapies')}</h2>
                         <p class="text-xs text-slate-600">${state.language === 'ms' ? 'Melegakan kelembapan angin patogenik dan menghangatkan meridian tubuh.' : (state.language === 'zh' ? '驱除体内风寒湿邪，温通经脉，激发人体自愈免疫机制。' : 'Expelling pathogenic dampness and warming channels to invigorate microcirculation.')}</p>
                     </div>
-                    <a onclick="navigateToAllServicesWithFilter('therapeutic')" class="text-xs font-bold text-[#c59b27] hover:text-[#9a7718] cursor-pointer flex items-center gap-1 transition-colors">
+                    <a onclick="navigateToAllServicesWithFilter('therapeutic')" class="text-xs font-bold text-[#ff6900] hover:text-[#9a7718] cursor-pointer flex items-center gap-1 transition-colors">
                         ${state.language === 'ms' ? 'Lihat Semua' : (state.language === 'zh' ? '查看全部' : 'See All')} <span class="material-symbols-outlined text-[14px]">arrow_right_alt</span>
                     </a>
                 </div>
@@ -529,12 +529,12 @@ export function renderServicesCatalogView() {
                             </div>
                             <div class="flex-grow">
                                 <span class="tcm-seal text-[9px] mb-1 inline-block">DETOX RITUAL</span>
-                                <h3 class="font-serif text-base font-bold text-[#0f3d32] mb-1">${getServiceTranslation('cupping-gua-sha', 'name', 'Fire Cupping & Gua Sha Detox')}</h3>
+                                <h3 class="font-serif text-base font-bold text-[#045cb4] mb-1">${getServiceTranslation('cupping-gua-sha', 'name', 'Fire Cupping & Gua Sha Detox')}</h3>
                                 <p class="text-xs text-slate-600 leading-relaxed line-clamp-2">${getServiceTranslation('cupping-gua-sha', 'desc', 'Authentic glass cup fire suction combined with jade scraping to release pathogenic dampness.')}</p>
                             </div>
                         </div>
                         <div class="flex justify-between items-center border-t border-slate-100 pt-4 mt-4">
-                            <span class="font-serif text-base font-bold text-[#0f3d32]">${currency} 68</span>
+                            <span class="font-serif text-base font-bold text-[#045cb4]">${currency} 68</span>
                             <button onclick="startBookingWithService('cupping-gua-sha')" class="btn-tcm-primary text-white font-bold text-xs px-4 py-2 rounded-full">
                                 ${state.language === 'ms' ? 'Tempah Rawatan' : (state.language === 'zh' ? '预约理疗' : 'Book Therapy')}
                             </button>
@@ -549,12 +549,12 @@ export function renderServicesCatalogView() {
                             </div>
                             <div class="flex-grow">
                                 <span class="tcm-seal text-[9px] mb-1 inline-block">WARM CHANNELS</span>
-                                <h3 class="font-serif text-base font-bold text-[#0f3d32] mb-1">${getServiceTranslation('moxibustion-therapy', 'name', 'Warm Herbal Moxibustion Ritual')}</h3>
+                                <h3 class="font-serif text-base font-bold text-[#045cb4] mb-1">${getServiceTranslation('moxibustion-therapy', 'name', 'Warm Herbal Moxibustion Ritual')}</h3>
                                 <p class="text-xs text-slate-600 leading-relaxed line-clamp-2">${getServiceTranslation('moxibustion-therapy', 'desc', 'Application of burning aged mugwort herb above acupuncture meridians to warm the channels and dispel cold.')}</p>
                             </div>
                         </div>
                         <div class="flex justify-between items-center border-t border-slate-100 pt-4 mt-4">
-                            <span class="font-serif text-base font-bold text-[#0f3d32]">${currency} 78</span>
+                            <span class="font-serif text-base font-bold text-[#045cb4]">${currency} 78</span>
                             <button onclick="startBookingWithService('moxibustion-therapy')" class="btn-tcm-primary text-white font-bold text-xs px-4 py-2 rounded-full">
                                 ${state.language === 'ms' ? 'Tempah Rawatan' : (state.language === 'zh' ? '预约理疗' : 'Book Therapy')}
                             </button>
@@ -614,20 +614,20 @@ export function renderDashboardView() {
         <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop py-10 md:py-12">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div class="lg:col-span-8 bg-white tcm-card p-6 md:p-8 shadow-sm overflow-hidden relative">
-                    <div class="absolute -right-10 -top-10 w-44 h-44 rounded-full bg-[#164e3f]/10 blur-3xl"></div>
+                    <div class="absolute -right-10 -top-10 w-44 h-44 rounded-full bg-[#046bd2]/10 blur-3xl"></div>
                     <div class="relative z-10">
                         <span class="tcm-seal text-[10px] mb-2 inline-block">${state.language === 'ms' ? 'Papan Pemuka Kesihatan' : (state.language === 'zh' ? '个人健康中心' : 'Clinical Health Dashboard')}</span>
-                        <h1 class="font-serif text-3xl md:text-4xl text-[#0f3d32] font-bold leading-tight mb-3">${state.language === 'ms' ? 'Selamat kembali' : (state.language === 'zh' ? '欢迎回来' : 'Welcome back')}, ${userName}</h1>
+                        <h1 class="font-serif text-3xl md:text-4xl text-[#045cb4] font-bold leading-tight mb-3">${state.language === 'ms' ? 'Selamat kembali' : (state.language === 'zh' ? '欢迎回来' : 'Welcome back')}, ${userName}</h1>
                         <p class="text-xs md:text-sm text-slate-600 leading-relaxed max-w-2xl">${state.language === 'ms' ? 'Ruang peribadi anda untuk memantau janji temu TCM, baki dompet klinikal, dan pakej rawatan aktif tanpa kembali ke halaman utama.' : (state.language === 'zh' ? '在此便捷查看您的中医问诊预约、数码医疗金余额及正在调理中的专属疗程配套。' : 'Your personal space to track TCM appointments, clinic wallet balance, and active treatment regimens.')}</p>
 
                         <div class="flex flex-wrap gap-3 mt-6">
                             <button onclick="navigateTo('services-catalog')" class="btn-tcm-gold text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-sm transition-all flex items-center gap-2">
                                 <span class="material-symbols-outlined text-sm">healing</span> ${state.language === 'ms' ? 'Tempah Rawatan' : (state.language === 'zh' ? '预约诊疗' : 'Book Therapy')}
                             </button>
-                            <button onclick="navigateTo('wallet')" class="bg-white border border-[#164e3f]/30 hover:border-[#164e3f] hover:bg-[#164e3f]/5 text-[#164e3f] px-5 py-2.5 rounded-full text-xs font-bold transition-all flex items-center gap-2">
+                            <button onclick="navigateTo('wallet')" class="bg-white border border-[#046bd2]/30 hover:border-[#046bd2] hover:bg-[#046bd2]/5 text-[#046bd2] px-5 py-2.5 rounded-full text-xs font-bold transition-all flex items-center gap-2">
                                 <span class="material-symbols-outlined text-sm">account_balance_wallet</span> ${state.language === 'ms' ? 'Buka Dompet' : (state.language === 'zh' ? '诊所钱包' : 'Open Wallet')}
                             </button>
-                            <button onclick="navigateTo('profile')" class="bg-white border border-[#164e3f]/30 hover:border-[#164e3f] hover:bg-[#164e3f]/5 text-[#164e3f] px-5 py-2.5 rounded-full text-xs font-bold transition-all flex items-center gap-2">
+                            <button onclick="navigateTo('profile')" class="bg-white border border-[#046bd2]/30 hover:border-[#046bd2] hover:bg-[#046bd2]/5 text-[#046bd2] px-5 py-2.5 rounded-full text-xs font-bold transition-all flex items-center gap-2">
                                 <span class="material-symbols-outlined text-sm">person</span> ${state.language === 'ms' ? 'Profil Saya' : (state.language === 'zh' ? '个人档案' : 'My Profile')}
                             </button>
                         </div>
@@ -635,22 +635,22 @@ export function renderDashboardView() {
                 </div>
 
                 <div class="lg:col-span-4 grid grid-cols-2 gap-4">
-                    <div class="bg-gradient-to-br from-[#164e3f] to-[#0f3d32] text-white rounded-3xl p-5 shadow-sm relative overflow-hidden">
+                    <div class="bg-gradient-to-br from-[#046bd2] to-[#045cb4] text-white rounded-3xl p-5 shadow-sm relative overflow-hidden">
                         <div class="absolute -right-4 -bottom-4 opacity-15"><span class="material-symbols-outlined text-7xl">account_balance_wallet</span></div>
                         <span class="text-[10px] font-bold uppercase tracking-wider text-white/80 block mb-1">${state.language === 'ms' ? 'Baki Dompet' : (state.language === 'zh' ? '钱包余额' : 'Wallet Balance')}</span>
                         <div class="font-serif text-2xl font-bold">${currency} ${state.walletBalance.toFixed(2)}</div>
                     </div>
                     <div class="bg-white tcm-card p-5 shadow-sm">
                         <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">${state.language === 'ms' ? 'Janji Temu' : (state.language === 'zh' ? '预约记录' : 'Bookings')}</span>
-                        <div class="font-serif text-2xl font-bold text-[#0f3d32]">${state.bookings.length}</div>
+                        <div class="font-serif text-2xl font-bold text-[#045cb4]">${state.bookings.length}</div>
                     </div>
                     <div class="bg-white tcm-card p-5 shadow-sm">
                         <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">${state.language === 'ms' ? 'Pakej Aktif' : (state.language === 'zh' ? '有效配套' : 'Active Packages')}</span>
-                        <div class="font-serif text-2xl font-bold text-[#0f3d32]">${activePackagesCount}</div>
+                        <div class="font-serif text-2xl font-bold text-[#045cb4]">${activePackagesCount}</div>
                     </div>
                     <div class="bg-white tcm-card p-5 shadow-sm">
                         <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">${state.language === 'ms' ? 'Transaksi' : (state.language === 'zh' ? '账单明细' : 'Transactions')}</span>
-                        <div class="font-serif text-2xl font-bold text-[#0f3d32]">${transactionCount}</div>
+                        <div class="font-serif text-2xl font-bold text-[#045cb4]">${transactionCount}</div>
                     </div>
                 </div>
             </div>
@@ -659,10 +659,10 @@ export function renderDashboardView() {
                 <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-2 mb-5">
                     <div>
                         <span class="tcm-seal text-[10px] mb-2 inline-block">${state.language === 'ms' ? 'Jadual Mingguan' : (state.language === 'zh' ? '本周诊疗日程' : 'Weekly Schedule')}</span>
-                        <h2 class="font-serif text-xl text-[#0f3d32] font-bold">${formatWeekday(startOfWeek)} - ${formatWeekday(endOfWeek)}</h2>
+                        <h2 class="font-serif text-xl text-[#045cb4] font-bold">${formatWeekday(startOfWeek)} - ${formatWeekday(endOfWeek)}</h2>
                         <p class="text-xs text-slate-600 mt-1">${bookingsThisWeek.length > 0 ? (state.language === 'ms' ? `Anda mempunyai ${bookingsThisWeek.length} jadual rawatan pada minggu ini.` : (state.language === 'zh' ? `您本周共有 ${bookingsThisWeek.length} 个调理预约。` : `You have ${bookingsThisWeek.length} scheduled sessions this week.`)) : (state.language === 'ms' ? 'Tiada janji temu dijadualkan pada minggu ini.' : (state.language === 'zh' ? '本周暂无诊疗预约。' : 'No appointments scheduled for this week.'))}</p>
                     </div>
-                    <button onclick="navigateTo('booking-history')" class="self-start md:self-auto text-xs font-bold text-[#c59b27] hover:text-[#9a7718] flex items-center gap-1 transition-colors">
+                    <button onclick="navigateTo('booking-history')" class="self-start md:self-auto text-xs font-bold text-[#ff6900] hover:text-[#9a7718] flex items-center gap-1 transition-colors">
                         ${state.language === 'ms' ? 'Buka Sejarah Janji Temu' : (state.language === 'zh' ? '查看预约历史' : 'Open Booking History')} <span class="material-symbols-outlined text-xs">arrow_forward</span>
                     </button>
                 </div>
@@ -673,19 +673,19 @@ export function renderDashboardView() {
                         const hasBooking = dayBookings.length > 0;
                         const firstBooking = dayBookings[0];
                         return `
-                            <div class="rounded-2xl border p-4 min-h-[140px] flex flex-col justify-between ${isToday ? 'border-[#164e3f] bg-[#164e3f]/5 shadow-sm' : 'border-[#e7dfd1] bg-[#faf8f5]'}">
+                            <div class="rounded-2xl border p-4 min-h-[140px] flex flex-col justify-between ${isToday ? 'border-[#046bd2] bg-[#046bd2]/5 shadow-sm' : 'border-[#e2e8f0] bg-[#f0f5fa]'}">
                                 <div class="flex items-start justify-between gap-2 mb-3">
                                     <div>
-                                        <p class="text-[10px] font-bold uppercase tracking-wider ${isToday ? 'text-[#164e3f]' : 'text-slate-400'}">${formatDayLabel(date)}</p>
-                                        <p class="font-serif text-lg font-bold text-[#0f3d32]">${date.getDate()}</p>
+                                        <p class="text-[10px] font-bold uppercase tracking-wider ${isToday ? 'text-[#046bd2]' : 'text-slate-400'}">${formatDayLabel(date)}</p>
+                                        <p class="font-serif text-lg font-bold text-[#045cb4]">${date.getDate()}</p>
                                     </div>
-                                    <span class="text-[10px] font-bold px-2 py-1 rounded-full ${hasBooking ? 'bg-[#164e3f] text-white' : 'bg-white text-slate-400 border border-slate-200'}">${hasBooking ? `${dayBookings.length}` : '0'}</span>
+                                    <span class="text-[10px] font-bold px-2 py-1 rounded-full ${hasBooking ? 'bg-[#046bd2] text-white' : 'bg-white text-slate-400 border border-slate-200'}">${hasBooking ? `${dayBookings.length}` : '0'}</span>
                                 </div>
                                 <div class="flex flex-col gap-2">
                                     ${hasBooking ? `
-                                        <div class="text-xs font-semibold text-[#0f3d32] line-clamp-2">${firstBooking.serviceName}</div>
+                                        <div class="text-xs font-semibold text-[#045cb4] line-clamp-2">${firstBooking.serviceName}</div>
                                         <div class="text-[11px] text-slate-500">${firstBooking.time}</div>
-                                        ${dayBookings.length > 1 ? `<div class="text-[10px] font-bold text-[#c59b27]">+${dayBookings.length - 1} ${state.language === 'ms' ? 'lagi' : (state.language === 'zh' ? '项' : 'more')}</div>` : ''}
+                                        ${dayBookings.length > 1 ? `<div class="text-[10px] font-bold text-[#ff6900]">+${dayBookings.length - 1} ${state.language === 'ms' ? 'lagi' : (state.language === 'zh' ? '项' : 'more')}</div>` : ''}
                                     ` : `
                                         <div class="text-[11px] text-slate-400">${state.language === 'ms' ? 'Kosong' : (state.language === 'zh' ? '无预约' : 'Free')}</div>
                                     `}
@@ -695,22 +695,22 @@ export function renderDashboardView() {
                     }).join('')}
                 </div>
 
-                <div class="mt-5 rounded-2xl border border-[#e7dfd1] bg-[#faf8f5] p-4">
+                <div class="mt-5 rounded-2xl border border-[#e2e8f0] bg-[#f0f5fa] p-4">
                     <div class="flex items-center gap-2 mb-2 text-[#8c6521] font-bold text-xs uppercase tracking-wider">
                         <span class="material-symbols-outlined text-[18px]">event_available</span>
                         ${state.language === 'ms' ? 'Sorotan Minggu Ini' : (state.language === 'zh' ? '本周就诊备忘' : 'This Week at a Glance')}
                     </div>
                     <div class="flex flex-col gap-2">
                         ${bookingsThisWeek.length > 0 ? bookingsThisWeek.map(booking => `
-                            <div class="flex items-center justify-between gap-3 rounded-xl bg-white border border-[#e7dfd1] px-4 py-3">
+                            <div class="flex items-center justify-between gap-3 rounded-xl bg-white border border-[#e2e8f0] px-4 py-3">
                                 <div>
-                                    <p class="text-xs font-bold text-[#0f3d32]">${booking.serviceName}</p>
+                                    <p class="text-xs font-bold text-[#045cb4]">${booking.serviceName}</p>
                                     <p class="text-[11px] text-slate-500">${booking.date} • ${booking.time} • ${booking.therapist}</p>
                                 </div>
-                                <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#164e3f]/10 text-[#164e3f]">${booking.status}</span>
+                                <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#046bd2]/10 text-[#046bd2]">${booking.status}</span>
                             </div>
                         `).join('') : `
-                            <div class="rounded-xl bg-white border border-[#e7dfd1] px-4 py-3 text-xs text-slate-500">
+                            <div class="rounded-xl bg-white border border-[#e2e8f0] px-4 py-3 text-xs text-slate-500">
                                 ${state.language === 'ms' ? 'Tiada jadual untuk minggu ini. Tempah rawatan untuk melihatnya muncul di sini.' : (state.language === 'zh' ? '本周暂无就诊安排。预约疗程后将自动在此呈现。' : 'There are no appointments this week. Book a therapy to see it here.')}
                             </div>
                         `}
@@ -721,16 +721,16 @@ export function renderDashboardView() {
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
                 <div class="lg:col-span-7 bg-white tcm-card p-6 md:p-8 shadow-sm">
                     <div class="flex items-center justify-between mb-5">
-                        <h2 class="font-serif text-xl text-[#0f3d32] font-bold">${state.language === 'ms' ? 'Ringkasan Terkini' : (state.language === 'zh' ? '当前摘要' : 'Current Summary')}</h2>
-                        <button onclick="navigateTo('booking-history')" class="text-xs font-bold text-[#c59b27] hover:text-[#9a7718] flex items-center gap-1 transition-colors">
+                        <h2 class="font-serif text-xl text-[#045cb4] font-bold">${state.language === 'ms' ? 'Ringkasan Terkini' : (state.language === 'zh' ? '当前摘要' : 'Current Summary')}</h2>
+                        <button onclick="navigateTo('booking-history')" class="text-xs font-bold text-[#ff6900] hover:text-[#9a7718] flex items-center gap-1 transition-colors">
                             ${state.language === 'ms' ? 'Lihat Sejarah' : (state.language === 'zh' ? '查看明细' : 'View History')} <span class="material-symbols-outlined text-xs">arrow_forward</span>
                         </button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="rounded-2xl bg-[#faf8f5] border border-[#e7dfd1] p-4">
+                        <div class="rounded-2xl bg-[#f0f5fa] border border-[#e2e8f0] p-4">
                             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-2">${state.language === 'ms' ? 'Janji Temu Seterusnya' : (state.language === 'zh' ? '下一次就诊' : 'Next Appointment')}</span>
                             ${nextBooking ? `
-                                <h3 class="font-serif text-base font-bold text-[#0f3d32] mb-1">${nextBooking.serviceName}</h3>
+                                <h3 class="font-serif text-base font-bold text-[#045cb4] mb-1">${nextBooking.serviceName}</h3>
                                 <p class="text-xs text-slate-600">${nextBooking.date} • ${nextBooking.time}</p>
                                 <p class="text-xs text-slate-500 mt-2">${state.language === 'ms' ? 'Pengamal' : (state.language === 'zh' ? '执业医师' : 'Physician')}: ${nextBooking.therapist}</p>
                             ` : `
@@ -740,9 +740,9 @@ export function renderDashboardView() {
                         <div class="rounded-2xl bg-[#fbf6ec] border border-[#ecdcb9] p-4">
                             <span class="text-[10px] font-bold uppercase tracking-wider text-[#8c6521] block mb-2">${state.language === 'ms' ? 'Akses Pantas' : (state.language === 'zh' ? '便捷通道' : 'Quick Access')}</span>
                             <div class="flex flex-col gap-2">
-                                <button onclick="navigateTo('wallet')" class="text-left text-xs font-semibold text-[#0f3d32] hover:text-[#164e3f] transition-colors">${state.language === 'ms' ? 'Buka & tambah nilai dompet' : (state.language === 'zh' ? '充值与查询余额' : 'Open and top up wallet')}</button>
-                                <button onclick="navigateTo('profile')" class="text-left text-xs font-semibold text-[#0f3d32] hover:text-[#164e3f] transition-colors">${state.language === 'ms' ? 'Urus profil dan tetapan' : (state.language === 'zh' ? '个人病历与档案' : 'Manage profile and settings')}</button>
-                                <button onclick="navigateTo('all-services')" class="text-left text-xs font-semibold text-[#0f3d32] hover:text-[#164e3f] transition-colors">${state.language === 'ms' ? 'Semak semua perkhidmatan' : (state.language === 'zh' ? '浏览全系特色诊疗' : 'Browse all clinical services')}</button>
+                                <button onclick="navigateTo('wallet')" class="text-left text-xs font-semibold text-[#045cb4] hover:text-[#046bd2] transition-colors">${state.language === 'ms' ? 'Buka & tambah nilai dompet' : (state.language === 'zh' ? '充值与查询余额' : 'Open and top up wallet')}</button>
+                                <button onclick="navigateTo('profile')" class="text-left text-xs font-semibold text-[#045cb4] hover:text-[#046bd2] transition-colors">${state.language === 'ms' ? 'Urus profil dan tetapan' : (state.language === 'zh' ? '个人病历与档案' : 'Manage profile and settings')}</button>
+                                <button onclick="navigateTo('all-services')" class="text-left text-xs font-semibold text-[#045cb4] hover:text-[#046bd2] transition-colors">${state.language === 'ms' ? 'Semak semua perkhidmatan' : (state.language === 'zh' ? '浏览全系特色诊疗' : 'Browse all clinical services')}</button>
                             </div>
                         </div>
                     </div>
@@ -750,21 +750,21 @@ export function renderDashboardView() {
 
                 <div class="lg:col-span-5 bg-white tcm-card p-6 md:p-8 shadow-sm">
                     <div class="flex items-center justify-between mb-5">
-                        <h2 class="font-serif text-xl text-[#0f3d32] font-bold">${state.language === 'ms' ? 'Aktiviti Anda' : (state.language === 'zh' ? '动态提醒' : 'Your Activity')}</h2>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-[#164e3f]">${state.language === 'ms' ? 'Langsung' : (state.language === 'zh' ? '实时' : 'Live')}</span>
+                        <h2 class="font-serif text-xl text-[#045cb4] font-bold">${state.language === 'ms' ? 'Aktiviti Anda' : (state.language === 'zh' ? '动态提醒' : 'Your Activity')}</h2>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-[#046bd2]">${state.language === 'ms' ? 'Langsung' : (state.language === 'zh' ? '实时' : 'Live')}</span>
                     </div>
                     <div class="space-y-4">
-                        <div class="flex items-start gap-3 p-4 rounded-2xl bg-[#faf8f5] border border-[#e7dfd1]">
-                            <div class="w-10 h-10 rounded-xl bg-[#164e3f]/10 text-[#164e3f] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-lg">calendar_month</span></div>
+                        <div class="flex items-start gap-3 p-4 rounded-2xl bg-[#f0f5fa] border border-[#e2e8f0]">
+                            <div class="w-10 h-10 rounded-xl bg-[#046bd2]/10 text-[#046bd2] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-lg">calendar_month</span></div>
                             <div>
-                                <p class="text-xs font-semibold text-[#0f3d32]">${state.language === 'ms' ? 'Tempahan anda kini disambung ke papan pemuka.' : (state.language === 'zh' ? '您的临床预约已同步至此健康中心。' : 'Your clinical bookings flow directly into this dashboard.')}</p>
+                                <p class="text-xs font-semibold text-[#045cb4]">${state.language === 'ms' ? 'Tempahan anda kini disambung ke papan pemuka.' : (state.language === 'zh' ? '您的临床预约已同步至此健康中心。' : 'Your clinical bookings flow directly into this dashboard.')}</p>
                                 <p class="text-[11px] text-slate-500 mt-1">${state.language === 'ms' ? 'Anda boleh semak jadual, dompet, dan pakej tanpa kembali ke halaman utama.' : (state.language === 'zh' ? '可随时复核接诊时间、调理进度与剩余课时。' : 'You can review schedules, wallet, and packages anytime.')}</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-3 p-4 rounded-2xl bg-[#faf8f5] border border-[#e7dfd1]">
-                            <div class="w-10 h-10 rounded-xl bg-[#c59b27]/15 text-[#c59b27] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-lg">stars</span></div>
+                        <div class="flex items-start gap-3 p-4 rounded-2xl bg-[#f0f5fa] border border-[#e2e8f0]">
+                            <div class="w-10 h-10 rounded-xl bg-[#ff6900]/15 text-[#ff6900] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-lg">stars</span></div>
                             <div>
-                                <p class="text-xs font-semibold text-[#0f3d32]">${state.language === 'ms' ? 'Pakej aktif dan baki tersimpan kekal terpapar di sini.' : (state.language === 'zh' ? '多疗程专属配套与调理进度一目了然。' : 'Active packages and balance stay visible here.')}</p>
+                                <p class="text-xs font-semibold text-[#045cb4]">${state.language === 'ms' ? 'Pakej aktif dan baki tersimpan kekal terpapar di sini.' : (state.language === 'zh' ? '多疗程专属配套与调理进度一目了然。' : 'Active packages and balance stay visible here.')}</p>
                                 <p class="text-[11px] text-slate-500 mt-1">${state.language === 'ms' ? 'Pusat sehenti untuk pemulihan dan kesihatan berterusan anda.' : (state.language === 'zh' ? '尊享纯正中医一站式辨证施治与疗程跟踪服务。' : 'One-stop portal for your ongoing healing and recovery.')}</p>
                             </div>
                         </div>
@@ -794,9 +794,9 @@ export function renderActivePackagesWidget() {
 
     widget.classList.remove('hidden');
     let html = `
-        <div class="tcm-card rounded-2xl p-6 mb-8 max-w-container-max mx-auto px-4 md:px-margin-desktop bg-[#faf8f5]">
-            <h4 class="font-serif text-[#0f3d32] font-bold flex items-center gap-2 mb-3">
-                <span class="material-symbols-outlined text-[#c59b27]">stars</span> ${t('active_packages_widget_title')}
+        <div class="tcm-card rounded-2xl p-6 mb-8 max-w-container-max mx-auto px-4 md:px-margin-desktop bg-[#f0f5fa]">
+            <h4 class="font-serif text-[#045cb4] font-bold flex items-center gap-2 mb-3">
+                <span class="material-symbols-outlined text-[#ff6900]">stars</span> ${t('active_packages_widget_title')}
             </h4>
             <div class="flex overflow-x-auto md:grid md:grid-cols-2 gap-4 pb-3 md:pb-0 hide-scrollbar scroll-smooth">
     `;
@@ -805,9 +805,9 @@ export function renderActivePackagesWidget() {
         const bundle = SERVICES[key];
         const remaining = state.activePackages[key];
         html += `
-            <div class="flex-shrink-0 w-[85vw] sm:w-[320px] md:w-auto flex justify-between items-center bg-white p-4 rounded-xl border border-[#e7dfd1] shadow-sm">
+            <div class="flex-shrink-0 w-[85vw] sm:w-[320px] md:w-auto flex justify-between items-center bg-white p-4 rounded-xl border border-[#e2e8f0] shadow-sm">
                 <div>
-                    <p class="font-semibold font-serif text-[#0f3d32]">${bundle.name}</p>
+                    <p class="font-semibold font-serif text-[#045cb4]">${bundle.name}</p>
                     <p class="text-xs text-slate-500">${t('remaining_quota_lbl')} ${remaining} ${t('of_lbl')} ${bundle.sessions} ${t('lbl_sessions')}</p>
                 </div>
                 <button onclick="bookPackageSession('${key}')" class="btn-tcm-gold text-white text-xs px-4 py-2 rounded-full transition-all shrink-0 ml-4 font-bold">
@@ -829,7 +829,7 @@ export function purchaseBundle(bundleId) {
 
     if (state.walletBalance < bundle.price) {
         const errorMsg = state.language === 'ms'
-            ? `Baki Dompet Yong Kang tidak mencukupi untuk membeli ${getServiceTranslation(bundle.id, 'name', bundle.name)}. Mengarah ke Tambah Nilai...`
+            ? `Baki Dompet TCM Homecare tidak mencukupi untuk membeli ${getServiceTranslation(bundle.id, 'name', bundle.name)}. Mengarah ke Tambah Nilai...`
             : (state.language === 'zh' ? `诊所钱包余额不足以购买 ${getServiceTranslation(bundle.id, 'name', bundle.name)}，正在转向充值页面...` : `Insufficient clinic wallet balance to purchase ${bundle.name}. Redirecting to Top Up...`);
         showNotification(errorMsg, 'error');
         setTimeout(() => {
@@ -904,11 +904,11 @@ export function renderSelectServiceView() {
 
     // Sync tab button styles
     document.querySelectorAll('.cat-tab-btn').forEach(btn => {
-        btn.className = 'cat-tab-btn px-5 py-2 rounded-full font-serif text-xs whitespace-nowrap bg-[#faf8f5] text-slate-600 hover:bg-[#f0eae1] border border-[#e7dfd1] transition-colors';
+        btn.className = 'cat-tab-btn px-5 py-2 rounded-full font-serif text-xs whitespace-nowrap bg-[#f0f5fa] text-slate-600 hover:bg-[#f0eae1] border border-[#e2e8f0] transition-colors';
     });
     const activeBtn = document.getElementById(`cat-tab-${category}`);
     if (activeBtn) {
-        activeBtn.className = 'cat-tab-btn px-5 py-2 rounded-full font-serif text-xs whitespace-nowrap bg-[#164e3f] text-white font-bold border border-[#164e3f] shadow-sm';
+        activeBtn.className = 'cat-tab-btn px-5 py-2 rounded-full font-serif text-xs whitespace-nowrap bg-[#046bd2] text-white font-bold border border-[#046bd2] shadow-sm';
     }
 
     const servicesToRender = Object.values(SERVICES).filter(srv => {
@@ -925,13 +925,13 @@ export function renderSelectServiceView() {
         const discountPercent = (srv.regularPrice && srv.regularPrice > srv.price) ? Math.round(((srv.regularPrice - srv.price) / srv.regularPrice) * 100) : 0;
 
         html += `
-            <div class="tcm-card p-6 flex flex-col md:flex-row gap-6 items-start md:items-center transition-all duration-300 relative overflow-hidden bg-white ${isSelected ? 'ring-2 ring-[#164e3f] border-transparent' : 'hover:border-[#164e3f]/40'}">
-                ${srv.bestValue ? `<div class="absolute top-0 right-0 bg-[#c59b27] text-white px-4 py-1 rounded-bl-lg font-bold text-[9px] uppercase tracking-wider z-10">${state.language === 'ms' ? 'NILAI TERBAIK' : (state.language === 'zh' ? '超值推荐' : 'BEST VALUE')}</div>` : discountPercent > 0 ? `<div class="absolute top-0 right-0 bg-[#b93826] text-white px-4 py-1 rounded-bl-lg font-bold text-[9px] uppercase tracking-wider z-10">${state.language === 'ms' ? 'JIMAT' : (state.language === 'zh' ? '立省' : 'SAVE')} ${discountPercent}%</div>` : isPackageDeal ? `<div class="absolute top-0 right-0 bg-[#164e3f] text-white px-4 py-1 rounded-bl-lg font-bold text-[9px] uppercase tracking-wider z-10">${state.language === 'ms' ? 'PAKEJ BERKALA' : (state.language === 'zh' ? '疗程配套' : 'CLINICAL COURSE')}</div>` : ''}
+            <div class="tcm-card p-6 flex flex-col md:flex-row gap-6 items-start md:items-center transition-all duration-300 relative overflow-hidden bg-white ${isSelected ? 'ring-2 ring-[#046bd2] border-transparent' : 'hover:border-[#046bd2]/40'}">
+                ${srv.bestValue ? `<div class="absolute top-0 right-0 bg-[#ff6900] text-white px-4 py-1 rounded-bl-lg font-bold text-[9px] uppercase tracking-wider z-10">${state.language === 'ms' ? 'NILAI TERBAIK' : (state.language === 'zh' ? '超值推荐' : 'BEST VALUE')}</div>` : discountPercent > 0 ? `<div class="absolute top-0 right-0 bg-[#b93826] text-white px-4 py-1 rounded-bl-lg font-bold text-[9px] uppercase tracking-wider z-10">${state.language === 'ms' ? 'JIMAT' : (state.language === 'zh' ? '立省' : 'SAVE')} ${discountPercent}%</div>` : isPackageDeal ? `<div class="absolute top-0 right-0 bg-[#046bd2] text-white px-4 py-1 rounded-bl-lg font-bold text-[9px] uppercase tracking-wider z-10">${state.language === 'ms' ? 'PAKEJ BERKALA' : (state.language === 'zh' ? '疗程配套' : 'CLINICAL COURSE')}</div>` : ''}
                 
                 <div class="w-full md:w-44 h-32 rounded-2xl overflow-hidden flex-shrink-0 relative">
                     ${isSelected ? `
-                        <div class="absolute inset-0 bg-[#164e3f]/25 z-10 flex items-center justify-center backdrop-blur-[1px]">
-                            <div class="w-8 h-8 rounded-full bg-[#164e3f] text-white flex items-center justify-center shadow-md">
+                        <div class="absolute inset-0 bg-[#046bd2]/25 z-10 flex items-center justify-center backdrop-blur-[1px]">
+                            <div class="w-8 h-8 rounded-full bg-[#046bd2] text-white flex items-center justify-center shadow-md">
                                 <span class="material-symbols-outlined text-[20px]">check</span>
                             </div>
                         </div>
@@ -943,26 +943,26 @@ export function renderSelectServiceView() {
                     <div class="flex justify-between items-start flex-wrap gap-2">
                         <div>
                             <span class="tcm-seal text-[9px] mb-1 inline-block">${srv.type.toUpperCase()}</span>
-                            <h3 class="font-serif text-base text-[#0f3d32] font-bold">${getServiceTranslation(srv.id, 'name', srv.name)}</h3>
+                            <h3 class="font-serif text-base text-[#045cb4] font-bold">${getServiceTranslation(srv.id, 'name', srv.name)}</h3>
                         </div>
                         ${srv.regularPrice && srv.regularPrice > srv.price ? `
                             <div class="flex flex-col items-end whitespace-nowrap">
                                 <span class="text-[10px] text-slate-400 line-through decoration-red-500">${currency} ${srv.regularPrice.toFixed(2)}</span>
-                                <span class="font-serif text-base text-[#0f3d32] font-bold">${currency} ${srv.price}</span>
+                                <span class="font-serif text-base text-[#045cb4] font-bold">${currency} ${srv.price}</span>
                                 <span class="text-[9px] font-bold text-[#b93826] bg-red-50 px-1.5 py-0.5 rounded-md mt-0.5">${state.language === 'ms' ? 'JIMAT' : (state.language === 'zh' ? '立省' : 'SAVE')} ${currency} ${Math.round(srv.regularPrice - srv.price)}</span>
                             </div>
                         ` : `
-                            <span class="font-serif text-base text-[#0f3d32] font-bold whitespace-nowrap">${currency} ${srv.price}</span>
+                            <span class="font-serif text-base text-[#045cb4] font-bold whitespace-nowrap">${currency} ${srv.price}</span>
                         `}
                     </div>
                     <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">${getServiceTranslation(srv.id, 'desc', srv.description)}</p>
                     <div class="flex items-center gap-2 text-slate-500 mt-2 text-xs">
-                        <span class="material-symbols-outlined text-base text-[#164e3f]">schedule</span>
+                        <span class="material-symbols-outlined text-base text-[#046bd2]">schedule</span>
                         <span class="font-medium">${state.language === 'ms' ? srv.duration.replace('Mins', 'Minit') : (state.language === 'zh' ? srv.duration.replace('Mins', '分钟') : srv.duration)}</span>
                     </div>
                 </div>
                 
-                <button onclick="selectService('${srv.id}')" class="w-full md:w-auto px-6 py-2 rounded-full font-bold text-xs transition-all flex-shrink-0 mt-4 md:mt-0 ${isSelected ? 'bg-transparent border border-[#164e3f] text-[#164e3f] hover:bg-[#164e3f]/5' : (srv.bestValue ? 'btn-tcm-gold text-white shadow-sm' : 'btn-tcm-primary text-white shadow-sm')}">
+                <button onclick="selectService('${srv.id}')" class="w-full md:w-auto px-6 py-2 rounded-full font-bold text-xs transition-all flex-shrink-0 mt-4 md:mt-0 ${isSelected ? 'bg-transparent border border-[#046bd2] text-[#046bd2] hover:bg-[#046bd2]/5' : (srv.bestValue ? 'btn-tcm-gold text-white shadow-sm' : 'btn-tcm-primary text-white shadow-sm')}">
                     ${isSelected ? (state.language === 'ms' ? 'Dipilih' : (state.language === 'zh' ? '已选择' : 'Selected')) : (state.language === 'ms' ? 'Pilih Rawatan' : (state.language === 'zh' ? '选择该项' : 'Select'))}
                 </button>
             </div>
@@ -998,19 +998,19 @@ export function renderSelectTherapistView() {
         const isSelected = state.booking.therapist && state.booking.therapist.id === therapist.id;
 
         const imageHtml = therapist.id === 'no-preference' ? `
-            <div class="w-20 h-20 rounded-2xl bg-[#faf8f5] flex items-center justify-center shrink-0 border border-[#e7dfd1]">
-                <span class="material-symbols-outlined text-[#164e3f] text-3xl">medical_services</span>
+            <div class="w-20 h-20 rounded-2xl bg-[#f0f5fa] flex items-center justify-center shrink-0 border border-[#e2e8f0]">
+                <span class="material-symbols-outlined text-[#046bd2] text-3xl">medical_services</span>
             </div>
         ` : `
-            <div class="w-20 h-20 rounded-2xl overflow-hidden shrink-0 border-2 ${isSelected ? 'border-[#164e3f]' : 'border-[#c59b27]/40'} shadow-sm">
+            <div class="w-20 h-20 rounded-2xl overflow-hidden shrink-0 border-2 ${isSelected ? 'border-[#046bd2]' : 'border-[#ff6900]/40'} shadow-sm">
                 <img class="w-full h-full object-cover" src="${therapist.image}" alt="${therapist.name}">
             </div>
         `;
 
         html += `
-            <div onclick="selectTherapist('${therapist.id}')" class="tcm-card p-6 relative overflow-hidden transition-all duration-300 group cursor-pointer bg-white ${isSelected ? 'ring-2 ring-[#164e3f] border-transparent' : 'hover:border-[#164e3f]/40'}">
+            <div onclick="selectTherapist('${therapist.id}')" class="tcm-card p-6 relative overflow-hidden transition-all duration-300 group cursor-pointer bg-white ${isSelected ? 'ring-2 ring-[#046bd2] border-transparent' : 'hover:border-[#046bd2]/40'}">
                 ${isSelected ? `
-                    <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-[#164e3f] text-white flex items-center justify-center shadow-sm">
+                    <div class="absolute top-4 right-4 w-6 h-6 rounded-full bg-[#046bd2] text-white flex items-center justify-center shadow-sm">
                         <span class="material-symbols-outlined text-[16px]">check</span>
                     </div>
                 ` : ''}
@@ -1019,10 +1019,10 @@ export function renderSelectTherapistView() {
                     ${imageHtml}
                     <div>
                         <span class="tcm-seal text-[8px] mb-1 inline-block">${therapist.id === 'no-preference' ? 'AUTO MATCH' : 'TCMPB CERTIFIED'}</span>
-                        <h3 class="font-serif text-base text-[#0f3d32] font-bold mb-0.5">${therapist.name}</h3>
-                        <p class="text-xs text-[#c59b27] font-semibold mb-2">${therapist.role}</p>
+                        <h3 class="font-serif text-base text-[#045cb4] font-bold mb-0.5">${therapist.name}</h3>
+                        <p class="text-xs text-[#ff6900] font-semibold mb-2">${therapist.role}</p>
                         <div class="flex flex-wrap gap-1.5">
-                            ${therapist.specialties.map(spec => `<span class="px-2 py-0.5 bg-[#164e3f]/10 text-[#164e3f] text-[9px] font-bold rounded-full">${spec}</span>`).join('')}
+                            ${therapist.specialties.map(spec => `<span class="px-2 py-0.5 bg-[#046bd2]/10 text-[#046bd2] text-[9px] font-bold rounded-full">${spec}</span>`).join('')}
                         </div>
                     </div>
                 </div>
@@ -1031,12 +1031,12 @@ export function renderSelectTherapistView() {
                 
                 <div class="flex items-center gap-2.5 mt-auto">
                     ${therapist.id !== 'no-preference' ? `
-                        <button onclick="event.stopPropagation(); window.openTherapistModal('${therapist.id}')" class="flex-1 py-2 px-3 rounded-full border border-[#164e3f]/40 text-[#164e3f] text-xs font-bold hover:bg-[#164e3f]/5 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                        <button onclick="event.stopPropagation(); window.openTherapistModal('${therapist.id}')" class="flex-1 py-2 px-3 rounded-full border border-[#046bd2]/40 text-[#046bd2] text-xs font-bold hover:bg-[#046bd2]/5 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
                             <span class="material-symbols-outlined text-[15px]">badge</span>
                             ${state.language === 'ms' ? 'Profil Pengamal' : (state.language === 'zh' ? '医师简介' : 'View Bio')}
                         </button>
                     ` : ''}
-                    <button onclick="selectTherapist('${therapist.id}')" class="${therapist.id !== 'no-preference' ? 'flex-1' : 'w-full'} py-2 px-4 rounded-full font-bold text-xs transition-colors shadow-sm cursor-pointer ${isSelected ? 'btn-tcm-primary text-white' : 'bg-[#faf8f5] border border-[#e7dfd1] text-[#0f3d32] group-hover:bg-[#164e3f]/10'}">
+                    <button onclick="selectTherapist('${therapist.id}')" class="${therapist.id !== 'no-preference' ? 'flex-1' : 'w-full'} py-2 px-4 rounded-full font-bold text-xs transition-colors shadow-sm cursor-pointer ${isSelected ? 'btn-tcm-primary text-white' : 'bg-[#f0f5fa] border border-[#e2e8f0] text-[#045cb4] group-hover:bg-[#046bd2]/10'}">
                         ${isSelected ? (state.language === 'ms' ? 'Dipilih' : (state.language === 'zh' ? '已选定' : 'Selected')) : (state.language === 'ms' ? 'Pilih Pengamal' : (state.language === 'zh' ? '选择医师' : 'Select'))}
                     </button>
                 </div>
@@ -1201,43 +1201,43 @@ export function renderGuestInfoCard() {
 
     if (isEditingGuest) {
         container.innerHTML = `
-            <div class="flex items-center justify-between mb-6 border-b border-[#e7dfd1] pb-4">
-                <h2 class="font-serif text-base text-[#0f3d32] flex items-center gap-2 font-bold">
-                    <span class="material-symbols-outlined text-[#164e3f]">person</span> ${t('guest_info_title')}
+            <div class="flex items-center justify-between mb-6 border-b border-[#e2e8f0] pb-4">
+                <h2 class="font-serif text-base text-[#045cb4] flex items-center gap-2 font-bold">
+                    <span class="material-symbols-outlined text-[#046bd2]">person</span> ${t('guest_info_title')}
                 </h2>
-                <button onclick="saveGuestInfo()" class="text-[#164e3f] hover:text-[#0f3d32] transition-colors text-xs font-bold underline">${state.language === 'ms' ? 'Simpan' : (state.language === 'zh' ? '保存' : 'Save')}</button>
+                <button onclick="saveGuestInfo()" class="text-[#046bd2] hover:text-[#045cb4] transition-colors text-xs font-bold underline">${state.language === 'ms' ? 'Simpan' : (state.language === 'zh' ? '保存' : 'Save')}</button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">${state.language === 'ms' ? 'Nama Penuh' : (state.language === 'zh' ? '姓名' : 'Full Name')}</label>
-                    <input id="edit-guest-name" type="text" class="w-full bg-white border border-[#e7dfd1] rounded-xl px-3 py-2 text-sm text-slate-800 focus:ring-1 focus:ring-[#164e3f] focus:border-[#164e3f]" value="${state.guestInfo.name}">
+                    <input id="edit-guest-name" type="text" class="w-full bg-white border border-[#e2e8f0] rounded-xl px-3 py-2 text-sm text-slate-800 focus:ring-1 focus:ring-[#046bd2] focus:border-[#046bd2]" value="${state.guestInfo.name}">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">${state.language === 'ms' ? 'Alamat E-mel' : (state.language === 'zh' ? '电子邮箱' : 'Email Address')}</label>
-                    <input id="edit-guest-email" type="email" class="w-full bg-white border border-[#e7dfd1] rounded-xl px-3 py-2 text-sm text-slate-800 focus:ring-1 focus:ring-[#164e3f] focus:border-[#164e3f]" value="${state.guestInfo.email}">
+                    <input id="edit-guest-email" type="email" class="w-full bg-white border border-[#e2e8f0] rounded-xl px-3 py-2 text-sm text-slate-800 focus:ring-1 focus:ring-[#046bd2] focus:border-[#046bd2]" value="${state.guestInfo.email}">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">${state.language === 'ms' ? 'Nombor Telefon' : (state.language === 'zh' ? '联系电话' : 'Phone Number')}</label>
-                    <input id="edit-guest-phone" type="text" class="w-full bg-white border border-[#e7dfd1] rounded-xl px-3 py-2 text-sm text-slate-800 focus:ring-1 focus:ring-[#164e3f] focus:border-[#164e3f]" value="${state.guestInfo.phone}">
+                    <input id="edit-guest-phone" type="text" class="w-full bg-white border border-[#e2e8f0] rounded-xl px-3 py-2 text-sm text-slate-800 focus:ring-1 focus:ring-[#046bd2] focus:border-[#046bd2]" value="${state.guestInfo.phone}">
                 </div>
                 <div class="md:col-span-2">
                     <label class="block text-xs font-bold text-slate-600 mb-1">${state.language === 'ms' ? 'Permintaan Khas / Gejala Sakit' : (state.language === 'zh' ? '特殊就诊需求 / 既往病史' : 'Special Requests / Health Concerns')}</label>
-                    <textarea id="edit-guest-requests" rows="3" class="w-full bg-white border border-[#e7dfd1] rounded-xl px-3 py-2 text-sm text-slate-800 focus:ring-1 focus:ring-[#164e3f] focus:border-[#164e3f]">${state.guestInfo.specialRequests}</textarea>
+                    <textarea id="edit-guest-requests" rows="3" class="w-full bg-white border border-[#e2e8f0] rounded-xl px-3 py-2 text-sm text-slate-800 focus:ring-1 focus:ring-[#046bd2] focus:border-[#046bd2]">${state.guestInfo.specialRequests}</textarea>
                 </div>
             </div>
         `;
     } else {
         container.innerHTML = `
-            <div class="flex items-center justify-between mb-6 border-b border-[#e7dfd1] pb-4">
-                <h2 class="font-serif text-base text-[#0f3d32] flex items-center gap-2 font-bold">
-                    <span class="material-symbols-outlined text-[#164e3f]">person</span> ${t('guest_info_title')}
+            <div class="flex items-center justify-between mb-6 border-b border-[#e2e8f0] pb-4">
+                <h2 class="font-serif text-base text-[#045cb4] flex items-center gap-2 font-bold">
+                    <span class="material-symbols-outlined text-[#046bd2]">person</span> ${t('guest_info_title')}
                 </h2>
-                <button onclick="toggleEditGuest(true)" class="text-[#164e3f] hover:text-[#0f3d32] transition-colors text-xs font-bold underline">${state.language === 'ms' ? 'Ubah' : (state.language === 'zh' ? '修改' : 'Edit')}</button>
+                <button onclick="toggleEditGuest(true)" class="text-[#046bd2] hover:text-[#045cb4] transition-colors text-xs font-bold underline">${state.language === 'ms' ? 'Ubah' : (state.language === 'zh' ? '修改' : 'Edit')}</button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <p class="text-[10px] text-slate-500 mb-1 font-bold uppercase tracking-wider">${state.language === 'ms' ? 'Nama Penuh' : (state.language === 'zh' ? '患者姓名' : 'Full Name')}</p>
-                    <p class="font-serif text-sm font-bold text-[#0f3d32]">${state.guestInfo.name}</p>
+                    <p class="font-serif text-sm font-bold text-[#045cb4]">${state.guestInfo.name}</p>
                 </div>
                 <div>
                     <p class="text-[10px] text-slate-500 mb-1 font-bold uppercase tracking-wider">${state.language === 'ms' ? 'Alamat E-mel' : (state.language === 'zh' ? '电子邮箱' : 'Email Address')}</p>
@@ -1248,9 +1248,9 @@ export function renderGuestInfoCard() {
                     <p class="text-sm text-slate-800">${state.guestInfo.phone}</p>
                 </div>
             </div>
-            <div class="mt-6 pt-6 border-t border-[#e7dfd1]">
+            <div class="mt-6 pt-6 border-t border-[#e2e8f0]">
                 <p class="text-[10px] text-slate-500 mb-2 font-bold uppercase tracking-wider">${state.language === 'ms' ? 'Permintaan Khas / Gejala Sakit' : (state.language === 'zh' ? '就诊备注' : 'Special Requests')}</p>
-                <div class="bg-[#faf8f5] rounded-xl p-4 border border-[#e7dfd1]">
+                <div class="bg-[#f0f5fa] rounded-xl p-4 border border-[#e2e8f0]">
                     <p class="text-xs text-slate-700 italic">"${state.guestInfo.specialRequests || (state.language === 'ms' ? 'Tiada permintaan khas.' : (state.language === 'zh' ? '暂无特殊需求。' : 'No special requests.'))}"</p>
                 </div>
             </div>
@@ -1284,7 +1284,7 @@ export function renderPaymentMethodSelection() {
     if (!container) return;
 
     const currency = currentTenant?.currency || 'SGD';
-    const walletName = `${currentTenant?.name || 'Yong Kang TCM'} Clinic Wallet`;
+    const walletName = `${currentTenant?.name || 'TCM Homecare'} Clinic Wallet`;
     const methods = [
         { id: 'wallet', name: walletName, icon: 'account_balance_wallet' }
     ];
@@ -1295,16 +1295,16 @@ export function renderPaymentMethodSelection() {
     let html = `
         <div class="relative w-full text-left" id="payment-dropdown-container">
             <!-- Dropdown Trigger -->
-            <button type="button" onclick="togglePaymentDropdown(event)" class="w-full flex items-center justify-between bg-white border ${window.paymentDropdownOpen ? 'border-[#164e3f] ring-1 ring-[#164e3f]' : 'border-[#e7dfd1] hover:border-[#164e3f]/50'} rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none transition-all shadow-sm">
+            <button type="button" onclick="togglePaymentDropdown(event)" class="w-full flex items-center justify-between bg-white border ${window.paymentDropdownOpen ? 'border-[#046bd2] ring-1 ring-[#046bd2]' : 'border-[#e2e8f0] hover:border-[#046bd2]/50'} rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none transition-all shadow-sm">
                 <div class="flex items-center gap-3 overflow-hidden">
-                    <span class="material-symbols-outlined text-[#164e3f] text-xl shrink-0">${selectedMethod.icon}</span>
-                    <span class="font-bold text-[#0f3d32] font-serif flex flex-wrap items-center gap-1 text-left">${selectedDisplayName}</span>
+                    <span class="material-symbols-outlined text-[#046bd2] text-xl shrink-0">${selectedMethod.icon}</span>
+                    <span class="font-bold text-[#045cb4] font-serif flex flex-wrap items-center gap-1 text-left">${selectedDisplayName}</span>
                 </div>
                 <span id="payment-dropdown-icon" class="material-symbols-outlined text-slate-500 transition-transform duration-200 shrink-0" style="transform: ${window.paymentDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)'}">keyboard_arrow_down</span>
             </button>
 
             <!-- Dropdown Menu -->
-            <div id="payment-dropdown-menu" class="${window.paymentDropdownOpen ? '' : 'hidden'} absolute z-[60] w-full mt-2 bg-white border border-[#e7dfd1] rounded-xl shadow-xl overflow-hidden origin-top animate-fade-in">
+            <div id="payment-dropdown-menu" class="${window.paymentDropdownOpen ? '' : 'hidden'} absolute z-[60] w-full mt-2 bg-white border border-[#e2e8f0] rounded-xl shadow-xl overflow-hidden origin-top animate-fade-in">
     `;
     
     methods.forEach(method => {
@@ -1312,12 +1312,12 @@ export function renderPaymentMethodSelection() {
         const displayName = method.id === 'wallet' ? `${method.name} <span class="text-xs text-slate-500 font-normal ml-1 whitespace-nowrap">(${state.language === 'ms' ? 'Baki' : (state.language === 'zh' ? '余额' : 'Balance')}: ${currency} ${state.walletBalance.toFixed(2)})</span>` : method.name;
         
         html += `
-                <button type="button" onclick="selectPaymentMethod('${method.id}', event)" class="w-full flex items-center justify-between px-4 py-3.5 hover:bg-[#faf8f5] transition-colors border-b border-[#e7dfd1] last:border-0 ${isSelected ? 'bg-[#164e3f]/5' : ''}">
+                <button type="button" onclick="selectPaymentMethod('${method.id}', event)" class="w-full flex items-center justify-between px-4 py-3.5 hover:bg-[#f0f5fa] transition-colors border-b border-[#e2e8f0] last:border-0 ${isSelected ? 'bg-[#046bd2]/5' : ''}">
                     <div class="flex items-center gap-3 overflow-hidden">
-                        <span class="material-symbols-outlined text-xl shrink-0 ${isSelected ? 'text-[#164e3f]' : 'text-slate-400'}">${method.icon}</span>
-                        <span class="text-sm font-serif text-left ${isSelected ? 'font-bold text-[#164e3f]' : 'font-medium text-slate-700'} flex flex-wrap items-center">${displayName}</span>
+                        <span class="material-symbols-outlined text-xl shrink-0 ${isSelected ? 'text-[#046bd2]' : 'text-slate-400'}">${method.icon}</span>
+                        <span class="text-sm font-serif text-left ${isSelected ? 'font-bold text-[#046bd2]' : 'font-medium text-slate-700'} flex flex-wrap items-center">${displayName}</span>
                     </div>
-                    ${isSelected ? '<span class="material-symbols-outlined text-[#164e3f] text-lg shrink-0 ml-2">check_circle</span>' : ''}
+                    ${isSelected ? '<span class="material-symbols-outlined text-[#046bd2] text-lg shrink-0 ml-2">check_circle</span>' : ''}
                 </button>
         `;
     });

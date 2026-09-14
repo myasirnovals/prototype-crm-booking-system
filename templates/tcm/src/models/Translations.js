@@ -36,12 +36,12 @@ export const TRANSLATIONS = {
         btn_reschedule: "Reschedule",
         btn_cancel: "Cancel",
         btn_view_qr: "View QR Code",
-        hero_title: "Restore Your Natural Balance & Vitality",
-        hero_subtitle: "Experience authentic pulse diagnosis, targeted acupuncture, and therapeutic tuina with board-certified TCM practitioners.",
-        footer_rights: "© 2026 Yong Kang TCM & Acupuncture. All Rights Reserved.",
+        hero_title: "Embrace Traditional Healing in Modern Comfort",
+        hero_subtitle: "Personalized TCM treatments tailored to your needs — online telemedicine, house calls, and painless laser acupuncture.",
+        footer_rights: "© 2026 TCM Homecare. All Rights Reserved.",
 
         // Why Choose Us Section
-        why_choose_us_title: "Why Choose Yong Kang TCM?",
+        why_choose_us_title: "Why Choose TCM Homecare?",
         why_choose_us_feat1_title: "Certified TCM Physicians",
         why_choose_us_feat1_desc: "All practitioners are registered with the Traditional Chinese Medicine Practitioners Board with extensive hospital clinical experience.",
         why_choose_us_feat2_title: "Premium Herbal Formulations",
@@ -179,12 +179,12 @@ export const TRANSLATIONS = {
         btn_reschedule: "Jadual Semula",
         btn_cancel: "Batal",
         btn_view_qr: "Lihat Kod QR",
-        hero_title: "Pulihkan Keseimbangan Semula Jadi & Tenaga Anda",
-        hero_subtitle: "Alami diagnosis nadi tepat, akupunktur sasaran, dan tuina terapeutik bersama pengamal Perubatan Tradisional Cina bertauliah.",
-        footer_rights: "© 2026 Yong Kang TCM & Acupuncture. Hak Cipta Terpelihara.",
+        hero_title: "Hayati Penyembuhan Tradisional dalam Keselesaan Moden",
+        hero_subtitle: "Rawatan TCM diperibadikan untuk keperluan anda — teleperubatan dalam talian, lawatan ke rumah, dan akupunktur laser tanpa kesakitan.",
+        footer_rights: "© 2026 TCM Homecare. Hak Cipta Terpelihara.",
 
         // Why Choose Us Section
-        why_choose_us_title: "Mengapa Memilih Yong Kang TCM?",
+        why_choose_us_title: "Mengapa Memilih TCM Homecare?",
         why_choose_us_feat1_title: "Pengamal TCM Bertauliah",
         why_choose_us_feat1_desc: "Semua pengamal berdaftar dengan Lembaga Pengamal Perubatan Tradisional Cina serta mempunyai pengalaman klinikal hospital yang luas.",
         why_choose_us_feat2_title: "Formulasi Herba Berkualiti Tinggi",
@@ -322,12 +322,12 @@ export const TRANSLATIONS = {
         btn_reschedule: "改期",
         btn_cancel: "取消预约",
         btn_view_qr: "查看二维码",
-        hero_title: "辨证施治，调和阴阳气血",
-        hero_subtitle: "由新加坡注册资深中医师团队主理，提供把脉问诊、精准经络针灸、正骨推拿及温阳艾灸。",
-        footer_rights: "© 2026 永康中医与针灸诊所。版权所有。",
+        hero_title: "现代舒适中体验传统中医调理",
+        hero_subtitle: "为您量身定制的中医调理方案 — 在线问诊、上门护理与无痛激光针灸。",
+        footer_rights: "© 2026 TCM Homecare。版权所有。",
 
         // Why Choose Us Section
-        why_choose_us_title: "为什么选择永康中医？",
+        why_choose_us_title: "为什么选择 TCM Homecare？",
         why_choose_us_feat1_title: "政府注册中医师",
         why_choose_us_feat1_desc: "所有驻诊医师均持有新加坡中医管理委员会执照，具备深厚的大学中医背景及丰富临床经验。",
         why_choose_us_feat2_title: "道地精萃浓缩中药",
@@ -445,8 +445,9 @@ export function t(key) {
         text = TRANSLATIONS['en'][key];
     }
     if (typeof text === 'string') {
-        const brandName = (currentTenant && currentTenant.name) ? currentTenant.name : 'Yong Kang TCM & Acupuncture';
-        text = text.replace(/Yong\s*Kang\s*TCM\s*&\s*Acupuncture/gi, brandName)
+        const brandName = (currentTenant && currentTenant.name) ? currentTenant.name : 'TCM Homecare';
+        text = text.replace(/TCM\s*Homecare/gi, brandName)
+            .replace(/Yong\s*Kang\s*TCM\s*&\s*Acupuncture/gi, brandName)
             .replace(/Yong\s*Kang/gi, brandName)
             .replace(/Serenity\s*&\s*Soul/gi, brandName)
             .replace(/Serenity/gi, brandName);

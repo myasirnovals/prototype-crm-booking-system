@@ -50,7 +50,7 @@ export function confirmReservation() {
 
     requireLogin(() => {
         const currency = currentTenant?.currency || 'SGD';
-        const clinicAddress = currentTenant?.address || 'Yong Kang TCM Clinic, 54 Pagoda Street, Chinatown, Singapore 059213';
+        const clinicAddress = currentTenant?.address || 'TCM Homecare Clinic, 54 Pagoda Street, Chinatown, Singapore 059213';
 
         // --- Package Session Mode: deduct 1 session, no payment needed ---
         if (state.packageBookingMode) {

@@ -380,23 +380,16 @@ const therapistCards = therapists.map(th => `
             });
         }
 
-        // Auth Guard for Proceed Button
+        // Proceed to Assessment (Guest Booking Flow: no login required before payment)
         const proceedBtn = document.getElementById('proceed-btn');
         if (proceedBtn) {
             proceedBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                
-                // Cek status login
-                const user = User.getCurrentUser();
-                
-                if (!user) {
-                    alert(t('booking.loginReq'));
-                    // Redirect ke halaman login, bisa menyimpan rute ini untuk redirect kembali
-                    window.location.hash = '#/login';
-                } else {
-                    // Jika sudah login, lanjut ke form asessment / detail kontak
-                    window.location.hash = '#/patient/assessment';
+                if (!self.state.service) {
+                    alert(t('booking.selectServiceReq') || 'Please select a service first.');
+                    return;
                 }
+                window.location.hash = '#/patient/assessment';
             });
         }
     },

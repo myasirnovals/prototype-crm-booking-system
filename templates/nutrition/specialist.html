@@ -82,8 +82,8 @@
                     <option value="my">MY</option>
                 </select>
                 <div class="w-[1px] h-4 bg-slate-300"></div>
-                <a href="/login.html" data-i18n="nav.sign_in" class="text-sm font-semibold text-primary hover:text-[#005321] transition-colors hidden sm:block">Sign In</a>
-                <a href="/login.html" class="bg-primary hover:bg-[#005321] text-white text-sm font-bold py-2.5 px-5 rounded-xl transition-all shadow-lg hover:shadow-primary/30 flex items-center gap-2">
+                <a href="./login.html" data-i18n="nav.sign_in" class="text-sm font-semibold text-primary hover:text-[#005321] transition-colors hidden sm:block">Sign In</a>
+                <a href="./dashboard.html?tab=booking" class="bg-primary hover:bg-[#005321] text-white text-sm font-bold py-2.5 px-5 rounded-xl transition-all shadow-lg hover:shadow-primary/30 flex items-center gap-2">
                     <span data-i18n="nav.get_started">Get Started</span>
                     <span class="material-symbols-outlined text-sm">arrow_forward</span>
                 </a>
@@ -232,6 +232,13 @@
                 nav.children[0].classList.add('bg-white/70', 'shadow-sm');
                 nav.children[0].classList.remove('shadow-lg', 'bg-white/90');
             }
+        });
+
+        // Click on any specialist card to start booking
+        document.querySelectorAll('#specialists .cursor-pointer').forEach(card => {
+            card.addEventListener('click', () => {
+                window.location.href = './dashboard.html?tab=booking';
+            });
         });
     </script>
 </body>

@@ -120,25 +120,41 @@ const PatientPaymentView = {
             const selectedPayment = document.querySelector('input[name="payment"]:checked');
             const paymentMethod = selectedPayment ? selectedPayment.value : 'qris';
 
-            // Create appointment via the model (which maps fields correctly)
-            await AppointmentModel.create({
-                patientId: user ? user.patientId : 'PC-8842',
-                patientName: user ? user.name : 'James Miller',
-                serviceId: booking.service ? booking.service.id : 'standard-physiotherapy',
-                serviceName: booking.service ? booking.service.name : t('booking.stdPhysio'),
-                therapistId: booking.therapist ? booking.therapist.id : 'therapist-1',
-                therapistName: booking.therapist ? booking.therapist.name : 'Dr. Sarah Mitchell',
-                date: `Oct ${booking.date || '24'}, 2024`,
-                time: booking.time || '11:45 AM',
-                location: 'Downtown Medical Plaza, Suite 402',
-                price: booking.service ? booking.service.price : 85000,
-                paymentMethod
-            });
+            const finalizePaymentAndBooking = async (activeUser) => {
+                const finalUser = activeUser || User.getCurrentUser();
+                await AppointmentModel.create({
+                    patientId: finalUser ? finalUser.patientId : 'PC-8842',
+                    patientName: finalUser ? finalUser.name : 'James Miller',
+                    serviceId: booking.service ? booking.service.id : 'standard-physiotherapy',
+                    serviceName: booking.service ? booking.service.name : t('booking.stdPhysio'),
+                    therapistId: booking.therapist ? booking.therapist.id : 'therapist-1',
+                    therapistName: booking.therapist ? booking.therapist.name : 'Dr. Sarah Mitchell',
+                    date: `Oct ${booking.date || '24'}, 2024`,
+                    time: booking.time || '11:45 AM',
+                    location: 'Downtown Medical Plaza, Suite 402',
+                    price: booking.service ? booking.service.price : 85000,
+                    paymentMethod
+                });
 
-            // Reset booking state so a new booking starts clean
-            GuestBookingView.state = { service: null, therapist: null, date: '13', time: '11:45 AM' };
+                // Reset booking state so a new booking starts clean
+                GuestBookingView.state = { service: null, therapist: null, date: '13', time: '11:45 AM' };
 
-            router.navigate('/patient/booking-success');
+                router.navigate('/patient/booking-success');
+            };
+
+            // Intercept at payment confirmation step (SPA Framework standard)
+            if (!user) {
+                if (typeof window.openPhysioAuthModal === 'function') {
+                    window.openPhysioAuthModal(async (authedUser) => {
+                        await finalizePaymentAndBooking(authedUser);
+                    });
+                } else {
+                    await finalizePaymentAndBooking(null);
+                }
+                return;
+            }
+
+            await finalizePaymentAndBooking(user);
         });
     }
 };

@@ -24,6 +24,7 @@ import { bookingView } from '../views/BookingView.js';
 import { chatView } from '../views/ChatView.js';
 import { scannerView } from '../views/ScannerView.js';
 import { nutritionChatView } from '../views/NutritionChatView.js';
+import '../views/AuthModal.js';
 
 export class ClientController {
   constructor() {
@@ -48,6 +49,16 @@ export class ClientController {
     // 4. Beranda
     this._handleOnboarding();
     this._syncUI();
+
+    // Guest Booking Flow: auto-open booking wizard if url indicates booking
+    const url = new URL(window.location);
+    const tabParam = url.searchParams.get('tab');
+    if (tabParam === 'booking' || tabParam === 'book-wizard' || url.searchParams.get('mode') === 'guest_booking' || window.location.hash.includes('booking') || window.location.hash.includes('book-wizard')) {
+      setTimeout(() => {
+        router.navigate('book-wizard');
+        bookingView.render();
+      }, 100);
+    }
   }
 
   // ============ SESSION ============
@@ -64,6 +75,14 @@ export class ClientController {
         Store.getInstance().state.loggedClientName = guest;
         Store.getInstance().persist();
       }
+      return;
+    }
+
+    // Guest Booking Flow: allow guest access to book-wizard without requiring login prior to checkout
+    const tabParam = url.searchParams.get('tab');
+    const isBookingMode = tabParam === 'booking' || tabParam === 'book-wizard' || url.searchParams.get('mode') === 'guest_booking' || window.location.hash.includes('booking') || window.location.hash.includes('book-wizard');
+    if (isBookingMode) {
+      Store.getInstance().guestBooking = true;
       return;
     }
 
@@ -566,6 +585,20 @@ export class ClientController {
       uploadedFile: bookingView.flow.uploadedFile || null,
     };
 
+    const isLogged = localStorage.getItem('nutriflow_client_logged') === 'true';
+    if (!isLogged) {
+      if (typeof window.openNutriAuthModal === 'function') {
+        window.openNutriAuthModal((authedUser) => {
+          apt.clientName = authedUser.name || name;
+          apt.clientEmail = authedUser.email || email;
+          this._pendingApt = apt;
+          window.openPaymentGatewayModal(apt);
+        });
+        return;
+      }
+    }
+
+    this._pendingApt = apt;
     window.openPaymentGatewayModal(apt);
   }
 

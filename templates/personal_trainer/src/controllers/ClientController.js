@@ -8,10 +8,16 @@ import { renderChatView } from '../views/ChatView.js';
 import { setupUserHeader, updateNavIndicators, setupAppGlobalHandlers } from '../views/ClientAppView.js';
 import { t, changeLanguage, translateDOM } from '../i18n.js';
 
-window.activeTab = 'home';
+import '../views/AuthModal.js';
 
-// Check Authentication
-if (localStorage.getItem('elite_pt_role') !== 'client') {
+const hashTab = window.location.hash.replace('#', '');
+const urlParams = new URLSearchParams(window.location.search);
+const isBookingTab = hashTab === 'booking' || urlParams.get('tab') === 'booking';
+
+window.activeTab = isBookingTab ? 'booking' : (hashTab || 'home');
+
+// Check Authentication (Guest booking flow: allow guests to book before login)
+if (!isBookingTab && localStorage.getItem('elite_pt_role') !== 'client') {
   window.location.href = './index.html';
 }
 

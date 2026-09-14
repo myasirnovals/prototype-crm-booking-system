@@ -2,9 +2,10 @@ import { getActiveClient } from '../models/ClientModel.js';
 import { saveState } from '../models/Store.js';
 
 export function setupUserHeader() {
+  const isLogged = localStorage.getItem('elite_pt_role') === 'client';
   const client = getActiveClient();
-  const avatar = client.avatar;
-  const name = client.name;
+  const avatar = isLogged && client ? client.avatar : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100';
+  const name = isLogged && client ? client.name : 'Guest Athlete';
   
   const userAvatarEl = document.getElementById('user-avatar');
   const userAvatarElMobile = document.getElementById('user-avatar-mobile');
@@ -20,14 +21,14 @@ export function setupUserHeader() {
   // Basic Nav Translations
   const navKeys = ['home', 'workout', 'nutrition', 'progress', 'booking', 'chat'];
   const textEn = ['Today', 'Workouts', 'Nutrition', 'Progress', 'Schedule', 'Messages'];
-  const textId = ['Beranda', 'Latihan', 'Nutrisi', 'Progres', 'Jadwal', 'Obrolan'];
+  const textMs = ['Hari Ini', 'Latihan', 'Pemakanan', 'Kemajuan', 'Jadual', 'Mesej'];
   
   navKeys.forEach((key, index) => {
     const el = document.getElementById(`nav-${key}`);
-    if (el) el.textContent = isMs ? textId[index] : textEn[index];
+    if (el) el.textContent = isMs ? textMs[index] : textEn[index];
     
     const mobEl = document.getElementById(`mobile-nav-${key}`);
-    if (mobEl && mobEl.children[1]) mobEl.children[1].textContent = isMs ? textId[index] : textEn[index];
+    if (mobEl && mobEl.children[1]) mobEl.children[1].textContent = isMs ? textMs[index] : textEn[index];
   });
 }
 

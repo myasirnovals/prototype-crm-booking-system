@@ -169,10 +169,11 @@ export function setupBookingGlobalHandlers(renderView, showToast, closeModal) {
   };
 
   window.confirmBookingSlot = function(date, time) {
+    const isLogged = localStorage.getItem('elite_pt_role') === 'client';
     const client = getActiveClient();
-    const pkgRemaining = client.package.remaining;
+    const pkgRemaining = client?.package?.remaining ?? 5;
 
-    if (pkgRemaining <= 0) {
+    if (isLogged && pkgRemaining <= 0) {
       showToast(t('booking_failed_quota'), 'error');
       return;
     }
@@ -212,6 +213,19 @@ export function setupBookingGlobalHandlers(renderView, showToast, closeModal) {
   };
 
   window.bookSlotProcess = function(date, time, type, location) {
+    const isLogged = localStorage.getItem('elite_pt_role') === 'client';
+
+    // Intercept with AuthModal if user is not logged in yet (SPA Framework standard)
+    if (!isLogged) {
+      closeModal();
+      if (typeof window.openPtAuthModal === 'function') {
+        window.openPtAuthModal(() => {
+          window.bookSlotProcess(date, time, type, location);
+        });
+        return;
+      }
+    }
+
     const client = getActiveClient();
     
     try {
@@ -223,12 +237,12 @@ export function setupBookingGlobalHandlers(renderView, showToast, closeModal) {
         duration: 60,
         type,
         location,
-        status: 'Pending'
+        status: 'Confirmed'
       });
 
       closeModal();
       renderView();
-      showToast(t('booking_success'), 'success');
+      showToast(t('booking_success') || 'Training session confirmed successfully!', 'success');
     } catch (err) {
       showToast(err.message, 'error');
     }

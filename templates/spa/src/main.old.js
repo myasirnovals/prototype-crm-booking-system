@@ -661,8 +661,9 @@ window.t = function(key) {
         text = TRANSLATIONS['en'][key];
     }
     if (typeof text === 'string') {
-        text = text.replace(/Serenity\s*&\s*Soul/gi, currentTenant.name)
-                   .replace(/Serenity/gi, currentTenant.logo || currentTenant.name);
+        const brandName = (currentTenant && currentTenant.name) ? currentTenant.name : 'Serenity & Soul';
+        text = text.replace(/Serenity\s*&\s*Soul/gi, brandName)
+                   .replace(/Serenity/gi, brandName);
     }
     return text;
 };
@@ -2306,7 +2307,7 @@ function renderPaymentMethodSelection() {
     const container = document.getElementById('payment-methods-container');
     if (!container) return;
 
-    const walletName = currentTenant.logo ? `${currentTenant.logo} Wallet` : `${currentTenant.name} Wallet`;
+    const walletName = `${currentTenant?.name || 'Member'} Wallet`;
     const methods = [
         { id: 'wallet', name: walletName, icon: 'account_balance_wallet' }
     ];

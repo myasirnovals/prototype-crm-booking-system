@@ -135,42 +135,13 @@ export let SERVICES = {
 };
 
 export function getSharedData(type) {
-    const currentTId = window.currentTenantId || 'serenity';
-    const tenants = JSON.parse(localStorage.getItem('spa_tenants')) || DEFAULT_TENANTS;
-    let sharedItems = [];
-    
-    Object.keys(tenants).forEach(tId => {
-        if (tId === currentTId) return;
-        const t = tenants[tId];
-        if (t.sharing && Array.isArray(t.sharing.sharedWith) && t.sharing.sharedWith.includes(currentTId)) {
-            if (Array.isArray(t.sharing.sharedTypes) && t.sharing.sharedTypes.includes(type)) {
-                const storageKey = `${tId}_admin_${type}`;
-                const rawData = localStorage.getItem(storageKey);
-                if (rawData) {
-                    try {
-                        const items = JSON.parse(rawData);
-                        if (Array.isArray(items)) {
-                            items.forEach(item => {
-                                item.originalId = item.id;
-                                item.id = `${tId}_${item.id}`;
-                                item.isShared = true;
-                                item.sharedFromId = tId;
-                                item.sharedFromName = t.name;
-                            });
-                            sharedItems = sharedItems.concat(items);
-                        }
-                    } catch (e) {
-                        console.error(`Failed to parse shared data for ${tId} type ${type}`, e);
-                    }
-                }
-            }
-        }
-    });
-    return sharedItems;
+    // Multi-tenant is handled by the parent Cliniva SaaS booking system; no cross-tenant sharing inside template
+    return [];
 }
 
 export function syncServices() {
-    const servicesKey = `${window.currentTenantId}_admin_services`;
+    const branchKey = window.currentBranchId || window.currentTenantId || 'default-spa';
+    const servicesKey = `spa_branch_${branchKey}_services`;
     let adminSrvRaw = localStorage.getItem(servicesKey);
     if (!adminSrvRaw) {
         const defaultServices = [
@@ -273,14 +244,16 @@ syncServices();
 export let THERAPISTS = {};
 
 export function syncTherapists() {
-    let adminStaffRaw = localStorage.getItem(`${window.currentTenantId}_admin_staff`);
+    const branchKey = window.currentBranchId || window.currentTenantId || 'default-spa';
+    const staffKey = `spa_branch_${branchKey}_staff`;
+    let adminStaffRaw = localStorage.getItem(staffKey);
     if (!adminStaffRaw) {
         const defaultStaff = [
           { id: 'stf-1', name: 'Siti Rahmawati', specialization: 'Deep Tissue', tags: ['Deep Tissue', 'Aromatherapy'], rating: 4.9, reviews: 120, status: 'Active', avatar: 'SR', color: 'rgba(105,122,86,0.25)', textColor: '#3c4c2b', img: '' },
           { id: 'stf-2', name: 'Budi Santoso', specialization: 'Master Healer', tags: ['Shiatsu', 'Reflexology'], rating: 4.8, reviews: 85, status: 'Active', avatar: 'BS', color: '#dde4e3', textColor: '#45483f', img: '' },
           { id: 'stf-3', name: 'Dewi Lestari', specialization: 'Therapist', tags: ['Swedish', 'Hot Stone'], rating: 4.7, reviews: 63, status: 'Active', avatar: 'ER', color: '#d6e9bd', textColor: '#111f05', img: '' }
         ];
-        localStorage.setItem(`${window.currentTenantId}_admin_staff`, JSON.stringify(defaultStaff));
+        localStorage.setItem(staffKey, JSON.stringify(defaultStaff));
         adminStaffRaw = JSON.stringify(defaultStaff);
     }
     try {

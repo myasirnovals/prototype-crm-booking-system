@@ -76,25 +76,25 @@ export function navigateTo(viewId) {
 window.navigateTo = navigateTo;
 
 export function updateTenantLinks() {
+    // Multi-tenant is handled by the parent Cliniva SaaS booking system.
+    // Preserve branch parameter if present, and remove any legacy tenant parameter.
+    const activeBranch = (targetBranchId && targetBranchId !== 'default-spa') ? targetBranchId : '';
     document.querySelectorAll('a').forEach(a => {
         const href = a.getAttribute('href');
         if (href && (href.includes('register.html') || href.includes('login.html') || href.includes('index.html'))) {
             try {
-                // Resolve relative path using window location
                 const url = new URL(href, window.location.origin + window.location.pathname);
-                url.searchParams.set('tenant', tenantId);
-                // If the original URL had search params or hash, keep them
+                url.searchParams.delete('tenant');
+                if (activeBranch) {
+                    url.searchParams.set('branch', activeBranch);
+                }
                 const origUrl = new URL(href, window.location.origin);
                 origUrl.searchParams.forEach((val, key) => {
-                    url.searchParams.set(key, val);
+                    if (key !== 'tenant') url.searchParams.set(key, val);
                 });
-                url.searchParams.set('tenant', tenantId);
                 a.setAttribute('href', url.pathname + url.search + origUrl.hash);
             } catch (e) {
-                const separator = href.includes('?') ? '&' : '?';
-                if (!href.includes('tenant=')) {
-                    a.setAttribute('href', href + separator + 'tenant=' + tenantId);
-                }
+                // Ignore relative URL parse errors
             }
         }
     });

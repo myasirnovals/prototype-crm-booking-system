@@ -367,39 +367,43 @@
     }
   };
 
-  const DEFAULT_TENANTS = {
-    serenity: {
-      id: 'serenity',
-      name: 'Serenity & Soul',
-      logo: 'Serenity',
-      colors: {
-        primary: '#50613f',
-        secondary: '#fed65b',
-        background: '#f4fbfa',
-        surfaceContainer: '#e8efef'
-      }
-    },
-    zenith: {
-      id: 'zenith',
-      name: 'Zenith Wellness',
-      logo: 'Zenith',
-      colors: {
-        primary: '#1e40af',
-        secondary: '#f59e0b',
-        background: '#f8fafc',
-        surfaceContainer: '#f1f5f9'
-      }
+  const urlParams = new URLSearchParams(window.location.search);
+  const targetBranchId = urlParams.get('branch') || urlParams.get('id') || 'default-spa';
+
+  const DEFAULT_SPA_THEME = {
+    id: 'default-spa',
+    name: 'Serenity & Soul',
+    logo: 'Serenity',
+    colors: {
+      primary: '#50613f',
+      secondary: '#fed65b',
+      background: '#f4fbfa',
+      surfaceContainer: '#e8efef'
     }
   };
 
-  function getTenantId() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('tenant') || 'serenity';
-  }
+  let clinivaBranch = null;
+  try {
+    const clinivaBranches = JSON.parse(localStorage.getItem('cliniva_branches')) || [];
+    if (Array.isArray(clinivaBranches) && clinivaBranches.length > 0) {
+      clinivaBranch = clinivaBranches.find(b => 
+        (b.id && b.id.toLowerCase() === targetBranchId.toLowerCase()) ||
+        (b.name && b.name.toLowerCase() === targetBranchId.toLowerCase())
+      );
+      if (!clinivaBranch && (targetBranchId === 'default-spa' || targetBranchId === 'serenity')) {
+        clinivaBranch = clinivaBranches.find(b => b.template === 'wellness' || b.template === 'spa');
+      }
+    }
+  } catch (e) {}
 
-  const tenants = JSON.parse(localStorage.getItem('spa_tenants')) || DEFAULT_TENANTS;
-  const tenantId = getTenantId();
-  const currentTenant = tenants[tenantId] || tenants['serenity'];
+  const currentTenant = clinivaBranch ? {
+    id: clinivaBranch.id,
+    name: clinivaBranch.name || DEFAULT_SPA_THEME.name,
+    logo: clinivaBranch.logo || DEFAULT_SPA_THEME.logo,
+    colors: clinivaBranch.colors || DEFAULT_SPA_THEME.colors
+  } : DEFAULT_SPA_THEME;
+
+  const branchParam = (targetBranchId && targetBranchId !== 'default-spa') ? `?branch=${targetBranchId}` : '';
 
   // Apply visual styling and replace branding references
   function initBranding() {
@@ -415,17 +419,18 @@
     const brandLink = document.querySelector('.brand-logo');
     if (brandLink) {
       brandLink.textContent = currentTenant.name;
-      brandLink.setAttribute('href', `index.html?tenant=${tenantId}`);
+      brandLink.setAttribute('href', `index.html${branchParam}`);
     }
 
     const backLink = document.querySelector('.back-link');
     if (backLink) {
-      backLink.setAttribute('href', `index.html?tenant=${tenantId}`);
+      backLink.setAttribute('href', `index.html${branchParam}`);
     }
 
     const loginRedirect = document.querySelector('.login-redirect a');
     if (loginRedirect) {
-      loginRedirect.setAttribute('href', `index.html?tenant=${tenantId}&showLogin=true`);
+      const sep = branchParam ? '&' : '?';
+      loginRedirect.setAttribute('href', `index.html${branchParam}${sep}showLogin=true`);
     }
 
   }

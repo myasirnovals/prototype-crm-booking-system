@@ -255,55 +255,23 @@
 </div>
 
 <script>
-  const DEFAULT_TENANTS = {
-    serenity: {
-      id: 'serenity',
-      name: 'Serenity & Soul',
-      logo: 'Serenity',
-      colors: {
-        primary: '#50613f',
-        secondary: '#fed65b',
-        background: '#f4fbfa',
-        surfaceContainer: '#e8efef'
-      },
-      adminEmail: 'admin@serenity.com',
-      adminPassword: 'admin123'
-    },
-    zenith: {
-      id: 'zenith',
-      name: 'Zenith Wellness',
-      logo: 'Zenith',
-      colors: {
-        primary: '#1e40af',
-        secondary: '#f59e0b',
-        background: '#f8fafc',
-        surfaceContainer: '#f1f5f9'
-      },
-      adminEmail: 'admin@zenith.com',
-      adminPassword: 'admin123'
-    }
+  const DEFAULT_ADMIN = {
+    email: 'admin@serenity.com',
+    password: 'admin123'
   };
-
-  const tenants = JSON.parse(localStorage.getItem('spa_tenants')) || DEFAULT_TENANTS;
 
   // Apply visual styling on load
   function initBranding() {
     document.title = `SPA Admin Portal`;
     
-    // Update brand logos
     const brandLogo = document.querySelector('.brand-logo');
     if (brandLogo) brandLogo.textContent = 'SPA Admin Portal';
     
-    // Update demo credentials text
     const demoHint = document.querySelector('.demo-hint');
     if (demoHint) {
       demoHint.innerHTML = `
         <strong>Demo Admin Credentials:</strong><br><br>
-        <strong>Serenity & Soul:</strong><br>
         Email: <strong>admin@serenity.com</strong><br>
-        Password: <strong>admin123</strong><br><br>
-        <strong>Zenith Wellness:</strong><br>
-        Email: <strong>admin@zenith.com</strong><br>
         Password: <strong>admin123</strong>
       `;
     }
@@ -311,10 +279,9 @@
   
   initBranding();
 
-  // If already logged in, redirect to active dashboard
+  // If already logged in, redirect to dashboard
   if (sessionStorage.getItem('admin_logged_in') === 'true') {
-    const activeTenantId = sessionStorage.getItem('admin_tenant') || 'serenity';
-    window.location.replace(`dashboard.html?tenant=${activeTenantId}`);
+    window.location.replace(`dashboard.html`);
   }
 
   function togglePw() {
@@ -338,26 +305,17 @@
     const emailInput = document.getElementById('inp-email').value.trim();
     const passwordInput = document.getElementById('inp-password').value;
 
-    let targetTenant = null;
-    let success = false;
+    const success = (emailInput.toLowerCase() === DEFAULT_ADMIN.email.toLowerCase() && passwordInput === DEFAULT_ADMIN.password);
 
-    // Find matching tenant credentials across ALL tenants
-    targetTenant = Object.values(tenants).find(t => t.adminEmail.toLowerCase() === emailInput.toLowerCase() && t.adminPassword === passwordInput);
-    
-    if (targetTenant) {
-      success = true;
-    }
-
-    if (success && targetTenant) {
+    if (success) {
       errorMsg.classList.remove('show');
       btn.classList.add('loading-state');
       
-      sessionStorage.setItem('admin_tenant', targetTenant.id);
       sessionStorage.setItem('admin_logged_in', 'true');
-      sessionStorage.setItem('admin_email', targetTenant.adminEmail);
+      sessionStorage.setItem('admin_email', DEFAULT_ADMIN.email);
       
       setTimeout(() => {
-        window.location.replace(`dashboard.html?tenant=${targetTenant.id}`);
+        window.location.replace(`dashboard.html`);
       }, 400);
     } else {
       errorText.textContent = "Incorrect email or password. Please try again.";

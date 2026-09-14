@@ -1314,7 +1314,7 @@ export function renderPaymentMethodSelection() {
     const container = document.getElementById('payment-methods-container');
     if (!container) return;
 
-    const walletName = currentTenant.logo ? `${currentTenant.logo} Wallet` : `${currentTenant.name} Wallet`;
+    const walletName = `${currentTenant?.name || 'Member'} Wallet`;
     const methods = [
         { id: 'wallet', name: walletName, icon: 'account_balance_wallet' }
     ];

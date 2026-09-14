@@ -303,12 +303,12 @@ export const TRANSLATIONS = {
         about_vision_title: "Visi Kami",
         about_vision_desc: "Menjadi suaka holistik mesra alam terkemuka di rantau ini, membolehkan individu memupuk kecergasan fizikal dan ketenangan minda berpanjangan.",
         about_mission_title: "Misi Kami",
-        about_mission_desc: "Menyajikan rawatan terapeutik yang disesuaikan dan beretika bersama terapis bersertifikat, minyak organik mampan, dan penjagaan peribadi terbaik.",
+        about_mission_desc: "Menyajikan rawatan terapeutik yang disesuaikan dan beretika bersama ahli terapi bertauliah, minyak organik mampan, dan penjagaan peribadi terbaik.",
 
         // Blog Section
         blog_subtitle: "Panduan & Inspirasi",
         blog_title: "Jurnal Kesejahteraan Spa",
-        blog_desc: "Terokai ulasan pakar mengenai pelegaan tekanan, terapi holistik, petua penjagaan selepas spa, dan amalan hidup tenang daripada terapis pakar kami.",
+        blog_desc: "Terokai ulasan pakar mengenai pelegaan tekanan, terapi holistik, petua penjagaan selepas spa, dan amalan hidup tenang daripada ahli terapi pakar kami.",
 
         // Awards Section
         awards_tag: "Kecemerlangan & Pengiktirafan",
@@ -318,7 +318,7 @@ export const TRANSLATIONS = {
         // Testimonials Section
         testimonials_tag: "Pengalaman Tetamu",
         testimonials_title: "Disukai & Dipercayai Oleh Lebih 1,200+ Tetamu",
-        testimonials_desc: "Ketahui bagaimana terapis bersertifikat kami membawa ketenangan mutlak, pelepasan tekanan, dan penyembuhan holistik."
+        testimonials_desc: "Ketahui bagaimana ahli terapi bertauliah kami membawa ketenangan mutlak, pelepasan tekanan, dan penyembuhan holistik."
     }
 };
 
@@ -332,8 +332,9 @@ export function t(key) {
         text = TRANSLATIONS['en'][key];
     }
     if (typeof text === 'string') {
-        text = text.replace(/Serenity\s*&\s*Soul/gi, currentTenant.name)
-            .replace(/Serenity/gi, currentTenant.logo || currentTenant.name);
+        const brandName = (currentTenant && currentTenant.name) ? currentTenant.name : 'Serenity & Soul';
+        text = text.replace(/Serenity\s*&\s*Soul/gi, brandName)
+            .replace(/Serenity/gi, brandName);
     }
     return text;
 };

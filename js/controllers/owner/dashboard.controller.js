@@ -177,14 +177,70 @@ export class OwnerDashboardController {
   getTemplateMeta(templateId) {
     switch (templateId) {
       case "tcm":
-        return { label: i18nService.t("template.tcm.name", "🌿 TCM & Acupuncture"), color: "#065f46", bg: "#d1fae5" };
+        return {
+          label: i18nService.t("template.tcm.name", "🌿 TCM & Acupuncture"),
+          color: "#065f46",
+          bg: "#d1fae5",
+          icon: "🌿",
+          tagline: i18nService.t("template.tcm.tagline", "Traditional Chinese Medicine & Meridian Therapy")
+        };
       case "wellness":
-        return { label: i18nService.t("template.wellness.name", "🌸 Wellness & Spa"), color: "#9d174d", bg: "#fce7f3" };
+      case "spa":
+        return {
+          label: i18nService.t("template.wellness.name", "🌸 Wellness & Spa"),
+          color: "#9d174d",
+          bg: "#fce7f3",
+          icon: "🌸",
+          tagline: i18nService.t("template.wellness.tagline", "Holistic Spa & Therapeutic Vitality")
+        };
       case "nutrition":
-        return { label: i18nService.t("template.nutrition.name", "🥗 Nutrition & Dietetics"), color: "#166534", bg: "#dcfce7" };
+        return {
+          label: i18nService.t("template.nutrition.name", "🥗 Nutrition & Dietetics"),
+          color: "#166534",
+          bg: "#dcfce7",
+          icon: "🥗",
+          tagline: i18nService.t("template.nutrition.tagline", "Clinical Nutrition & Metabolic Dietetics")
+        };
+      case "personal-trainer":
+      case "fitness":
+      case "pt":
+        return {
+          label: i18nService.t("template.pt.name", "🏋️ Fitness & Personal Trainer"),
+          color: "#1e293b",
+          bg: "#f1f5f9",
+          icon: "🏋️",
+          tagline: i18nService.t("template.pt.tagline", "Strength Conditioning & Personal Training")
+        };
       case "physio":
+      case "physiotherapy":
       default:
-        return { label: i18nService.t("template.physio.name", "🏃 Physiotherapy & Rehab"), color: "#0f766e", bg: "#ccfbf1" };
+        return {
+          label: i18nService.t("template.physio.name", "🏃 Physiotherapy & Rehab"),
+          color: "#0f766e",
+          bg: "#ccfbf1",
+          icon: "🏃",
+          tagline: i18nService.t("template.physio.tagline", "Advanced Physiotherapy & Active Rehab")
+        };
+    }
+  }
+
+  getTemplateDefaultIcon(templateId) {
+    switch (templateId) {
+      case "wellness":
+      case "spa":
+        return "🌸";
+      case "nutrition":
+        return "🥗";
+      case "personal-trainer":
+      case "fitness":
+      case "pt":
+        return "🏋️";
+      case "physio":
+      case "physiotherapy":
+        return "🏃";
+      case "tcm":
+      default:
+        return "🌿";
     }
   }
 
@@ -251,16 +307,67 @@ export class OwnerDashboardController {
     const tagEl = document.getElementById("topbarBrandTagline");
     const userEl = document.getElementById("ownerUserName");
 
-    if (nameEl) nameEl.textContent = this.brandProfile.name || "Cliniva Clinic Hub";
-    if (tagEl) tagEl.textContent = this.brandProfile.tagline || "";
-    if (userEl && this.currentUser) userEl.textContent = this.currentUser.name || "Dennis Pratama";
+    const activeBranch = this.activeBranch;
+    const meta = activeBranch ? this.getTemplateMeta(activeBranch.template) : null;
 
-    if (logoEl) {
-      const logoVal = this.brandProfile.logo || "🌿";
-      if (logoVal.startsWith("data:image") || logoVal.startsWith("http") || logoVal.includes("/")) {
-        logoEl.innerHTML = `<img src="${logoVal}" alt="Brand Logo">`;
+    // 1. Dynamic Brand / Branch Title
+    if (nameEl) {
+      if (activeBranch && activeBranch.name) {
+        nameEl.textContent = activeBranch.name;
+      } else if (this.brandProfile && this.brandProfile.name) {
+        nameEl.textContent = this.brandProfile.name;
       } else {
-        logoEl.textContent = logoVal;
+        nameEl.textContent = "Cliniva Clinic Hub";
+      }
+    }
+
+    // 2. Dynamic Subtitle / Tagline
+    if (tagEl) {
+      if (activeBranch && activeBranch.tagline) {
+        tagEl.textContent = activeBranch.tagline;
+      } else if (meta && meta.tagline) {
+        tagEl.textContent = meta.tagline;
+      } else if (this.brandProfile && this.brandProfile.tagline) {
+        tagEl.textContent = this.brandProfile.tagline;
+      } else {
+        tagEl.textContent = "Holistic Healthcare & Clinical Excellence";
+      }
+    }
+
+    // 3. Owner user profile
+    if (userEl && this.currentUser) {
+      userEl.textContent = this.currentUser.name || "Dennis Pratama";
+    }
+
+    // 4. Dynamic Logo / Emblem matching active branch
+    if (logoEl) {
+      let logoVal = "🌿";
+      if (activeBranch) {
+        const isTcmBrandLogo = this.brandProfile?.logo && (
+          this.brandProfile.logo.includes("data:image") || this.brandProfile.logo.includes("tcm")
+        );
+        // If active branch has its own distinct logo or is TCM with uploaded brand logo
+        if (activeBranch.logo && (!isTcmBrandLogo || activeBranch.template === "tcm" || activeBranch.logo !== this.brandProfile?.logo)) {
+          logoVal = activeBranch.logo;
+        } else if (meta && meta.icon) {
+          logoVal = meta.icon;
+        } else {
+          logoVal = this.getTemplateDefaultIcon(activeBranch.template);
+        }
+      } else if (this.brandProfile && this.brandProfile.logo) {
+        logoVal = this.brandProfile.logo;
+      }
+
+      if (typeof logoVal === "string" && (logoVal.startsWith("data:image") || logoVal.startsWith("http") || logoVal.includes("/"))) {
+        logoEl.innerHTML = `<img src="${logoVal}" alt="${activeBranch ? activeBranch.name : 'Brand Logo'}">`;
+      } else {
+        logoEl.innerHTML = `<span style="font-size:20px; line-height:1;">${logoVal}</span>`;
+      }
+
+      // Harmonize badge accent border and tint with active template
+      if (meta && meta.bg && meta.color) {
+        logoEl.style.background = meta.bg;
+        logoEl.style.borderColor = meta.color;
       }
     }
 
@@ -268,11 +375,10 @@ export class OwnerDashboardController {
     const branchNameEl = document.getElementById("topbarActiveBranchName");
     const branchPillEl = document.getElementById("topbarActiveBranchTemplateBadge");
 
-    if (this.activeBranch) {
-      if (branchNameEl) branchNameEl.textContent = this.activeBranch.name;
+    if (activeBranch) {
+      if (branchNameEl) branchNameEl.textContent = activeBranch.name;
 
-      const meta = this.getTemplateMeta(this.activeBranch.template);
-      if (branchPillEl) {
+      if (meta && branchPillEl) {
         branchPillEl.textContent = meta.label;
         branchPillEl.style.color = meta.color;
         branchPillEl.style.background = meta.bg;
@@ -401,7 +507,7 @@ export class OwnerDashboardController {
       btn.addEventListener("click", () => {
         const idx = parseInt(btn.dataset.index, 10);
         if (this.activeBranchQueue[idx]) {
-          this.activeBranchQueue[idx].status = "SELESAI";
+          this.activeBranchQueue[idx].status = "COMPLETED";
           soundService.playSuccess();
           notificationService.success(`Session for ${this.activeBranchQueue[idx].patient} completed successfully.`);
           this.renderQueueTable();
@@ -425,7 +531,7 @@ export class OwnerDashboardController {
     if (codeInput) codeInput.value = this.activeBranch.code || this.activeBranch.id || "";
     if (addrInput) addrInput.value = this.activeBranch.address || "";
     if (phoneInput) phoneInput.value = this.activeBranch.phone || "";
-    if (hoursInput) hoursInput.value = this.activeBranch.hours || "09:00 - 20:00 (Sen - Sab)";
+    if (hoursInput) hoursInput.value = this.activeBranch.hours || "09:00 - 20:00 (Mon - Sat)";
     if (roomsSelect) roomsSelect.value = this.activeBranch.rooms || "4";
 
     if (templateName) {

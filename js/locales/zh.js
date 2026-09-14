@@ -548,7 +548,18 @@ export const zh = {
   "onboarding.presetHeading": "若暂无设计图片，可从预设图标中快捷选择：",
   "onboarding.completeAlert": "🎉 诊所入驻开户完成！\n\n品牌：{brand}\n业务模板：{template}\n第一分院：{branch}\n\n正在为您跳转至诊所总监工作台...",
 
-  // Business Templates (TCM & Wellness / Spa)
+  // Business Templates (TCM, Wellness, Nutrition, Physio, PT)
+  "template.tcm.name": "🌿 中医与针灸",
+  "template.tcm.tagline": "传统中医疗法与经络调理",
+  "template.wellness.name": "🌸 养生与水疗",
+  "template.wellness.tagline": "全身心水疗调理与舒缓养生",
+  "template.nutrition.name": "🥗 营养与膳食调理",
+  "template.nutrition.tagline": "临床营养咨询与新陈代谢膳食",
+  "template.physio.name": "🏃 物理治疗与康复",
+  "template.physio.tagline": "脊柱康复与专业物理治疗",
+  "template.pt.name": "🏋️ 健身与私人训练",
+  "template.pt.tagline": "力量体能训练与私人定制健身",
+
   "template.tcm.practitionerTitle": "注册中医师 / 针灸师",
   "template.tcm.intakeTitle": "身体疼痛点与经络评估",
   "template.tcm.intakeDesc": "请标记您的疼痛部位并告知症状持续时间，供主诊中医师参考。",

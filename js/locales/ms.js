@@ -694,7 +694,18 @@ export const ms = {
   "onboarding.presetHeading": "Atau pilih ikon pantas jika belum mempunyai fail imej:",
   "onboarding.completeAlert": "🎉 PENYERTAAN SELESAI!\n\nJenama: {brand}\nTemplat: {template}\nCawangan 1: {branch}\n\nSistem mengalihkan anda ke Papan Pemuka Pemilik...",
 
-  // Business Templates (TCM & Wellness / Spa)
+  // Business Templates (TCM, Wellness, Nutrition, Physio, PT)
+  "template.tcm.name": "🌿 Perubatan Tradisional Cina & Akupunktur",
+  "template.tcm.tagline": "Perubatan Tradisional Cina & Terapi Meridian",
+  "template.wellness.name": "🌸 Kesejahteraan & Spa",
+  "template.wellness.tagline": "Spa Holistik & Daya Hidup Terapeutik",
+  "template.nutrition.name": "🥗 Pemakanan & Dietetik",
+  "template.nutrition.tagline": "Pemakanan Klinikal & Dietetik Metabolik",
+  "template.physio.name": "🏃 Fisioterapi & Pemulihan",
+  "template.physio.tagline": "Fisioterapi Lanjutan & Pemulihan Aktif",
+  "template.pt.name": "🏋️ Kecergasan & Jurulatih Peribadi",
+  "template.pt.tagline": "Latihan Kekuatan & Bimbingan Peribadi",
+
   "template.tcm.practitionerTitle": "Sinse / Pakar Perubatan TCM",
   "template.tcm.intakeTitle": "Penilaian Sakit Badan & Saluran Meridian",
   "template.tcm.intakeDesc": "Tandakan titik kesakitan anda dan nyatakan tempoh gejala untuk rujukan doktor TCM.",

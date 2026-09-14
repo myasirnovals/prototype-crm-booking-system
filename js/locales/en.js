@@ -520,7 +520,18 @@ export const en = {
   "onboarding.presetHeading": "Or choose a quick emblem icon if you don't have an image file yet:",
   "onboarding.completeAlert": "🎉 ONBOARDING COMPLETE!\n\nBrand: {brand}\nTemplate: {template}\nBranch 1: {branch}\n\nRedirecting to Owner Dashboard...",
 
-  // Business Templates (TCM & Wellness / Spa)
+  // Business Templates (TCM, Wellness, Nutrition, Physio, PT)
+  "template.tcm.name": "🌿 TCM & Acupuncture",
+  "template.tcm.tagline": "Traditional Chinese Medicine & Meridian Therapy",
+  "template.wellness.name": "🌸 Wellness & Spa",
+  "template.wellness.tagline": "Holistic Spa & Therapeutic Vitality",
+  "template.nutrition.name": "🥗 Nutrition & Dietetics",
+  "template.nutrition.tagline": "Clinical Nutrition & Metabolic Dietetics",
+  "template.physio.name": "🏃 Physiotherapy & Rehab",
+  "template.physio.tagline": "Advanced Physiotherapy & Active Rehab",
+  "template.pt.name": "🏋️ Fitness & Personal Trainer",
+  "template.pt.tagline": "Strength Conditioning & Personal Training",
+
   "template.tcm.practitionerTitle": "Sinse / TCM Physician",
   "template.tcm.intakeTitle": "Body Pain & Meridian Assessment",
   "template.tcm.intakeDesc": "Mark your pain points and indicate symptom duration for your TCM physician.",

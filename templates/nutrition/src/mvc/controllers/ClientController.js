@@ -78,15 +78,24 @@ export class ClientController {
       return;
     }
 
-    // Guest Booking Flow: allow guest access to book-wizard without requiring login prior to checkout
+    // Guest Booking Flow: allow guest access or redirect to unified index.html?tab=booking
     const tabParam = url.searchParams.get('tab');
     const isBookingMode = tabParam === 'booking' || tabParam === 'book-wizard' || url.searchParams.get('mode') === 'guest_booking' || window.location.hash.includes('booking') || window.location.hash.includes('book-wizard');
+    const logged = localStorage.getItem('nutriflow_client_logged');
+
+    if (isBookingMode && logged !== 'true') {
+      // Redirect guest seamlessly to the standalone booking flow on index.html
+      const targetUrl = new URL('./index.html', window.location.href);
+      targetUrl.search = url.search;
+      window.location.href = targetUrl.pathname + targetUrl.search;
+      return;
+    }
+
     if (isBookingMode) {
       Store.getInstance().guestBooking = true;
       return;
     }
 
-    const logged = localStorage.getItem('nutriflow_client_logged');
     if (logged !== 'true') {
       window.location.href = './login.html';
     }

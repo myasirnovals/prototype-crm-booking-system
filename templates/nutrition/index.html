@@ -13,6 +13,8 @@
     
     <!-- i18n -->
     <script type="module" src="./src/i18n.js"></script>
+    <!-- Booking Engine (Pre-Login & Guest Flow) -->
+    <script type="module" src="./src/booking-engine.js"></script>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -85,9 +87,9 @@
     <!-- Navigation -->
     <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
         <div class="glass-card mx-4 lg:mx-auto max-w-7xl mt-4 rounded-2xl px-6 py-4 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-2 group">
+            <a href="#" onclick="if (window.nutriBooking) { window.nutriBooking.navigateTo('home'); } return false;" class="flex items-center gap-2 group cursor-pointer">
                 <span class="material-symbols-outlined text-primary text-3xl transition-transform group-hover:rotate-12" style="font-variation-settings: 'FILL' 1;">eco</span>
-                <span class="text-xl font-bold tracking-tight text-primary">NutriFlow</span>
+                <span class="text-xl font-bold tracking-tight text-primary branch-dynamic-name">NutriFlow</span>
             </a>
             
             <div class="hidden md:flex items-center gap-8 font-medium text-sm text-slate-600">
@@ -95,6 +97,7 @@
                 <a href="specialist.html" data-i18n="nav.specialists" class="hover:text-primary transition-colors">Specialists</a>
                 <a href="#testimonials" data-i18n="nav.success_stories" class="hover:text-primary transition-colors">Success Stories</a>
                 <a href="article.html" data-i18n="nav.articles" class="hover:text-primary transition-colors">Articles</a>
+                <a href="#" onclick="if (window.nutriBooking) { window.nutriBooking.navigateTo('booking'); } return false;" class="hover:text-primary transition-colors font-semibold text-primary cursor-pointer">Book Consultation</a>
             </div>
             
             <div class="flex items-center gap-4">
@@ -103,15 +106,17 @@
                     <option value="my">MY</option>
                 </select>
                 <div class="w-[1px] h-4 bg-slate-300"></div>
-                <a href="./login.html" data-i18n="nav.sign_in" class="text-sm font-semibold text-primary hover:text-[#005321] transition-colors hidden sm:block">Sign In</a>
-                <a href="./dashboard.html?tab=booking" class="bg-primary hover:bg-[#005321] text-white text-sm font-bold py-2.5 px-5 rounded-xl transition-all shadow-lg hover:shadow-primary/30 flex items-center gap-2">
+                <a href="./login.html" id="nav-auth-btn" data-i18n="nav.sign_in" class="text-sm font-semibold text-primary hover:text-[#005321] transition-colors hidden sm:block">Sign In</a>
+                <button type="button" onclick="if (window.nutriBooking) { window.nutriBooking.navigateTo('booking'); } else { window.location.href='./dashboard.html?tab=booking'; }" class="bg-primary hover:bg-[#005321] text-white text-sm font-bold py-2.5 px-5 rounded-xl transition-all shadow-lg hover:shadow-primary/30 flex items-center gap-2 cursor-pointer">
                     <span data-i18n="nav.get_started">Get Started</span>
                     <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                </a>
+                </button>
             </div>
         </div>
     </nav>
 
+    <!-- ==================== VIEW 1: HOME (LANDING PAGE) ==================== -->
+    <div id="view-home" class="view-section flex-1 flex flex-col">
     <!-- Hero Section -->
     <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex-1 flex flex-col justify-center">
         <div class="absolute inset-0 hero-pattern z-0"></div>
@@ -142,10 +147,10 @@
                     </p>
                     
                     <div class="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-in-up delay-300">
-                        <a href="./dashboard.html?tab=booking" class="bg-primary hover:bg-[#005321] text-white text-base font-bold py-4 px-8 rounded-xl transition-all shadow-xl hover:shadow-primary/40 flex items-center justify-center gap-2 group">
+                        <button type="button" onclick="if (window.nutriBooking) { window.nutriBooking.navigateTo('booking'); } else { window.location.href='./dashboard.html?tab=booking'; }" class="bg-primary hover:bg-[#005321] text-white text-base font-bold py-4 px-8 rounded-xl transition-all shadow-xl hover:shadow-primary/40 flex items-center justify-center gap-2 group cursor-pointer">
                             <span data-i18n="hero.start">Start Your Journey</span>
                             <span class="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">arrow_right_alt</span>
-                        </a>
+                        </button>
                         <a href="#features" data-i18n="hero.explore" class="bg-white hover:bg-slate-50 text-slate-700 text-base font-semibold py-4 px-8 rounded-xl border border-slate-200 transition-all shadow-sm flex items-center justify-center">
                             Explore Features
                         </a>
@@ -583,12 +588,553 @@
             <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-6" data-i18n="cta.title">Ready to transform your lifestyle?</h2>
             <p class="text-slate-300 max-w-xl mx-auto mb-10 text-lg" data-i18n="cta.desc">Join thousands of users who have successfully reached their health goals with NutriFlow's guidance.</p>
             
-            <a href="./dashboard.html?tab=booking" class="bg-primary hover:bg-primary-container text-white hover:text-on-primary-container text-lg font-bold py-4 px-10 rounded-2xl transition-all shadow-2xl shadow-primary/30 flex items-center gap-2">
+            <button type="button" onclick="if (window.nutriBooking) { window.nutriBooking.navigateTo('booking'); } else { window.location.href='./dashboard.html?tab=booking'; }" class="bg-primary hover:bg-primary-container text-white hover:text-on-primary-container text-lg font-bold py-4 px-10 rounded-2xl transition-all shadow-2xl shadow-primary/30 flex items-center gap-2 cursor-pointer">
                 <span data-i18n="cta.btn">Book Consultation</span>
                 <span class="material-symbols-outlined">arrow_forward</span>
-            </a>
+            </button>
         </div>
     </section>
+    </div> <!-- Close #view-home -->
+
+    <!-- ==================== VIEW 2: PRE-LOGIN BOOKING WIZARD ==================== -->
+    <section id="view-booking" class="view-section hidden pt-28 pb-20 max-w-7xl mx-auto px-4 sm:px-6 w-full flex-1">
+        <!-- Top Breadcrumb -->
+        <div class="mb-4">
+            <button type="button" onclick="window.nutriBooking.navigateTo('home')" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-primary transition-colors cursor-pointer group">
+                <span class="material-symbols-outlined text-[16px] transition-transform group-hover:-translate-x-1">arrow_back</span>
+                Back to Home
+            </button>
+        </div>
+
+        <!-- Wizard Title & Subtitle -->
+        <div class="mb-8 text-left">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/60 text-primary font-bold text-xs mb-2">
+                <span class="material-symbols-outlined text-[14px]">calendar_month</span>
+                <span>Direct Patient Reservation</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Book Nutrition Consultation</h1>
+            <p class="text-sm text-slate-500 mt-1 max-w-2xl">Select your dietary consultation service, preferred specialist, and convenient schedule. No prior account required.</p>
+        </div>
+
+        <!-- Progress Stepper -->
+        <div class="mb-10 max-w-3xl mx-auto relative px-4">
+            <div class="flex items-center justify-between relative">
+                <!-- Inactive background line -->
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 rounded-full z-0"></div>
+                <!-- Active progress line -->
+                <div id="wizard-progress-bar" class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary rounded-full z-0 transition-all duration-500" style="width: 0%;"></div>
+
+                <!-- Step 1 -->
+                <div class="relative z-10 flex flex-col items-center cursor-pointer" onclick="window.nutriBooking.goToStep(1)" id="step-indicator-1">
+                    <div id="step-circle-1" class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shadow-md ring-4 ring-emerald-100 transition-all scale-105">
+                        1
+                    </div>
+                    <span id="step-label-1" class="mt-1.5 text-[11px] font-black text-slate-900 transition-colors">Service</span>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative z-10 flex flex-col items-center cursor-pointer" onclick="window.nutriBooking.goToStep(2)" id="step-indicator-2">
+                    <div id="step-circle-2" class="w-9 h-9 rounded-full bg-white text-slate-400 border border-slate-200 flex items-center justify-center font-bold text-xs transition-all">
+                        2
+                    </div>
+                    <span id="step-label-2" class="mt-1.5 text-[11px] font-medium text-slate-400 transition-colors">Specialist</span>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 flex flex-col items-center cursor-pointer" onclick="window.nutriBooking.goToStep(3)" id="step-indicator-3">
+                    <div id="step-circle-3" class="w-9 h-9 rounded-full bg-white text-slate-400 border border-slate-200 flex items-center justify-center font-bold text-xs transition-all">
+                        3
+                    </div>
+                    <span id="step-label-3" class="mt-1.5 text-[11px] font-medium text-slate-400 transition-colors">Schedule</span>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative z-10 flex flex-col items-center cursor-pointer" onclick="window.nutriBooking.goToStep(4)" id="step-indicator-4">
+                    <div id="step-circle-4" class="w-9 h-9 rounded-full bg-white text-slate-400 border border-slate-200 flex items-center justify-center font-bold text-xs transition-all">
+                        4
+                    </div>
+                    <span id="step-label-4" class="mt-1.5 text-[11px] font-medium text-slate-400 transition-colors">Payment</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Wizard Grid: Steps + Sticky Sidebar Summary -->
+        <div class="grid lg:grid-cols-12 gap-8 items-start" id="booking-wizard-content">
+            <!-- Left Column: Steps Form Content (lg:col-span-8) -->
+            <div class="lg:col-span-8 flex flex-col gap-6">
+
+                <!-- STEP 1: Select Consultation Service -->
+                <div id="booking-step-1" class="booking-step-panel bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm text-left">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">1. Select Consultation Service</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Choose the clinical care option that aligns with your health objectives.</p>
+                        </div>
+                        <span class="text-xs font-bold text-primary bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">Step 1 of 4</span>
+                    </div>
+
+                    <!-- Services Grid Container -->
+                    <div id="engine-services-grid" class="grid sm:grid-cols-2 gap-4">
+                        <!-- Rendered by booking-engine.js -->
+                    </div>
+
+                    <div class="mt-8 pt-5 border-t border-slate-100 flex items-center justify-end">
+                        <button type="button" onclick="window.nutriBooking.handleStepSubmit(1)" class="w-full sm:w-auto bg-primary hover:bg-[#005321] text-white font-bold text-sm py-3 px-8 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98">
+                            <span>Continue to Specialist Selection</span>
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Select Specialist & Consultation Mode -->
+                <div id="booking-step-2" class="booking-step-panel hidden bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm text-left">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">2. Select Specialist &amp; Mode</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Pick your dedicated dietitian and choose between Telehealth or In-Clinic visit.</p>
+                        </div>
+                        <span class="text-xs font-bold text-primary bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">Step 2 of 4</span>
+                    </div>
+
+                    <!-- Consultation Mode Toggle -->
+                    <div class="mb-6">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Consultation Mode</label>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <div id="method-btn-online" onclick="window.nutriBooking.selectMethod('Online')" class="flex-1 p-4 rounded-2xl border-2 border-primary bg-emerald-50/40 text-left transition-all relative flex flex-col gap-1 cursor-pointer shadow-sm">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-primary text-[20px]">videocam</span>
+                                        <span class="font-bold text-sm text-slate-900">Virtual / Telehealth</span>
+                                    </div>
+                                    <span class="method-check material-symbols-outlined text-primary text-[18px]">check_circle</span>
+                                </div>
+                                <p class="text-[11px] text-slate-500 mt-1">High-definition video consult from the comfort of your home. Secure &amp; confidential.</p>
+                            </div>
+
+                            <div id="method-btn-clinic" onclick="window.nutriBooking.selectMethod('In-Clinic')" class="flex-1 p-4 rounded-2xl border border-slate-200 bg-white hover:border-slate-300 text-left transition-all relative flex flex-col gap-1 cursor-pointer">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-slate-700 text-[20px]">domain</span>
+                                        <span class="font-bold text-sm text-slate-900">In-Clinic Visit</span>
+                                    </div>
+                                    <span class="method-check hidden material-symbols-outlined text-primary text-[18px]">check_circle</span>
+                                </div>
+                                <p class="text-[11px] text-slate-500 mt-1">Face-to-face evaluation at NutriFlow Orchard Sanctuary. Includes live body metrics scan.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Specialists List -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Choose Specialist</label>
+                        <div id="engine-specialists-grid" class="flex flex-col gap-3">
+                            <!-- Rendered by booking-engine.js -->
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between gap-4">
+                        <button type="button" onclick="window.nutriBooking.goToStep(1)" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                            Back
+                        </button>
+                        <button type="button" onclick="window.nutriBooking.handleStepSubmit(2)" class="bg-primary hover:bg-[#005321] text-white font-bold text-sm py-3 px-8 rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer active:scale-98">
+                            <span>Continue to Schedule</span>
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Select Date & Time -->
+                <div id="booking-step-3" class="booking-step-panel hidden bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm text-left">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">3. Select Date &amp; Time Slot</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Choose an appointment date and available timing that fits your schedule.</p>
+                        </div>
+                        <span class="text-xs font-bold text-primary bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">Step 3 of 4</span>
+                    </div>
+
+                    <!-- Calendar & Time Slots Grid -->
+                    <div class="grid md:grid-cols-12 gap-6 items-start">
+                        <!-- Calendar (7 cols) -->
+                        <div class="md:col-span-7 bg-slate-50/70 rounded-2xl p-4 border border-slate-100">
+                            <div class="flex items-center justify-between mb-4 px-1">
+                                <h4 id="engine-calendar-month" class="font-bold text-sm text-slate-900">September 2026</h4>
+                                <div class="flex gap-1">
+                                    <button type="button" class="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-primary transition-all">
+                                        <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                                    </button>
+                                    <button type="button" class="w-7 h-7 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-primary transition-all">
+                                        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Day Headers -->
+                            <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                                <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+                            </div>
+                            <!-- Days Grid -->
+                            <div id="engine-calendar-grid" class="grid grid-cols-7 gap-1 text-center">
+                                <!-- Rendered dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Time Slots (5 cols) -->
+                        <div class="md:col-span-5 flex flex-col gap-4">
+                            <div>
+                                <div class="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-2">
+                                    <span class="material-symbols-outlined text-[16px] text-amber-500">light_mode</span>
+                                    <span>Morning Slots</span>
+                                </div>
+                                <div id="engine-morning-slots" class="grid grid-cols-2 gap-2">
+                                    <!-- Rendered dynamically -->
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-2">
+                                    <span class="material-symbols-outlined text-[16px] text-indigo-500">wb_twilight</span>
+                                    <span>Afternoon Slots</span>
+                                </div>
+                                <div id="engine-afternoon-slots" class="grid grid-cols-2 gap-2">
+                                    <!-- Rendered dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between gap-4">
+                        <button type="button" onclick="window.nutriBooking.goToStep(2)" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                            Back
+                        </button>
+                        <button type="button" onclick="window.nutriBooking.handleStepSubmit(3)" class="bg-primary hover:bg-[#005321] text-white font-bold text-sm py-3 px-8 rounded-xl shadow-md transition-all flex items-center gap-2 cursor-pointer active:scale-98">
+                            <span>Continue to Review &amp; Pay</span>
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Review, Patient Details & Payment -->
+                <div id="booking-step-4" class="booking-step-panel hidden bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm text-left">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">4. Patient Details &amp; Payment</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Review your booking order and enter your confirmation details.</p>
+                        </div>
+                        <span class="text-xs font-bold text-primary bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">Step 4 of 4</span>
+                    </div>
+
+                    <!-- Client Intake Form -->
+                    <div class="space-y-4 mb-6">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Patient Contact Information</h4>
+                        
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Full Legal Name *</label>
+                                <input id="input-client-name" type="text" placeholder="e.g. Sarah Jenkins" value=""
+                                       class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Email Address (for ticket &amp; link) *</label>
+                                <input id="input-client-email" type="email" placeholder="e.g. sarah@example.com" value=""
+                                       class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                            </div>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">WhatsApp / Phone Number</label>
+                                <input id="input-client-phone" type="tel" placeholder="+65 8123 4567" value=""
+                                       class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Dietary Goals or Health Concerns</label>
+                                <input id="input-client-notes" type="text" placeholder="e.g. Weight management, high cholesterol, IBS" value=""
+                                       class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method Selection -->
+                    <div class="mb-6 pt-4 border-t border-slate-100">
+                        <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">Select Payment Method</h4>
+                        
+                        <div class="grid sm:grid-cols-3 gap-3">
+                            <!-- PayNow -->
+                            <div id="pay-method-paynow" onclick="window.nutriBooking.selectPaymentMethod('paynow')"
+                                 class="engine-pay-option p-3 rounded-xl border-2 border-primary bg-emerald-50/40 cursor-pointer flex flex-col items-center text-center gap-1.5 transition-all">
+                                <span class="material-symbols-outlined text-primary text-[22px]">qr_code_2</span>
+                                <span class="text-xs font-bold text-slate-900">PayNow SG</span>
+                                <span class="text-[10px] text-slate-400">Instant QR Code</span>
+                                <span class="pay-check material-symbols-outlined text-primary text-[16px]">check_circle</span>
+                            </div>
+
+                            <!-- GrabPay / E-Wallet -->
+                            <div id="pay-method-ewallet" onclick="window.nutriBooking.selectPaymentMethod('ewallet')"
+                                 class="engine-pay-option p-3 rounded-xl border border-slate-200 bg-white cursor-pointer flex flex-col items-center text-center gap-1.5 transition-all hover:border-slate-300">
+                                <span class="material-symbols-outlined text-emerald-600 text-[22px]">account_balance_wallet</span>
+                                <span class="text-xs font-bold text-slate-900">GrabPay / PayLah!</span>
+                                <span class="text-[10px] text-slate-400">Digital Wallet</span>
+                                <span class="pay-check hidden material-symbols-outlined text-primary text-[16px]">check_circle</span>
+                            </div>
+
+                            <!-- Card -->
+                            <div id="pay-method-card" onclick="window.nutriBooking.selectPaymentMethod('card')"
+                                 class="engine-pay-option p-3 rounded-xl border border-slate-200 bg-white cursor-pointer flex flex-col items-center text-center gap-1.5 transition-all hover:border-slate-300">
+                                <span class="material-symbols-outlined text-indigo-600 text-[22px]">credit_card</span>
+                                <span class="text-xs font-bold text-slate-900">Credit / Debit Card</span>
+                                <span class="text-[10px] text-slate-400">Visa / Mastercard / Amex</span>
+                                <span class="pay-check hidden material-symbols-outlined text-primary text-[16px]">check_circle</span>
+                            </div>
+
+                            <!-- FAST Transfer -->
+                            <div id="pay-method-fpx" onclick="window.nutriBooking.selectPaymentMethod('fpx')"
+                                 class="engine-pay-option p-3 rounded-xl border border-slate-200 bg-white cursor-pointer flex flex-col items-center text-center gap-1.5 transition-all hover:border-slate-300">
+                                <span class="material-symbols-outlined text-blue-600 text-[22px]">account_balance</span>
+                                <span class="text-xs font-bold text-slate-900">FAST DBS Transfer</span>
+                                <span class="text-[10px] text-slate-400">Direct SG Banking</span>
+                                <span class="pay-check hidden material-symbols-outlined text-primary text-[16px]">check_circle</span>
+                            </div>
+
+                            <!-- Pay at Clinic -->
+                            <div id="pay-method-clinic" onclick="window.nutriBooking.selectPaymentMethod('clinic')"
+                                 class="engine-pay-option p-3 rounded-xl border border-slate-200 bg-white cursor-pointer flex flex-col items-center text-center gap-1.5 transition-all hover:border-slate-300 sm:col-span-2">
+                                <span class="material-symbols-outlined text-amber-600 text-[22px]">payments</span>
+                                <span class="text-xs font-bold text-slate-900">Pay at Clinic Counter</span>
+                                <span class="text-[10px] text-slate-400">Pay upon arrival on the consultation day</span>
+                                <span class="pay-check hidden material-symbols-outlined text-primary text-[16px]">check_circle</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between gap-4">
+                        <button type="button" onclick="window.nutriBooking.goToStep(3)" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                            Back
+                        </button>
+                        <button type="button" onclick="window.nutriBooking.handleStepSubmit(4)" class="bg-primary hover:bg-[#005321] text-white font-bold text-sm py-3.5 px-8 rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer active:scale-98">
+                            <span class="material-symbols-outlined text-[18px]">verified</span>
+                            <span>Confirm &amp; Finalize Booking</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Live Booking Summary Sidebar (lg:col-span-4) -->
+            <div class="lg:col-span-4 sticky top-28">
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-xl text-left">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                        <h4 class="font-bold text-sm text-slate-900 tracking-tight">Appointment Summary</h4>
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    </div>
+
+                    <!-- Service Image & Info -->
+                    <div class="relative w-full h-32 rounded-2xl overflow-hidden mb-4 bg-slate-100 shadow-inner">
+                        <img id="summary-service-img" src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&auto=format&fit=crop&q=80" alt="Consultation" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-2.5 left-3 right-3 flex items-center justify-between">
+                            <span id="summary-service-duration" class="bg-white/90 backdrop-blur-xs text-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-md">60 min</span>
+                            <span id="summary-method-label" class="bg-emerald-600/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">Online</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 pb-4 border-b border-slate-100 text-xs">
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Service</span>
+                            <h5 id="summary-service-title" class="font-bold text-slate-900 text-sm mt-0.5">Initial Consultation</h5>
+                        </div>
+
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Specialist</span>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-[10px]">★</span>
+                                <span id="summary-specialist-name" class="font-bold text-slate-800">Dr. Sarah Jenkins, RD</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Scheduled Date &amp; Time</span>
+                            <div class="flex items-center gap-1.5 text-slate-700 font-semibold mt-1">
+                                <span class="material-symbols-outlined text-primary text-[16px]">event</span>
+                                <span id="summary-datetime-label">Tomorrow at 10:30 AM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Breakdown -->
+                    <div class="py-4 space-y-2 text-xs border-b border-slate-100">
+                        <div class="flex justify-between text-slate-500">
+                            <span>Session Fee:</span>
+                            <span id="summary-subtotal" class="font-semibold text-slate-800">$150.00</span>
+                        </div>
+                        <div class="flex justify-between text-slate-500">
+                            <span>GST / Service Tax (7%):</span>
+                            <span id="summary-tax" class="font-semibold text-slate-800">$10.50</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-2 text-sm">
+                            <span class="font-extrabold text-slate-900">Total Due:</span>
+                            <span id="summary-total" class="font-black text-lg text-primary">$160.50</span>
+                        </div>
+                    </div>
+
+                    <!-- Trust / Security Footnote -->
+                    <div class="pt-4 flex items-center justify-center gap-2 text-[10px] text-slate-400 font-medium">
+                        <span class="material-symbols-outlined text-[14px] text-emerald-600">lock</span>
+                        <span>256-Bit SSL Encrypted • Zero Booking Fees</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== VIEW 3: BOOKING SUCCESS RECEIPT ==================== -->
+    <section id="view-booking-success" class="view-section hidden pt-32 pb-24 max-w-xl mx-auto px-4 w-full flex-1 text-center">
+        <div class="bg-white rounded-3xl p-8 sm:p-10 border border-slate-100 shadow-2xl relative overflow-hidden">
+            <!-- Top Gradient Accent -->
+            <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-primary via-emerald-400 to-secondary"></div>
+
+            <!-- Success Icon -->
+            <div class="w-16 h-16 rounded-3xl bg-emerald-50 text-primary flex items-center justify-center mx-auto mb-4 border border-emerald-100 shadow-sm">
+                <span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            </div>
+
+            <span class="text-[11px] font-bold text-primary uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/50">Reservation Confirmed</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-2">You're All Scheduled!</h2>
+            <p class="text-xs text-slate-500 mt-1">A confirmation receipt and meeting link have been prepared for you.</p>
+
+            <!-- Reference Ticket Card -->
+            <div class="mt-6 p-5 rounded-2xl bg-slate-50 border border-slate-200/70 text-left space-y-2.5 text-xs">
+                <div class="flex justify-between items-center pb-2 border-b border-slate-200">
+                    <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Reference Number</span>
+                    <span id="success-ref-code" class="font-mono font-black text-sm text-primary tracking-wider">NF-9182</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Patient Name:</span>
+                    <span id="success-client-name" class="font-bold text-slate-900">Sarah Jenkins</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Service:</span>
+                    <span id="success-service-title" class="font-bold text-slate-900">Initial Consultation</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Specialist:</span>
+                    <span id="success-specialist" class="font-bold text-slate-900">Dr. Sarah Jenkins, RD</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Mode:</span>
+                    <span id="success-method" class="font-bold text-slate-900">Online Consultation</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Schedule:</span>
+                    <span id="success-datetime" class="font-bold text-slate-900">Tomorrow at 10:30 AM</span>
+                </div>
+                <div class="flex justify-between pt-2 border-t border-slate-200">
+                    <span class="font-bold text-slate-700">Total Amount:</span>
+                    <span id="success-amount" class="font-black text-primary text-sm">$160.50</span>
+                </div>
+                <div class="flex justify-between text-[11px]">
+                    <span class="text-slate-500">Status:</span>
+                    <span id="success-payment-status" class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">Confirmed (Paid Online)</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 flex flex-col gap-3">
+                <button type="button" onclick="window.nutriBooking.downloadInvoicePDF()"
+                        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-3.5 px-6 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer">
+                    <span class="material-symbols-outlined text-[18px]">download</span>
+                    <span>Download Official Invoice (PDF)</span>
+                </button>
+
+                <div class="flex gap-3">
+                    <button type="button" onclick="window.nutriBooking.resetBookingAndHome()"
+                            class="flex-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold text-xs py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer">
+                        <span class="material-symbols-outlined text-[16px]">home</span>
+                        <span>Back to Home</span>
+                    </button>
+                    <a href="./dashboard.html"
+                       class="flex-1 bg-primary hover:bg-[#005321] text-white font-bold text-xs py-3 px-4 rounded-xl transition-all flex items-center justify-center gap-1 shadow-sm">
+                        <span class="material-symbols-outlined text-[16px]">dashboard</span>
+                        <span>Client Portal</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== IN-PLACE AUTH MODAL ==================== -->
+    <div id="nutriflow-login-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="window.nutriBooking.closeAuthModal()"></div>
+
+        <!-- Modal Card -->
+        <div class="relative z-10 w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden font-sans p-6 sm:p-8 text-left">
+            <!-- Close Button -->
+            <button onclick="window.nutriBooking.closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1.5 rounded-full hover:bg-slate-100 transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+
+            <!-- Brand Header -->
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-50 text-primary mb-2 shadow-xs border border-emerald-100">
+                    <span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 tracking-tight">NutriFlow</h3>
+                <p class="text-[10px] font-bold text-primary uppercase tracking-widest mt-0.5">Clinical Nutrition &amp; Health</p>
+                <h4 class="text-base font-bold text-slate-800 mt-3">Sign In to Complete Booking</h4>
+                <p class="text-xs text-slate-500 mt-0.5">Link your consultation with your account, or proceed as a guest.</p>
+            </div>
+
+            <!-- Login Form -->
+            <form onsubmit="window.nutriBooking.handleCustomAuth(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email Address</label>
+                    <div class="relative flex items-center">
+                        <span class="material-symbols-outlined absolute left-3 text-slate-400 text-[18px]">mail</span>
+                        <input id="auth-modal-email" type="email" placeholder="sarah.j@email.com" value="sarah.j@email.com" required
+                               class="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Password</label>
+                    <div class="relative flex items-center">
+                        <span class="material-symbols-outlined absolute left-3 text-slate-400 text-[18px]">lock</span>
+                        <input id="auth-modal-password" type="password" placeholder="••••••••" value="password123" required
+                               class="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3 px-4 rounded-xl bg-primary text-white font-bold text-xs shadow-md hover:bg-[#005321] transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                    <span class="material-symbols-outlined text-[16px]">lock_open</span>
+                    <span>Sign In &amp; Proceed</span>
+                </button>
+            </form>
+
+            <!-- Quick Demo Sign In -->
+            <div class="mt-3">
+                <button type="button" onclick="window.nutriBooking.demoSignIn()" class="w-full py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition-all flex items-center justify-center gap-1.5 border border-emerald-200/60 cursor-pointer">
+                    <span class="material-symbols-outlined text-emerald-600 text-[16px]">bolt</span>
+                    <span>One-Click Demo Account (Sarah Jenkins)</span>
+                </button>
+            </div>
+
+            <!-- Divider -->
+            <div class="relative my-4">
+                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-100"></div></div>
+                <div class="relative flex justify-center text-[10px] uppercase font-bold text-slate-400"><span class="bg-white px-2">or continue without account</span></div>
+            </div>
+
+            <!-- Guest Option -->
+            <button type="button" onclick="window.nutriBooking.continueAsGuest()" class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                <span class="material-symbols-outlined text-[16px]">person</span>
+                <span>Continue as Guest</span>
+            </button>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-100 py-12">

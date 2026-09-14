@@ -18,7 +18,7 @@ export function applyTenantDynamicBranding() {
     if (!currentTenant) return;
     try {
         // 1. Document Title
-        document.title = `${currentTenant.name} — Luxury Spa Sanctuary`;
+        document.title = `${currentTenant.name} — Premier TCM & Acupuncture Clinic`;
 
         // 2. Top Navigation Brand Name & Logo
         const brandNameEl = document.getElementById('spaNavBrandName');
@@ -38,14 +38,14 @@ export function applyTenantDynamicBranding() {
             if (heroSub) heroSub.textContent = currentTenant.tagline;
         }
 
-        // 4. About Section Sanctuary Name
+        // 4. About Section Clinic Name
         const aboutTitle = document.querySelector('.font-serif.text-xl.font-bold.block.mb-1');
-        if (aboutTitle) aboutTitle.textContent = `${currentTenant.name} Sanctuary`;
+        if (aboutTitle) aboutTitle.textContent = `${currentTenant.name} TCM Clinic`;
 
         // 5. WhatsApp Integration
         if (currentTenant.phone) {
             const cleanPhone = currentTenant.phone.replace(/[^0-9]/g, '');
-            window.__branchWhatsAppUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent('Hello ' + currentTenant.name + ', I would like to inquire about spa appointments.')}`;
+            window.__branchWhatsAppUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent('Hello ' + currentTenant.name + ', I would like to inquire about TCM consultations and acupuncture appointments.')}`;
         }
     } catch (e) {
         console.warn('[AppInit] Error applying tenant branding:', e);
@@ -101,25 +101,25 @@ export function updateMobileMenuUI() {
     if (loggedIn) {
         const name = localStorage.getItem('user_name') || 'Eleanor Vance';
         usernameEl.textContent = name;
-        userroleEl.textContent = 'Customer';
+        userroleEl.textContent = state.language === 'ms' ? 'Pesakit' : (state.language === 'zh' ? '患者' : 'Patient');
         
         // Show avatar circle EV
         const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-        avatarContainer.innerHTML = `<span class="font-bold text-sm text-[#3c4c2b]">${initials}</span>`;
-        avatarContainer.className = "w-12 h-12 rounded-full bg-[#50613f]/15 flex items-center justify-center overflow-hidden";
+        avatarContainer.innerHTML = `<span class="font-bold text-sm text-[#164e3f]">${initials}</span>`;
+        avatarContainer.className = "w-12 h-12 rounded-full bg-[#164e3f]/15 flex items-center justify-center overflow-hidden";
         
         // Auth button as sign out
-        authBtn.innerHTML = `<span class="material-symbols-outlined text-[20px]">logout</span>Sign Out`;
+        authBtn.innerHTML = `<span class="material-symbols-outlined text-[20px]">logout</span>${state.language === 'ms' ? 'Log Keluar' : (state.language === 'zh' ? '登出' : 'Sign Out')}`;
         authBtn.className = "flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-50 text-red-600 hover:text-red-700 transition-colors cursor-pointer text-sm font-semibold text-left";
     } else {
-        usernameEl.textContent = 'Guest User';
-        userroleEl.textContent = 'Not Logged In';
+        usernameEl.textContent = state.language === 'ms' ? 'Pengguna Tetamu' : (state.language === 'zh' ? '访客' : 'Guest User');
+        userroleEl.textContent = state.language === 'ms' ? 'Belum Log Masuk' : (state.language === 'zh' ? '未登录' : 'Not Logged In');
         avatarContainer.innerHTML = `<span class="material-symbols-outlined text-[24px]">person</span>`;
         avatarContainer.className = "w-12 h-12 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center overflow-hidden";
         
         // Auth button as sign in
-        authBtn.innerHTML = `<span class="material-symbols-outlined text-[20px]">login</span>Sign In`;
-        authBtn.className = "flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#50613f]/10 text-[#50613f] transition-colors cursor-pointer text-sm font-semibold text-left";
+        authBtn.innerHTML = `<span class="material-symbols-outlined text-[20px]">login</span>${state.language === 'ms' ? 'Log Masuk' : (state.language === 'zh' ? '登录' : 'Sign In')}`;
+        authBtn.className = "flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#164e3f]/10 text-[#164e3f] transition-colors cursor-pointer text-sm font-semibold text-left";
     }
 };
 
@@ -145,113 +145,127 @@ document.addEventListener('click', function(e) {
     }
 });
 
-
 // Mobile Bottom Navigation Bar — shows Back & Continue on steps 1-3 (mobile only)
 export function updateMobileBottomNav(viewId) {
-    const nav = document.getElementById('mobile-bottom-nav');
-    const backBtn = document.getElementById('mobile-back-btn');
-    const continueBtn = document.getElementById('mobile-continue-btn');
-    if (!nav || !backBtn || !continueBtn) return;
+    const nav = document.getElementById('mobile-booking-nav');
+    if (!nav) return;
 
-    const bookingSteps = {
-        'select-service':   { step: 1, back: () => resetBookingFlow(),          continueLabel: 'Continue' },
-        'select-therapist': { step: 2, back: () => navigateTo('select-service'), continueLabel: 'Continue' },
-        'select-time':      { step: 3, back: () => navigateTo('select-therapist'), continueLabel: 'Continue' },
+    const viewsWithNav = {
+        'select-service': { step: 1, label: state.language === 'ms' ? 'Teruskan ke Pengamal' : (state.language === 'zh' ? '下一步：选择医师' : 'Continue to Practitioner') },
+        'select-therapist': { step: 2, label: state.language === 'ms' ? 'Teruskan ke Tarikh & Masa' : (state.language === 'zh' ? '下一步：选择时间' : 'Continue to Date & Time') },
+        'select-time': { step: 3, label: state.language === 'ms' ? 'Semak Tempahan' : (state.language === 'zh' ? '核对预约详情' : 'Review Reservation') },
     };
 
-    const stepConfig = bookingSteps[viewId];
+    const stepConfig = viewsWithNav[viewId];
     if (stepConfig) {
         nav.classList.add('show-mobile-nav');
-        // Wire up Back
-        backBtn.onclick = stepConfig.back;
-        // Wire up Continue (reuse existing nextStep validation)
-        continueBtn.textContent = '';
-        continueBtn.innerHTML = `${stepConfig.continueLabel} <span class="material-symbols-outlined text-[18px]">arrow_forward</span>`;
-        continueBtn.onclick = () => window.nextStep(stepConfig.step);
+        const continueBtn = document.getElementById('mobile-nav-continue-btn');
+        const continueLabel = document.getElementById('mobile-nav-continue-label');
+        if (continueLabel) continueLabel.textContent = stepConfig.label;
+        if (continueBtn) continueBtn.onclick = () => window.nextStep(stepConfig.step);
     } else {
         nav.classList.remove('show-mobile-nav');
     }
 }
-// Expose so navigateTo (declared before this function) can call it
 window.updateMobileBottomNav = updateMobileBottomNav;
 
 // ── BLOG ARTICLE VIEW LOGIC ──────────────────────────────────
 export const BLOG_ARTICLES = {
     1: {
         title: {
-            en: "The Science of Relaxation: How Spa Treatments Lower Cortisol",
-            ms: "Sains Relaksasi: Bagaimana Rawatan Spa Mengurangkan Kortisol"
+            en: "Meridian Acupuncture & Qi Balance: Clinical Relief for Chronic Pain",
+            ms: "Akupunktur Meridian & Keseimbangan Qi: Kelegaan Klinikal untuk Kesakitan Kronik",
+            zh: "经络针灸与气血平衡：缓解慢性疼痛的临床中医疗法"
         },
         meta: {
-            en: "Mindfulness • 5 min read",
-            ms: "Minda Sedar • 5 min baca"
+            en: "TCM Clinical Insight • 5 min read",
+            ms: "Wawasan Klinikal TCM • 5 min baca",
+            zh: "中医临床见解 • 5 分钟阅读"
         },
-        img: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=600&auto=format&fit=crop",
+        img: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=600&auto=format&fit=crop",
         content: {
             en: `
-                <p>Cortisol, often referred to as the "stress hormone," is essential for managing our fight-or-flight response. However, chronically high levels of cortisol due to work stress, lack of sleep, and busy lifestyles can lead to sleep disorders, immune system suppression, and muscle tension.</p>
-                <p>Scientific studies show that tactile stimulation, such as moderate-pressure massage, prompts a physiological shift in the body. When you receive a deep tissue massage or stone therapy, sensory receptors under the skin send signals to the brain to decrease active sympathetic nervous activity (the flight response) and activate the parasympathetic nervous system (the rest-and-digest response).</p>
-                <p>In addition, specialized spa experiences incorporate elements of aromatherapy (such as lavender and chamomile) and soundscapes, which trigger emotional calming centers in the amygdala. This holistic approach has been measured to reduce salivary cortisol levels by up to 31% after a single 60-minute session, while simultaneously increasing dopamine and serotonin levels. Taking time for a spa treatment isn't just pampering—it's a clinically supported path to hormonal balance and peace of mind.</p>
+                <p>In Traditional Chinese Medicine (TCM), pain is understood through the fundamental tenet: <em>"Where there is stagnation, there is pain; where there is free flow, there is no pain"</em> (通则不痛，痛则不通). Chronic musculoskeletal discomfort and migraines often trace back to Qi and blood stagnation along bodily meridians.</p>
+                <p>Clinical acupuncture utilizes ultra-fine, sterile filiform needles placed at targeted acupoints to stimulate neuromuscular junctions. Modern biochemical research confirms that needling activates endogenous opioid release (endorphins and enkephalins), dilates local microvasculature, and inhibits nociceptive pain pathways in the spinal dorsal horn.</p>
+                <p>Under the care of a licensed TCMPB physician, acupuncture restores systemic homeostasis, alleviates neurovascular tension, and reinforces the body's natural regenerative capacity without pharmaceutical dependence.</p>
             `,
             ms: `
-                <p>Kortisol, sering disebut sebagai "hormon stres," adalah penting untuk menguruskan respon lawan-atau-lari kita. Walau bagaimanapun, tahap kortisol yang kronik tinggi akibat tekanan kerja, kurang tidur, dan gaya hidup sibuk boleh menyebabkan gangguan tidur, kelemahan sistem imun, dan ketegangan otot.</p>
-                <p>Kajian saintifik menunjukkan bahawa rangsangan sentuhan, seperti urutan tekanan sederhana, mencetuskan perubahan fisiologi dalam badan. Apabila anda menerima urutan tisu mendalam atau terapi batu, reseptor deria di bawah kulit menghantar isyarat ke otak untuk mengurangkan aktiviti saraf simpatetik aktif dan mengaktifkan sistem saraf parasimpatetik (respon rehat-dan-cerna).</p>
-                <p>Di samping itu, pengalaman spa khusus menggabungkan elemen aromaterapi (seperti lavender dan chamomile) dan bunyi tenang, yang merangsang pusat penenang emosi di amigdala. Pendekatan holistik ini telah terbukti mengurangkan tahap kortisol air liur sehingga 31% selepas satu sesi 60 minit, sambil meningkatkan tahap dopamin dan serotonin secara serentak. Meluangkan masa untuk rawatan spa bukan sekadar memanjakan diri—ia adalah langkah yang disokong secara klinikal untuk keseimbangan hormon dan ketenangan fikiran.</p>
+                <p>Dalam Perubatan Tradisional Cina (TCM), kesakitan difahami melalui prinsip asas: <em>"Di mana terdapat sekatan, di situ ada kesakitan; di mana aliran lancar, tiada kesakitan"</em>. Ketidakselesaan muskuloskeletal kronik dan migrain kerap berpunca daripada genangan Qi dan peredaran darah di sepanjang meridian tubuh.</p>
+                <p>Akupunktur klinikal menggunakan jarum filiform steril yang amat halus pada titik akupunktur terpilih untuk merangsang persimpangan neuromuskular. Kajian biokimia moden mengesahkan bahawa tusukan jarum mencetuskan pelepasan opioid endogen (endorfin), melancarkan saluran mikrovaskular tempatan, dan melegakan laluan isyarat kesakitan pada saraf tunjang.</p>
+                <p>Di bawah bimbingan pengamal TCM berdaftar, rawatan akupunktur memulihkan keseimbangan homeostasis badan, melegakan ketegangan neurovaskular, dan menyokong daya pemulihan semula jadi tubuh tanpa kebergantungan ubat-ubatan.</p>
+            `,
+            zh: `
+                <p>中医理论认为，“通则不痛，痛则不通”。慢性肌肉骨骼疼痛、关节僵硬及偏头痛，往往源于人体经络中的气血瘀滞与气机失调。</p>
+                <p>临床针灸采用高规格医用无菌极细毫针，精准施术于特定穴位，刺激神经肌接头。现代生物医学研究表明，针刺能促进机体释放内源性阿片肽（如内啡肽），扩张微循环血管，并在脊髓后角抑制疼痛信号传递。</p>
+                <p>在新加坡TCMPB注册中医师的专业施针下，针灸能有效调节脏腑经络、疏通气血、缓解神经血管紧张，激发人体自愈本能。</p>
             `
         }
     },
     2: {
         title: {
-            en: "Deep Tissue vs. Aromatherapy: Which Massage is Right for You?",
-            ms: "Urutan Tisu Mendalam vs. Aromaterapi: Mana Satu Sesuai Untuk Anda?"
+            en: "The Four Diagnostic Methods: Pulse, Tongue, and Body Constitution",
+            ms: "Empat Kaedah Diagnosis TCM: Nadi, Lidah, dan Perlembagaan Tubuh",
+            zh: "中医望闻问切：舌诊、脉诊与九大体质辨识"
         },
         meta: {
-            en: "Therapy Guide • 4 min read",
-            ms: "Panduan Terapi • 4 min baca"
+            en: "Holistic Health • 4 min read",
+            ms: "Kesihatan Holistik • 4 min baca",
+            zh: "全方位健康指南 • 4 分钟阅读"
         },
-        img: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=600&auto=format&fit=crop",
+        img: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=600&auto=format&fit=crop",
         content: {
             en: `
-                <p>Choosing the right massage can significantly impact your spa experience. Two of our most popular offerings, Deep Tissue Massage and Aromatherapy Massage, target completely different aspects of your well-being.</p>
-                <p><strong>Deep Tissue Massage</strong> focuses on realigning deep layers of muscles and connective tissue. It is highly recommended for individuals experiencing chronic aches, pain, or stiffness in areas like the neck, upper back, and shoulders. During this therapy, the therapist uses slow, deliberate strokes and intense direct pressure to break down adhesions (muscle knots).</p>
-                <p><strong>Aromatherapy Massage</strong>, on the other hand, is designed for emotional and physical relaxation. It uses light, sweeping strokes combined with customized essential oil blends extracted from herbs and flowers. If you are struggling with emotional stress, anxiety, or insomnia, Aromatherapy is the perfect choice to soothe your senses and melt away daily tension without intense muscle manipulation.</p>
+                <p>Unlike symptomatic treatments that only suppress isolated indicators, TCM diagnoses each patient through <strong>Wang (Observation), Wen (Listening & Smelling), Wen (Inquiring), and Qie (Palpation)</strong>.</p>
+                <p><strong>Tongue Diagnosis:</strong> The tongue reflects the condition of internal Zang-Fu organs. The tongue body reveals the abundance or depletion of Qi and Blood, while tongue coating thickness and color indicate the presence of Pathogenic Dampness, Cold, or Internal Heat.</p>
+                <p><strong>Pulse Palpation:</strong> By palpating the radial artery at Cun, Guan, and Chi positions on both wrists at varying depths, our registered physicians evaluate the functional vitality of your Heart, Liver, Spleen, Lung, and Kidney meridians.</p>
             `,
             ms: `
-                <p>Memilih urutan yang betul boleh memberi kesan ketara kepada pengalaman spa anda. Dua daripada tawaran paling popular kami, Urutan Tisu Mendalam dan Urutan Aromaterapi, menyasarkan aspek kesejahteraan diri yang berbeza.</p>
-                <p><strong>Urutan Tisu Mendalam</strong> menumpukan pada menyelaraskan semula lapisan dalam otot dan tisu penghubung. Ia sangat disyorkan untuk individu yang mengalami sakit kronik, ketegangan atau kekakuan di bahagian leher, belakang bahagian atas, dan bahu. Semasa terapi ini, terapis menggunakan tekanan langsung yang kuat untuk merungkaikan simpulan otot.</p>
-                <p><strong>Urutan Aromaterapi</strong> pula direka untuk relaksasi emosi dan fizikal. Ia menggunakan sapuan ringan yang digabungkan dengan campuran minyak pati tersuai yang diekstrak daripada herba dan bunga. Jika anda bergelut dengan tekanan emosi, kebimbangan atau insomnia, Aromaterapi adalah pilihan terbaik untuk menenangkan deria anda tanpa manipulasi otot yang kuat.</p>
+                <p>Berbeza dengan rawatan simptomatik yang sekadar meredakan tanda luaran, diagnosis TCM menilai setiap pesakit secara menyeluruh melalui <strong>Wang (Memerhati), Wen (Mendengar & Menghidu), Wen (Bertanya), dan Qie (Meraba Nadi)</strong>.</p>
+                <p><strong>Diagnosis Lidah:</strong> Lidah mencerminkan keadaan organ dalaman Zang-Fu. Badan lidah menzahirkan kecukupan atau kekurangan Qi dan Darah, manakala ketebalan dan warna lapisan lidah menunjukkan kehadiran Lembapan Patogenik, Sejuk, atau Haba Dalaman.</p>
+                <p><strong>Pemeriksaan Nadi:</strong> Melalui palpasi arteri radial pada kedudukan Cun, Guan, dan Chi di kedua-dua pergelangan tangan, pengamal TCM kami menilai kecergasan fungsi meridian Jantung, Hati, Limpa, Paru-paru, dan Buah Pinggang.</p>
+            `,
+            zh: `
+                <p>与仅针对单一症状的对症治疗不同，传统中医讲究“望、闻、问、切”四诊合参，辨证求因。</p>
+                <p><strong>舌诊探秘：</strong>舌体为脏腑之镜。舌质的荣枯红淡直接反映气血盛衰；舌苔之厚薄、润燥与色泽，则精准揭示体内湿热、虚寒或痰湿之邪。</p>
+                <p><strong>寸关尺脉诊：</strong>医师通过切按双侧桡动脉寸、关、尺三部，分轻、中、重三候，深入体察心、肝、脾、肺、肾诸脏腑经络之气机起伏，从而制定精准的个性化调理方案。</p>
             `
         }
     },
     3: {
         title: {
-            en: "Post-Spa Aftercare: 5 Habits to Maximize Treatment Benefits",
-            ms: "Penjagaan Selepas Spa: 5 Tabiat Memaksimumkan Manfaat Rawatan"
+            en: "Cupping & Gua Sha: Releasing Myofascial Adhesions and Blood Stasis",
+            ms: "Bekam & Gua Sha: Melegakan Ketegangan Myofasial dan Takungan Darah",
+            zh: "拔罐与刮痧疗法：通透经络、祛湿排毒与深层肌膜舒缓"
         },
         meta: {
-            en: "Wellness Tips • 6 min read",
-            ms: "Tips Kesihatan • 6 min baca"
+            en: "Therapeutic Practice • 6 min read",
+            ms: "Amalan Terapi • 6 min baca",
+            zh: "中医特色理疗 • 6 分钟阅读"
         },
-        img: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=600&auto=format&fit=crop",
+        img: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=600&auto=format&fit=crop",
         content: {
             en: `
-                <p>To prolong the post-spa glow and muscular relief, what you do after your session is just as important as the treatment itself. Follow these five aftercare habits:</p>
+                <p>Traditional cupping (拔罐) and Gua Sha (刮痧) are cornerstone therapeutic practices in TCM used for centuries to detoxify the interstitial matrix and dispel external wind-dampness pathogens.</p>
                 <ul class="list-disc pl-4 space-y-1">
-                    <li><strong>1. Rehydrate Immediately:</strong> Massages release metabolic waste from muscle tissues into your circulation. Drinking plenty of water helps flush out these toxins and prevents soreness.</li>
-                    <li><strong>2. Take a Warm Bath:</strong> Continuing the heat therapy at home with Epsom salts helps relax remaining muscle fibers and softens the skin.</li>
-                    <li><strong>3. Eat a Light Meal:</strong> Since digestion slows down during deep relaxation, avoid heavy, greasy meals. Opt for fresh fruits, salads, or clear soups.</li>
-                    <li><strong>4. Postpone Intense Workouts:</strong> Give your muscles at least 24 hours to recover before engaging in heavy lifting or high-intensity training.</li>
-                    <li><strong>5. Unplug and Rest:</strong> Allow your mind to stay calm by limiting screen time and getting at least 8 hours of sleep.</li>
+                    <li><strong>Negative Pressure Decompression:</strong> Fire cupping creates suction that gently lifts superficial fascia, stimulating capillary micro-perfusion and accelerating the lymphatic clearance of cellular metabolic debris.</li>
+                    <li><strong>Microcirculation Restoration:</strong> Gua Sha uses a smooth buffalo horn or jade tool along myofascial lines, releasing ischemic contractures ("knots") and bringing stagnant, deoxygenated blood (Sha) to the surface.</li>
+                    <li><strong>Clinical Aftercare:</strong> Keep treated areas covered and warm, drink warm water, and avoid air-conditioned drafts or cold showers for at least 4 hours post-treatment.</li>
                 </ul>
             `,
             ms: `
-                <p>Untuk memanjakan diri lebih lama dan mengekalkan kelegaan otot selepas spa, apa yang anda lakukan selepas sesi anda adalah sama pentingnya dengan rawatan itu sendiri. Ikuti lima tabiat penjagaan selepas spa ini:</p>
+                <p>Terapi bekam tradisional (拔罐) dan Gua Sha (刮痧) merupakan rawatan asas dalam TCM yang telah diamalkan turun-temurun untuk menyingkirkan patogen angin dan lembapan serta melancarkan saluran darah.</p>
                 <ul class="list-disc pl-4 space-y-1">
-                    <li><strong>1. Hidrat Semula Segera:</strong> Urutan melepaskan bahan buangan metabolik dari tisu otot ke dalam peredaran darah anda. Minum banyak air membantu menyingkirkan toksin ini dan mengelakkan lenguh.</li>
-                    <li><strong>2. Mandi Air Hangat:</strong> Meneruskan terapi haba di rumah dengan garam Epsom membantu melegakan baki serat otot dan melembutkan kulit.</li>
-                    <li><strong>3. Makan Makanan Ringan:</strong> Memandangkan pencernaan menjadi perlahan semasa relaksasi mendalam, elakkan makanan berat yang berminyak. Pilih buah-buahan segar, salad, atau sup kosong.</li>
-                    <li><strong>4. Tangguhkan Senaman Berat:</strong> Beri otot anda sekurang-kurangnya 24 jam untuk pulih sebelum melakukan aktiviti angkat berat atau latihan berintensiti tinggi.</li>
-                    <li><strong>5. Berehat dan Lapang Fikiran:</strong> Biarkan minda anda kekal tenang dengan mengehadkan masa skrin dan mendapatkan sekurang-kurangnya 8 jam tidur.</li>
+                    <li><strong>Dekompresi Tekanan Negatif:</strong> Bekam angin atau api menghasilkan sedutan lembut yang mengangkat fasia superfisial, merangsang mikrosirkulasi kapilari dan mempercepatkan penyingkiran sisa metabolik sel melalui sistem limfa.</li>
+                    <li><strong>Pemulihan Peredaran Darah:</strong> Gua Sha menggunakan alat tanduk kerbau atau jed licin di sepanjang jalur otot, meleraikan simpulan otot tegang dan membawa darah bertakung ke permukaan kulit untuk diserap semula secara semula jadi.</li>
+                    <li><strong>Penjagaan Selepas Rawatan:</strong> Pastikan bahagian yang dirawat sentiasa terlindung dan hangat, minum air suam, serta elakkan hembusan angin penyaman udara terus atau mandi air sejuk selama sekurang-kurangnya 4 jam selepas sesi.</li>
+                </ul>
+            `,
+            zh: `
+                <p>拔罐与刮痧是中医疗法中极具代表性的外治法，历经千年传承，具有疏经活血、祛风除湿、清热拔毒之功效。</p>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li><strong>负压吸附调理：</strong>拔罐形成的温热负压能舒缓深层筋膜粘连，激发局部微循环充血，加速淋巴代谢废物的排出。</li>
+                    <li><strong>经络刮拭出痧：</strong>水牛角或天然玉石刮痧板沿经络走向循行施术，可迅速松解肌肉僵硬与结节，促使皮下微小郁血透出（出痧），从而达到化瘀通滞之效。</li>
+                    <li><strong>理疗后调护须知：</strong>理疗后毛孔疏松，须注意防风保暖；请饮用适量温开水，4小时内切忌吹强冷风或洗冷水澡。</li>
                 </ul>
             `
         }
@@ -288,7 +302,7 @@ export function closeBlogArticle() {
     }
 };
 
-// ── THERAPIST BIO MODAL HANDLERS ─────────────────────────────
+// ── PRACTITIONER / PHYSICIAN BIO MODAL HANDLERS ─────────────────────────────
 export function openTherapistBio(therapistId) {
     window.openTherapistBio = openTherapistBio;
     const therapist = THERAPISTS[therapistId];
@@ -308,26 +322,27 @@ export function openTherapistBio(therapistId) {
     if (modal && name) {
         if (img) img.src = therapist.image || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80';
         name.textContent = therapist.name;
-        if (role) role.textContent = therapist.role || 'Therapist';
+        if (role) role.textContent = therapist.role || 'TCM Physician';
         if (score) score.textContent = therapist.rating ? `${therapist.rating} (${therapist.reviews || 50})` : '4.9 (120)';
-        if (exp) exp.textContent = therapist.experienceYears || '5+ Years Experience';
+        if (exp) exp.textContent = therapist.experienceYears || '10+ Years Clinical Experience';
         if (bio) bio.textContent = therapist.fullBio || therapist.description;
 
         // Populate specialties badges
         if (specialtiesContainer) {
             specialtiesContainer.innerHTML = (therapist.specialties || []).map(s => `
-                <span class="px-2.5 py-1 bg-primary/10 text-primary font-bold text-[10px] rounded-full uppercase tracking-wider">${s}</span>
+                <span class="px-2.5 py-1 bg-[#164e3f]/10 text-[#164e3f] font-bold text-[10px] rounded-full uppercase tracking-wider">${s}</span>
             `).join('');
         }
 
         // Populate certifications list
         if (certsContainer) {
             certsContainer.innerHTML = (therapist.certifications || [
-                'Certified International Spa Practitioner (CISP)',
-                'Traditional Healing Massage Diploma'
+                'Registered TCM Physician (TCMPB Singapore)',
+                'Bachelor of Traditional Chinese Medicine (BUCM)',
+                'Certified Clinical Acupuncturist & Tuina Specialist'
             ]).map(c => `
                 <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-100">
-                    <span class="material-symbols-outlined text-[#50613f] text-base">verified</span>
+                    <span class="material-symbols-outlined text-[#164e3f] text-base">verified</span>
                     <span class="font-medium text-slate-700 text-xs">${c}</span>
                 </div>
             `).join('');
@@ -336,7 +351,9 @@ export function openTherapistBio(therapistId) {
         // Wire select button
         if (selectBtn) {
             selectBtn.onclick = function() {
-                selectTherapist(therapist.id);
+                if (window.selectTherapist) {
+                    window.selectTherapist(therapist.id);
+                }
                 closeTherapistBio();
             };
         }
@@ -393,8 +410,6 @@ export function setReviewRating(rating) {
 window.setReviewRating = setReviewRating;
 
 export function openLeaveReviewModal(bookingId) {
-    console.log('Opening leave review modal for booking:', bookingId);
-
     if (!state.bookings) {
         state.bookings = [];
     }
@@ -405,8 +420,8 @@ export function openLeaveReviewModal(bookingId) {
     if (!booking) {
         booking = {
             id: bookingId || 'booking-2',
-            serviceName: 'Aromatherapy Massage',
-            therapist: 'Sari',
+            serviceName: 'Acupuncture & Meridian Therapy',
+            therapist: 'Physician Chen Wei Lin',
             status: 'Completed'
         };
         state.bookings.push(booking);
@@ -421,7 +436,7 @@ export function openLeaveReviewModal(bookingId) {
 
     if (modal) {
         if (subtitle) {
-            subtitle.textContent = `Share your feedback for ${booking.serviceName} with ${booking.therapist}`;
+            subtitle.textContent = `Share your clinical feedback for ${booking.serviceName} with ${booking.therapist}`;
         }
         if (input) input.value = '';
         setReviewRating(5);
@@ -453,8 +468,8 @@ export function submitTreatmentReview() {
     if (!booking) {
         booking = {
             id: activeReviewBookingId,
-            serviceName: 'Spa Treatment',
-            therapist: 'Therapist',
+            serviceName: 'TCM Clinical Session',
+            therapist: 'Physician Chen Wei Lin',
             status: 'Completed'
         };
         state.bookings.push(booking);
@@ -463,7 +478,7 @@ export function submitTreatmentReview() {
     booking.hasReviewed = true;
     booking.review = {
         rating: currentReviewRating,
-        comment: commentText || 'Wonderful session and deeply relaxing experience!',
+        comment: commentText || 'Excellent clinical consultation and effective acupuncture relief!',
         date: 'Just now'
     };
 
@@ -472,8 +487,8 @@ export function submitTreatmentReview() {
 
     showNotification(
         state.language === 'ms' 
-            ? 'Terima kasih! Ulasan anda telah berjaya dihantar.' 
-            : 'Thank you! Your treatment review has been submitted successfully.', 
+            ? 'Terima kasih! Ulasan klinikal anda telah berjaya dihantar.' 
+            : (state.language === 'zh' ? '非常感谢！您的调理反馈已成功提交。' : 'Thank you! Your clinical review has been submitted successfully.'), 
         'success'
     );
 
@@ -483,7 +498,7 @@ export function submitTreatmentReview() {
 }
 window.submitTreatmentReview = submitTreatmentReview;
 
-// E-Gift Card Handlers (Task 6)
+// E-Gift Card Handlers
 export let selectedGiftCardAmount = 50;
 
 export function openSendGiftCardModal() {
@@ -508,9 +523,9 @@ export function setGiftAmount(amount) {
     selectedGiftCardAmount = amount;
     document.querySelectorAll('.gift-amount-btn').forEach(btn => {
         if (btn.textContent.includes(String(amount))) {
-            btn.className = 'gift-amount-btn py-2 rounded-xl bg-[#50613f] text-white text-xs font-bold transition-all shadow-sm';
+            btn.className = 'gift-amount-btn py-2 rounded-xl bg-[#164e3f] text-white text-xs font-bold transition-all shadow-sm';
         } else {
-            btn.className = 'gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#50613f] hover:bg-[#50613f]/5 transition-all';
+            btn.className = 'gift-amount-btn py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:border-[#164e3f] hover:bg-[#164e3f]/5 transition-all';
         }
     });
 }
@@ -526,13 +541,14 @@ export function submitSendGiftCard() {
     const message = msgInput ? msgInput.value.trim() : '';
 
     if (!name || !email) {
-        showNotification(state.language === 'ms' ? 'Sila isi nama dan e-mel penerima.' : 'Please enter recipient name and email.', 'error');
+        showNotification(state.language === 'ms' ? 'Sila isi nama dan e-mel penerima.' : (state.language === 'zh' ? '请填写收件人姓名与电邮。' : 'Please enter recipient name and email.'), 'error');
         return;
     }
 
+    const currency = currentTenant?.currency || 'SGD';
     const amount = parseFloat(selectedGiftCardAmount) || 50;
     if (state.walletBalance < amount) {
-        showNotification(state.language === 'ms' ? `Baki dompet anda tidak mencukupi (MYR ${state.walletBalance.toFixed(2)}).` : `Insufficient wallet balance (MYR ${state.walletBalance.toFixed(2)}).`, 'error');
+        showNotification(state.language === 'ms' ? `Baki dompet anda tidak mencukupi (${currency} ${state.walletBalance.toFixed(2)}).` : (state.language === 'zh' ? `您的钱包余额不足 (${currency} ${state.walletBalance.toFixed(2)})。` : `Insufficient wallet balance (${currency} ${state.walletBalance.toFixed(2)}).`), 'error');
         return;
     }
 
@@ -548,8 +564,10 @@ export function submitSendGiftCard() {
         id: 'notif-' + Date.now(),
         date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
         text: state.language === 'ms'
-            ? `E-Gift Card MYR ${amount.toFixed(2)} berjaya dihantar kepada ${name} (${email}).`
-            : `E-Gift Card MYR ${amount.toFixed(2)} successfully sent to ${name} (${email}).`
+            ? `E-Gift Card ${currency} ${amount.toFixed(2)} berjaya dihantar kepada ${name} (${email}).`
+            : (state.language === 'zh'
+                ? `电子礼品卡 ${currency} ${amount.toFixed(2)} 已成功赠予 ${name} (${email})。`
+                : `E-Gift Card ${currency} ${amount.toFixed(2)} successfully sent to ${name} (${email}).`)
     });
 
     closeSendGiftCardModal();
@@ -559,8 +577,8 @@ export function submitSendGiftCard() {
     if (msgInput) msgInput.value = '';
 
     const successMsg = state.language === 'ms'
-        ? `E-Gift Card bernilai MYR ${amount.toFixed(2)} telah berjaya dikirim kepada ${name}!`
-        : `E-Gift Card of MYR ${amount.toFixed(2)} successfully sent to ${name}!`;
+        ? `E-Gift Card bernilai ${currency} ${amount.toFixed(2)} telah berjaya dikirim kepada ${name}!`
+        : (state.language === 'zh' ? `面值 ${currency} ${amount.toFixed(2)} 的电子礼品卡已成功发送给 ${name}！` : `E-Gift Card of ${currency} ${amount.toFixed(2)} successfully sent to ${name}!`);
     showNotification(successMsg, 'success');
     renderWalletView();
     saveState();
@@ -589,11 +607,13 @@ window.closeRedeemPointsModal = closeRedeemPointsModal;
 export function redeemRewardItem(pointsNeeded, creditReward, title) {
     if (!state.loyaltyPoints) state.loyaltyPoints = 350;
 
+    const currency = currentTenant?.currency || 'SGD';
+
     if (state.loyaltyPoints < pointsNeeded) {
         showNotification(
             state.language === 'ms'
-                ? `Poin Serenity anda tidak mencukupi (${state.loyaltyPoints} Pts / ${pointsNeeded} Pts).`
-                : `Insufficient Serenity Points (${state.loyaltyPoints} Pts / ${pointsNeeded} Pts).`,
+                ? `Mata ganjaran kesihatan anda tidak mencukupi (${state.loyaltyPoints} Pts / ${pointsNeeded} Pts).`
+                : (state.language === 'zh' ? `您的积分不足 (${state.loyaltyPoints} 积分 / 所需 ${pointsNeeded} 积分)。` : `Insufficient Reward Points (${state.loyaltyPoints} Pts / ${pointsNeeded} Pts).`),
             'error'
         );
         return;
@@ -613,15 +633,19 @@ export function redeemRewardItem(pointsNeeded, creditReward, title) {
         id: 'notif-' + Date.now(),
         date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
         text: state.language === 'ms'
-            ? `Berjaya menukar ${pointsNeeded} Pts untuk ${title} (+MYR ${creditReward.toFixed(2)} Saldo).`
-            : `Successfully redeemed ${pointsNeeded} Pts for ${title} (+MYR ${creditReward.toFixed(2)} Balance).`
+            ? `Berjaya menukar ${pointsNeeded} Pts untuk ${title} (+${currency} ${creditReward.toFixed(2)} Baki).`
+            : (state.language === 'zh'
+                ? `成功使用 ${pointsNeeded} 积分兑换 ${title} (+${currency} ${creditReward.toFixed(2)} 余额)。`
+                : `Successfully redeemed ${pointsNeeded} Pts for ${title} (+${currency} ${creditReward.toFixed(2)} Balance).`)
     });
 
     closeRedeemPointsModal();
 
     const successMsg = state.language === 'ms'
-        ? `Tahniah! ${title} telah ditukar. Saldo dompet anda bertambah MYR ${creditReward.toFixed(2)}!`
-        : `Congratulations! ${title} redeemed. MYR ${creditReward.toFixed(2)} added to your wallet!`;
+        ? `Tahniah! ${title} telah ditukar. Baki dompet anda bertambah ${currency} ${creditReward.toFixed(2)}!`
+        : (state.language === 'zh'
+            ? `恭喜！${title} 兑换成功。您的钱包余额已增加 ${currency} ${creditReward.toFixed(2)}！`
+            : `Congratulations! ${title} redeemed. ${currency} ${creditReward.toFixed(2)} added to your wallet!`);
 
     showNotification(successMsg, 'success');
     renderWalletView();
@@ -644,14 +668,14 @@ export function submitContactForm() {
 
     showNotification(
         state.language === 'ms' 
-            ? 'Terima kasih! Mesej anda telah dihantar. Kami akan menghubungi anda segera.' 
-            : 'Thank you! Your message has been sent. We will get back to you shortly.', 
+            ? 'Terima kasih! Mesej anda telah dihantar. Pihak klinik TCM kami akan menghubungi anda segera.' 
+            : (state.language === 'zh' ? '谢谢！您的咨询讯息已发送。我们中医团队将尽快与您联系。' : 'Thank you! Your message has been sent. Our TCM clinic team will get back to you shortly.'), 
         'success'
     );
 }
 window.submitContactForm = submitContactForm;
 
-// ── THERAPIST PROFILE MODAL HANDLERS ─────────────────────────────
+// ── PRACTITIONER / PHYSICIAN PROFILE MODAL HANDLERS ─────────────────────────────
 export function openTherapistModal(therapistId) {
     window.openTherapistModal = openTherapistModal;
     const therapist = THERAPISTS[therapistId];
@@ -672,19 +696,20 @@ export function openTherapistModal(therapistId) {
     if (modal && name) {
         if (img) img.src = therapist.image || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80';
         name.textContent = therapist.name;
-        if (role) role.textContent = therapist.role || 'Therapist';
+        if (role) role.textContent = therapist.role || 'TCM Physician';
         if (rating) rating.textContent = therapist.rating ? `${therapist.rating} (${therapist.reviews || 50} reviews)` : '4.9 (120 reviews)';
-        if (exp) exp.textContent = therapist.experienceYears || '5+ Years';
+        if (exp) exp.textContent = therapist.experienceYears || '10+ Years Clinical Experience';
         if (bio) bio.textContent = therapist.fullBio || therapist.description;
 
         // Populate certifications list
         if (certsContainer) {
             certsContainer.innerHTML = (therapist.certifications || [
-                'Certified International Spa Practitioner (CISP)',
-                'Traditional Healing Massage Diploma'
+                'Registered TCM Physician (TCMPB Singapore)',
+                'Bachelor of Traditional Chinese Medicine (BUCM)',
+                'Certified Clinical Acupuncturist & Tuina Specialist'
             ]).map(c => `
                 <li class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-[#50613f] text-sm font-bold">check_circle</span>
+                    <span class="material-symbols-outlined text-[#164e3f] text-sm font-bold">check_circle</span>
                     ${c}
                 </li>
             `).join('');

@@ -7,26 +7,26 @@ export const DEFAULT_STATE = {
     walletBalance: 250.00,
     selectedTopUpAmount: 100,
     activePackages: {
-        'aromatherapy-bundle': 2,
-        'radiance-bundle': 4
+        'tcm-pain-relief-bundle': 3,
+        'tcm-vitality-package': 2
     },
     // Stores the total sessions bought for each package (used for progress bar)
     packageTotalSessions: {
-        'aromatherapy-bundle': 10,
-        'radiance-bundle': 10
+        'tcm-pain-relief-bundle': 10,
+        'tcm-vitality-package': 5
     },
-    // Stores which therapist was chosen at purchase time, per package
+    // Stores which practitioner was chosen at purchase time, per package
     packageTherapists: {
-        'aromatherapy-bundle': null,
-        'radiance-bundle': null
+        'tcm-pain-relief-bundle': null,
+        'tcm-vitality-package': null
     },
     // When true, confirmation should deduct a package session (not charge wallet)
     packageBookingMode: null, // bundleId or null
     transactions: [
-        { date: 'Oct 24, 2023', description: 'Wallet Top Up', amount: 100.00, status: 'Completed' },
-        { date: 'Oct 15, 2023', description: 'Deep Tissue Massage Payment', amount: -120.00, status: 'Completed' },
-        { date: 'Oct 02, 2023', description: 'Signature Facial Payment', amount: -85.00, status: 'Completed' },
-        { date: 'Sep 28, 2023', description: 'Referral Bonus Credit', amount: 25.00, status: 'Completed' }
+        { date: 'Oct 24, 2026', description: 'Clinic Wallet Top Up', amount: 100.00, status: 'Completed' },
+        { date: 'Oct 15, 2026', description: 'Acupuncture Meridian Therapy Payment', amount: -85.00, status: 'Completed' },
+        { date: 'Oct 02, 2026', description: 'TCM Pulse & Herbal Consultation Payment', amount: -60.00, status: 'Completed' },
+        { date: 'Sep 28, 2026', description: 'Health Reward Bonus Credit', amount: 25.00, status: 'Completed' }
     ],
     booking: {
         service: null,
@@ -38,47 +38,47 @@ export const DEFAULT_STATE = {
         name: 'Eleanor Vance',
         email: 'eleanor.v@example.com',
         phone: '+65 9123 4567',
-        specialRequests: 'Please ensure the massage room is slightly warm, and avoid using lavender oils due to a mild allergy. Thank you.'
+        specialRequests: 'Mild neck stiffness and chronic migraine; prefers gentle acupuncture needle insertion.'
     },
     bookings: [
         {
             id: 'booking-1',
-            serviceName: 'Healing Stone Therapy',
-            serviceType: 'signature',
+            serviceName: 'Acupuncture Meridian Therapy',
+            serviceType: 'acupuncture',
             date: 'Thursday, Oct 24, 2026',
             time: '02:00 PM',
-            therapist: 'Sari',
-            location: 'Serenity Orchard Wing',
-            price: 180,
+            therapist: 'Physician Chen Wei Lin',
+            location: 'Chinatown Main Clinic',
+            price: 85,
             status: 'Upcoming'
         },
         {
             id: 'booking-2',
-            serviceName: 'Aromatherapy Massage',
-            serviceType: 'massage',
-            date: 'Wednesday, Oct 15, 2025',
+            serviceName: 'Therapeutic TCM Tuina Bodywork',
+            serviceType: 'tuina',
+            date: 'Wednesday, Oct 15, 2026',
             time: '10:00 AM',
-            therapist: 'Sari',
-            location: 'Serenity Orchard Wing',
-            price: 120,
+            therapist: 'Master Lim Keng Hock',
+            location: 'Chinatown Main Clinic',
+            price: 98,
             status: 'Completed'
         },
         {
             id: 'booking-3',
-            serviceName: 'Signature Facial',
-            serviceType: 'facial',
-            date: 'Monday, Oct 02, 2025',
+            serviceName: 'TCM Pulse & Herbal Consultation',
+            serviceType: 'consultation',
+            date: 'Monday, Oct 02, 2026',
             time: '03:30 PM',
-            therapist: 'Dewi',
-            location: 'Serenity Orchard Wing',
-            price: 85,
+            therapist: 'Physician Tan Mei Ling',
+            location: 'Chinatown Main Clinic',
+            price: 60,
             status: 'Completed'
         }
     ],
     notifications: [
-        { id: 'notif-1', date: 'Oct 24, 2026', text: 'Appointment Confirmed: Your Healing Stone Therapy with Sari on Thursday, Oct 24 has been confirmed.' },
-        { id: 'notif-2', date: 'Oct 24, 2025', text: 'Wallet Top-up: Successful top-up of MYR 100.00 to your digital wallet.' },
-        { id: 'notif-3', date: 'Sep 28, 2025', text: 'Welcome to Serenity & Soul: Find your inner balance with our exclusive services.' }
+        { id: 'notif-1', date: 'Oct 24, 2026', text: 'Appointment Confirmed: Your Acupuncture Meridian Therapy with Physician Chen Wei Lin has been scheduled.' },
+        { id: 'notif-2', date: 'Oct 24, 2026', text: 'Clinic Wallet Top-up: Successful top-up of credits to your digital health wallet.' },
+        { id: 'notif-3', date: 'Sep 28, 2026', text: 'Welcome to Yong Kang TCM: Embark on your holistic balance and healing journey.' }
     ],
     notificationPreferences: {
         email: true,

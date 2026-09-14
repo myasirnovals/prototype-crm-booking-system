@@ -150,6 +150,7 @@ export function syncServices() {
 syncServices();
 
 export let THERAPISTS = {};
+export let PRACTITIONERS = THERAPISTS;
 
 export function syncTherapists() {
     const branchKey = window.currentBranchId || window.currentTenantId || 'default-tcm';
@@ -247,6 +248,7 @@ export function syncTherapists() {
             image: ''
         };
         THERAPISTS = mapped;
+        PRACTITIONERS = mapped;
     } catch (e) {
         console.error('Failed to sync TCM practitioners:', e);
     }

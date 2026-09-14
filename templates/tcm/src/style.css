@@ -1,40 +1,143 @@
-/* Custom Styles for Serenity & Soul Spa Application */
+/* ==========================================================================
+   YONG KANG TCM & ACUPUNCTURE - TRADITIONAL CHINESE MEDICINE STYLESHEET
+   Aesthetics: Deep Forest Jade (#164e3f), Imperial Gold (#c59b27), Cinnabar (#b93826)
+   Warm Herbal Rice Parchment (#faf7f2), Refined Oriental Medical Heritage
+   ========================================================================== */
 
-/* Glassmorphism Cards */
-.glass-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 8px 32px rgba(44, 51, 51, 0.08);
+/* Google Fonts Imports */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Noto+Serif+SC:wght@500;600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    --tcm-jade: #164e3f;
+    --tcm-jade-dark: #0f3d32;
+    --tcm-jade-light: #216a57;
+    --tcm-gold: #c59b27;
+    --tcm-gold-light: #dfb76c;
+    --tcm-cinnabar: #b93826;
+    --tcm-parchment: #faf7f2;
+    --tcm-surface: #ffffff;
+    --tcm-border: #e7dfd1;
+    --tcm-text-main: #1c2623;
+    --tcm-text-muted: #596561;
 }
 
-.dark .glass-card {
-    background: rgba(43, 50, 50, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+body {
+    background-color: var(--tcm-parchment);
+    color: var(--tcm-text-main);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, .font-serif, .font-tcm-display {
+    font-family: 'Noto Serif SC', 'Cinzel', serif;
+}
+
+/* Traditional Oriental Seal Stamp (印章) */
+.tcm-seal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--tcm-cinnabar);
+    color: var(--tcm-cinnabar);
+    background: rgba(185, 56, 38, 0.05);
+    border-radius: 4px;
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700;
+    padding: 2px 8px;
+    letter-spacing: 0.05em;
+    font-size: 11px;
+}
+
+/* Oriental Subtle Border & Corner Accents */
+.tcm-card {
+    background: #ffffff;
+    border: 1px solid var(--tcm-border);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(22, 78, 63, 0.04);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+
+.tcm-card:hover {
+    border-color: var(--tcm-gold);
+    box-shadow: 0 12px 32px rgba(22, 78, 63, 0.09);
+    transform: translateY(-2px);
+}
+
+/* Buttons */
+.btn-tcm-primary {
+    background: linear-gradient(135deg, #164e3f 0%, #0f3d32 100%);
+    color: #ffffff;
+    border: 1px solid #236553;
+    box-shadow: 0 4px 14px rgba(22, 78, 63, 0.25);
+    transition: all 0.25s ease;
+}
+
+.btn-tcm-primary:hover {
+    background: linear-gradient(135deg, #1d614f 0%, #134b3e 100%);
+    box-shadow: 0 6px 20px rgba(22, 78, 63, 0.35);
+    transform: translateY(-1px);
+}
+
+.btn-tcm-gold {
+    background: linear-gradient(135deg, #c59b27 0%, #a98018 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(197, 155, 39, 0.25);
+    transition: all 0.25s ease;
+}
+
+.btn-tcm-gold:hover {
+    background: linear-gradient(135deg, #d8ab32 0%, #b88c1c 100%);
+    box-shadow: 0 6px 20px rgba(197, 155, 39, 0.35);
+    transform: translateY(-1px);
 }
 
 /* Glassmorphism Panels */
-.glass-panel {
-    background: rgba(255, 255, 255, 0.7);
+.glass-card {
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 8px 32px rgba(44, 51, 51, 0.08);
+    border: 1px solid rgba(231, 223, 209, 0.8);
+    box-shadow: 0 8px 32px rgba(22, 78, 63, 0.06);
 }
 
-.dark .glass-panel {
-    background: rgba(43, 50, 50, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.glass-panel {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(231, 223, 209, 0.6);
+    box-shadow: 0 8px 32px rgba(22, 78, 63, 0.06);
 }
 
 /* Hero Section Gradient Overlay */
 .hero-gradient {
-    background: linear-gradient(to bottom, rgba(244, 251, 250, 0.2), rgba(244, 251, 250, 1));
+    background: linear-gradient(to bottom, rgba(250, 247, 242, 0.15) 0%, rgba(250, 247, 242, 0.7) 60%, rgba(250, 247, 242, 1) 100%);
 }
 
-.dark .hero-gradient {
-    background: linear-gradient(to bottom, rgba(22, 29, 29, 0.2), rgba(22, 29, 29, 1));
+/* Stepper Active/Completed/Inactive States in TCM Jade & Gold */
+.step-active .step-line { background-color: #164e3f; }
+.step-active .step-icon { background-color: #164e3f; color: white; border-color: #c59b27; }
+.step-completed .step-line { background-color: #164e3f; }
+.step-completed .step-icon { background-color: #164e3f; color: white; border-color: #164e3f; }
+.step-inactive .step-line { background-color: #dfd7c9; }
+.step-inactive .step-icon { background-color: transparent; color: #88938f; border-color: #dfd7c9; }
+
+/* Hide Scrollbars */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Material Symbols */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    transition: font-variation-settings 0.2s ease;
+}
+.material-symbols-outlined.filled {
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
 }
 
 /* Shimmer Loading Animation */
@@ -43,90 +146,36 @@
     background-size: 200% 100%;
     animation: shimmer-anim 3s infinite;
 }
-
 @keyframes shimmer-anim {
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
 }
 
-/* Hide Scrollbars */
-.hide-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-
-.hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-/* Stepper Active/Completed/Inactive States */
-.step-active .step-line { background-color: #50613f; }
-.step-active .step-icon { background-color: #50613f; color: white; border-color: #50613f; }
-.step-completed .step-line { background-color: #50613f; }
-.step-completed .step-icon { background-color: #50613f; color: white; border-color: #50613f; }
-.step-inactive .step-line { background-color: #c5c8bc; }
-.step-inactive .step-icon { background-color: transparent; color: #75786e; border-color: #c5c8bc; }
-
-/* Custom Micro-interactions */
-@keyframes slideUp {
-    from { transform: translate(-50%, 100%); opacity: 0; }
-    to { transform: translate(-50%, 0); opacity: 1; }
-}
-
-.animate-slide-up {
-    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Base Body Styling Transitions */
-body {
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Material Symbols Outlined Custom configurations */
-.material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-    transition: font-variation-settings 0.2s ease;
-}
-
-.material-symbols-outlined.filled {
-    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-}
-
-/* Mobile-Friendly Adjustments */
-@media (max-w: 768px) {
-    /* Hide desktop-only nav components */
+/* Mobile Responsive Tweaks */
+@media (max-width: 768px) {
     .wallet-nav-pill {
         display: none !important;
     }
-    
     nav button[onclick="startBookingWithService(null)"] {
         display: none !important;
     }
-    
-    /* Shrink logo font on small screens to prevent wrap */
     nav .font-headline-lg {
         font-size: 0.95rem !important;
         font-weight: 700 !important;
     }
-    
-    /* Add padding at bottom of main container so it does not get cut off by floating button */
     main {
         padding-bottom: 74px !important;
     }
-    
-    /* Ensure user login modal fits nicely */
     #user-login-modal {
         padding-bottom: 0px;
     }
 }
 
-/* Mobile Bottom Navigation Layout & Visibility Control */
 #mobile-bottom-nav {
-    display: none !important; /* Default hidden on all screen sizes */
+    display: none !important;
 }
-
 @media (max-width: 767px) {
     #mobile-bottom-nav.show-mobile-nav {
-        display: flex !important; /* Show as flex on mobile view only */
+        display: flex !important;
     }
 }

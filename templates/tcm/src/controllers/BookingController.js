@@ -17,19 +17,19 @@ export function nextStep(currentStep) {
     window.nextStep = nextStep;
     if (currentStep === 1) {
         if (!state.booking.service) {
-            showNotification(state.language === 'ms' ? 'Sila pilih perkhidmatan terlebih dahulu untuk meneruskan.' : 'Please select a service first to proceed.', 'warning');
+            showNotification(state.language === 'ms' ? 'Sila pilih perkhidmatan rawatan untuk meneruskan.' : (state.language === 'zh' ? '请先选择诊疗服务以继续。' : 'Please select a clinical service first to proceed.'), 'warning');
             return;
         }
         navigateTo('select-therapist');
     } else if (currentStep === 2) {
         if (!state.booking.therapist) {
-            showNotification(state.language === 'ms' ? 'Sila pilih terapis terlebih dahulu untuk meneruskan.' : 'Please select a therapist first to proceed.', 'warning');
+            showNotification(state.language === 'ms' ? 'Sila pilih pengamal TCM untuk meneruskan.' : (state.language === 'zh' ? '请先选择中医师以继续。' : 'Please select a TCM physician first to proceed.'), 'warning');
             return;
         }
         navigateTo('select-time');
     } else if (currentStep === 3) {
         if (!state.booking.date || !state.booking.time) {
-            showNotification(state.language === 'ms' ? 'Sila pilih tarikh dan masa terlebih dahulu untuk meneruskan.' : 'Please select a date and time first to proceed.', 'warning');
+            showNotification(state.language === 'ms' ? 'Sila pilih tarikh dan masa untuk meneruskan.' : (state.language === 'zh' ? '请选择预约日期与时间以继续。' : 'Please select a date and time first to proceed.'), 'warning');
             return;
         }
         navigateTo('confirm-booking');
@@ -49,11 +49,14 @@ export function confirmReservation() {
     if (!service) return;
 
     requireLogin(() => {
+        const currency = currentTenant?.currency || 'SGD';
+        const clinicAddress = currentTenant?.address || 'Yong Kang TCM Clinic, 54 Pagoda Street, Chinatown, Singapore 059213';
+
         // --- Package Session Mode: deduct 1 session, no payment needed ---
         if (state.packageBookingMode) {
             const bundleId = state.packageBookingMode;
             if ((state.activePackages[bundleId] || 0) <= 0) {
-                showNotification(state.language === 'ms' ? 'Semua sesi pakej telah habis.' : 'All sessions for this package have been used.', 'error');
+                showNotification(state.language === 'ms' ? 'Semua sesi pakej telah habis.' : (state.language === 'zh' ? '此配套的所有疗程次数已用罄。' : 'All sessions for this package have been used.'), 'error');
                 return;
             }
             state.activePackages[bundleId]--;
@@ -69,8 +72,8 @@ export function confirmReservation() {
                 serviceType: service.type,
                 date: state.booking.date || new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }),
                 time: state.booking.time || '11:00 AM',
-                therapist: state.booking.therapist ? state.booking.therapist.name : 'Sari',
-                location: 'Serenity & Soul Sanctuary, 12 Orchard Road, Singapore 238886',
+                therapist: state.booking.therapist ? state.booking.therapist.name : 'Physician Chen Wei Lin',
+                location: clinicAddress,
                 price: 0,
                 status: 'Upcoming'
             });
@@ -81,19 +84,21 @@ export function confirmReservation() {
                 date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
                 text: state.language === 'ms'
                     ? `Janji Temu Disahkan: Sesi pakej anda untuk ${getServiceTranslation(service.id, 'name', service.name)} telah ditempah.`
-                    : `Appointment Confirmed: Your package session for ${service.name} has been booked.`
+                    : (state.language === 'zh'
+                        ? `预约已确认: 您的 ${getServiceTranslation(service.id, 'name', service.name)} 疗程配套时段已预约。`
+                        : `Appointment Confirmed: Your package session for ${service.name} has been booked.`)
             });
 
             state.successResId = resId;
 
-            showNotification(state.language === 'ms' ? 'Sesi berjaya ditempah! 1 sesi ditolak dari pakej anda.' : 'Session successfully booked! 1 session deducted from your package.', 'success');
+            showNotification(state.language === 'ms' ? 'Sesi berjaya ditempah! 1 sesi ditolak dari pakej anda.' : (state.language === 'zh' ? '时段预约成功！已扣除1次配套疗程。' : 'Session successfully booked! 1 session deducted from your package.'), 'success');
             navigateTo('success');
             return;
         }
 
         // --- Standard Booking ---
         const subtotal = service.price;
-        const tax = subtotal * 0.07;
+        const tax = 0; // Medical / clinical consultation exempt or 0%
         const total = subtotal + tax;
         const depositAmount = total * 0.5;
         const balanceDue = total * 0.5;
@@ -101,8 +106,10 @@ export function confirmReservation() {
         if (selectedPaymentMethod === 'wallet') {
             if (state.walletBalance < depositAmount) {
                 const errorMsg = state.language === 'ms'
-                    ? `Baki dompet tidak mencukupi untuk deposit 50% (MYR ${depositAmount.toFixed(2)}). Mengarah ke Tambah Nilai...`
-                    : `Insufficient wallet balance for 50% deposit (MYR ${depositAmount.toFixed(2)}). Redirecting to Top Up...`;
+                    ? `Baki dompet tidak mencukupi untuk deposit 50% (${currency} ${depositAmount.toFixed(2)}). Mengarah ke Tambah Nilai...`
+                    : (state.language === 'zh'
+                        ? `钱包余额不足以支付50%订金 (${currency} ${depositAmount.toFixed(2)})。正在跳转至充值...`
+                        : `Insufficient wallet balance for 50% deposit (${currency} ${depositAmount.toFixed(2)}). Redirecting to Top Up...`);
                 showNotification(errorMsg, 'error');
                 setTimeout(() => {
                     navigateTo('topup');
@@ -114,13 +121,13 @@ export function confirmReservation() {
             // Add wallet transaction log
             state.transactions.unshift({
                 date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
-                description: state.language === 'ms' ? `Deposit 50%: ${getServiceTranslation(service.id, 'name', service.name)}` : `50% Deposit: ${service.name}`,
+                description: state.language === 'ms' ? `Deposit 50%: ${getServiceTranslation(service.id, 'name', service.name)}` : (state.language === 'zh' ? `50% 订金: ${getServiceTranslation(service.id, 'name', service.name)}` : `50% Deposit: ${service.name}`),
                 amount: -depositAmount,
                 status: 'Completed'
             });
         }
 
-        // Earn Loyalty Points (10 pts per MYR 10 deposit)
+        // Earn Loyalty Points (10 pts per 10 currency spent on deposit)
         const earnedPoints = Math.max(10, Math.floor(depositAmount / 10) * 10);
         state.loyaltyPoints = (state.loyaltyPoints || 350) + earnedPoints;
 
@@ -134,8 +141,8 @@ export function confirmReservation() {
             serviceType: service.type,
             date: state.booking.date || new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }),
             time: state.booking.time || '11:00 AM',
-            therapist: state.booking.therapist ? state.booking.therapist.name : 'Sari',
-            location: 'Serenity & Soul Sanctuary, 12 Orchard Road, Singapore 238886',
+            therapist: state.booking.therapist ? state.booking.therapist.name : 'Physician Chen Wei Lin',
+            location: clinicAddress,
             price: total,
             depositPaid: depositAmount,
             balanceDue: balanceDue,
@@ -147,14 +154,16 @@ export function confirmReservation() {
             id: 'notif-' + Date.now(),
             date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
             text: state.language === 'ms'
-                ? `Janji Temu Disahkan: Deposit 50% (MYR ${depositAmount.toFixed(2)}) dibayar. +${earnedPoints} Poin Kesetiaan ditambah!`
-                : `Appointment Confirmed: 50% deposit (MYR ${depositAmount.toFixed(2)}) paid. +${earnedPoints} Loyalty Points earned!`
+                ? `Janji Temu Disahkan: Deposit 50% (${currency} ${depositAmount.toFixed(2)}) dibayar. +${earnedPoints} Mata Ganjaran ditambah!`
+                : (state.language === 'zh'
+                    ? `预约已确认: 已支付50%订金 (${currency} ${depositAmount.toFixed(2)})。获得 +${earnedPoints} 积分！`
+                    : `Appointment Confirmed: 50% deposit (${currency} ${depositAmount.toFixed(2)}) paid. +${earnedPoints} Loyalty Points earned!`)
         });
 
         state.successResId = resId;
         navigateTo('success');
 
-        showNotification(state.language === 'ms' ? 'Tempahan anda telah berjaya disimpan.' : 'Your reservation has been saved successfully.', 'success');
+        showNotification(state.language === 'ms' ? 'Tempahan klinikal anda telah berjaya disimpan.' : (state.language === 'zh' ? '您的中医预约已成功记录。' : 'Your clinical reservation has been saved successfully.'), 'success');
     });
 };
 

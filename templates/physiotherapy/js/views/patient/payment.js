@@ -131,10 +131,40 @@ const PatientPaymentView = {
                     therapistName: booking.therapist ? booking.therapist.name : 'Dr. Sarah Mitchell',
                     date: `Oct ${booking.date || '24'}, 2024`,
                     time: booking.time || '11:45 AM',
-                    location: 'Downtown Medical Plaza, Suite 402',
+                    location: (window.currentTenant && window.currentTenant.address) || 'Downtown Medical Plaza, Suite 402',
                     price: booking.service ? booking.service.price : 85000,
                     paymentMethod
                 });
+
+                // Synchronize with Cliniva Central Booking Management SSOT
+                try {
+                    const clinivaBookings = JSON.parse(localStorage.getItem('cliniva_bookings') || '[]');
+                    const bookingCode = 'BK-P' + Math.floor(100000 + Math.random() * 900000);
+                    const newClinivaBooking = {
+                        code: bookingCode,
+                        patientName: finalUser ? finalUser.name : 'James Miller',
+                        patientPhone: finalUser?.phone || '+65 9123 4567',
+                        patientEmail: finalUser?.email || 'patient@cliniva.com',
+                        branchId: (window.currentTenant && window.currentTenant.id) || 'sg-orchard',
+                        branchName: (window.currentTenant && window.currentTenant.name) || 'PhysioCare Elite Rehab',
+                        branchAddress: (window.currentTenant && window.currentTenant.address) || 'Downtown Medical Plaza, Suite 402',
+                        serviceName: booking.service ? booking.service.name : 'Standard Physiotherapy',
+                        practitionerName: booking.therapist ? booking.therapist.name : 'Dr. Sarah Mitchell',
+                        schedule: booking.time || '11:45 AM',
+                        scheduleDate: new Date().toISOString().split('T')[0],
+                        room: 'Room A2 (Physio Suite)',
+                        depositPaid: (booking.service ? booking.service.price : 85) * 0.25,
+                        paymentStatus: 'PAID',
+                        status: 'CONFIRMED',
+                        templateType: 'physio',
+                        chiefComplaint: 'Postural Rehabilitation & Movement Assessment',
+                        createdAt: new Date().toISOString()
+                    };
+                    clinivaBookings.unshift(newClinivaBooking);
+                    localStorage.setItem('cliniva_bookings', JSON.stringify(clinivaBookings));
+                } catch (e) {
+                    console.warn('[PhysioCare] Failed to sync booking with Cliniva:', e);
+                }
 
                 // Reset booking state so a new booking starts clean
                 GuestBookingView.state = { service: null, therapist: null, date: '13', time: '11:45 AM' };

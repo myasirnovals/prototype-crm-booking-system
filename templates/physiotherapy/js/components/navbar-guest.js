@@ -42,6 +42,8 @@ const NavbarGuest = {
             ${t('lang.switch')}
         </button>`;
 
+        const brandName = (window.currentTenant && window.currentTenant.name) ? window.currentTenant.name : 'PhysioCare';
+
         return `
         <!-- Guest Navbar -->
         <nav id="navbar-guest" class="sticky top-0 w-full z-50 bg-clinical-white/95 backdrop-blur-md border-b border-outline-variant/30 transition-all duration-300">
@@ -51,7 +53,7 @@ const NavbarGuest = {
                     <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                         <span class="material-symbols-outlined text-on-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">medical_services</span>
                     </div>
-                    <span class="font-headline-md text-headline-md font-extrabold text-primary tracking-tighter text-lg">PhysioCare</span>
+                    <span class="font-headline-md text-headline-md font-extrabold text-primary tracking-tighter text-lg">${brandName}</span>
                 </a>
 
                 <!-- Desktop nav links -->
@@ -61,6 +63,10 @@ const NavbarGuest = {
 
                 <!-- Right actions -->
                 <div class="flex items-center gap-3">
+                    <a href="../../pages/public/sign-in.html" class="hidden md:flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-primary transition-all px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-primary/40" title="Go to Cliniva Management Portal">
+                        <span class="material-symbols-outlined text-[15px]">corporate_fare</span>
+                        Cliniva Portal
+                    </a>
                     ${langBtn}
                     <a href="#/booking" id="navbar-book-btn"
                        class="hidden sm:flex items-center gap-1.5 bg-primary text-on-primary px-5 py-2.5 rounded-lg font-button-text text-sm active:scale-95 transition-all shadow-md hover:shadow-lg hover:bg-primary-container">
@@ -86,7 +92,7 @@ const NavbarGuest = {
                         <div class="w-7 h-7 bg-primary rounded-lg flex items-center justify-center">
                             <span class="material-symbols-outlined text-on-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">medical_services</span>
                         </div>
-                        <span class="font-bold text-primary">PhysioCare</span>
+                        <span class="font-bold text-primary">${brandName}</span>
                     </div>
                     <button onclick="NavbarGuest.closeMobile()" class="p-2 rounded-full hover:bg-surface-muted text-on-surface-variant">
                         <span class="material-symbols-outlined">close</span>
@@ -97,11 +103,15 @@ const NavbarGuest = {
                     ${mobileLinks}
                 </nav>
                 <!-- Book CTA -->
-                <div class="mt-auto pt-4 border-t border-outline-variant">
+                <div class="mt-auto pt-4 border-t border-outline-variant flex flex-col gap-2">
                     <a href="#/booking" onclick="NavbarGuest.closeMobile()"
                        class="flex items-center justify-center gap-2 bg-primary text-on-primary px-5 py-3 rounded-xl font-button-text text-button-text w-full hover:bg-primary-container transition-all">
                         <span class="material-symbols-outlined text-[20px]">calendar_today</span>
                         ${t('nav.bookNow')}
+                    </a>
+                    <a href="../../pages/public/sign-in.html" class="flex items-center justify-center gap-1.5 text-xs font-bold text-slate-500 py-2 hover:text-primary">
+                        <span class="material-symbols-outlined text-[15px]">corporate_fare</span>
+                        Cliniva Portal
                     </a>
                 </div>
             </div>

@@ -39,6 +39,61 @@
       }
     </script>
 
+    <!-- Dynamic Cliniva Multi-Tenant Branch Resolver -->
+    <script>
+      (function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetBranchId = urlParams.get('branch') || urlParams.get('id') || 'default-physio';
+
+        const DEFAULT_PHYSIO_THEME = {
+          id: 'default-physio',
+          name: 'PhysioCare Elite Rehab',
+          tagline: 'Evidence-based manual therapy, joint mobility & athletic recovery',
+          logo: '',
+          address: '290 Orchard Road, Paragon Medical Suites #14-02, Singapore 238859',
+          phone: '+65 6738 1234',
+          hours: 'Mon - Sat (08:30 - 20:00 SGT)',
+          currency: 'SGD',
+          colors: {
+            primary: '#005a71',
+            secondary: '#4a626a'
+          }
+        };
+
+        let clinivaBranch = null;
+        try {
+          const clinivaBranches = JSON.parse(localStorage.getItem('cliniva_branches')) || [];
+          if (Array.isArray(clinivaBranches) && clinivaBranches.length > 0) {
+            clinivaBranch = clinivaBranches.find(b => 
+              (b.id && b.id.toLowerCase() === targetBranchId.toLowerCase()) ||
+              (b.name && b.name.toLowerCase() === targetBranchId.toLowerCase())
+            );
+            if (!clinivaBranch && (targetBranchId === 'default-physio' || targetBranchId === 'physio' || targetBranchId === 'physiotherapy')) {
+              clinivaBranch = clinivaBranches.find(b => b.template === 'physio' || b.template === 'physiotherapy');
+            }
+          }
+        } catch (e) {
+          console.warn('[PhysioCare] cliniva_branches lookup error:', e);
+        }
+
+        const currentTenant = clinivaBranch ? {
+          id: clinivaBranch.id,
+          name: clinivaBranch.name || DEFAULT_PHYSIO_THEME.name,
+          tagline: clinivaBranch.tagline || DEFAULT_PHYSIO_THEME.tagline,
+          logo: clinivaBranch.logo || DEFAULT_PHYSIO_THEME.logo,
+          address: clinivaBranch.address || DEFAULT_PHYSIO_THEME.address,
+          phone: clinivaBranch.phone || DEFAULT_PHYSIO_THEME.phone,
+          hours: clinivaBranch.hours || clinivaBranch.operatingHours || DEFAULT_PHYSIO_THEME.hours,
+          currency: clinivaBranch.currency || DEFAULT_PHYSIO_THEME.currency,
+          colors: clinivaBranch.colors || DEFAULT_PHYSIO_THEME.colors
+        } : DEFAULT_PHYSIO_THEME;
+
+        window.currentTenant = currentTenant;
+        window.currentBranch = currentTenant;
+        document.title = `${currentTenant.name} | Professional Physiotherapy & Rehabilitation`;
+      })();
+    </script>
+
     <!-- Scripts -->
     <script src="js/router.js"></script>
 

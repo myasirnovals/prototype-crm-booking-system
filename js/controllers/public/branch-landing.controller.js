@@ -35,7 +35,7 @@ export class BranchLandingController {
       window.location.replace(spaUrl);
       return;
     }
-    if (this.selectedBranch && this.selectedBranch.template === "physiotherapy") {
+    if (this.selectedBranch && (this.selectedBranch.template === "physiotherapy" || this.selectedBranch.template === "physio")) {
       const physioUrl = `../../templates/physiotherapy/index.html?branch=${encodeURIComponent(this.selectedBranch.id)}`;
       window.location.replace(physioUrl);
       return;

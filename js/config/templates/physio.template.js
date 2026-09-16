@@ -13,7 +13,7 @@ export const PHYSIO_TEMPLATE = {
   accentColor: "#0284c7", // Clinical Blue / Ocean Cyan
   practitionerTitle: "Senior Physiotherapist / Rehab Specialist",
   practitionerTitleI18n: "template.physio.practitionerTitle",
-  demoUrl: "https://prototype-application-physioterapy.vercel.app/#/",
+  demoUrl: "../../templates/physiotherapy/index.html",
   pricing: {
     monthly: 99,
     sixMonth: 534,

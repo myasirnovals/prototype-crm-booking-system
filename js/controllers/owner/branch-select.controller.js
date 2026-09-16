@@ -309,7 +309,7 @@ export class BranchSelectController {
         if (branch) {
           if (branch.template === "wellness" || branch.template === "spa") {
             targetPage = "/templates/spa/index.html";
-          } else if (branch.template === "physiotherapy") {
+          } else if (branch.template === "physiotherapy" || branch.template === "physio") {
             targetPage = "/templates/physiotherapy/index.html";
           } else if (branch.template === "nutrition") {
             targetPage = "/templates/nutrition/index.html";

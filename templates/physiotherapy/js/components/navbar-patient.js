@@ -31,7 +31,7 @@ const langBtn = `
         <header class="w-full sticky top-0 z-50 bg-clinical-white dark:bg-inverse-surface shadow-[0_20px_20px_-5px_rgba(14,116,144,0.05)] transition-all duration-200 ease-in-out">
             <nav class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
                 <div class="flex items-center gap-stack-lg">
-                    <a href="#/patient/dashboard" class="text-headline-md font-headline-md text-primary dark:text-primary-fixed tracking-tight">PhysioCare</a>
+                    <a href="#/patient/dashboard" class="text-headline-md font-headline-md text-primary dark:text-primary-fixed tracking-tight">${(window.currentTenant && window.currentTenant.name) ? window.currentTenant.name : 'PhysioCare'}</a>
                     <div class="hidden md:flex gap-stack-md">
                         ${navLinks}
                     </div>

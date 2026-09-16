@@ -1159,7 +1159,7 @@ export class OwnerDashboardController {
       if (this.activeBranch) {
         if (this.activeBranch.template === 'wellness' || this.activeBranch.template === 'spa') {
           targetPage = '/templates/spa/index.html';
-        } else if (this.activeBranch.template === 'physiotherapy') {
+        } else if (this.activeBranch.template === 'physiotherapy' || this.activeBranch.template === 'physio') {
           targetPage = '/templates/physiotherapy/index.html';
         } else if (this.activeBranch.template === 'nutrition') {
           targetPage = '/templates/nutrition/index.html';

@@ -122,7 +122,7 @@ export function renderAllServicesView() {
                     </div>
                     <div class="p-6 flex flex-col justify-between flex-grow">
                         <div>
-                            <h3 class="font-serif text-base font-bold text-[#045cb4] mb-2 line-clamp-1 leading-snug">${getServiceTranslation(srv.id, 'name', srv.name)}</h3>
+                            <h3 class="font-sans text-base font-bold text-[#045cb4] mb-2 line-clamp-1 leading-snug">${getServiceTranslation(srv.id, 'name', srv.name)}</h3>
                             <p class="text-xs text-slate-600 leading-relaxed mb-4 line-clamp-3">${getServiceTranslation(srv.id, 'desc', srv.description)}</p>
                             ${includesHtml}
                         </div>
@@ -134,7 +134,7 @@ export function renderAllServicesView() {
                                     <span class="text-[10px] font-medium">${srv.duration || '60 Mins'}</span>
                                 </div>
                                 ${srv.regularPrice && srv.regularPrice > srv.price ? `<span class="text-slate-400 text-[10px] line-through decoration-red-500">${currency} ${srv.regularPrice.toFixed(2)}</span>` : ''}
-                                <span class="font-serif font-bold text-[#045cb4] text-base">${currency} ${srv.price}</span>
+                                <span class="font-sans font-bold text-[#045cb4] text-base">${currency} ${srv.price}</span>
                             </div>
                             <button onclick="startBookingWithService('${srv.id}')" class="${srv.bestValue ? 'btn-tcm-gold text-white' : 'btn-tcm-primary text-white'} font-bold text-xs px-4 py-2.5 rounded-full transition-all shadow-sm flex items-center gap-1.5">
                                 ${isPackage ? (state.language === 'ms' ? 'Tempah Pakej' : (state.language === 'zh' ? '预约配套' : 'Book Package')) : (state.language === 'ms' ? 'Tempah Rawatan' : (state.language === 'zh' ? '预约诊疗' : 'Book Therapy'))} <span class="material-symbols-outlined text-sm">calendar_month</span>
@@ -158,7 +158,7 @@ export function renderAllServicesView() {
                         <span class="tcm-seal text-[10px] font-bold uppercase tracking-wider block mb-1">
                             ${state.language === 'ms' ? 'Katalog Perubatan Tradisional Cina' : (state.language === 'zh' ? '纯正中医 • 诊疗大全' : 'TCM Clinical Catalog')}
                         </span>
-                        <h1 class="font-serif text-2xl md:text-3xl text-[#045cb4] font-bold">
+                        <h1 class="font-sans text-2xl md:text-3xl text-[#045cb4] font-bold">
                             ${state.language === 'ms' ? 'Semua Rawatan & Pakej TCM' : (state.language === 'zh' ? '全系中医诊疗与疗程配套' : 'All TCM Therapies & Packages')}
                         </h1>
                     </div>

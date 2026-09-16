@@ -13,8 +13,8 @@ const SUPABASE_CDN_URL = "https://esm.sh/@supabase/supabase-js@2.39.8";
  *   localStorage.setItem('cliniva_supabase_key', 'eyJhbGciOi...');
  */
 export const SUPABASE_CONFIG = {
-  url: "https://apfkptmitrvdpdoudfys.supabase.co",       // e.g. "https://your-project.supabase.co"
-  anonKey: "sb_publishable_--jX4BfJw4Xv_TaTFI8bzw_7qnbuWsS"    // e.g. "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  url: "https://apfkptmitrvdpdoudfys.supabase.co",
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwZmtwdG1pdHJ2ZHBkb3VkZnlzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg5MTAwNTcsImV4cCI6MjEwNDQ4NjA1N30.ylpj_LbcK3pf5vYp6oi52wG9S02g1MR6idfIamgIgWI"
 };
 
 let supabaseInstance = null;
@@ -32,7 +32,9 @@ export function getActiveSupabaseConfig() {
   if (typeof window !== "undefined" && window.localStorage) {
     const customUrl = window.localStorage.getItem("cliniva_supabase_url");
     const customKey = window.localStorage.getItem("cliniva_supabase_key");
-    if (customUrl && customKey) {
+    if (customKey && customKey.startsWith("sb_publishable_")) {
+      window.localStorage.removeItem("cliniva_supabase_key");
+    } else if (customUrl && customKey) {
       url = customUrl.trim();
       anonKey = customKey.trim();
     }

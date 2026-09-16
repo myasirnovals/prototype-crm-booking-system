@@ -458,6 +458,24 @@ export function t(key) {
 export function getServiceTranslation(serviceId, field, fallback) {
     window.getServiceTranslation = getServiceTranslation;
     const dict = {
+        'tcm-teleconsult-intro': {
+            name_ms: 'Konsultasi Video TCM Dalam Talian (Tawaran Pengenalan)',
+            desc_ms: 'Mulakan perjalanan kesihatan anda bersama pengamal bertauliah melalui panggilan video selamat. Penilaian gaya hidup dan simptom komprehensif.',
+            name_zh: '线上中医视频问诊 (首诊特惠)',
+            desc_zh: '由注册执业中医师进行一对一线上视频四诊，详尽评估体质与生活作息，提供贴心中医调理建议。'
+        },
+        'tcm-laser-acupuncture': {
+            name_ms: 'Terapi Akupunktur Laser Tanpa Sakit',
+            desc_ms: 'Akupunktur laser aras rendah moden yang selesa sepenuhnya tanpa jarum. Amat sesuai untuk mereka yang bimbang jarum, kanak-kanak, dan warga emas.',
+            name_zh: '现代无痛舒适激光针灸',
+            desc_zh: '采用前沿低能量激光照射经络腧穴，完全无痛无创，特别适合对针刺敏感者、老人与儿童。'
+        },
+        'tcm-homecare-house-call': {
+            name_ms: 'Lawatan Rawatan TCM Ke Rumah Peribadi',
+            desc_ms: 'Lawatan pengamal profesional ke rumah anda di serata Singapura untuk rawatan akupunktur, tuina, atau diagnosis herba dalam keselesaan kediaman anda.',
+            name_zh: '专业上门中医诊疗与出诊服务',
+            desc_zh: '专业中医师全岛上门服务，在您私密舒适的家中提供针灸、正骨推拿及道地中药把脉问诊。'
+        },
         'tcm-pain-relief-bundle': {
             name_ms: 'Pakej Tuina Ortopedik & Pelepasan Sakit (10 Sesi)',
             desc_ms: 'Program pemulihan sakit berstruktur untuk sakit leher kronik, bahu, pinggang dan linu panggul dengan pakar TCM berdaftar.',

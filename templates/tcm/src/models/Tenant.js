@@ -19,11 +19,13 @@ export const DEFAULT_TCM_THEME = {
   hours: 'Mon - Fri (09:00 - 17:00 SGT), Sat by Appointment',
   currency: 'SGD',
   colors: {
-    primary: '#046bd2',
+    primary: '#26AAE1',
+    primaryHover: '#046bd2',
     secondary: '#00a86b',
     accent: '#ff6900',
     background: '#f0f5fa',
-    surfaceContainer: '#e8f2fc'
+    surfaceContainer: '#B4E3F7',
+    surfaceContainerSoft: '#e8f4fc'
   }
 };
 

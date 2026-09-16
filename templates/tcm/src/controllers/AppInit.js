@@ -39,8 +39,8 @@ export function applyTenantDynamicBranding() {
         }
 
         // 4. About Section Clinic Name
-        const aboutTitle = document.querySelector('.font-serif.text-xl.font-bold.block.mb-1');
-        if (aboutTitle) aboutTitle.textContent = `${currentTenant.name} TCM Clinic`;
+        const aboutTitle = document.getElementById('clinic-heritage-name') || document.querySelector('.text-xl.font-bold.block.mb-1');
+        if (aboutTitle) aboutTitle.textContent = `${currentTenant.name}`;
 
         // 5. WhatsApp Integration
         if (currentTenant.phone) {

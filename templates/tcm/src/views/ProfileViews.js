@@ -34,7 +34,7 @@ export function renderProfileView() {
                     <span class="font-label-caps text-[9px] text-[#B45309] font-bold uppercase tracking-wider">${t('next_appointment_title')}</span>
                     <span class="material-symbols-outlined text-on-surface-variant text-lg">schedule</span>
                 </div>
-                <h3 class="font-serif text-sm font-bold text-[#1E293B] mb-1">${nextApp.serviceName}</h3>
+                <h3 class="font-sans text-sm font-bold text-[#1E293B] mb-1">${nextApp.serviceName}</h3>
                 <p class="font-body-sm text-[11px] text-on-surface-variant mb-4">${nextApp.date} • ${nextApp.time}</p>
                 <button onclick="rescheduleBooking('${nextApp.id}')" class="text-[#B45309] hover:text-[#92400e] font-bold text-[11px] transition-colors">
                     ${t('btn_reschedule')}
@@ -72,7 +72,7 @@ export function renderProfileView() {
                 </div>
                 <div class="text-center md:text-left">
                     <span class="font-label-caps text-[10px] md:text-xs text-[#B45309] uppercase tracking-wider font-semibold block mb-1">${t('welcome_back')}</span>
-                    <h1 class="font-serif text-3xl md:text-4xl text-[#1E293B] font-bold mb-2">${state.guestInfo.name}</h1>
+                    <h1 class="font-sans text-3xl md:text-4xl text-[#1E293B] font-bold mb-2">${state.guestInfo.name}</h1>
                     <p class="font-body-sm text-xs md:text-sm text-on-surface-variant max-w-xl leading-relaxed">${state.language === 'ms' ? 'Tempat ketenangan anda menanti. Hari ini adalah hari yang sempurna untuk mencari keseimbangan dalaman dan memulihkan semangat anda.' : 'Your sanctuary awaits. Today is a perfect day to find your inner balance and restore your spirit.'}</p>
                 </div>
             </div>
@@ -84,7 +84,7 @@ export function renderProfileView() {
                     <!-- My Active Packages -->
                     <div class="glass-panel rounded-3xl p-6 md:p-8">
                         <div class="flex justify-between items-center mb-6">
-                            <h2 class="font-serif text-xl md:text-2xl text-[#1E293B] font-bold">${state.language === 'ms' ? 'Pakej Aktif Saya' : 'My Active Packages'}</h2>
+                            <h2 class="font-sans text-xl md:text-2xl text-[#1E293B] font-bold">${state.language === 'ms' ? 'Pakej Aktif Saya' : 'My Active Packages'}</h2>
                             <button onclick="navigateTo('active-packages')" class="text-[#B45309] hover:text-[#92400e] font-semibold text-xs flex items-center gap-1 transition-colors">
                                 ${state.language === 'ms' ? 'Lihat Semua' : 'View All'} <span class="material-symbols-outlined text-xs">arrow_forward</span>
                             </button>
@@ -119,7 +119,7 @@ export function renderProfileView() {
                                                     </div>
                                                     ${statusBadge}
                                                 </div>
-                                                <h3 class="font-serif text-base text-[#1E293B] font-bold mb-1">${bundle.name}</h3>
+                                                <h3 class="font-sans text-base text-[#1E293B] font-bold mb-1">${bundle.name}</h3>
                                                 <p class="font-body-sm text-xs text-on-surface-variant mb-3 line-clamp-2">${bundle.description}</p>
                                                 ${therapist ? `
                                                 <div class="flex items-center gap-2 bg-[#f0f4e8] rounded-lg px-3 py-2 mb-3">
@@ -157,7 +157,7 @@ export function renderProfileView() {
                             <div>
                                 <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block mb-1">${state.language === 'ms' ? 'Dompet Digital' : 'Digital Wallet'}</span>
                                 <span class="text-xs text-on-surface-variant block mb-2">${t('wallet_balance_title')}</span>
-                                <span class="font-serif text-3xl text-[#1E293B] font-bold block mb-6">${currentTenant?.currency || 'SGD'} ${state.walletBalance.toFixed(2)}</span>
+                                <span class="font-sans text-3xl text-[#1E293B] font-bold block mb-6">${currentTenant?.currency || 'SGD'} ${state.walletBalance.toFixed(2)}</span>
                             </div>
                             <div class="flex gap-3">
                                 <button onclick="navigateTo('wallet')" class="bg-[#046bd2] text-white hover:bg-[#045cb4] font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2">
@@ -175,7 +175,7 @@ export function renderProfileView() {
                             </div>
                             <div class="relative z-10">
                                 <span class="font-label-caps text-[10px] text-[#FACC15] font-bold uppercase tracking-wider block mb-2">${t('perk_title')}</span>
-                                <h3 class="font-serif text-xl font-bold mb-1">${t('perk_desc')}</h3>
+                                <h3 class="font-sans text-xl font-bold mb-1">${t('perk_desc')}</h3>
                             </div>
                         </div>
                     </div>
@@ -185,7 +185,7 @@ export function renderProfileView() {
                 <div class="lg:col-span-4 space-y-6">
                     <!-- Account Settings Card -->
                     <div class="bg-white rounded-3xl p-6 shadow-sm border border-outline-variant/30">
-                        <h2 class="font-serif text-lg text-[#1E293B] font-bold mb-4 px-2">${t('settings_title')}</h2>
+                        <h2 class="font-sans text-lg text-[#1E293B] font-bold mb-4 px-2">${t('settings_title')}</h2>
                         
                         <div class="flex flex-col">
                             <a href="#" onclick="navigateTo('personal-details'); return false;" class="flex justify-between items-center py-3.5 px-2 hover:bg-[#046bd2]/5 rounded-xl transition-colors group">
@@ -288,7 +288,7 @@ export function renderWalletView() {
         <div class="max-w-container-max mx-auto py-8">
             <!-- Header Title -->
             <div class="mb-8">
-                <h1 class="font-serif text-3xl text-[#1E293B] font-bold mb-1">${t('wallet_header_title')}</h1>
+                <h1 class="font-sans text-3xl text-[#1E293B] font-bold mb-1">${t('wallet_header_title')}</h1>
                 <p class="font-body-sm text-xs text-on-surface-variant">${t('wallet_header_subtitle')}</p>
             </div>
             
@@ -298,7 +298,7 @@ export function renderWalletView() {
                 <div class="md:col-span-5 bg-white rounded-3xl p-6 shadow-sm border border-outline-variant/30 flex flex-col justify-between gap-4">
                     <div>
                         <span class="font-label-caps text-[10px] text-outline font-bold uppercase tracking-wider block mb-1">${t('wallet_balance_title')}</span>
-                        <span class="font-serif text-3xl text-[#1E293B] font-bold block mt-1">${currentTenant?.currency || 'SGD'} ${state.walletBalance.toFixed(2)}</span>
+                        <span class="font-sans text-3xl text-[#1E293B] font-bold block mt-1">${currentTenant?.currency || 'SGD'} ${state.walletBalance.toFixed(2)}</span>
                     </div>
                     <div class="flex flex-wrap gap-2.5">
                         <button onclick="navigateToTopUp(100)" class="flex-1 bg-[#046bd2] text-white hover:bg-[#045cb4] font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
@@ -317,7 +317,7 @@ export function renderWalletView() {
                     </div>
                     <div>
                         <span class="text-[10px] font-bold uppercase tracking-wider text-amber-100 block mb-1">TCM Vitality Rewards</span>
-                        <h3 class="font-serif text-2xl font-bold flex items-center gap-1.5">
+                        <h3 class="font-sans text-2xl font-bold flex items-center gap-1.5">
                             <span class="material-symbols-outlined text-xl">stars</span> ${loyaltyPoints} Pts
                         </h3>
                     </div>
@@ -336,23 +336,23 @@ export function renderWalletView() {
                     <div>
                         <div class="flex items-center gap-2 mb-1">
                             <span class="material-symbols-outlined text-[#B45309] text-base">bolt</span>
-                            <h2 class="font-serif text-base text-[#1E293B] font-bold">${t('quick_recharge_title')}</h2>
+                            <h2 class="font-sans text-base text-[#1E293B] font-bold">${t('quick_recharge_title')}</h2>
                         </div>
                     </div>
                     
                     <!-- Presets Grid -->
                     <div class="grid grid-cols-2 gap-2.5 mt-3">
                         <button onclick="navigateToTopUp(50)" class="bg-white hover:bg-slate-50 border border-outline-variant/60 rounded-xl p-2.5 flex flex-col items-center justify-center transition-all group hover:border-[#046bd2] hover:text-[#046bd2]">
-                            <span class="font-serif text-xs font-bold text-[#046bd2]">${currentTenant?.currency || 'SGD'} 50</span>
+                            <span class="font-sans text-xs font-bold text-[#046bd2]">${currentTenant?.currency || 'SGD'} 50</span>
                         </button>
                         <button onclick="navigateToTopUp(100)" class="bg-white hover:bg-slate-50 border border-outline-variant/60 rounded-xl p-2.5 flex flex-col items-center justify-center transition-all group hover:border-[#046bd2] hover:text-[#046bd2] relative overflow-visible">
-                            <span class="font-serif text-xs font-bold text-[#046bd2]">${currentTenant?.currency || 'SGD'} 100</span>
+                            <span class="font-sans text-xs font-bold text-[#046bd2]">${currentTenant?.currency || 'SGD'} 100</span>
                         </button>
                         <button onclick="navigateToTopUp(200)" class="bg-white hover:bg-slate-50 border border-outline-variant/60 rounded-xl p-2.5 flex flex-col items-center justify-center transition-all group hover:border-[#046bd2] hover:text-[#046bd2]">
-                            <span class="font-serif text-xs font-bold text-[#046bd2]">${currentTenant?.currency || 'SGD'} 200</span>
+                            <span class="font-sans text-xs font-bold text-[#046bd2]">${currentTenant?.currency || 'SGD'} 200</span>
                         </button>
                         <button onclick="navigateToTopUp('custom')" class="bg-white hover:bg-slate-50 border border-outline-variant/60 rounded-xl p-2.5 flex flex-col items-center justify-center transition-all group hover:border-[#046bd2] hover:text-[#046bd2]">
-                            <span class="font-serif text-xs font-bold text-[#1E293B] flex items-center gap-0.5">${state.language === 'ms' ? 'Kustom' : 'Custom'}</span>
+                            <span class="font-sans text-xs font-bold text-[#1E293B] flex items-center gap-0.5">${state.language === 'ms' ? 'Kustom' : 'Custom'}</span>
                         </button>
                     </div>
                 </div>
@@ -363,7 +363,7 @@ export function renderWalletView() {
                 <div class="flex justify-between items-center mb-6">
                     <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined text-on-surface-variant text-lg">history</span>
-                        <h2 class="font-serif text-lg text-[#1E293B] font-bold">${state.language === 'ms' ? 'Transaksi Terkini' : 'Recent Transactions'}</h2>
+                        <h2 class="font-sans text-lg text-[#1E293B] font-bold">${state.language === 'ms' ? 'Transaksi Terkini' : 'Recent Transactions'}</h2>
                     </div>
                     <a href="#" class="text-[#B45309] hover:text-[#92400e] font-semibold text-xs flex items-center gap-1 transition-colors">
                         ${state.language === 'ms' ? 'Lihat Semua' : 'View All'} <span class="material-symbols-outlined text-xs">arrow_forward</span>
@@ -519,15 +519,15 @@ export function renderTopupView() {
             
             <!-- Page Title & Subtitle -->
             <div class="text-center mb-8">
-                <h1 class="font-serif text-3xl md:text-4xl text-[#1E293B] font-bold mb-2">${state.language === 'ms' ? 'Tambah Nilai Dompet Spa Anda' : 'Top-Up Your Sanctuary Wallet'}</h1>
+                <h1 class="font-sans text-3xl md:text-4xl text-[#1E293B] font-bold mb-2">${state.language === 'ms' ? 'Tambah Nilai Dompet Spa Anda' : 'Top-Up Your Sanctuary Wallet'}</h1>
                 <p class="font-body-sm text-xs text-on-surface-variant max-w-md mx-auto leading-relaxed">${state.language === 'ms' ? 'Tambah dana dengan selamat menggunakan Kad Kredit, DuitNow QR, atau E-Wallet.' : 'Add funds securely using Credit Card, DuitNow QR, or E-Wallets.'}</p>
             </div>
             
             <!-- Current Balance Card -->
             <div class="bg-white rounded-3xl p-6 border border-outline-variant/30 shadow-sm text-center mb-6">
                 <span class="font-label-caps text-[9px] text-[#B45309] font-bold uppercase tracking-wider block mb-1">${state.language === 'ms' ? 'Baki Semasa' : 'Current Balance'}</span>
-                <div class="font-serif text-2xl text-[#1E293B] font-bold">
-                    ${currentTenant?.currency || 'SGD'} <span class="font-serif text-3xl font-bold">${currentBalance.toFixed(2)}</span>
+                <div class="font-sans text-2xl text-[#1E293B] font-bold">
+                    ${currentTenant?.currency || 'SGD'} <span class="font-sans text-3xl font-bold">${currentBalance.toFixed(2)}</span>
                 </div>
             </div>
             
@@ -535,7 +535,7 @@ export function renderTopupView() {
             <div class="bg-white rounded-3xl p-6 md:p-8 border border-outline-variant/30 shadow-sm">
                 <!-- Select Amount Section -->
                 <div class="mb-6">
-                    <h3 class="font-serif text-sm font-bold text-[#1E293B] mb-3">${state.language === 'ms' ? 'Pilih Jumlah Top Up' : 'Select Top Up Amount'}</h3>
+                    <h3 class="font-sans text-sm font-bold text-[#1E293B] mb-3">${state.language === 'ms' ? 'Pilih Jumlah Top Up' : 'Select Top Up Amount'}</h3>
                     <div class="grid grid-cols-4 gap-3 mb-4">
                         <button type="button" onclick="selectTopUpAmount(50)" id="topup-amt-50" class="topup-amount-btn border rounded-xl py-3 font-semibold text-xs transition-all text-center">
                             ${currentTenant?.currency || 'SGD'} 50
@@ -563,7 +563,7 @@ export function renderTopupView() {
 
                 <!-- Payment Method Selector Tabs -->
                 <div class="border-t border-outline-variant/30 pt-6 mb-6">
-                    <h3 class="font-serif text-sm font-bold text-[#1E293B] mb-3">${state.language === 'ms' ? 'Pilih Kaedah Pembayaran' : 'Select Payment Method'}</h3>
+                    <h3 class="font-sans text-sm font-bold text-[#1E293B] mb-3">${state.language === 'ms' ? 'Pilih Kaedah Pembayaran' : 'Select Payment Method'}</h3>
                     <div class="grid grid-cols-3 gap-2">
                         <button type="button" onclick="setTopUpPaymentMethod('card')" class="flex flex-col items-center gap-1.5 p-3 rounded-2xl border text-xs font-bold transition-all ${method === 'card' ? 'bg-[#046bd2] text-white border-[#046bd2] shadow-md' : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-stone-400'}">
                             <span class="material-symbols-outlined text-lg">credit_card</span>
@@ -715,7 +715,7 @@ export function renderPersonalDetailsView() {
                 </button>
                 <div>
                     <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block">${t('settings_title')}</span>
-                    <h1 class="font-serif text-2xl md:text-3xl text-[#1E293B] font-bold">${t('setting_personal')}</h1>
+                    <h1 class="font-sans text-2xl md:text-3xl text-[#1E293B] font-bold">${t('setting_personal')}</h1>
                 </div>
             </div>
 
@@ -731,7 +731,7 @@ export function renderPersonalDetailsView() {
                             </div>
                         </div>
                         <div class="text-center sm:text-left">
-                            <h3 class="font-serif text-base text-[#1E293B] font-bold mb-1">${state.language === 'ms' ? 'Gambar Profil' : 'Profile Photo'}</h3>
+                            <h3 class="font-sans text-base text-[#1E293B] font-bold mb-1">${state.language === 'ms' ? 'Gambar Profil' : 'Profile Photo'}</h3>
                             <p class="font-body-sm text-[11px] text-on-surface-variant max-w-xs leading-relaxed">${state.language === 'ms' ? 'Kemaskinikan foto anda untuk memperibadikan pengalaman spa anda. JPG atau PNG, maks 2MB.' : 'Update your photo to personalize your spa experience. JPG or PNG, max 2MB.'}</p>
                         </div>
                     </div>
@@ -858,7 +858,7 @@ export function renderBookingHistoryView() {
                         </div>
                         <div>
                             <div class="flex items-center gap-2 mb-1.5 flex-wrap">
-                                <h3 class="font-serif text-base text-[#1E293B] font-bold">${booking.serviceName}</h3>
+                                <h3 class="font-sans text-base text-[#1E293B] font-bold">${booking.serviceName}</h3>
                                 ${statusBadge}
                             </div>
                             <div class="space-y-1">
@@ -877,7 +877,7 @@ export function renderBookingHistoryView() {
                     <div class="flex flex-col gap-3 border-t md:border-t-0 border-outline-variant/20 pt-3.5 md:pt-0 w-full md:w-auto md:items-end">
                         <div class="flex justify-between items-center w-full md:w-auto md:justify-end gap-2">
                             <span class="text-[11px] font-semibold text-on-surface-variant md:hidden">${state.language === 'ms' ? 'Harga' : 'Price'}</span>
-                            <span class="font-serif text-base text-[#1E293B] font-bold">${currentTenant?.currency || 'SGD'} ${parseFloat(booking.price).toFixed(2)}</span>
+                            <span class="font-sans text-base text-[#1E293B] font-bold">${currentTenant?.currency || 'SGD'} ${parseFloat(booking.price).toFixed(2)}</span>
                         </div>
                         ${showCancel ? `
                         <div class="flex gap-2 w-full md:w-auto justify-start md:justify-end flex-wrap sm:flex-nowrap">
@@ -917,7 +917,7 @@ export function renderBookingHistoryView() {
                 </button>
                 <div>
                     <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block">${t('settings_title')}</span>
-                    <h1 class="font-serif text-2xl md:text-3xl text-[#1E293B] font-bold">${t('setting_history')}</h1>
+                    <h1 class="font-sans text-2xl md:text-3xl text-[#1E293B] font-bold">${t('setting_history')}</h1>
                 </div>
             </div>
 
@@ -1057,7 +1057,7 @@ export function renderRescheduleView() {
     container.innerHTML = `
         <div class="mb-8 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4 animate-fade-in">
             <div>
-                <h1 class="font-serif text-3xl text-[#1E293B] font-bold mb-1">Reschedule Appointment</h1>
+                <h1 class="font-sans text-3xl text-[#1E293B] font-bold mb-1">Reschedule Appointment</h1>
                 <p class="font-body-sm text-xs text-on-surface-variant">Select a new date and time slot for your reservation.</p>
             </div>
             <button onclick="navigateTo('booking-history')" class="px-4 py-2 rounded-xl border border-outline hover:bg-slate-50 text-secondary font-bold text-xs flex items-center gap-1 transition-colors">
@@ -1122,7 +1122,7 @@ export function renderRescheduleView() {
             <div class="lg:col-span-4">
                 <div class="glass-panel rounded-3xl p-6 md:p-8 bg-white border border-outline-variant/30 shadow-sm space-y-6 sticky top-8 flex flex-col justify-between">
                     <div>
-                        <h2 class="font-serif text-lg text-[#1E293B] font-bold border-b border-outline-variant/20 pb-4 mb-6">Reschedule Summary</h2>
+                        <h2 class="font-sans text-lg text-[#1E293B] font-bold border-b border-outline-variant/20 pb-4 mb-6">Reschedule Summary</h2>
                         <div class="flex flex-col gap-5">
                             <!-- Service Info -->
                             <div class="flex gap-3 items-start">
@@ -1178,7 +1178,7 @@ export function renderRescheduleView() {
                             </div>
                             <div class="border-t border-outline-variant/10 pt-3 flex justify-between items-center">
                                 <span class="font-bold text-[#1E293B]">Total Fee</span>
-                                <span class="font-serif text-lg font-bold text-[#1E293B]">${currentTenant?.currency || 'SGD'} 0.00</span>
+                                <span class="font-sans text-lg font-bold text-[#1E293B]">${currentTenant?.currency || 'SGD'} 0.00</span>
                             </div>
                         </div>
 
@@ -1372,13 +1372,13 @@ export function renderNotificationsView() {
                     </button>
                     <div>
                         <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block">${t('settings_title')}</span>
-                        <h1 class="font-serif text-2xl md:text-3xl text-[#1E293B] font-bold">${t('setting_notifications')}</h1>
+                        <h1 class="font-sans text-2xl md:text-3xl text-[#1E293B] font-bold">${t('setting_notifications')}</h1>
                     </div>
                 </div>
 
                 <!-- Preferences Card -->
                 <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-outline-variant/30">
-                    <h2 class="font-serif text-base text-[#1E293B] font-bold mb-4">${state.language === 'ms' ? 'Saluran Notifikasi' : 'Notification Channels'}</h2>
+                    <h2 class="font-sans text-base text-[#1E293B] font-bold mb-4">${state.language === 'ms' ? 'Saluran Notifikasi' : 'Notification Channels'}</h2>
                     <form onsubmit="saveNotificationPreferences(event)" class="space-y-6">
                         <!-- Email Toggle -->
                         <div class="flex items-center justify-between">
@@ -1432,7 +1432,7 @@ export function renderNotificationsView() {
             <!-- Right Column: Notifications Log History -->
             <div class="lg:col-span-6 space-y-4">
                 <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-outline-variant/30 h-full flex flex-col">
-                    <h2 class="font-serif text-base text-[#1E293B] font-bold mb-4">${state.language === 'ms' ? 'Sejarah Notifikasi' : 'Notification History'}</h2>
+                    <h2 class="font-sans text-base text-[#1E293B] font-bold mb-4">${state.language === 'ms' ? 'Sejarah Notifikasi' : 'Notification History'}</h2>
                     <div class="divide-y divide-outline-variant/10 overflow-y-auto max-h-[400px] pr-2 flex-grow">
                         ${logHtml}
                     </div>
@@ -1472,7 +1472,7 @@ export function renderPrivacySecurityView() {
                 </button>
                 <div>
                     <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block">${t('settings_title')}</span>
-                    <h1 class="font-serif text-2xl md:text-3xl text-[#1E293B] font-bold">${t('setting_privacy')}</h1>
+                    <h1 class="font-sans text-2xl md:text-3xl text-[#1E293B] font-bold">${t('setting_privacy')}</h1>
                 </div>
             </div>
 
@@ -1480,7 +1480,7 @@ export function renderPrivacySecurityView() {
             <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-outline-variant/30 space-y-8">
                 <!-- Change Password Form -->
                 <div>
-                    <h2 class="font-serif text-base text-[#1E293B] font-bold mb-4 pb-2 border-b border-outline-variant/20">${state.language === 'ms' ? 'Tukar Kata Laluan' : 'Change Password'}</h2>
+                    <h2 class="font-sans text-base text-[#1E293B] font-bold mb-4 pb-2 border-b border-outline-variant/20">${state.language === 'ms' ? 'Tukar Kata Laluan' : 'Change Password'}</h2>
                     <form onsubmit="savePassword(event)" class="space-y-4">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
@@ -1504,7 +1504,7 @@ export function renderPrivacySecurityView() {
 
                 <!-- Account Security Settings -->
                 <div>
-                    <h2 class="font-serif text-base text-[#1E293B] font-bold mb-4 pb-2 border-b border-outline-variant/20">${state.language === 'ms' ? 'Keselamatan Akaun' : 'Account Security'}</h2>
+                    <h2 class="font-sans text-base text-[#1E293B] font-bold mb-4 pb-2 border-b border-outline-variant/20">${state.language === 'ms' ? 'Keselamatan Akaun' : 'Account Security'}</h2>
                     <form onsubmit="savePrivacySettings(event)" class="space-y-4">
                         <!-- 2FA Checkbox -->
                         <div class="flex items-start gap-3">
@@ -1624,7 +1624,7 @@ export function confirmSignOut() {
                 <div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-4">
                     <span class="material-symbols-outlined text-2xl font-bold">logout</span>
                 </div>
-                <h3 class="font-serif text-lg text-[#1E293B] font-bold mb-2">${state.language === 'ms' ? 'Log Keluar' : (state.language === 'zh' ? '退出登录' : 'Sign Out')}</h3>
+                <h3 class="font-sans text-lg text-[#1E293B] font-bold mb-2">${state.language === 'ms' ? 'Log Keluar' : (state.language === 'zh' ? '退出登录' : 'Sign Out')}</h3>
                 <p class="text-xs text-on-surface-variant leading-relaxed mb-6">${state.language === 'ms' ? 'Adakah anda pasti mahu log keluar dari TCM Homecare? Sesi semasa anda akan disimpan.' : (state.language === 'zh' ? '您确定要退出TCM Homecare患者账户吗？' : 'Are you sure you want to sign out of TCM Homecare Clinic?')}</p>
                 <div class="flex gap-3 justify-center">
                     <button onclick="cancelSignOut()" class="px-5 py-2.5 rounded-xl border border-outline text-[#046bd2] hover:bg-[#046bd2]/5 text-xs font-bold transition-all w-full">

@@ -33,7 +33,7 @@ export function renderSidebarSummary() {
     let total = subtotal + tax;
 
     let html = `
-        <h2 class="font-serif text-lg text-[#045cb4] border-b border-[#e2e8f0] pb-4 font-bold mb-6">${t('booking_summary_title')}</h2>
+        <h2 class="font-sans text-lg text-[#045cb4] border-b border-[#e2e8f0] pb-4 font-bold mb-6">${t('booking_summary_title')}</h2>
         <div class="flex flex-col gap-5">
             <!-- Service Info -->
             <div class="flex gap-3 items-start">
@@ -43,7 +43,7 @@ export function renderSidebarSummary() {
                 <div>
                     <span class="tcm-seal text-[8px] mb-0.5 block">${t('lbl_service')}</span>
                     ${service ? `
-                        <h3 class="font-serif text-xs font-bold text-[#045cb4]">${service.name}</h3>
+                        <h3 class="font-sans text-xs font-bold text-[#045cb4]">${service.name}</h3>
                         <p class="text-[11px] text-slate-500">${service.duration || ''} • ${currency} ${service.price}</p>
                     ` : `
                         <h3 class="text-xs text-slate-400 italic">${state.language === 'ms' ? 'Belum dipilih' : (state.language === 'zh' ? '待选择' : 'To be selected')}</h3>
@@ -65,7 +65,7 @@ export function renderSidebarSummary() {
                 <div>
                     <span class="tcm-seal text-[8px] mb-0.5 block">${t('lbl_therapist')}</span>
                     ${therapist ? `
-                        <h3 class="font-serif text-xs font-bold text-[#045cb4]">${therapist.name}</h3>
+                        <h3 class="font-sans text-xs font-bold text-[#045cb4]">${therapist.name}</h3>
                         <p class="text-[11px] text-[#ff6900] font-medium">${therapist.role || ''}</p>
                     ` : `
                         <h3 class="text-xs text-slate-400 italic">${state.language === 'ms' ? 'Belum dipilih' : (state.language === 'zh' ? '待选择' : 'To be selected')}</h3>
@@ -81,7 +81,7 @@ export function renderSidebarSummary() {
                 <div>
                     <span class="tcm-seal text-[8px] mb-0.5 block">${t('lbl_date_time')}</span>
                     ${date ? `
-                        <h3 class="font-serif text-xs font-bold text-[#045cb4]">${date}</h3>
+                        <h3 class="font-sans text-xs font-bold text-[#045cb4]">${date}</h3>
                         <p class="text-[11px] text-[#046bd2] font-bold">${time || (state.language === 'ms' ? 'Belum dipilih' : (state.language === 'zh' ? '待选择' : 'To be selected'))}</p>
                     ` : `
                         <h3 class="text-xs text-slate-400 italic">${state.language === 'ms' ? 'Belum dipilih' : (state.language === 'zh' ? '待选择' : 'To be selected')}</h3>
@@ -107,14 +107,14 @@ export function renderSidebarSummary() {
             </div>
             <div class="flex justify-between items-center pt-3 border-t border-[#e2e8f0] font-semibold text-xs">
                 <span class="text-[#045cb4]">${isConfirmOrTime ? t('lbl_total') : t('lbl_est_total')}</span>
-                <span class="font-serif text-base text-[#045cb4] font-bold">${currency} ${total.toFixed(2)}</span>
+                <span class="font-sans text-base text-[#045cb4] font-bold">${currency} ${total.toFixed(2)}</span>
             </div>
 
             ${state.currentView === 'confirm-booking' ? `
                 <div class="mt-4 p-3 bg-[#f0f5fa] rounded-2xl border border-[#e2e8f0] text-left space-y-2">
                     <div class="flex justify-between items-center text-xs text-[#045cb4] font-bold">
                         <span>${state.language === 'ms' ? 'Deposit 50% Hari Ini:' : (state.language === 'zh' ? '今日支付 50% 订金:' : '50% Deposit Due Today:')}</span>
-                        <span class="text-[#b93826] font-serif text-sm font-bold">${currency} ${(total * 0.5).toFixed(2)}</span>
+                        <span class="text-[#b93826] font-sans text-sm font-bold">${currency} ${(total * 0.5).toFixed(2)}</span>
                     </div>
                     <div class="flex justify-between items-center text-[11px] text-slate-600 font-semibold border-t border-[#e2e8f0] pt-1.5">
                         <span>${state.language === 'ms' ? 'Baki Dibayar di Klinik TCM:' : (state.language === 'zh' ? '到店支付余款:' : 'Remaining Balance at Clinic:')}</span>
@@ -205,7 +205,7 @@ export function renderSuccessView() {
                 <div class="flex items-center gap-3 pb-4 border-b border-[#e2e8f0]">
                     <div>
                         <span class="tcm-seal text-[8px] uppercase font-bold tracking-wider mb-0.5 block">RESERVATION ID</span>
-                        <span class="font-serif text-base font-bold text-[#045cb4]">#${resId}</span>
+                        <span class="font-sans text-base font-bold text-[#045cb4]">#${resId}</span>
                     </div>
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold border border-emerald-200">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> ${t('status_confirmed')}
@@ -215,7 +215,7 @@ export function renderSuccessView() {
                 <!-- Service -->
                 <div>
                     <span class="tcm-seal text-[8px] uppercase font-bold tracking-wider mb-0.5 block">${t('lbl_service')}</span>
-                    <h3 class="font-serif text-sm font-bold text-[#045cb4]">${service ? service.name : ''}</h3>
+                    <h3 class="font-sans text-sm font-bold text-[#045cb4]">${service ? service.name : ''}</h3>
                     <p class="text-xs text-slate-500">${service ? service.duration : ''}</p>
                 </div>
                 
@@ -231,12 +231,12 @@ export function renderSuccessView() {
                                     <span class="material-symbols-outlined text-sm text-[#046bd2]">medical_services</span>
                                 </div>
                             `}
-                            <span class="font-serif text-xs font-bold text-[#045cb4]">${therapist ? therapist.name : (state.language === 'ms' ? 'Tiada Pilihan' : (state.language === 'zh' ? '按科室统筹' : 'No Preference'))}</span>
+                            <span class="font-sans text-xs font-bold text-[#045cb4]">${therapist ? therapist.name : (state.language === 'ms' ? 'Tiada Pilihan' : (state.language === 'zh' ? '按科室统筹' : 'No Preference'))}</span>
                         </div>
                     </div>
                     <div>
                         <span class="tcm-seal text-[8px] uppercase font-bold tracking-wider mb-0.5 block">${t('lbl_date_time')}</span>
-                        <span class="font-serif text-xs font-bold text-[#045cb4] block mt-1">${date || ''}</span>
+                        <span class="font-sans text-xs font-bold text-[#045cb4] block mt-1">${date || ''}</span>
                         <p class="text-xs text-[#046bd2] font-bold">${time || ''}</p>
                     </div>
                 </div>

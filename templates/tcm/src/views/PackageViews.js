@@ -114,7 +114,7 @@ export function renderBookPackageView() {
 
     container.innerHTML = `
         <div class="mb-8 text-center md:text-left">
-            <h1 class="font-serif text-3xl text-[#046bd2] font-bold mb-1">${state.language === 'ms' ? 'Gunakan Sesi Pakej' : (state.language === 'zh' ? '预约疗程配套' : 'Use Package Session')}</h1>
+            <h1 class="font-sans text-3xl text-[#046bd2] font-bold mb-1">${state.language === 'ms' ? 'Gunakan Sesi Pakej' : (state.language === 'zh' ? '预约疗程配套' : 'Use Package Session')}</h1>
             <p class="font-body-sm text-xs text-on-surface-variant">${state.language === 'ms' ? 'Jadualkan sesi rawatan untuk pakej aktif anda.' : (state.language === 'zh' ? '为您的有效配套预约单次理疗时段。' : 'Schedule a clinical session for your active TCM package.')}</p>
         </div>
 
@@ -122,7 +122,7 @@ export function renderBookPackageView() {
             <!-- Left side: Calendar & Time Slots -->
             <div class="lg:col-span-8 space-y-6">
                 <div class="tcm-card rounded-3xl p-6 md:p-8 bg-white shadow-sm border border-[#046bd2]/15">
-                    <h2 class="font-title-md text-base text-[#046bd2] mb-6 flex items-center gap-2 font-semibold font-serif">
+                    <h2 class="font-title-md text-base text-[#046bd2] mb-6 flex items-center gap-2 font-semibold font-sans">
                         <span class="material-symbols-outlined">calendar_month</span> ${state.language === 'ms' ? 'Pilih Tarikh & Masa' : (state.language === 'zh' ? '选择日期与时间' : 'Select Date & Time')}
                     </h2>
 
@@ -175,7 +175,7 @@ export function renderBookPackageView() {
             <div class="lg:col-span-4">
                 <div class="tcm-card rounded-3xl p-6 md:p-8 bg-white border border-[#046bd2]/15 shadow-sm space-y-6 sticky top-8 flex flex-col justify-between">
                     <div>
-                        <h2 class="font-serif text-lg text-[#046bd2] font-bold border-b border-[#046bd2]/15 pb-4 mb-6">${state.language === 'ms' ? 'Ringkasan Tempahan' : (state.language === 'zh' ? '预约摘要' : 'Booking Summary')}</h2>
+                        <h2 class="font-sans text-lg text-[#046bd2] font-bold border-b border-[#046bd2]/15 pb-4 mb-6">${state.language === 'ms' ? 'Ringkasan Tempahan' : (state.language === 'zh' ? '预约摘要' : 'Booking Summary')}</h2>
                         <div class="flex flex-col gap-5">
                             <!-- Service Info -->
                             <div class="flex gap-3 items-start">
@@ -239,7 +239,7 @@ export function renderBookPackageView() {
                             </div>
                             <div class="border-t border-[#046bd2]/15 pt-3 flex justify-between items-center">
                                 <span class="font-bold text-[#046bd2]">${state.language === 'ms' ? 'Jumlah Anggaran' : (state.language === 'zh' ? '应付总额' : 'Estimated Total')}</span>
-                                <span class="font-serif text-lg font-bold text-[#046bd2]">${currency} 0.00</span>
+                                <span class="font-sans text-lg font-bold text-[#046bd2]">${currency} 0.00</span>
                             </div>
                         </div>
 
@@ -402,7 +402,7 @@ export function renderActivePackagesView() {
                         </div>
                         ${statusBadge}
                     </div>
-                    <h3 class="font-serif text-base font-bold text-[#046bd2] mb-1 line-clamp-1">${bundle.name}</h3>
+                    <h3 class="font-sans text-base font-bold text-[#046bd2] mb-1 line-clamp-1">${bundle.name}</h3>
                     <p class="text-[11px] text-slate-500 line-clamp-2 leading-relaxed mb-4">${bundle.description}</p>
                     
                     <div class="mb-4">

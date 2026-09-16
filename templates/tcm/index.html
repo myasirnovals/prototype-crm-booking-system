@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
         rel="stylesheet">
@@ -27,17 +27,19 @@
         const DEFAULT_TCM_THEME = {
             id: 'default-tcm',
             name: 'TCM Homecare',
-            tagline: 'Authentic Traditional Chinese Medicine, Acupuncture & Herbal Healing',
-            logo: '',
-            address: '88 Pagoda Street, Chinatown, Singapore',
-            phone: '+65 6223 8899',
-            hours: 'Mon - Sun (09:30 - 19:30 SGT)',
+            tagline: 'Personalized Treatments for Your Wellness & Modern Homecare',
+            logo: 'https://tcmhomecare.com/wp-content/uploads/2024/03/TCMHomecare_logo.svg',
+            address: '1 Irving Place #07-04, The Commerze @ Irving, Singapore 369546',
+            phone: '+65 8752 5958',
+            hours: 'Mon - Fri (09:00 - 17:00 SGT), Sat by Appointment',
             currency: 'SGD',
             colors: {
-                primary: '#046bd2',
+                primary: '#26AAE1',
                 secondary: '#00a86b',
+                accent: '#ff6900',
                 background: '#f0f5fa',
-                surfaceContainer: '#f0eae1'
+                surfaceContainer: '#B4E3F7',
+                surfaceContainerSoft: '#e8f4fc'
             }
         };
 
@@ -70,68 +72,54 @@
 
         window.currentTenant = currentTenant;
         window.currentBranch = currentTenant;
-        const primaryColor = currentTenant.colors?.primary || '#046bd2';
+        const primaryColor = currentTenant.colors?.primary || '#26AAE1';
         const secondaryColor = currentTenant.colors?.secondary || '#00a86b';
+        const accentColor = currentTenant.colors?.accent || '#ff6900';
         const backgroundColor = currentTenant.colors?.background || '#f0f5fa';
-        const containerColor = currentTenant.colors?.surfaceContainer || '#f0eae1';
+        const containerColor = currentTenant.colors?.surfaceContainer || '#B4E3F7';
+        const containerSoft = currentTenant.colors?.surfaceContainerSoft || '#e8f4fc';
 
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     "colors": {
-                        "outline": "#75786e",
-                        "on-primary-fixed-variant": "#045cb4",
-                        "on-error": "#ffffff",
-                        "secondary-fixed": "#ffe088",
-                        "on-primary-fixed": "#111f05",
-                        "surface-container-low": containerColor + 'aa',
                         "primary": primaryColor,
+                        "primary-hover": "#046bd2",
+                        "primary-container": containerColor,
                         "on-primary": "#ffffff",
-                        "on-tertiary": "#ffffff",
-                        "on-secondary-container": "#745c00",
-                        "inverse-on-surface": "#ebf2f2",
-                        "tertiary": "#5f5c52",
-                        "error-container": "#ffdad6",
-                        "on-secondary-fixed": "#241a00",
-                        "tertiary-fixed": "#e8e2d6",
-                        "surface-container-high": containerColor + 'f0',
-                        "surface-variant": containerColor,
-                        "on-background": "#161d1d",
-                        "inverse-surface": "#2b3232",
-                        "primary-container": primaryColor + 'cc',
+                        "on-primary-container": "#035ba6",
+                        "secondary": secondaryColor,
+                        "secondary-container": "#e6f9f0",
                         "on-secondary": "#ffffff",
-                        "primary-fixed-dim": "#bacda3",
-                        "on-tertiary-fixed-variant": "#4a473e",
-                        "on-tertiary-container": "#fffbff",
-                        "error": "#ba1a1a",
+                        "on-secondary-container": "#00633f",
+                        "tertiary": accentColor,
+                        "tertiary-container": "#fff3eb",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#9a3412",
                         "background": backgroundColor,
-                        "on-surface-variant": "#45483f",
-                        "primary-fixed": "#d6e9bd",
-                        "surface-tint": primaryColor,
+                        "surface": "#ffffff",
+                        "surface-container": containerSoft,
+                        "surface-container-low": "#f8fafc",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container": containerColor,
-                        "on-tertiary-fixed": "#1e1c14",
-                        "outline-variant": "#c5c8bc",
-                        "tertiary-container": "#78746a",
-                        "on-error-container": "#93000a",
-                        "on-surface": "#161d1d",
-                        "tertiary-fixed-dim": "#cbc6ba",
-                        "secondary-container": secondaryColor,
-                        "secondary": "#735c00",
-                        "surface-dim": "#d4dbdb",
-                        "on-secondary-fixed-variant": "#574500",
-                        "inverse-primary": "#bacda3",
-                        "surface-bright": backgroundColor,
-                        "secondary-fixed-dim": "#e9c349",
-                        "surface": backgroundColor,
-                        "surface-container-highest": containerColor,
-                        "on-primary-container": "#f9ffeb"
+                        "surface-container-high": containerColor,
+                        "surface-container-highest": "#8cd2f2",
+                        "surface-variant": containerSoft,
+                        "outline": "#b9daf1",
+                        "outline-variant": "#d4e7f5",
+                        "on-surface": "#1e293b",
+                        "on-surface-variant": "#64748b",
+                        "on-background": "#0f172a",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a"
                     },
                     "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem",
                         "full": "9999px"
                     },
                     "spacing": {
@@ -182,7 +170,7 @@
                     <span id="spaNavBrandLogo" class="text-xl">🌿</span>
                 </div>
                 <div class="flex flex-col text-left">
-                    <span id="spaNavBrandName" class="font-serif font-bold text-base md:text-lg text-[#046bd2] leading-tight">TCM Homecare</span>
+                    <span id="spaNavBrandName" class="font-sans font-bold text-base md:text-lg text-[#046bd2] leading-tight">TCM Homecare</span>
                     <span class="text-[9px] font-sans font-bold tracking-[0.18em] text-[#ff6900] uppercase">中医学 • 针灸 • 正骨</span>
                 </div>
             </div>
@@ -321,23 +309,32 @@
                     <div class="absolute inset-0 hero-gradient"></div>
                 </div>
                 <div class="relative z-10 text-center px-4 md:px-margin-desktop max-w-4xl mx-auto py-16">
-                    <!-- Promo Box from tcmhomecare.com -->
-                    <div class="inline-flex items-center gap-2 mb-4 bg-orange-50/95 backdrop-blur-md border border-orange-300 px-4 py-1.5 rounded-full text-xs font-bold text-[#ff6900] shadow-sm">
-                        <span class="material-symbols-outlined text-[16px] text-[#ff6900]">campaign</span>
-                        <span>Intro Promo: <strong>S$20 for 15 mins</strong> on your first consultation!</span>
-                    </div>
-
                     <!-- Modern Healthcare Badge -->
-                    <div class="flex items-center justify-center gap-2 mb-6">
+                    <div class="flex items-center justify-center gap-2 mb-4">
                         <span class="tcm-seal bg-white/95 shadow-sm border-sky-200 text-[#046bd2] px-3.5 py-1 text-xs">
                             <span class="mr-1">🩺</span> TCMPB Licensed Practice • Telemedicine &amp; Homecare Visits
                         </span>
                     </div>
 
-                    <h1 class="text-3xl sm:text-4xl md:text-6xl text-[#1e293b] font-extrabold mb-6 leading-tight tracking-tight drop-shadow-xs"
+                    <h1 class="text-3xl sm:text-4xl md:text-6xl text-[#1e293b] font-extrabold mb-4 leading-tight tracking-tight drop-shadow-xs"
                         data-translate="hero_title">Embrace Traditional Healing in Modern Comfort</h1>
-                    <p class="text-sm sm:text-base md:text-lg text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed font-medium"
+                    <p class="text-sm sm:text-base md:text-lg text-slate-600 max-w-2xl mx-auto mb-6 leading-relaxed font-medium"
                         data-translate="hero_subtitle">Personalized TCM treatments tailored to your needs — online telemedicine, house calls, and painless laser acupuncture.</p>
+
+                    <!-- Authentic TCM Homecare Promo Box (tcmhomecare.com) -->
+                    <div class="tcm-promo-box max-w-lg mx-auto mb-8 animate-fade-in text-center">
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 text-[#035ba6] text-xs font-bold uppercase tracking-wider mb-2">
+                            <span class="material-symbols-outlined text-[15px] text-[#ff6900]">local_offer</span>
+                            Special Online Consultation Offer!
+                        </div>
+                        <p class="text-slate-700 text-xs sm:text-sm font-medium mb-4 leading-relaxed">
+                            First online consultation: <strong class="text-[#035ba6] font-extrabold text-sm sm:text-base">S$20 for 15 mins</strong><br>
+                            <span class="text-[11px] text-slate-500">(Exclude delivery and medication charges)</span>
+                        </p>
+                        <button onclick="startBookingWithService('tcm-teleconsult-intro')" class="button-book text-xs font-extrabold tracking-wider shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 cursor-pointer">
+                            BOOK NOW
+                        </button>
+                    </div>
 
                     <!-- Trust Highlights Strip -->
                     <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 max-w-2xl mx-auto mb-10 text-xs text-[#046bd2] font-semibold">
@@ -382,7 +379,7 @@
             <div class="max-w-container-max mx-auto px-4 md:px-margin-desktop py-16 text-center">
                 <div class="max-w-2xl mx-auto mb-12">
                     <span class="font-bold text-xs uppercase tracking-[0.2em] text-[#ff6900] block mb-2">四诊合参 • 辨证求因</span>
-                    <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#045cb4]"
+                    <h2 class="font-sans text-2xl md:text-3xl font-bold text-[#045cb4]"
                         data-translate="why_choose_us_title">The Four Pillars of TCM Clinical Care</h2>
                     <p class="text-xs md:text-sm text-slate-600 mt-2 leading-relaxed">Our clinical framework addresses the underlying root cause of bodily disharmony, unblocking meridian stagnation and reinforcing constitutional immunity.</p>
                 </div>
@@ -450,7 +447,7 @@
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent"></div>
                                 <div class="absolute bottom-6 left-6 right-6 text-white text-left">
                                     <span class="tcm-seal bg-white/20 text-white border-white mb-2 inline-block">现代中医 • 科技护航</span>
-                                    <span class="text-xl font-bold block mb-1">TCM Homecare</span>
+                                    <span id="clinic-heritage-name" class="text-xl font-bold block mb-1">TCM Homecare</span>
                                     <p class="text-xs text-white/90">Est. 2008 • The Commerze @ Irving, Singapore</p>
                                 </div>
                             </div>
@@ -485,7 +482,7 @@
                                     <div class="w-8 h-8 rounded-lg bg-[#046bd2]/10 text-[#046bd2] flex items-center justify-center">
                                         <span class="material-symbols-outlined text-lg">visibility</span>
                                     </div>
-                                    <h3 class="font-serif text-sm font-bold text-slate-800"
+                                    <h3 class="font-sans text-sm font-bold text-slate-800"
                                         data-translate="about_vision_title">Our Vision</h3>
                                     <p class="text-xs text-slate-600 leading-relaxed"
                                         data-translate="about_vision_desc">To be the region's leading integrative TCM healthcare practice, empowering individuals to cultivate lifelong physical vitality and internal balance.</p>
@@ -494,7 +491,7 @@
                                     <div class="w-8 h-8 rounded-lg bg-[#ff6900]/15 text-[#ff6900] flex items-center justify-center">
                                         <span class="material-symbols-outlined text-lg">flag</span>
                                     </div>
-                                    <h3 class="font-serif text-sm font-bold text-slate-800"
+                                    <h3 class="font-sans text-sm font-bold text-slate-800"
                                         data-translate="about_mission_title">Our Mission</h3>
                                     <p class="text-xs text-slate-600 leading-relaxed"
                                         data-translate="about_mission_desc">Delivering scientifically validated, hygienic, and personalized TCM therapies tailored to the unique physiological constitutions of modern individuals.</p>
@@ -511,7 +508,7 @@
                     <div class="max-w-2xl mx-auto mb-12">
                         <span class="text-[10px] text-[#ff6900] font-bold uppercase tracking-[0.2em] block mb-2"
                             data-translate="testimonials_tag">Patient Experiences</span>
-                        <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#045cb4]"
+                        <h2 class="font-sans text-2xl md:text-3xl font-bold text-[#045cb4]"
                             data-translate="testimonials_title">Trusted by Over 2,500+ Patients</h2>
                         <p class="text-xs md:text-sm text-slate-600 leading-relaxed mt-2"
                             data-translate="testimonials_desc">Discover real patient recoveries from chronic back pain, migraine, fatigue, and muscular strain through our dedicated TCM therapies.</p>
@@ -540,7 +537,7 @@
                                     EV
                                 </div>
                                 <div>
-                                    <h4 class="font-serif text-xs font-bold text-slate-800">Evelyn V.</h4>
+                                    <h4 class="font-sans text-xs font-bold text-slate-800">Evelyn V.</h4>
                                     <p class="text-[10px] text-slate-500 font-semibold">Acupuncture Meridian Therapy • Physician Chen</p>
                                 </div>
                             </div>
@@ -568,7 +565,7 @@
                                     MT
                                 </div>
                                 <div>
-                                    <h4 class="font-serif text-xs font-bold text-slate-800">Marcus Tan</h4>
+                                    <h4 class="font-sans text-xs font-bold text-slate-800">Marcus Tan</h4>
                                     <p class="text-[10px] text-slate-500 font-semibold">Orthopedic Tuina • Master Lim</p>
                                 </div>
                             </div>
@@ -596,7 +593,7 @@
                                     SL
                                 </div>
                                 <div>
-                                    <h4 class="font-serif text-xs font-bold text-slate-800">Shu Ling</h4>
+                                    <h4 class="font-sans text-xs font-bold text-slate-800">Shu Ling</h4>
                                     <p class="text-[10px] text-slate-500 font-semibold">Herbal & Moxibustion • Physician Tan</p>
                                 </div>
                             </div>
@@ -611,7 +608,7 @@
                     <div class="max-w-2xl mx-auto mb-10">
                         <span class="text-[10px] text-[#ff6900] font-bold uppercase tracking-[0.2em] block mb-2"
                             data-translate="awards_tag">Clinical Governance</span>
-                        <h2 class="font-serif text-2xl md:text-3xl font-bold text-[#045cb4]"
+                        <h2 class="font-sans text-2xl md:text-3xl font-bold text-[#045cb4]"
                             data-translate="awards_title">Accredited Clinical TCM Practice</h2>
                         <p class="text-xs md:text-sm text-slate-600 leading-relaxed mt-2"
                             data-translate="awards_desc">Upholding strict medical ethics, verified practitioner credentials, and Singapore TCMPB healthcare standards.</p>
@@ -661,7 +658,7 @@
             class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop pt-8 pb-28 lg:py-8">
             <div id="stepper-select-service"></div>
             <div class="mb-8 text-center md:text-left">
-                <h1 class="font-display-lg text-2xl md:text-headline-lg text-[#1E293B] mb-2 font-bold font-serif"
+                <h1 class="font-display-lg text-2xl md:text-headline-lg text-[#1E293B] mb-2 font-bold font-sans"
                     data-translate="step1_title">Select Service (Step 1)</h1>
                 <p class="font-body-sm text-xs text-on-surface-variant" data-translate="step1_subtitle">Discover the
                     perfect treatment for your needs.</p>
@@ -712,7 +709,7 @@
             class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop pt-8 pb-28 lg:py-8">
             <div id="stepper-select-therapist"></div>
             <div class="mb-8 text-center md:text-left">
-                <h1 class="font-display-lg text-2xl md:text-headline-lg text-[#1E293B] mb-2 font-bold font-serif"
+                <h1 class="font-display-lg text-2xl md:text-headline-lg text-[#1E293B] mb-2 font-bold font-sans"
                     data-translate="step2_title">Select Your Physician</h1>
                 <p class="font-body-sm text-xs text-on-surface-variant" data-translate="step2_subtitle">Choose from our registered TCM physicians for your tailored consultation and treatment.</p>
             </div>
@@ -739,7 +736,7 @@
         <section id="view-select-time"
             class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop pt-8 pb-28 lg:py-8">
             <div class="mb-8 text-center md:text-left">
-                <h1 class="font-display-lg text-2xl md:text-headline-lg text-[#1E293B] mb-2 font-bold font-serif"
+                <h1 class="font-display-lg text-2xl md:text-headline-lg text-[#1E293B] mb-2 font-bold font-sans"
                     data-translate="step3_title">New Reservation</h1>
                 <p class="font-body-sm text-xs text-on-surface-variant" data-translate="step3_subtitle">Follow the steps
                     below to schedule your appointment.</p>
@@ -821,7 +818,7 @@
             class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
             <div id="stepper-confirm-booking"></div>
             <div class="mb-8 text-center md:text-left">
-                <h1 class="font-display-lg text-2xl md:text-headline-lg text-[#1E293B] mb-2 font-bold font-serif"
+                <h1 class="font-display-lg text-2xl md:text-headline-lg text-[#1E293B] mb-2 font-bold font-sans"
                     data-translate="step4_title">Review &amp; Confirm</h1>
                 <p class="font-body-sm text-xs text-on-surface-variant" data-translate="step4_subtitle">Please review
                     your reservation details below before finalizing your booking.</p>
@@ -865,7 +862,7 @@
                     class="w-12 h-12 rounded-full bg-[#046bd2]/10 flex items-center justify-center text-[#046bd2] mx-auto mb-6">
                     <span class="material-symbols-outlined text-2xl font-bold">check_circle</span>
                 </div>
-                <h1 class="font-display-lg text-3xl md:text-4xl text-[#1E293B] mb-3 font-bold font-serif"
+                <h1 class="font-display-lg text-3xl md:text-4xl text-[#1E293B] mb-3 font-bold font-sans"
                     data-translate="success_title">Your Tranquil Journey is Confirmed!</h1>
                 <p class="font-body-sm text-xs text-on-surface-variant max-w-md mx-auto"
                     data-translate="success_subtitle">We look forward to welcoming you to your sanctuary of peace. Your
@@ -879,7 +876,7 @@
 
             <!-- Preparation Tips Section -->
             <div class="w-full mb-12">
-                <h2 class="font-display-lg text-xl text-[#1E293B] mb-6 font-bold font-serif text-left"
+                <h2 class="font-display-lg text-xl text-[#1E293B] mb-6 font-bold font-sans text-left"
                     data-translate="prep_tips_title">Preparation Tips</h2>
                 <div class="grid grid-cols-2 gap-6">
                     <!-- Tip 1 -->
@@ -981,13 +978,13 @@
         <section id="view-blog" class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8"
             style="font-family:'Manrope',sans-serif;">
             <div class="text-center max-w-2xl mx-auto mb-12 animate-fade-in">
-                <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block mb-2"
-                    data-translate="blog_subtitle">Wellness Insights</span>
-                <h1 class="font-serif text-3xl md:text-4xl text-[#1E293B] font-black tracking-tight"
+                <span class="font-label-caps text-[10px] text-[#ff6900] font-bold uppercase tracking-wider block mb-2"
+                    data-translate="blog_subtitle">Clinical TCM Insights</span>
+                <h1 class="font-sans text-3xl md:text-4xl text-[#1E293B] font-black tracking-tight"
                     data-translate="blog_title">TCM Homecare Journal</h1>
                 <p class="text-xs text-on-surface-variant leading-relaxed mt-2" data-translate="blog_desc">Explore our
-                    curated collection of articles, tips, and insights on holistic wellness, skincare, and spa
-                    treatments.</p>
+                    curated collection of articles, tips, and insights on meridian regulation, acupuncture, herbal wellness, and
+                    pain recovery.</p>
             </div>
 
             <!-- Blog Grid -->
@@ -998,18 +995,18 @@
                     <div class="relative overflow-hidden aspect-video bg-slate-100">
                         <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=600&auto=format&fit=crop"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            alt="Meditation and Relaxation">
+                            alt="Acupuncture and Meridian Care">
                         <span
-                            class="absolute top-4 left-4 bg-[#046bd2] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Mindfulness</span>
+                            class="absolute top-4 left-4 bg-[#046bd2] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Acupuncture</span>
                     </div>
                     <div class="p-6 flex flex-col flex-grow text-left">
                         <span class="text-[10px] text-slate-400 font-bold mb-2">October 24, 2025 • 5 min read</span>
                         <h3
-                            class="font-serif text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#046bd2] transition-colors">
-                            The Science of Relaxation: How Spa Treatments Lower Cortisol</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-6">Discover how professional
-                            massage and spa therapies trigger your parasympathetic nervous system, actively lowering
-                            cortisol levels and reducing chronic stress.</p>
+                            class="font-sans text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#046bd2] transition-colors">
+                            The Science of Meridian Healing: How Acupuncture Regulates Immunity</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-6">Discover how precise
+                            meridian stimulation triggers endorphin release, improves microcirculation, and actively lowers
+                            chronic inflammation.</p>
                         <button onclick="openBlogArticle(1)"
                             class="mt-auto flex items-center gap-1.5 text-xs font-bold text-[#046bd2] hover:underline self-start cursor-pointer">
                             Read Full Article <span class="material-symbols-outlined text-sm">arrow_forward</span>
@@ -1023,19 +1020,19 @@
                     <div class="relative overflow-hidden aspect-video bg-slate-100">
                         <img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=600&auto=format&fit=crop"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            alt="Spa Therapy Selection">
+                            alt="TCM Therapy Selection">
                         <span
-                            class="absolute top-4 left-4 bg-[#B45309] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Therapy
+                            class="absolute top-4 left-4 bg-[#ff6900] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Therapy
                             Guide</span>
                     </div>
                     <div class="p-6 flex flex-col flex-grow text-left">
                         <span class="text-[10px] text-slate-400 font-bold mb-2">October 18, 2025 • 4 min read</span>
                         <h3
-                            class="font-serif text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#046bd2] transition-colors">
-                            Deep Tissue vs. Aromatherapy: Which Massage is Right for You?</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-6">Struggling to choose between
-                            muscle-release pressure and sensory relaxation? We break down the structural and holistic
-                            differences to help you select the ideal treatment.</p>
+                            class="font-sans text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#046bd2] transition-colors">
+                            Acupuncture vs. Therapeutic Tuina: Finding the Right Pain Relief</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-6">Struggling between
+                            targeted needle stimulation or orthopedic manipulation? We examine how each modality
+                            resolves nerve pinching and muscle knots.</p>
                         <button onclick="openBlogArticle(2)"
                             class="mt-auto flex items-center gap-1.5 text-xs font-bold text-[#046bd2] hover:underline self-start cursor-pointer">
                             Read Full Article <span class="material-symbols-outlined text-sm">arrow_forward</span>
@@ -1049,19 +1046,19 @@
                     <div class="relative overflow-hidden aspect-video bg-slate-100">
                         <img src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=600&auto=format&fit=crop"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            alt="Post-Spa Aftercare">
+                            alt="Post-TCM Aftercare">
                         <span
-                            class="absolute top-4 left-4 bg-[#046bd2] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Wellness
-                            Tips</span>
+                            class="absolute top-4 left-4 bg-[#046bd2] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Clinical
+                            Care</span>
                     </div>
                     <div class="p-6 flex flex-col flex-grow text-left">
                         <span class="text-[10px] text-slate-400 font-bold mb-2">October 12, 2025 • 6 min read</span>
                         <h3
-                            class="font-serif text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#046bd2] transition-colors">
-                            Post-Spa Aftercare: 5 Habits to Maximize Treatment Benefits</h3>
-                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-6">Your relaxation shouldn't
-                            end when you walk out the door. Learn the critical steps to hydrate, rest, and care for your
-                            skin to prolong the positive effects of your spa session.</p>
+                            class="font-sans text-base font-bold text-slate-800 line-clamp-2 leading-snug mb-2 group-hover:text-[#046bd2] transition-colors">
+                            Post-Treatment Care: 5 Practices to Maximize TCM Recovery Benefits</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mb-6">Your healing doesn't
+                            end when you leave our clinic. Learn essential hydration habits, herbal decoction timing, and rest
+                            protocols to sustain long-term vitality.</p>
                         <button onclick="openBlogArticle(3)"
                             class="mt-auto flex items-center gap-1.5 text-xs font-bold text-[#046bd2] hover:underline self-start cursor-pointer">
                             Read Full Article <span class="material-symbols-outlined text-sm">arrow_forward</span>
@@ -1078,7 +1075,7 @@
             <div class="text-center mb-12">
                 <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block mb-2"
                     data-translate="about_tag">Our Story</span>
-                <h1 class="font-serif text-3xl md:text-4xl text-[#1E293B] font-black tracking-tight"
+                <h1 class="font-sans text-3xl md:text-4xl text-[#1E293B] font-black tracking-tight"
                     data-translate="about_title">TCM Homecare</h1>
                 <p class="text-xs md:text-sm text-on-surface-variant leading-relaxed mt-4 max-w-2xl mx-auto"
                     data-translate="about_desc">Established in 2024, TCM Homecare was born from a simple
@@ -1088,7 +1085,7 @@
             </div>
 
             <div class="mb-12">
-                <h2 class="font-serif text-2xl text-[#1E293B] font-bold text-center mb-8"
+                <h2 class="font-sans text-2xl text-[#1E293B] font-bold text-center mb-8"
                     data-translate="about_team_title">Meet Our Therapists</h2>
                 <div id="about-therapists-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     <!-- Therapists will be dynamically rendered here -->
@@ -1102,7 +1099,7 @@
             <div class="text-center max-w-2xl mx-auto mb-12 animate-fade-in">
                 <span class="font-label-caps text-[10px] text-[#B45309] font-bold uppercase tracking-wider block mb-2"
                     data-translate="contact_tag">Get In Touch</span>
-                <h1 class="font-serif text-3xl md:text-4xl text-[#1E293B] font-black tracking-tight"
+                <h1 class="font-sans text-3xl md:text-4xl text-[#1E293B] font-black tracking-tight"
                     data-translate="contact_title">We'd Love to Hear From You</h1>
                 <p class="text-xs text-on-surface-variant leading-relaxed mt-2" data-translate="contact_desc">Whether
                     you have a question about treatments, bookings, or anything else, our team is ready to answer all
@@ -1118,7 +1115,7 @@
                             <span class="material-symbols-outlined text-2xl">location_on</span>
                         </div>
                         <div>
-                            <h3 class="font-serif text-base font-bold text-slate-800 mb-1">Our Sanctuary</h3>
+                            <h3 class="font-sans text-base font-bold text-slate-800 mb-1">Our Sanctuary</h3>
                             <p class="text-xs text-slate-500 leading-relaxed">Kuala Lumpur City Centre,<br>50088 Kuala
                                 Lumpur,<br>Malaysia</p>
                         </div>
@@ -1130,7 +1127,7 @@
                             <span class="material-symbols-outlined text-2xl">mail</span>
                         </div>
                         <div>
-                            <h3 class="font-serif text-base font-bold text-slate-800 mb-1">Email Us</h3>
+                            <h3 class="font-sans text-base font-bold text-slate-800 mb-1">Email Us</h3>
                             <p class="text-xs text-slate-500 leading-relaxed">
                                 contact@yongkangtcm.sg<br>appointments@yongkangtcm.sg</p>
                         </div>
@@ -1142,7 +1139,7 @@
                             <span class="material-symbols-outlined text-2xl">phone</span>
                         </div>
                         <div>
-                            <h3 class="font-serif text-base font-bold text-slate-800 mb-1">Call Us</h3>
+                            <h3 class="font-sans text-base font-bold text-slate-800 mb-1">Call Us</h3>
                             <p class="text-xs text-slate-500 leading-relaxed">+60 3-1234 5678<br>Mon-Sun, 9:00 AM - 8:00
                                 PM</p>
                         </div>
@@ -1150,7 +1147,7 @@
                 </div>
 
                 <div class="bg-white p-8 rounded-3xl shadow-md border border-outline-variant/30">
-                    <h3 class="font-serif text-2xl font-bold text-slate-800 mb-6">Send a Message</h3>
+                    <h3 class="font-sans text-2xl font-bold text-slate-800 mb-6">Send a Message</h3>
                     <form id="contact-form"
                         onsubmit="event.preventDefault(); window.submitContactForm && window.submitContactForm();"
                         class="flex flex-col gap-4">
@@ -1217,7 +1214,7 @@
             class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
             <div class="mb-8 flex items-center justify-between">
                 <div>
-                    <h1 class="font-serif text-3xl text-[#1E293B] font-bold mb-1">My Active Packages</h1>
+                    <h1 class="font-sans text-3xl text-[#1E293B] font-bold mb-1">My Active Packages</h1>
                     <p class="font-body-sm text-xs text-on-surface-variant">View and manage your purchased massage
                         packages and facial sessions.</p>
                 </div>
@@ -1243,7 +1240,7 @@
         <section id="view-faq" class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
             <div class="mb-8 flex items-center justify-between">
                 <div>
-                    <h1 class="font-serif text-3xl text-[#1E293B] font-bold mb-1">Frequently Asked Questions</h1>
+                    <h1 class="font-sans text-3xl text-[#1E293B] font-bold mb-1">Frequently Asked Questions</h1>
                     <p class="font-body-sm text-xs text-on-surface-variant">Find answers to common questions about our
                         services and booking process.</p>
                 </div>
@@ -1257,15 +1254,15 @@
                 <details
                     class="group glass-panel rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden border border-outline-variant/30 cursor-pointer">
                     <summary class="flex justify-between items-center font-bold text-sm text-[#1E293B]">
-                        <span>How do I book a spa treatment?</span>
+                        <span>How do I book a TCM treatment or consultation?</span>
                         <span class="transition group-open:rotate-180"><span
                                 class="material-symbols-outlined">expand_more</span></span>
                     </summary>
                     <p class="mt-4 text-xs text-on-surface-variant leading-relaxed">
-                        Booking is simple! You can click "Book Now" in the navbar, select your preferred service, choose
-                        an available therapist, pick your desired date and time, and confirm. You can proceed without
-                        logging in initially, and you will only be asked to sign in or register at the final step to
-                        secure your reservation.
+                        Booking is simple! You can click "Book Consultation" in the navbar, select your preferred treatment (e.g. Laser Acupuncture, Teleconsult, or Tuina), choose
+                        an available physician, pick your desired date and time, and confirm. You can proceed without
+                        logging in as a guest, and you will only be offered optional sign-in at confirmation to
+                        track your medical records.
                     </p>
                 </details>
 
@@ -1277,9 +1274,9 @@
                                 class="material-symbols-outlined">expand_more</span></span>
                     </summary>
                     <p class="mt-4 text-xs text-on-surface-variant leading-relaxed">
-                        Clinic Wallet is your prepaid credit account in our app. You can top up your wallet with
-                        custom amounts, and use it to instantly pay for spa treatments and packages at checkout. It
-                        makes booking fast and secure.
+                        Clinic Wallet is your prepaid healthcare credit balance. You can top up your wallet with
+                        custom amounts, and use it to instantly pay for TCM consultations, acupuncture sessions, and bundles at checkout. It
+                        makes booking seamless and contactless.
                     </p>
                 </details>
 
@@ -1291,10 +1288,7 @@
                                 class="material-symbols-outlined">expand_more</span></span>
                     </summary>
                     <p class="mt-4 text-xs text-on-surface-variant leading-relaxed">
-                        We offer packages of 10 sessions for signature treatments like Aromatherapy Massage and Radiance
-                        Facials. Once purchased, these packages will appear in the "Your Active Packages" section on
-                        your Home dashboard. You can click "Use Package" at any time to instantly schedule a session
-                        from your remaining quota.
+                        We offer structured clinical packages (e.g., 5 to 10 sessions) for intensive recovery courses like Pain Relief Acupuncture and Orthopedic Tuina. Once purchased, these bundles will appear in your "Active Packages" section. You can click "Use Package" at any time to schedule a session from your remaining quota.
                     </p>
                 </details>
 
@@ -1306,22 +1300,22 @@
                                 class="material-symbols-outlined">expand_more</span></span>
                     </summary>
                     <p class="mt-4 text-xs text-on-surface-variant leading-relaxed">
-                        You can cancel or reschedule your reservation up to 24 hours before your scheduled treatment
+                        You can cancel or reschedule your reservation up to 24 hours before your scheduled appointment
                         time directly from your Booking History profile. Cancellations made within 24 hours of the
-                        appointment may incur a late cancellation fee.
+                        appointment may forfeit the 50% clinic holding deposit.
                     </p>
                 </details>
 
                 <details
                     class="group glass-panel rounded-2xl p-6 [&_summary::-webkit-details-marker]:hidden border border-outline-variant/30 cursor-pointer">
                     <summary class="flex justify-between items-center font-bold text-sm text-[#1E293B]">
-                        <span>Do I need to select a specific therapist?</span>
+                        <span>Do I need to select a specific physician?</span>
                         <span class="transition group-open:rotate-180"><span
                                 class="material-symbols-outlined">expand_more</span></span>
                     </summary>
                     <p class="mt-4 text-xs text-on-surface-variant leading-relaxed">
-                        No, selecting a specific therapist is optional. If you choose "No Preference", the system will
-                        automatically allocate your booking to the next available specialist for your chosen time slot.
+                        No, selecting a specific physician is optional. If you choose "No Preference", the clinic system will
+                        automatically allocate your consultation to the licensed practitioner on duty for your chosen time slot.
                     </p>
                 </details>
             </div>
@@ -1332,8 +1326,8 @@
             class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
             <div class="mb-8 flex items-center justify-between">
                 <div>
-                    <h1 class="font-serif text-3xl text-[#1E293B] font-bold mb-1">How to Use</h1>
-                    <p class="font-body-sm text-xs text-on-surface-variant">Learn how to easily navigate our spa booking
+                    <h1 class="font-sans text-3xl text-[#1E293B] font-bold mb-1">How to Use</h1>
+                    <p class="font-body-sm text-xs text-on-surface-variant">Learn how to easily navigate our TCM clinical booking
                         system and packages.</p>
                 </div>
                 <button onclick="navigateTo('home')"
@@ -1350,7 +1344,7 @@
                             class="w-12 h-12 rounded-2xl bg-[#046bd2] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
                             1</div>
                         <div>
-                            <h3 class="font-serif text-lg font-bold text-[#1E293B] mb-2">Browse and Pick Service</h3>
+                            <h3 class="font-sans text-lg font-bold text-[#1E293B] mb-2">Browse and Pick Service</h3>
                             <p class="text-xs text-on-surface-variant leading-relaxed">
                                 Go to the Service catalog or explore our featured packages. Choose from massage
                                 treatments, rejuvenating skin therapies, body wraps, or pre-purchased bundles.
@@ -1363,7 +1357,7 @@
                             class="w-12 h-12 rounded-2xl bg-[#046bd2] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
                             2</div>
                         <div>
-                            <h3 class="font-serif text-lg font-bold text-[#1E293B] mb-2">Select Your Therapist</h3>
+                            <h3 class="font-sans text-lg font-bold text-[#1E293B] mb-2">Select Your Therapist</h3>
                             <p class="text-xs text-on-surface-variant leading-relaxed">
                                 View available specialists and select one that fits your treatment. Or choose "No
                                 Preference" if you want the first available professional.
@@ -1376,7 +1370,7 @@
                             class="w-12 h-12 rounded-2xl bg-[#046bd2] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
                             3</div>
                         <div>
-                            <h3 class="font-serif text-lg font-bold text-[#1E293B] mb-2">Pick Date and Time</h3>
+                            <h3 class="font-sans text-lg font-bold text-[#1E293B] mb-2">Pick Date and Time</h3>
                             <p class="text-xs text-on-surface-variant leading-relaxed">
                                 Our calendar dynamically displays available time slots based on your selected
                                 therapist's schedule and the duration of your treatment. Choose what fits your day.
@@ -1389,7 +1383,7 @@
                             class="w-12 h-12 rounded-2xl bg-[#046bd2] text-white flex items-center justify-center font-bold shrink-0 shadow-md">
                             4</div>
                         <div>
-                            <h3 class="font-serif text-lg font-bold text-[#1E293B] mb-2">Confirm and Secure</h3>
+                            <h3 class="font-sans text-lg font-bold text-[#1E293B] mb-2">Confirm and Secure</h3>
                             <p class="text-xs text-on-surface-variant leading-relaxed">
                                 Review your details at the confirmation step. When you click confirm, you will be
                                 prompted to log in or register. Once authenticated, your booking is securely saved!
@@ -1400,7 +1394,7 @@
 
                 <!-- Package Guide -->
                 <div class="glass-panel rounded-3xl p-8 md:p-10 border border-primary/20 bg-primary-fixed/10">
-                    <h3 class="font-serif text-xl font-bold text-primary mb-4 flex items-center gap-2">
+                    <h3 class="font-sans text-xl font-bold text-primary mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined">stars</span> Using Purchased Multi-Session Packages
                     </h3>
                     <p class="text-xs text-on-surface-variant leading-relaxed mb-6">
@@ -1422,7 +1416,7 @@
         <section id="view-legal" class="view-section hidden max-w-container-max mx-auto px-4 md:px-margin-desktop py-8">
             <div class="mb-8 flex items-center justify-between">
                 <div>
-                    <h1 class="font-serif text-3xl text-[#1E293B] font-bold mb-1">Terms & Legal Agreements</h1>
+                    <h1 class="font-sans text-3xl text-[#1E293B] font-bold mb-1">Terms & Legal Agreements</h1>
                     <p class="font-body-sm text-xs text-on-surface-variant">Read our privacy policies, guidelines, and
                         terms of services.</p>
                 </div>
@@ -1434,7 +1428,7 @@
 
             <div class="max-w-3xl mx-auto glass-panel rounded-3xl p-8 md:p-10 space-y-8 text-on-surface-variant">
                 <div class="space-y-3">
-                    <h2 class="font-serif text-lg font-bold text-[#1E293B]">1. Terms of Service</h2>
+                    <h2 class="font-sans text-lg font-bold text-[#1E293B]">1. Terms of Service</h2>
                     <p class="text-xs leading-relaxed">
                         Welcome to TCM Homecare. By accessing our application and booking our services, you agree to
                         comply with and be bound by the following terms. All bookings are subject to availability and
@@ -1443,7 +1437,7 @@
                 </div>
 
                 <div class="space-y-3">
-                    <h2 class="font-serif text-lg font-bold text-[#1E293B]">2. Privacy Policy</h2>
+                    <h2 class="font-sans text-lg font-bold text-[#1E293B]">2. Privacy Policy</h2>
                     <p class="text-xs leading-relaxed">
                         We value your privacy. We collect guest details (name, email, phone number) only to manage your
                         appointments, wallet, and notification history. Your credit card information is processed
@@ -1452,7 +1446,7 @@
                 </div>
 
                 <div class="space-y-3">
-                    <h2 class="font-serif text-lg font-bold text-[#1E293B]">3. Wallet and Refund Policies</h2>
+                    <h2 class="font-sans text-lg font-bold text-[#1E293B]">3. Wallet and Refund Policies</h2>
                     <p class="text-xs leading-relaxed">
                         The Clinic Wallet is a simulated account for interactive prototype testing. Funds loaded onto
                         the wallet are for demonstration purposes and cannot be redeemed for real currency.
@@ -1462,7 +1456,7 @@
                 </div>
 
                 <div class="space-y-3">
-                    <h2 class="font-serif text-lg font-bold text-[#1E293B]">4. Safety and Health Guidelines</h2>
+                    <h2 class="font-sans text-lg font-bold text-[#1E293B]">4. Safety and Health Guidelines</h2>
                     <p class="text-xs leading-relaxed">
                         Guests are required to disclose any health issues, allergies, or physical sensitivities in the
                         "special requests" field when finalizing their reservation. We prioritize guest comfort and
@@ -1513,7 +1507,7 @@
             <div class="flex justify-between items-center pb-4 border-b border-outline-variant/20">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">credit_card</span>
-                    <h3 class="font-serif text-lg text-[#1E293B] font-bold">Saved Payment Methods</h3>
+                    <h3 class="font-sans text-lg text-[#1E293B] font-bold">Saved Payment Methods</h3>
                 </div>
                 <button onclick="closePaymentMethodsModal()"
                     class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors">
@@ -1818,7 +1812,7 @@
                 <div>
                     <span id="blog-modal-meta" class="text-[10px] text-slate-400 font-bold block mb-1">Category</span>
                     <h2 id="blog-modal-title"
-                        class="font-serif text-lg md:text-xl text-[#1E293B] font-bold leading-tight">Article Title</h2>
+                        class="font-sans text-lg md:text-xl text-[#1E293B] font-bold leading-tight">Article Title</h2>
                 </div>
                 <div id="blog-modal-content" class="text-xs text-slate-600 leading-relaxed space-y-4 font-medium">
                     <!-- Content populated dynamically -->
@@ -1848,17 +1842,16 @@
                         <div class="flex items-center gap-1.5 mb-1">
                             <span
                                 class="bg-[#046bd2]/10 text-[#046bd2] text-[9px] font-bold px-2 py-0.5 rounded-full uppercase"
-                                id="therapist-modal-role">Therapist</span>
+                                id="therapist-modal-role">Physician</span>
                             <span class="flex items-center gap-0.5 text-amber-500 font-bold text-xs"
                                 id="therapist-modal-rating">
                                 <span class="material-symbols-outlined text-sm">star</span> <span
                                     id="therapist-modal-score">4.9</span>
                             </span>
                         </div>
-                        <h2 id="therapist-modal-name" class="font-serif text-lg font-bold text-slate-800">Siti Rahmawati
+                        <h2 id="therapist-modal-name" class="font-sans text-lg font-bold text-slate-800">TCM Physician
                         </h2>
-                        <p id="therapist-modal-exp" class="text-[11px] text-slate-500 font-semibold mt-0.5">8+ Years
-                            Experience</p>
+                        <p id="therapist-modal-exp" class="text-[11px] text-slate-500 font-semibold mt-0.5">Licensed TCMPB Practitioner</p>
                     </div>
                 </div>
 
@@ -1867,8 +1860,7 @@
                     <h4 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">About Practitioner
                     </h4>
                     <p id="therapist-modal-bio" class="text-xs text-slate-600 leading-relaxed font-medium">
-                        Siti is a master practitioner with over 8 years of dedicated experience in deep muscle therapy
-                        and sensory healing.
+                        Registered with the Singapore TCM Practitioners Board (TCMPB) with extensive hospital and clinical experience in pulse diagnosis, pain relief acupuncture, and personalized herbal prescriptions.
                     </p>
                 </div>
 
@@ -1914,11 +1906,11 @@
                 <span class="material-symbols-outlined">close</span>
             </button>
             <div class="text-left">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-[#B45309] block mb-1">Feedback &amp;
+                <span class="text-[10px] font-bold uppercase tracking-wider text-[#ff6900] block mb-1">Feedback &amp;
                     Rating</span>
-                <h2 class="font-serif text-xl font-bold text-slate-800">Rate Your Spa Experience</h2>
+                <h2 class="font-sans text-xl font-bold text-slate-800">Rate Your TCM Experience</h2>
                 <p id="review-modal-subtitle" class="text-xs text-slate-500 font-medium mt-1">Share your experience for
-                    your completed treatment</p>
+                    your completed clinical consultation or therapy</p>
             </div>
 
             <!-- Star Rating Picker -->
@@ -1985,7 +1977,7 @@
                 <div>
                     <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 block">Cancellation
                         Policy</span>
-                    <h2 class="font-serif text-lg font-bold text-slate-800">Cancel Reservation?</h2>
+                    <h2 class="font-sans text-lg font-bold text-slate-800">Cancel Reservation?</h2>
                 </div>
             </div>
             <div class="bg-amber-50/60 rounded-2xl p-4 border border-amber-200/60 space-y-2 text-xs">
@@ -2030,7 +2022,7 @@
                 <div>
                     <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 block">TCM Homecare E-Gift
                         Card</span>
-                    <h2 class="font-serif text-lg font-bold text-slate-800">Send Gift Credit</h2>
+                    <h2 class="font-sans text-lg font-bold text-slate-800">Send Gift Credit</h2>
                 </div>
             </div>
 
@@ -2097,7 +2089,7 @@
                 </div>
                 <div>
                     <span class="text-[10px] font-bold uppercase tracking-wider text-amber-600 block">Clinic Health Rewards</span>
-                    <h2 class="font-serif text-lg font-bold text-slate-800">Redeem Points</h2>
+                    <h2 class="font-sans text-lg font-bold text-slate-800">Redeem Points</h2>
                 </div>
             </div>
 
@@ -2169,7 +2161,7 @@
                 <img id="tp-image" src="" alt="Therapist" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
                 <div class="absolute bottom-4 left-4 right-4">
-                    <h2 id="tp-name" class="font-serif text-2xl font-bold text-white mb-1">Name</h2>
+                    <h2 id="tp-name" class="font-sans text-2xl font-bold text-white mb-1">Name</h2>
                     <p id="tp-role" class="text-[11px] font-bold text-white/80 uppercase tracking-wider">Role</p>
                 </div>
             </div>
@@ -2188,12 +2180,12 @@
                 </div>
 
                 <div class="mb-6">
-                    <h3 class="font-serif text-base font-bold text-slate-800 mb-2">About</h3>
+                    <h3 class="font-sans text-base font-bold text-slate-800 mb-2">About</h3>
                     <p id="tp-bio" class="text-xs text-slate-500 leading-relaxed">Biography goes here...</p>
                 </div>
 
                 <div class="mb-8">
-                    <h3 class="font-serif text-base font-bold text-slate-800 mb-3">Certifications</h3>
+                    <h3 class="font-sans text-base font-bold text-slate-800 mb-3">Certifications</h3>
                     <ul id="tp-certs" class="space-y-2 text-xs text-slate-600 font-medium">
                         <!-- Certs injected here -->
                     </ul>

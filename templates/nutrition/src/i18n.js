@@ -1,10 +1,12 @@
 export const translations = {
     en: {
         // Navbar
+        "nav.home": "Home",
         "nav.features": "Features",
         "nav.specialists": "Specialists",
         "nav.success_stories": "Success Stories",
         "nav.articles": "Articles",
+        "nav.book_consultation": "Book Consultation",
         "nav.sign_in": "Sign In",
         "nav.get_started": "Get Started",
         
@@ -133,10 +135,12 @@ export const translations = {
     },
     my: {
         // Navbar
+        "nav.home": "Utama",
         "nav.features": "Ciri-ciri",
         "nav.specialists": "Pakar",
         "nav.success_stories": "Kisah Kejayaan",
         "nav.articles": "Artikel",
+        "nav.book_consultation": "Tempah Konsultasi",
         "nav.sign_in": "Log Masuk",
         "nav.get_started": "Mula Sekarang",
         
@@ -302,11 +306,45 @@ export function updateDOM() {
     });
 }
 
+// Dynamic branch resolution and link propagation across nutrition pages
+export function initNutriBranch() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const branchId = urlParams.get('branch') || urlParams.get('id');
+        const storedBranches = JSON.parse(localStorage.getItem('cliniva_branches') || '[]');
+        let branch = null;
+        if (branchId) {
+            branch = storedBranches.find(b => b.id === branchId || b.slug === branchId);
+        }
+        if (!branch) {
+            branch = storedBranches.find(b => b.template === 'nutrition');
+        }
+        if (branch) {
+            document.querySelectorAll('.branch-dynamic-name').forEach(el => {
+                el.textContent = branch.name;
+            });
+            const branchParam = `branch=${encodeURIComponent(branch.id)}`;
+            document.querySelectorAll('a[href^="./"], a[href^="specialist.html"], a[href^="article.html"], a[href^="index.html"], a[href^="login.html"]').forEach(link => {
+                const rawHref = link.getAttribute('href');
+                if (rawHref && !rawHref.startsWith('#') && !rawHref.includes('branch=')) {
+                    const parts = rawHref.split('#');
+                    const sep = parts[0].includes('?') ? '&' : '?';
+                    const hash = parts.length > 1 ? `#${parts[1]}` : '';
+                    link.href = `${parts[0]}${sep}${branchParam}${hash}`;
+                }
+            });
+        }
+    } catch (e) {
+        console.warn('[NutriFlow] branch init error:', e);
+    }
+}
+
 // Auto-initialize on load
 document.addEventListener('DOMContentLoaded', () => {
     const lang = getLanguage();
     document.documentElement.lang = lang;
     updateDOM();
+    initNutriBranch();
     
     // Sync UI language selector if it exists
     const langSelect = document.getElementById('lang-selector');
@@ -314,6 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
         langSelect.value = lang;
         langSelect.addEventListener('change', (e) => {
             setLanguage(e.target.value);
+            initNutriBranch();
         });
     }
 });

@@ -63,10 +63,6 @@ const NavbarGuest = {
 
                 <!-- Right actions -->
                 <div class="flex items-center gap-3">
-                    <a href="../../pages/public/sign-in.html" class="hidden md:flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-primary transition-all px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-primary/40" title="Go to Cliniva Management Portal">
-                        <span class="material-symbols-outlined text-[15px]">corporate_fare</span>
-                        Cliniva Portal
-                    </a>
                     ${langBtn}
                     <a href="#/booking" id="navbar-book-btn"
                        class="hidden sm:flex items-center gap-1.5 bg-primary text-on-primary px-5 py-2.5 rounded-lg font-button-text text-sm active:scale-95 transition-all shadow-md hover:shadow-lg hover:bg-primary-container">
@@ -108,10 +104,6 @@ const NavbarGuest = {
                        class="flex items-center justify-center gap-2 bg-primary text-on-primary px-5 py-3 rounded-xl font-button-text text-button-text w-full hover:bg-primary-container transition-all">
                         <span class="material-symbols-outlined text-[20px]">calendar_today</span>
                         ${t('nav.bookNow')}
-                    </a>
-                    <a href="../../pages/public/sign-in.html" class="flex items-center justify-center gap-1.5 text-xs font-bold text-slate-500 py-2 hover:text-primary">
-                        <span class="material-symbols-outlined text-[15px]">corporate_fare</span>
-                        Cliniva Portal
                     </a>
                 </div>
             </div>

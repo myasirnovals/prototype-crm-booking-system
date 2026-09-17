@@ -1,3 +1,5 @@
+import { supabaseService } from '../../../../js/services/supabase.service.js';
+
 // Serenity & Soul - Spa Application Prototype JS
 // Branch initialization managed by Cliniva SaaS Platform (Single-tenant template runtime)
 
@@ -14,7 +16,7 @@ export const DEFAULT_SPA_THEME = {
   name: 'Serenity & Soul',
   tagline: 'Holistic rejuvenation, aromatherapy indulgence & deep muscle stress relief',
   logo: '',
-  address: '3 LENGKOK MERAK, Singapore',
+  address: '290 Orchard Road, Paragon Medical #14-02, Singapore 238859',
   phone: '+65 6738 1234',
   hours: 'Mon - Sat (09:00 - 20:00 SGT)',
   currency: 'SGD',
@@ -52,7 +54,7 @@ export const currentBranch = clinivaBranch ? {
   hours: clinivaBranch.hours || clinivaBranch.operatingHours || DEFAULT_SPA_THEME.hours,
   currency: clinivaBranch.currency || DEFAULT_SPA_THEME.currency,
   colors: clinivaBranch.colors || DEFAULT_SPA_THEME.colors
-} : DEFAULT_SPA_THEME;
+} : { ...DEFAULT_SPA_THEME };
 
 // Backward-compatible aliases for existing view/controller imports
 export const currentTenant = currentBranch;
@@ -61,3 +63,38 @@ export const tenants = DEFAULT_TENANTS;
 
 window.currentTenant = currentTenant;
 window.currentBranch = currentBranch;
+
+/**
+ * Live Supabase Branch Sync Provider
+ * Asynchronously checks Supabase cloud for real-time branch profile updates
+ */
+export async function initBranchFromSupabase() {
+  try {
+    const dbBranch = await supabaseService.fetchBranchByIdOrSlug(targetBranchId);
+    if (dbBranch) {
+      currentBranch.id = dbBranch.id;
+      currentBranch.name = dbBranch.name || currentBranch.name;
+      currentBranch.address = dbBranch.address || currentBranch.address;
+      currentBranch.phone = dbBranch.phone || currentBranch.phone;
+      currentBranch.hours = dbBranch.hours || currentBranch.hours;
+      currentBranch.currency = dbBranch.currency || currentBranch.currency;
+      if (dbBranch.tagline) currentBranch.tagline = dbBranch.tagline;
+      if (dbBranch.logo) currentBranch.logo = dbBranch.logo;
+
+      window.currentBranch = currentBranch;
+      window.currentTenant = currentBranch;
+
+      console.info('[Tenant] Synced branch from Supabase Cloud:', dbBranch.id, dbBranch.name);
+      window.dispatchEvent(new CustomEvent('cliniva:branch-updated', { detail: currentBranch }));
+      return currentBranch;
+    }
+  } catch (err) {
+    console.warn('[Tenant] Supabase branch sync fallback:', err);
+  }
+  return currentBranch;
+}
+
+// Trigger async live sync on load
+if (typeof window !== 'undefined') {
+  initBranchFromSupabase();
+}

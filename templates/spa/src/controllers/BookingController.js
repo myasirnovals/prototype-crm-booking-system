@@ -1,4 +1,4 @@
-import { tenantId, currentTenant, DEFAULT_TENANTS } from '../models/Tenant.js';
+import { tenantId, currentTenant, currentBranch, DEFAULT_TENANTS } from '../models/Tenant.js';
 import { SERVICES, THERAPISTS, getSharedData, syncServices, syncTherapists } from '../models/Database.js';
 import { TRANSLATIONS, t, getServiceTranslation, translateStaticHtml, toggleLanguage } from '../models/Translations.js';
 import { DEFAULT_STATE, state, loadState, saveState } from '../models/State.js';
@@ -11,6 +11,7 @@ import { renderProfileView, renderWalletView, renderTopupView, renderPersonalDet
 import { renderAllServicesView } from '../views/CatalogViews.js';
 import { openPaymentMethodsModal, closePaymentMethodsModal } from '../views/PaymentModal.js';
 import { renderBookPackageView, renderActivePackagesView } from '../views/PackageViews.js';
+import { supabaseService } from '../../../../js/services/supabase.service.js';
 
 // 6. ACTION BUTTON HANDLERS FOR THE STEPS
 export function nextStep(currentStep) {
@@ -48,7 +49,13 @@ export function confirmReservation() {
     const service = state.booking.service;
     if (!service) return;
 
-    requireLogin(() => {
+    const curr = (currentBranch && currentBranch.currency) || 'SGD';
+    const branchId = (currentBranch && currentBranch.id) || 'sg-orchard';
+    const branchName = (currentBranch && currentBranch.name) || 'Serenity & Soul Sanctuary';
+    const branchAddress = (currentBranch && currentBranch.address) || '290 Orchard Road, Paragon Medical #14-02, Singapore 238859';
+
+    // Execution routine: supports both Registered Users and Guest Clients
+    const executeBooking = () => {
         // --- Package Session Mode: deduct 1 session, no payment needed ---
         if (state.packageBookingMode) {
             const bundleId = state.packageBookingMode;
@@ -69,8 +76,8 @@ export function confirmReservation() {
                 serviceType: service.type,
                 date: state.booking.date || new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }),
                 time: state.booking.time || '11:00 AM',
-                therapist: state.booking.therapist ? state.booking.therapist.name : 'Sari',
-                location: 'Serenity & Soul Sanctuary, 12 Orchard Road, Singapore 238886',
+                therapist: state.booking.therapist ? state.booking.therapist.name : 'Assigned Specialist',
+                location: `${branchName}, ${branchAddress}`,
                 price: 0,
                 status: 'Upcoming'
             });
@@ -86,23 +93,45 @@ export function confirmReservation() {
 
             state.successResId = resId;
 
+            // Persist to Supabase in background
+            supabaseService.createBooking({
+                code: resId,
+                patientName: state.user?.name || state.guestInfo?.name || 'Guest Client',
+                patientPhone: state.user?.phone || state.guestInfo?.phone || null,
+                patientEmail: state.user?.email || state.guestInfo?.email || null,
+                branchId: branchId,
+                branchName: branchName,
+                branchAddress: branchAddress,
+                serviceId: service.id,
+                serviceName: service.name,
+                practitionerId: state.booking.therapist?.id || null,
+                practitionerName: state.booking.therapist?.name || 'Assigned Specialist',
+                scheduleDate: state.booking.date || new Date().toISOString().slice(0, 10),
+                schedule: state.booking.time || '11:00 AM',
+                room: 'VIP Aromatherapy Suite',
+                depositPaid: '0.00',
+                paymentStatus: 'PACKAGE_SESSION',
+                status: 'CONFIRMED',
+                templateType: 'wellness'
+            }).catch(e => console.warn('[Supabase Booking] Package session error:', e));
+
             showNotification(state.language === 'ms' ? 'Sesi berjaya ditempah! 1 sesi ditolak dari pakej anda.' : 'Session successfully booked! 1 session deducted from your package.', 'success');
             navigateTo('success');
             return;
         }
 
-        // --- Standard Booking ---
+        // --- Standard Booking (Guest or User) ---
         const subtotal = service.price;
         const tax = subtotal * 0.07;
         const total = subtotal + tax;
         const depositAmount = total * 0.5;
         const balanceDue = total * 0.5;
 
-        if (selectedPaymentMethod === 'wallet') {
+        if (selectedPaymentMethod === 'wallet' && isLoggedIn()) {
             if (state.walletBalance < depositAmount) {
                 const errorMsg = state.language === 'ms'
-                    ? `Baki dompet tidak mencukupi untuk deposit 50% (MYR ${depositAmount.toFixed(2)}). Mengarah ke Tambah Nilai...`
-                    : `Insufficient wallet balance for 50% deposit (MYR ${depositAmount.toFixed(2)}). Redirecting to Top Up...`;
+                    ? `Baki dompet tidak mencukupi untuk deposit 50% (${curr} ${depositAmount.toFixed(2)}). Mengarah ke Tambah Nilai...`
+                    : `Insufficient wallet balance for 50% deposit (${curr} ${depositAmount.toFixed(2)}). Redirecting to Top Up...`;
                 showNotification(errorMsg, 'error');
                 setTimeout(() => {
                     navigateTo('topup');
@@ -120,7 +149,7 @@ export function confirmReservation() {
             });
         }
 
-        // Earn Loyalty Points (10 pts per MYR 10 deposit)
+        // Earn Loyalty Points (10 pts per 10 currency units)
         const earnedPoints = Math.max(10, Math.floor(depositAmount / 10) * 10);
         state.loyaltyPoints = (state.loyaltyPoints || 350) + earnedPoints;
 
@@ -134,8 +163,8 @@ export function confirmReservation() {
             serviceType: service.type,
             date: state.booking.date || new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }),
             time: state.booking.time || '11:00 AM',
-            therapist: state.booking.therapist ? state.booking.therapist.name : 'Sari',
-            location: 'Serenity & Soul Sanctuary, 12 Orchard Road, Singapore 238886',
+            therapist: state.booking.therapist ? state.booking.therapist.name : 'Assigned Specialist',
+            location: `${branchName}, ${branchAddress}`,
             price: total,
             depositPaid: depositAmount,
             balanceDue: balanceDue,
@@ -147,15 +176,46 @@ export function confirmReservation() {
             id: 'notif-' + Date.now(),
             date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
             text: state.language === 'ms'
-                ? `Janji Temu Disahkan: Deposit 50% (MYR ${depositAmount.toFixed(2)}) dibayar. +${earnedPoints} Poin Kesetiaan ditambah!`
-                : `Appointment Confirmed: 50% deposit (MYR ${depositAmount.toFixed(2)}) paid. +${earnedPoints} Loyalty Points earned!`
+                ? `Janji Temu Disahkan: Deposit 50% (${curr} ${depositAmount.toFixed(2)}) dibayar. +${earnedPoints} Poin Kesetiaan ditambah!`
+                : `Appointment Confirmed: 50% deposit (${curr} ${depositAmount.toFixed(2)}) paid. +${earnedPoints} Loyalty Points earned!`
         });
 
         state.successResId = resId;
-        navigateTo('success');
 
+        // Persist to Supabase Cloud Database & auto-generate queue ticket
+        supabaseService.createBooking({
+            code: resId,
+            patientName: state.user?.name || state.guestInfo?.name || 'Guest Client',
+            patientPhone: state.user?.phone || state.guestInfo?.phone || null,
+            patientEmail: state.user?.email || state.guestInfo?.email || null,
+            branchId: branchId,
+            branchName: branchName,
+            branchAddress: branchAddress,
+            serviceId: service.id,
+            serviceName: service.name,
+            practitionerId: state.booking.therapist?.id || null,
+            practitionerName: state.booking.therapist?.name || 'Assigned Specialist',
+            scheduleDate: state.booking.date || new Date().toISOString().slice(0, 10),
+            schedule: state.booking.time || '11:00 AM',
+            room: 'VIP Aromatherapy Suite',
+            depositPaid: depositAmount.toFixed(2),
+            paymentStatus: 'DEPOSIT_PAID',
+            status: 'CONFIRMED',
+            templateType: 'wellness'
+        }).catch(err => {
+            console.warn('[BookingController] Supabase live booking sync error:', err);
+        });
+
+        navigateTo('success');
         showNotification(state.language === 'ms' ? 'Tempahan anda telah berjaya disimpan.' : 'Your reservation has been saved successfully.', 'success');
-    });
+    };
+
+    // If package booking mode, check login only if required; otherwise support Guest seamlessly
+    if (state.packageBookingMode && !isLoggedIn()) {
+        requireLogin(executeBooking);
+    } else {
+        executeBooking();
+    }
 };
 
 export function resetBookingFlow() {

@@ -747,6 +747,113 @@ class SupabaseService {
     }
   }
 
+  /**
+   * Fetch single branch by ID, slug, or search term
+   * @param {string} identifier
+   * @returns {Promise<object|null>}
+   */
+  async fetchBranchByIdOrSlug(identifier) {
+    const supabase = await getSupabaseClient();
+    if (!supabase || !identifier) return null;
+
+    const cleanId = String(identifier).trim();
+    try {
+      // 1. Direct ID match
+      const { data: directMatch, error: directErr } = await supabase
+        .from("branches")
+        .select("*")
+        .eq("id", cleanId)
+        .maybeSingle();
+
+      if (!directErr && directMatch) {
+        return directMatch;
+      }
+
+      // 2. Case-insensitive or ILIKE name match
+      const { data: listMatch, error: listErr } = await supabase
+        .from("branches")
+        .select("*")
+        .ilike("name", `%${cleanId}%`)
+        .limit(1)
+        .maybeSingle();
+
+      if (!listErr && listMatch) {
+        return listMatch;
+      }
+
+      return null;
+    } catch (err) {
+      console.warn("[SupabaseService] fetchBranchByIdOrSlug exception:", err);
+      return null;
+    }
+  }
+
+  /**
+   * Fetch active services for a branch and/or template
+   * @param {string|null} branchId
+   * @param {string} templateId
+   * @returns {Promise<Array<object>>}
+   */
+  async fetchServices(branchId = null, templateId = "wellness") {
+    const supabase = await getSupabaseClient();
+    if (!supabase) return [];
+
+    try {
+      let query = supabase
+        .from("services")
+        .select("*")
+        .eq("is_active", true);
+
+      if (templateId) {
+        query = query.eq("template_id", templateId);
+      }
+
+      const { data, error } = await query.order("code", { ascending: true });
+      if (error) {
+        console.error("[SupabaseService] fetchServices error:", error);
+        return [];
+      }
+      return data || [];
+    } catch (err) {
+      console.warn("[SupabaseService] fetchServices exception:", err);
+      return [];
+    }
+  }
+
+  /**
+   * Fetch active practitioners for a branch and/or template
+   * @param {string|null} branchId
+   * @param {string} templateId
+   * @returns {Promise<Array<object>>}
+   */
+  async fetchPractitioners(branchId = null, templateId = "wellness") {
+    const supabase = await getSupabaseClient();
+    if (!supabase) return [];
+
+    try {
+      let query = supabase
+        .from("practitioners")
+        .select("*")
+        .eq("is_available", true);
+
+      if (branchId) {
+        query = query.eq("branch_id", branchId);
+      } else if (templateId) {
+        query = query.eq("template_id", templateId);
+      }
+
+      const { data, error } = await query.order("name", { ascending: true });
+      if (error) {
+        console.error("[SupabaseService] fetchPractitioners error:", error);
+        return [];
+      }
+      return data || [];
+    } catch (err) {
+      console.warn("[SupabaseService] fetchPractitioners exception:", err);
+      return [];
+    }
+  }
+
   // ─────────────────────────────────────────────────────────────────────────
   // 7. AUDIT LOGS & HEALTH CHECK
   // ─────────────────────────────────────────────────────────────────────────

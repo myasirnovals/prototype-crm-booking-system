@@ -1,4 +1,4 @@
-import { tenantId, currentTenant, DEFAULT_TENANTS } from '../models/Tenant.js';
+import { tenantId, currentTenant, currentBranch, DEFAULT_TENANTS } from '../models/Tenant.js';
 import { SERVICES, THERAPISTS, getSharedData, syncServices, syncTherapists } from '../models/Database.js';
 import { TRANSLATIONS, t, getServiceTranslation, translateStaticHtml, toggleLanguage } from '../models/Translations.js';
 import { DEFAULT_STATE, state, loadState, saveState } from '../models/State.js';
@@ -22,6 +22,7 @@ export function renderSidebarSummary() {
     const sidebar = document.getElementById(targetId);
     if (!sidebar) return;
 
+    const curr = (currentBranch && currentBranch.currency) || 'SGD';
     const service = state.booking.service;
     const therapist = state.booking.therapist;
     const date = state.booking.date;
@@ -43,7 +44,7 @@ export function renderSidebarSummary() {
                     <span class="font-label-caps text-[9px] text-outline mb-0.5 block uppercase font-bold tracking-wider">${t('lbl_service')}</span>
                     ${service ? `
                         <h3 class="font-title-md text-xs font-semibold text-[#1E293B]">${service.name}</h3>
-                        <p class="font-body-sm text-[11px] text-on-surface-variant">${service.duration || ''} • MYR ${service.price}</p>
+                        <p class="font-body-sm text-[11px] text-on-surface-variant">${service.duration || ''} • ${curr} ${service.price}</p>
                     ` : `
                         <h3 class="font-title-md text-xs font-semibold text-on-surface-variant"><span class="italic text-on-surface-variant opacity-60 text-xs">${state.language === 'ms' ? 'Belum dipilih' : 'To be selected'}</span></h3>
                     `}
@@ -98,26 +99,26 @@ export function renderSidebarSummary() {
         <div class="mt-6 pt-6 border-t border-surface-variant">
             <div class="flex justify-between items-center mb-2 text-on-surface-variant text-xs">
                 <span>${t('lbl_subtotal')}</span>
-                <span>MYR ${isServiceSelected ? service.price.toFixed(2) : '0.00'}</span>
+                <span>${curr} ${isServiceSelected ? service.price.toFixed(2) : '0.00'}</span>
             </div>
             <div class="flex justify-between items-center mb-3 text-on-surface-variant text-xs">
                 <span>${t('lbl_tax')}</span>
-                <span>MYR ${(isServiceSelected ? (service.price * 0.07) : 0).toFixed(2)}</span>
+                <span>${curr} ${(isServiceSelected ? (service.price * 0.07) : 0).toFixed(2)}</span>
             </div>
             <div class="flex justify-between items-center pt-3 border-t border-outline-variant/30 font-semibold text-xs">
                 <span class="text-on-surface">${isConfirmOrTime ? t('lbl_total') : t('lbl_est_total')}</span>
-                <span class="font-serif text-base text-[#1E293B] font-bold">MYR ${total.toFixed(2)}</span>
+                <span class="font-serif text-base text-[#1E293B] font-bold">${curr} ${total.toFixed(2)}</span>
             </div>
 
             ${state.currentView === 'confirm-booking' ? `
                 <div class="mt-4 p-3 bg-amber-50 rounded-2xl border border-amber-200/70 text-left space-y-2">
                     <div class="flex justify-between items-center text-xs text-amber-900 font-bold">
                         <span>${state.language === 'ms' ? 'Deposit 50% Hari Ini:' : '50% Deposit Due Today:'}</span>
-                        <span class="text-amber-700 font-serif text-sm font-bold">MYR ${(total * 0.5).toFixed(2)}</span>
+                        <span class="text-amber-700 font-serif text-sm font-bold">${curr} ${(total * 0.5).toFixed(2)}</span>
                     </div>
                     <div class="flex justify-between items-center text-[11px] text-slate-600 font-semibold border-t border-amber-200/50 pt-1.5">
                         <span>${state.language === 'ms' ? 'Baki Dibayar di Spa:' : 'Remaining Balance at Spa:'}</span>
-                        <span>MYR ${(total * 0.5).toFixed(2)}</span>
+                        <span>${curr} ${(total * 0.5).toFixed(2)}</span>
                     </div>
                     <div class="text-[10px] text-amber-800 leading-tight pt-1.5 border-t border-amber-200/50 flex items-start gap-1">
                         <span class="material-symbols-outlined text-[13px] shrink-0 text-amber-600">info</span>

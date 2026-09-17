@@ -1,6 +1,7 @@
-import { tenantId, currentTenant, DEFAULT_TENANTS } from '../models/Tenant.js';
+import { tenantId, currentTenant, currentBranch, DEFAULT_TENANTS } from '../models/Tenant.js';
+import { supabaseService } from '../../../../js/services/supabase.service.js';
 
-// 1. MOCK DATABASE
+// 1. MOCK & PERSISTED DATABASE
 export let SERVICES = {
     // Packages / Bundles
     'radiance-bundle': {
@@ -310,6 +311,95 @@ export function syncTherapists() {
 
 syncTherapists();
 
+/**
+ * Asynchronously fetch and synchronize active services from Supabase Cloud
+ */
+export async function syncServicesFromSupabase() {
+    try {
+        const branchKey = window.currentBranchId || window.currentTenantId || 'default-spa';
+        const isMyr = currentBranch?.currency === 'MYR';
+        const dbServices = await supabaseService.fetchServices(branchKey, 'wellness');
+        if (Array.isArray(dbServices) && dbServices.length > 0) {
+            dbServices.forEach(s => {
+                let type = 'massage';
+                const cat = (s.category || '').toLowerCase();
+                if (cat.includes('package') || cat.includes('bundle')) type = 'packages';
+                else if (cat.includes('facial') || cat.includes('skincare')) type = 'facial';
+                else if (cat.includes('signature') || cat.includes('hydro')) type = 'signature';
+                else if (cat.includes('body') || cat.includes('scrub')) type = 'body';
+
+                const priceVal = isMyr ? (parseFloat(s.price_myr) || 280) : (parseFloat(s.price_sgd) || 130);
+                SERVICES[s.id] = {
+                    id: s.id,
+                    name: s.name,
+                    code: s.code,
+                    type: type,
+                    price: priceVal,
+                    regularPrice: Math.round(priceVal * 1.2),
+                    sessions: type === 'packages' ? 10 : 1,
+                    services: [],
+                    duration: (s.duration_minutes || 60) + ' Mins',
+                    description: s.description || '',
+                    image: s.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80',
+                    showOnHome: true,
+                    bestValue: false
+                };
+            });
+            console.info('[Database] Synced', dbServices.length, 'wellness services from Supabase Cloud');
+            window.dispatchEvent(new CustomEvent('cliniva:services-updated', { detail: SERVICES }));
+        }
+    } catch (err) {
+        console.warn('[Database] Supabase services sync fallback:', err);
+    }
+}
+
+/**
+ * Asynchronously fetch and synchronize active practitioners/therapists from Supabase Cloud
+ */
+export async function syncTherapistsFromSupabase() {
+    try {
+        const branchKey = window.currentBranchId || window.currentTenantId || 'default-spa';
+        const dbTherapists = await supabaseService.fetchPractitioners(branchKey, 'wellness');
+        if (Array.isArray(dbTherapists) && dbTherapists.length > 0) {
+            dbTherapists.forEach(p => {
+                THERAPISTS[p.id] = {
+                    id: p.id,
+                    name: p.name,
+                    role: p.title || 'Master Therapist',
+                    specialties: p.specialty ? [p.specialty] : ['Deep Tissue', 'Aromatherapy'],
+                    rating: 4.9,
+                    reviews: 120,
+                    experience: '★ 4.9 (120 reviews)',
+                    experienceYears: '8+ Years',
+                    certifications: ['International CIBTAC Certified', 'Deep Muscle & Aromatherapy Specialist'],
+                    description: p.specialty ? `Specialist in ${p.specialty}. Dedicated to holistic wellness therapy.` : 'Senior wellness therapist.',
+                    fullBio: `${p.name} brings dedicated clinical mastery to each bespoke session at ${currentBranch.name}.`,
+                    image: p.avatar_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80'
+                };
+            });
+            console.info('[Database] Synced', dbTherapists.length, 'therapists from Supabase Cloud');
+            window.dispatchEvent(new CustomEvent('cliniva:therapists-updated', { detail: THERAPISTS }));
+        }
+    } catch (err) {
+        console.warn('[Database] Supabase therapists sync fallback:', err);
+    }
+}
+
+// Re-sync on branch resolution update
+if (typeof window !== 'undefined') {
+    syncServicesFromSupabase();
+    syncTherapistsFromSupabase();
+
+    window.addEventListener('cliniva:branch-updated', () => {
+        syncServices();
+        syncTherapists();
+        syncServicesFromSupabase();
+        syncTherapistsFromSupabase();
+    });
+}
+
 window.getSharedData = getSharedData;
 window.syncServices = syncServices;
 window.syncTherapists = syncTherapists;
+window.syncServicesFromSupabase = syncServicesFromSupabase;
+window.syncTherapistsFromSupabase = syncTherapistsFromSupabase;

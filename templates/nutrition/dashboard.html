@@ -7,9 +7,9 @@
     <title>NutriFlow - Client Health Sanctuary</title>
     <meta name="theme-color" content="#006e2f">
     <meta name="description"
-        content="NutriFlow membantu Anda mencatat makanan, mengikuti program nutrisi, dan mengatur konsultasi.">
-    <link rel="manifest" href="/manifest.webmanifest">
-    <link rel="icon" href="/icons/nutriflow-icon.svg" type="image/svg+xml">
+        content="NutriFlow helps you track meals, follow customized nutrition plans, and manage consultations.">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icons/nutriflow-icon.svg" type="image/svg+xml">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -97,7 +97,7 @@
             }
         }
     </script>
-    <link href="/src/style.css" rel="stylesheet">
+    <link href="./src/style.css" rel="stylesheet">
     <script>
         // Inline helper to navigate to dedicated patient intake page
         window.openOnboardingModal = function () {
@@ -2819,9 +2819,9 @@
     <!-- Removed onboarding modal and replaced with a dedicated page view -->
 
     <!-- Core App logic (MVC Architecture) -->
-    <script type="module" src="/src/mvc/App.js"></script>
-    <!-- Legacy compatibility layer (akan dihapus bertahap) -->
-    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="./src/mvc/App.js"></script>
+    <!-- Legacy compatibility layer -->
+    <script type="module" src="./src/main.js"></script>
 
     <!-- AI Food Scanner Modal — plain CSS, no Tailwind for visibility -->
     <div id="ai-food-scanner-modal"

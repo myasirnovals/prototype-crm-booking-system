@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     
     <!-- i18n -->
-    <script type="module" src="/src/i18n.js"></script>
+    <script type="module" src="./src/i18n.js"></script>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -64,16 +64,16 @@
     <!-- Navigation -->
     <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
         <div class="glass-card mx-4 lg:mx-auto max-w-7xl mt-4 rounded-2xl px-6 py-4 flex items-center justify-between">
-            <a href="/index.html" class="flex items-center gap-2 group">
+            <a href="./index.html" class="flex items-center gap-2 group">
                 <span class="material-symbols-outlined text-primary text-3xl transition-transform group-hover:rotate-12" style="font-variation-settings: 'FILL' 1;">eco</span>
                 <span class="text-xl font-bold tracking-tight text-primary">NutriFlow</span>
             </a>
             
             <div class="hidden md:flex items-center gap-8 font-medium text-sm text-slate-600">
-                <a href="/index.html#features" data-i18n="nav.features" class="hover:text-primary transition-colors">Features</a>
-                <a href="/specialist.html" data-i18n="nav.specialists" class="hover:text-primary transition-colors">Specialists</a>
-                <a href="/index.html#testimonials" data-i18n="nav.success_stories" class="hover:text-primary transition-colors">Success Stories</a>
-                <a href="/article.html" data-i18n="nav.articles" class="text-primary font-bold transition-colors">Articles</a>
+                <a href="./index.html#features" data-i18n="nav.features" class="hover:text-primary transition-colors">Features</a>
+                <a href="./specialist.html" data-i18n="nav.specialists" class="hover:text-primary transition-colors">Specialists</a>
+                <a href="./index.html#testimonials" data-i18n="nav.success_stories" class="hover:text-primary transition-colors">Success Stories</a>
+                <a href="./article.html" data-i18n="nav.articles" class="text-primary font-bold transition-colors">Articles</a>
             </div>
             
             <div class="flex items-center gap-4">
@@ -82,8 +82,8 @@
                     <option value="my">MY</option>
                 </select>
                 <div class="w-[1px] h-4 bg-slate-300"></div>
-                <a href="/login.html" data-i18n="nav.sign_in" class="text-sm font-semibold text-primary hover:text-[#005321] transition-colors hidden sm:block">Sign In</a>
-                <a href="/login.html" class="bg-primary hover:bg-[#005321] text-white text-sm font-bold py-2.5 px-5 rounded-xl transition-all shadow-lg hover:shadow-primary/30 flex items-center gap-2">
+                <a href="./login.html" data-i18n="nav.sign_in" class="text-sm font-semibold text-primary hover:text-[#005321] transition-colors hidden sm:block">Sign In</a>
+                <a href="./index.html?tab=booking" class="bg-primary hover:bg-[#005321] text-white text-sm font-bold py-2.5 px-5 rounded-xl transition-all shadow-lg hover:shadow-primary/30 flex items-center gap-2">
                     <span data-i18n="nav.get_started">Get Started</span>
                     <span class="material-symbols-outlined text-sm">arrow_forward</span>
                 </a>

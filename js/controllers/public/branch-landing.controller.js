@@ -45,7 +45,7 @@ export class BranchLandingController {
       window.location.replace(nutritionUrl);
       return;
     }
-    if (this.selectedBranch && (this.selectedBranch.template === "fitness" || this.selectedBranch.template === "personal_trainer")) {
+    if (this.selectedBranch && (this.selectedBranch.template === "fitness" || this.selectedBranch.template === "personal_trainer" || this.selectedBranch.template === "personal-trainer" || this.selectedBranch.template === "pt")) {
       const fitnessUrl = `../../templates/personal_trainer/index.html?branch=${encodeURIComponent(this.selectedBranch.id)}`;
       window.location.replace(fitnessUrl);
       return;

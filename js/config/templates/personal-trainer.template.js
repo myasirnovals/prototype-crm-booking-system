@@ -12,7 +12,7 @@ export const PERSONAL_TRAINER_TEMPLATE = {
   accentColor: "#dc2626", // Dynamic Red / Energetic Crimson
   practitionerTitle: "Certified Personal Trainer / Coach",
   practitionerTitleI18n: "template.personalTrainer.practitionerTitle",
-  demoUrl: "https://prototype-application-personal-trai.vercel.app/",
+  demoUrl: "../../templates/personal_trainer/index.html",
 
   pricing: {
     monthly: 99,

@@ -45,13 +45,14 @@ class BookingService {
     if (profile === "NUTRITION") return "nutrition";
     if (profile === "TCM_ACUPUNCTURE") return "tcm";
     if (profile === "SPA_WELLNESS") return "wellness";
+    if (profile === "FITNESS_GOALS" || profile === "PERSONAL_TRAINER") return "personal-trainer";
     return DEFAULT_TEMPLATE_ID;
   }
 
   /**
    * Set active business template
    * Also synchronizes Super Admin cliniva_intake_profile and dispatches event
-   * @param {string} templateId - "wellness" | "physio" | "nutrition" | "tcm"
+   * @param {string} templateId - "wellness" | "physio" | "nutrition" | "tcm" | "personal-trainer"
    * @returns {boolean}
    */
   setActiveTemplate(templateId) {
@@ -64,6 +65,7 @@ class BookingService {
     if (normalized === "physio" || normalized === "physiotherapy") profileType = "PHYSIOTHERAPY";
     else if (normalized === "nutrition") profileType = "NUTRITION";
     else if (normalized === "tcm") profileType = "TCM_ACUPUNCTURE";
+    else if (normalized === "personal-trainer" || normalized === "personal_trainer" || normalized === "fitness" || normalized === "pt") profileType = "FITNESS_GOALS";
     storageService.set("cliniva_intake_profile", profileType);
 
     if (typeof document !== "undefined") {

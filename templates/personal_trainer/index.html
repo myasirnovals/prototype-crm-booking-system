@@ -38,6 +38,55 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
     </style>
+    <!-- Dynamic Cliniva Multi-Tenant Branch Resolver -->
+    <script>
+      (function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetBranchId = urlParams.get('branch') || urlParams.get('id') || 'default-pt';
+
+        const DEFAULT_PT_THEME = {
+          id: 'default-pt',
+          name: 'Elite Trainer & Performance',
+          tagline: 'Dedicated 1-on-1 fitness coaching, physique transformation, and athletic performance training',
+          logo: '',
+          address: '290 Orchard Road, Paragon Fitness Suites #08-01, Singapore 238859',
+          phone: '+65 6738 1234',
+          hours: 'Mon - Sun (06:00 - 22:00 SGT)',
+          currency: 'SGD'
+        };
+
+        let clinivaBranch = null;
+        try {
+          const clinivaBranches = JSON.parse(localStorage.getItem('cliniva_branches')) || [];
+          if (Array.isArray(clinivaBranches) && clinivaBranches.length > 0) {
+            clinivaBranch = clinivaBranches.find(b => 
+              (b.id && b.id.toLowerCase() === targetBranchId.toLowerCase()) ||
+              (b.name && b.name.toLowerCase() === targetBranchId.toLowerCase())
+            );
+            if (!clinivaBranch && (targetBranchId === 'default-pt' || targetBranchId === 'fitness' || targetBranchId === 'personal-trainer' || targetBranchId === 'pt')) {
+              clinivaBranch = clinivaBranches.find(b => b.template === 'personal-trainer' || b.template === 'fitness' || b.template === 'pt' || b.template === 'personal_trainer');
+            }
+          }
+        } catch (e) {
+          console.warn('[PersonalTrainer] cliniva_branches lookup error:', e);
+        }
+
+        const currentTenant = clinivaBranch ? {
+          id: clinivaBranch.id,
+          name: clinivaBranch.name || DEFAULT_PT_THEME.name,
+          tagline: clinivaBranch.tagline || DEFAULT_PT_THEME.tagline,
+          logo: clinivaBranch.logo || DEFAULT_PT_THEME.logo,
+          address: clinivaBranch.address || DEFAULT_PT_THEME.address,
+          phone: clinivaBranch.phone || DEFAULT_PT_THEME.phone,
+          hours: clinivaBranch.hours || clinivaBranch.operatingHours || DEFAULT_PT_THEME.hours,
+          currency: clinivaBranch.currency || DEFAULT_PT_THEME.currency
+        } : DEFAULT_PT_THEME;
+
+        window.currentTenant = currentTenant;
+        window.currentBranch = currentTenant;
+        document.title = `${currentTenant.name} | Elevate Your Fitness`;
+      })();
+    </script>
 </head>
 <body class="bg-background text-on-background font-body min-h-screen flex flex-col selection:bg-primary-container selection:text-white">
 <!-- Navbar -->
@@ -48,7 +97,7 @@
 <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
 <span class="material-symbols-outlined text-primary text-4xl" data-i18n="fitness_center" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
 <div class="flex flex-col">
-<span class="text-2xl font-headline font-extrabold tracking-tight text-primary leading-none" data-i18n="elite_trainer">ELITE TRAINER</span>
+<span class="text-2xl font-headline font-extrabold tracking-tight text-primary leading-none" id="pt-brand-name" data-i18n="elite_trainer">ELITE TRAINER</span>
 </div>
 </div>
 <!-- Desktop Menu -->
@@ -56,8 +105,11 @@
 <a class="text-sm font-semibold text-slate-600 hover:text-primary transition-colors" data-i18n="nav_features" href="#features">Features</a>
 <a class="text-sm font-semibold text-slate-600 hover:text-primary transition-colors" data-i18n="nav_about" href="./about.html">About</a>
 <div class="flex items-center gap-4">
+<a href="../../pages/public/sign-in.html" class="text-xs font-bold text-slate-500 hover:text-primary transition-colors flex items-center gap-1 border border-slate-200 px-3 py-1.5 rounded-lg" title="Go to Cliniva Management Portal">
+  <span class="material-symbols-outlined text-[15px]">corporate_fare</span> Cliniva Portal
+</a>
 <a class="text-sm font-bold text-primary hover:text-[#8f3200] transition-colors" data-i18n="nav_sign_in" href="./login.html">Sign In</a>
-<a class="bg-primary hover:bg-[#8f3200] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5" data-i18n="nav_get_started" href="./app.html#booking">Book Session</a>
+<a class="bg-primary hover:bg-[#8f3200] text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5" id="pt-nav-book-btn" data-i18n="nav_get_started" href="./app.html#booking">Book Session</a>
 <!-- Language Selector -->
 <div class="flex items-center">
 <select aria-label="Language" class="ml-4 bg-slate-50 border border-slate-200 text-slate-700 rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-slate-100 hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm cursor-pointer appearance-none pr-8 relative" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23475569%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 0.5rem top 50%; background-size: 0.65rem auto;" id="lang-select">
@@ -335,6 +387,18 @@
                 currentHeroImageIndex = (currentHeroImageIndex + 1) % heroImages.length;
                 heroSection.style.backgroundImage = `linear-gradient(rgba(16, 16, 16, 0.58), rgba(16, 16, 16, 0.68)), url('${heroImages[currentHeroImageIndex]}')`;
             }, 5000); // Change image every 5 seconds
+        }
+
+        // Apply Dynamic Branch Branding
+        if (window.currentTenant) {
+          const brandEl = document.getElementById('pt-brand-name');
+          if (brandEl && window.currentTenant.name) {
+            brandEl.textContent = window.currentTenant.name;
+          }
+          const bookBtns = document.querySelectorAll('a[href*="app.html#booking"]');
+          bookBtns.forEach(btn => {
+            btn.href = `./app.html?branch=${encodeURIComponent(window.currentTenant.id)}#booking`;
+          });
         }
     </script>
 <script type="module" src="./src/main.js"></script>

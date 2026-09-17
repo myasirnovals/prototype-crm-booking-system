@@ -79,6 +79,55 @@
             border-radius: 3px;
         }
     </style>
+    <!-- Dynamic Cliniva Multi-Tenant Branch Resolver -->
+    <script>
+      (function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetBranchId = urlParams.get('branch') || urlParams.get('id') || 'default-pt';
+
+        const DEFAULT_PT_THEME = {
+          id: 'default-pt',
+          name: 'Elite Trainer & Performance',
+          tagline: 'Dedicated 1-on-1 fitness coaching, physique transformation, and athletic performance training',
+          logo: '',
+          address: '290 Orchard Road, Paragon Fitness Suites #08-01, Singapore 238859',
+          phone: '+65 6738 1234',
+          hours: 'Mon - Sun (06:00 - 22:00 SGT)',
+          currency: 'SGD'
+        };
+
+        let clinivaBranch = null;
+        try {
+          const clinivaBranches = JSON.parse(localStorage.getItem('cliniva_branches')) || [];
+          if (Array.isArray(clinivaBranches) && clinivaBranches.length > 0) {
+            clinivaBranch = clinivaBranches.find(b => 
+              (b.id && b.id.toLowerCase() === targetBranchId.toLowerCase()) ||
+              (b.name && b.name.toLowerCase() === targetBranchId.toLowerCase())
+            );
+            if (!clinivaBranch && (targetBranchId === 'default-pt' || targetBranchId === 'fitness' || targetBranchId === 'personal-trainer' || targetBranchId === 'pt')) {
+              clinivaBranch = clinivaBranches.find(b => b.template === 'personal-trainer' || b.template === 'fitness' || b.template === 'pt' || b.template === 'personal_trainer');
+            }
+          }
+        } catch (e) {
+          console.warn('[PersonalTrainer] cliniva_branches lookup error:', e);
+        }
+
+        const currentTenant = clinivaBranch ? {
+          id: clinivaBranch.id,
+          name: clinivaBranch.name || DEFAULT_PT_THEME.name,
+          tagline: clinivaBranch.tagline || DEFAULT_PT_THEME.tagline,
+          logo: clinivaBranch.logo || DEFAULT_PT_THEME.logo,
+          address: clinivaBranch.address || DEFAULT_PT_THEME.address,
+          phone: clinivaBranch.phone || DEFAULT_PT_THEME.phone,
+          hours: clinivaBranch.hours || clinivaBranch.operatingHours || DEFAULT_PT_THEME.hours,
+          currency: clinivaBranch.currency || DEFAULT_PT_THEME.currency
+        } : DEFAULT_PT_THEME;
+
+        window.currentTenant = currentTenant;
+        window.currentBranch = currentTenant;
+        document.title = `${currentTenant.name} | Client Portal`;
+      })();
+    </script>
 </head>
 <body class="h-full font-body antialiased flex flex-col text-on-surface">
 <!-- Top Navigation (Desktop) -->
@@ -86,7 +135,7 @@
 <div class="max-w-[1440px] mx-auto w-full flex justify-between items-center">
 <div class="flex items-center gap-8">
 <div class="text-2xl font-headline font-extrabold text-primary flex items-center gap-2">
-<span data-i18n="kinetic_performance">Kinetic Performance</span>
+<span id="pt-app-brand-name" data-i18n="kinetic_performance">Kinetic Performance</span>
 </div>
 <nav class="flex h-[72px] items-center gap-1">
 <button class="h-full px-4 text-sm font-headline font-semibold text-primary border-b-2 border-primary transition-all" id="nav-home" onclick="navigateTo('home')">Today</button>
@@ -98,6 +147,9 @@
 </nav>
 </div>
 <div class="flex items-center gap-4">
+<a href="../../pages/public/sign-in.html" class="flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-primary transition-colors border border-slate-200 px-3 py-1.5 rounded-lg mr-2" title="Go to Cliniva Management Portal">
+  <span class="material-symbols-outlined text-[15px]">corporate_fare</span> Cliniva Portal
+</a>
 <div class="relative pl-4 border-l border-slate-200">
 <button class="flex items-center gap-2 hover:bg-slate-50 py-1.5 px-2.5 rounded-lg transition-colors focus:outline-none" onclick="window.toggleProfileDropdown()">
 <img alt="Avatar" class="w-8 h-8 rounded-full object-cover border border-slate-200" id="user-avatar" src=""/>

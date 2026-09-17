@@ -240,6 +240,36 @@ export function setupBookingGlobalHandlers(renderView, showToast, closeModal) {
         status: 'Confirmed'
       });
 
+      // Synchronize booking to Cliniva SaaS SSOT
+      try {
+        const clinivaBookings = JSON.parse(localStorage.getItem('cliniva_bookings') || '[]');
+        const bookingCode = 'BK-PT' + Math.floor(100000 + Math.random() * 900000);
+        const newClinivaBooking = {
+          code: bookingCode,
+          patientName: client?.name || 'Marcus Reid',
+          patientPhone: client?.phone || '+65 9234 5678',
+          patientEmail: client?.email || 'client@elitetrainer.com',
+          branchId: (window.currentTenant && window.currentTenant.id) || 'sg-orchard',
+          branchName: (window.currentTenant && window.currentTenant.name) || 'Elite Trainer & Performance',
+          branchAddress: (window.currentTenant && window.currentTenant.address) || location || 'Paragon Fitness Suites #08-01, Singapore',
+          serviceName: type || '1-on-1 Physique Transformation Coaching',
+          practitionerName: 'Coach Marcus (Certified PT)',
+          schedule: time || '10:00 AM',
+          scheduleDate: date || new Date().toISOString().split('T')[0],
+          room: location || 'Gym Studio A',
+          depositPaid: 35.00,
+          paymentStatus: 'PAID',
+          status: 'CONFIRMED',
+          templateType: 'personal-trainer',
+          chiefComplaint: 'Athletic Conditioning & Muscle Hypertrophy',
+          createdAt: new Date().toISOString()
+        };
+        clinivaBookings.unshift(newClinivaBooking);
+        localStorage.setItem('cliniva_bookings', JSON.stringify(clinivaBookings));
+      } catch (e) {
+        console.warn('[PersonalTrainer] Failed to sync booking with Cliniva:', e);
+      }
+
       closeModal();
       renderView();
       showToast(t('booking_success') || 'Training session confirmed successfully!', 'success');

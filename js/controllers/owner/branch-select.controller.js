@@ -313,7 +313,7 @@ export class BranchSelectController {
             targetPage = "/templates/physiotherapy/index.html";
           } else if (branch.template === "nutrition") {
             targetPage = "/templates/nutrition/index.html";
-          } else if (branch.template === "fitness" || branch.template === "personal_trainer") {
+          } else if (branch.template === "fitness" || branch.template === "personal_trainer" || branch.template === "personal-trainer" || branch.template === "pt") {
             targetPage = "/templates/personal_trainer/index.html";
           } else if (branch.template === "tcm") {
             targetPage = "/templates/tcm/index.html";

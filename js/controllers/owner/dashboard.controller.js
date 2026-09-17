@@ -1163,7 +1163,7 @@ export class OwnerDashboardController {
           targetPage = '/templates/physiotherapy/index.html';
         } else if (this.activeBranch.template === 'nutrition') {
           targetPage = '/templates/nutrition/index.html';
-        } else if (this.activeBranch.template === 'fitness' || this.activeBranch.template === 'personal_trainer') {
+        } else if (this.activeBranch.template === 'fitness' || this.activeBranch.template === 'personal_trainer' || this.activeBranch.template === 'personal-trainer' || this.activeBranch.template === 'pt') {
           targetPage = '/templates/personal_trainer/index.html';
         } else if (this.activeBranch.template === 'tcm') {
           targetPage = '/templates/tcm/index.html';
